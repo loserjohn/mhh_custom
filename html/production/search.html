@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>搜索</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+		/*筛选条件*/
+		.block1{
+			background: #fff;
+		}
+		.block1 .cm_name{
+			border-bottom: 1px dotted #d3d3d3;
+		}
+		.block1 .historyBox{
+			margin: 10px 0;
+			padding-bottom: 10px;
+		}
+		.block1 .hisItem{
+			text-decoration: underline;
+			margin: 0 10px;
+		}
+		.block1  .hotWord{
+			line-height: 24px;
+			height: 24px;
+			padding: 0 10px;
+			box-sizing: border-box;
+			font-size: 12px;
+			/*border: 1px solid #d3d3d3;*/
+			margin: 5px;
+			border-radius: 3px;		
+		}
+		/*结果列表*/
+		.proLists{
+			position: absolute;
+			bottom: 0;
+			overflow: hidden;
+		}
+		.cm_search_input{
+			height: 36px!important;
+			line-height: 36px;
+		}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="   header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_y"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class="cm_search f1 flex">
+					<i class="iconfont icon-search cor_g"></i>
+					<input type="text" class="f1 cm_search_input" placeholder="马嘿嘿带你搜点啥？" v-model="keyWord"/>
+					<!--<div class="f1 cm_search_input" @tap="_toSearch">马嘿嘿带你搜点啥？</div>-->
+				</div>
+				<button class="mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_y" @tap="_search">搜索</button>
+
+			</header>
+			<!--搜索历史-->
+			<div class=" block1 panel container" v-show="!keyWord" >
+				<aside class="cm_name flex">
+					<aside class="f1">搜索历史:</aside>
+					<article class="f1 t_r" @tap="_cleanAll">
+						<i class="iconfont icon-close"></i>
+						清除历史</article>
+				</aside>
+				<article class="historyBox">
+					<ul class="flex">
+						<li class="hisItem cor_y" v-for="item in  hisList" @tap="_chooseWord(item)">{{item}}</li>	
+					</ul>
+					<p class="t_c lh26" v-show="hisList.length==0">--无--</p>
+				</article>
+					<!--热词-->
+				<!--<aside class="cm_name">搜索热词:</aside>-->
+				<!--<article>
+					<ul class="flex " style="justify-content: flex-start;flex-wrap: wrap;">
+						<li class="hotWord label_r">雅诗兰黛</li>
+						<li class="hotWord label_y">超级无敌美甲1号</li>
+						<li class="hotWord label_b">的说法 </li>
+						<li class="hotWord label_g">超级的说法 无敌美甲1号</li>
+						<li class="hotWord label_o">雅士大夫诗兰黛</li>
+						<li class="hotWord label_p">超级无敌美甲1号</li>
+					</ul>
+				</article>-->
+			</div>
+			
+
+			<!--搜索结果-->
+			<div class="block2 proLists  scrollBox" ref="scroll" :style="{top:scrollTop}" v-show="keyWord">
+				<div class="scrollContent " style="width: 100%;">
+					<ul class="reset scrollWrap " >
+						<li class="  panel cm_proItems" @tap="_navigateTo('./productBuy.html','productBuy',{proKey:item.PROJECT_CODE})" v-for="item in resultList">
+							<article class="flex relative">
+								<ul class="cm_label_tool">
+									<li>会员价</li>
+									<li>新客满减</li>
+								</ul>
+								<div class="cm_itemPic">
+									<img :src="item.PROJECT_IMG1" class="cover" />
+								</div>
+								<div class="f1 cm_txt">
+									<h4 class="ellipsis">{{item.PROJECT_NAME}} </h4>
+									<div class="cm_technician flex">
+										<img :src="item.SHOP_LOGO"  class="avatar"/>
+										<div class="f1">
+											<p class="lh18">{{item.SHOP_NAME}} </p>
+											<p class="flex">嘿皮值:
+											<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in parseInt(item.SHOP_STAR) " />
+										</p>
+										</div>
+									</div>
+									<div class="flex">
+										<div class="f1 flex">
+											<div class="prize fs18 cor_r">￥{{item.PROJECT_DISCOUNT}}</div>
+											<div class="delec_prize ">￥{{item.PROJECT_PRICE}}</div>
+										</div>
+										<div class="cor_g">{{item.PROJECT_LOVE}}人喜欢</div>
+									</div>
+								</div>
+							</article>
+							<!--<aside>
+								<span class="cm_label" style="margin-right: 15px;">限购:</span>限购备注
+							</aside>-->
+							<aside class="cor_g"> 
+								<span class="cm_label" style="margin-right: 15px;">距离我:</span>
+								<span class="">{{item.DISTANCE}}米</span>
+							</aside>
+						</li>					
+					</ul>
+					<p class="t_c lh28" style="width: 100%;">没有数据咯</p>
+				</div>
+			</div>
+						
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+	swipeBack: true
+			});
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						scroll:'',
+						scrollTop:'',
+						modalShow:false,
+						keyWord:'',
+						hisList:[],//历史记录,
+						index:1,//结果页的索引
+						resultList:[]
+					},
+					created: function() {
+						app.initHeader();
+						//							console.log( app.mark + plus.storage.getItem('token'))
+					},
+					filters: {
+						getStatus(value) {
+						}
+					},
+					mounted: function() {
+						//							console.log(app.mark + plus.storage.getItem('token'))
+						var _this = this;
+
+						var scroll = this.$refs.scroll
+						//							初始化scroll的屏幕位置
+						this.scrollTop = document.getElementById('header').offsetHeight  + 'px';
+						
+//						plus.nativeUI.closeWaiting()
+//						mui.currentWebview.show('pop-in', 300, function() {}, {});
+						
+						this._initHis(()=>{
+//							alert(1)
+							plus.nativeUI.closeWaiting()
+							mui.currentWebview.show('pop-in', 300, function() {}, {});
+						})
+						/*初始化横向scroll*/
+						this.$nextTick(function() {
+							//							初始化scrool
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									pullUpLoad: {
+											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+										},
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getData()
+							})
+						})
+
+					},
+					methods: {
+						_save(){
+//							var r = localStorage.getItem('$keyword');
+							r = this.hisList;
+							w = this.keyWord
+							if(r.indexOf(w) < 0) {
+								r.push(w)
+								plus.storage.setItem('hisKeyWord', JSON.stringify(r));
+							} else {
+								return
+							}
+												
+						},
+//						点击搜索
+						_search(){
+							this.index = 1;
+							this.resultList = [];
+							plus.nativeUI.showWaiting()
+							this._getData(()=>{
+								plus.nativeUI.closeWaiting()
+							})
+						},
+//						清除历史
+						_cleanAll(){
+							plus.storage.setItem('hisKeyWord','');
+							this.hisList=[]
+						},
+//						选额关键词
+						_chooseWord(w){
+							this.keyWord = w;
+							this._getData()
+						},
+						//						加载搜索记录
+						_initHis(callback){
+							let hisStr = plus.storage.getItem('hisKeyWord');
+							if(!hisStr || hisStr==''){
+								if(callback)callback();
+								return
+							};
+							hisStr = JSON.parse(hisStr)
+							this.hisList = hisStr
+							if(callback)callback()
+						},
+						/*跳转页面*/
+						_navigateTo(dstUrl, dstId, extras) {
+							mui.openWindow({
+								url: dstUrl,
+								id: dstId,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						/*获取数据*/
+						_getData(callback) {
+							if(!this.keyWord){
+								plus.nativeUI.toast('请输入关键词');
+								if(callback) callback();
+								return
+							}
+							var _this = this
+							let pos = plus.storage.getItem('pos')						
+							pos = JSON.parse(pos)
+
+							var data = {
+								pageIndex: this.index,
+								pageSize: 5,
+								lon: pos.longitude,
+								lat: pos.latitude,
+								SEARCH_KEY:this.keyWord,
+								distance: 5000
+							}
+//							console.log(JSON.stringify(data))
+							mui.ajax(app.baseUrl + '/api/Project/GetProjects', {
+								data: data,
+								timeout: 10000, //超时时间设置为10秒；
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+
+										var b = false;
+										
+										var l = _this.resultList.length;
+										if(result.Data.Total == l) {
+											plus.nativeUI.toast('没有数据了')
+											if(callback) callback();
+											return;
+										}else{
+											_this.resultList = _this.resultList.concat(result.Data.ListInfo);
+										}
+										_this.index += 1
+										_this.scroll.finishPullUp()
+										_this.scroll.refresh();
+//										储存记录
+										_this._save()
+										if(callback) callback();
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+										if(callback) callback();
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									plus.nativeUI.closeWaiting()
+									console.log(type);
+								}
+							});
+						},
+						/*刷新*/
+						_refreshData() {
+
+						},
+						/*回到顶部*/
+						_backTop() {
+							this.scroll.scrollTo(0, 0, 300)
+						},
+						/*模态框显示控制*/
+						_modelToggle(){
+							this.modalShow = !this.modalShow
+						}
+					}
+				})
+
+			});
+		</script>
+	</body>
+
+</html>

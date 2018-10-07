@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>系统消息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			.messageItem {
+				/*border-bottom: 1px dashed #d3d3d3;*/
+				background: #fff;
+			}
+			
+			.messageItem .listPic {
+				width: 70px;
+				height: 50px;
+				max-width: 50px;
+				position: relative;
+				margin-right: 14px;
+			}
+			
+			/*.cards_ul{
+				padding: 15px;
+				background: #fff;
+			}*/
+			.panel2{
+				width: 100%;
+				background: #fff;
+				box-sizing: border-box;
+				padding: 15px;
+				box-shadow: 0 4px 2px #eee;
+				margin-bottom: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="fixed  header flex" id="header" style="background:#ccaa42">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					系统消息
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>
+
+			<!--卡片-->
+			<div class="cards scrollBox " ref="scroll" :style="{top:scrollTop}" id="scroll">
+				<div class="cm_ul reset" style="min-height: 101%;">
+					<!--刷新提示框-->
+					<div class="refresh">
+						<p class="t_c cor_y  refresh_txt">有种你放开我</p>
+					</div>
+					<ul class="reset cm_ul cards_ul ">
+						<li class="flex messageItem panel2" v-for="item in messageList">
+							<aside class="listPic">
+								<img src="../../images/mhh_avator.png" alt="" class="cover" />
+							</aside>
+							<article class="f1">
+								<h3>马嘿嘿提醒您：</h3>
+								<p class=" lh30">{{item.INFO_TIME}}</p>
+								<div>{{item.INFO_TITLE}}</div>
+							</article>
+						</li>
+						<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{norest?'没有数据了':'加载更多'}}</li>
+					</ul>
+				</div>
+			</div>
+			<!--底部菜单-->
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			})
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						scrollTop: '',
+						scroll: '',
+						messageList:[],
+						index: 1,
+						norest: false
+					},
+					created: function() {
+						//							alert(1)
+						if(plus.webview.getWebviewById('information')) {
+							plus.webview.getWebviewById('information').evalJS('redClean()')
+						}
+					},
+					mounted: function() {
+
+						var _this = this
+						app.initHeader();
+						var scroll = this.$refs.scroll;
+						this.scrollTop = document.getElementById('header').offsetHeight + 'px'
+
+						this.$nextTick(function() {
+							//							初始化scrool
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									pullUpLoad: {
+										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									},
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getData((b) => {
+									if(b) {
+//										没有数据了
+									} else {
+										_this.scroll.finishPullUp()
+									}
+								})
+							})
+
+						})
+						/*首次加载数据*/
+						this._getData(() => {
+							plus.nativeUI.closeWaiting()
+							mui.currentWebview.show('pop-in', 300, function() {}, {});
+						})
+
+					},
+					methods: {
+
+						/*读取信息列表*/
+						_getData(callback) {
+							var _this = this
+//							alert(0)
+							app.ajax(app.baseUrl + '/api/Push/GetMemberPushList', {
+								data: {
+									pageIndex: parseInt(_this.index)  ,
+									pageSize: 8
+								},
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+//									alert(1)
+									if(result.Success) {
+										
+										var l = _this.messageList.length;
+										_this.messageList = _this.messageList.concat(result.Data.ListInfo);
+//										console.log(_this.messageList.length, l)
+										if(l == _this.messageList.length) {
+											_this.norest = true;
+											if(callback) callback(true);
+											return;
+										}
+										_this.index++
+											mui.later(() => {
+												_this.scroll.refresh();
+												if(callback) callback(false);
+											}, 300)
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								}
+							});
+						}
+					}
+				})
+			})
+
+			function refresh() {
+				APP._getData()
+			}
+		</script>
+	</body>
+
+</html>

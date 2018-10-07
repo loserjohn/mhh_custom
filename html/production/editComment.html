@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>评价</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			/*列表项样式*/
+			
+			.tabsItems {
+				line-height: 2;
+				margin-bottom: 10px;
+				/*padding: 10px;*/
+			}
+			
+			.tabsItemsRow {
+				height: 18px;
+				line-height: 18px;
+				margin-bottom: 4px;
+				/*background: red;*/
+			}
+			
+			.cm_tabsContent {
+				bottom: 0;
+			}
+			
+			.itemHeader {
+				line-height: 36px;
+				/*background: red;*/
+				border-bottom: 1px dashed #d3d3d3;
+				padding: 10px;
+			}
+			
+			.itemBody {
+				padding: 10px;
+				/*background: pink;*/
+			}
+			
+			.itemPic {
+				width: 80px;
+				height: 80px;
+				margin-right: 10px;
+				overflow: hidden;
+			}
+			
+			.itemFoot {
+				line-height: 2;
+				padding: 5px;
+			}
+			
+			.btns {
+				text-align: center;
+				color: #404040;
+				font-size: 16px;
+			}
+			
+			.lh24 {
+				line-height: 24px;
+			}
+			/*评星部分*/
+			
+			.scoreBox {
+				background: #fff;
+				;
+				padding: 15px;
+			}
+			
+			.scoreBox>div {
+				margin: 10px auto;
+				line-height: 24px;
+			}
+			
+			.scoreBox .starsBox {
+				justify-content: space-around;
+			}
+			
+			.scoreBox .starsBox li {
+				width: 24px;
+				height: 24px;
+				line-height: 24px;
+				background: url(../../images/start_n.png) 0 0 /cover no-repeat;
+			}
+			
+			.scoreBox .starsBox li.active {
+				background: url(../../images/start_y.png) 0 0 /cover no-repeat;
+			}
+			/*滑块*/
+			
+			.rangeBox {
+				height: 120px;
+			}
+			.picPreBox{
+				justify-content: space-around;
+				padding: 10px 0;
+			}
+			.picPre{
+				width: 100px;
+				height: 100px;
+			}
+			.cellInputArea{
+				height: 150px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="fixed  header flex" id="header">
+			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+			<div class=" f1  cor_w t_c page_title">
+				评价
+			</div>
+			<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+		</header>
+		<div id="app">
+			<!--项目作品-->
+			<div class="tabsItems  panel" id="content">
+				<div class="itemHeader container flex" @tap="_navigateTo('../technician/technician.html','technician',{shopCode:product.SHOP_CODE})">
+					<aside class="f1 flex">
+						<img :src="product.SHOP_LOGO" alt="" class="avatar" />
+						<div class="">{{product.SHOP_NAME}}</div>
+					</aside>
+					<span class="mui-icon mui-icon-arrowright"></span>
+				</div>
+				<div class="itemBody flex" @tap="_navigateTo('../production/productBuy.html','productBuy',{proKey:product.PROJECT_CODE})">
+					<div class="itemPic">
+						<img :src="product.PROJECT_IMG1" alt="" class="cover" />
+					</div>
+					<div class="f1">
+						<div class="flex ">
+							<div class=" t_l f1 cm_name">{{product.PROJECT_NAME}}</div>
+							<!--<div class="  t_r">×1</div>-->
+						</div>
+						<div class="flex tabsItemsRow">
+							<p class=" t_l f1 ">原价:</p>
+							<div class="  t_r cor_g delec_prize">￥{{product.ORDER_TOTAL_AMOUNT}}</div>
+						</div>
+						<div class="flex tabsItemsRow">
+							<div class=" t_l f1">交易价格:</div>
+							<div class="  t_r ">￥{{product.ORDER_PAY_AMOUNT}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--评论星级-->
+			<div class="scoreBox panel">
+				<div class="flex">
+					<aside style="width: 50px;" class="t_c">星级：</aside>
+					<ul class="f1 flex starsBox">
+						<li class="stars" v-for="(item,index) in 5" @tap="_score(index)" :class="{active:index<starLevel}"></li>
+
+					</ul>
+					<article style="width: 50px;" class="t_c">{{starLevel}} 星</article>
+				</div>
+			</div>
+
+			<!--总体评价-->
+			<div class=" panelPad clearfix">
+				<div class="rangeBox ">
+					<div class="mui-input-row mui-input-range">
+						<label>守时：{{(timeScore/10).toFixed(1)}}分</label>
+						<input type="range" min="0" max="50" v-model="timeScore">
+					</div>
+					<div class="mui-input-row mui-input-range">
+						<label>服务：{{(serverScore/10).toFixed(1)}}分</label>
+						<input type="range" min="0" max="50" v-model="serverScore">
+					</div>
+					<div class="mui-input-row mui-input-range">
+						<label>技术：{{(skillScore/10).toFixed(1)}}分</label>
+						<input type="range" min="0" max="50" v-model="skillScore">
+					</div>
+				</div>
+				<div>
+					<p class="container cm_name ">总体评价</p>
+					<ul class="mui-table-view mui-table-view-radio">
+						<li class="mui-table-view-cell " :class="{'mui-selected':type==1}" @tap="this.type=1">
+							<a class="mui-navigate-right">
+								非常嘿皮
+							</a>
+						</li>
+						<li class="mui-table-view-cell" :class="{'mui-selected':type==2}" @tap="this.type=2">
+							<a class="mui-navigate-right">
+								很嗨皮
+							</a>
+						</li>
+						<li class="mui-table-view-cell" :class="{'mui-selected':type==3}" @tap="this.type=3">
+							<a class="mui-navigate-right">
+								嘿皮
+							</a>
+						</li>
+						<li class="mui-table-view-cell" :class="{'mui-selected':type==4}" @tap="this.type=4">
+							<a class="mui-navigate-right">
+								不嘿皮
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!--上传图片-->
+			<div class="panelPad">
+				<p class="container cm_name ">描述图片</p>
+				<ul class="mui-table-view flex picPreBox">
+					<li class="picPre" @tap="_uploadPic(1)"><img :src="commontPic1?commontPic1:'../../images/blank.png'" alt="" class="contain" />
+					</li>
+					<li class="picPre" @tap="_uploadPic(2)"><img :src="commontPic2?commontPic2:'../../images/blank.png'" alt="" class="contain" />
+					</li>
+					<li class="picPre" @tap="_uploadPic(3)"><img :src="commontPic3?commontPic3:'../../images/blank.png'" alt="" class="contain" />
+					</li>
+				</ul>
+				
+				<p class="container cm_name ">评级内容</p>
+				<textarea name="" rows="" cols="" v-model="content" class="cellInputArea" placeholder="说点什么"></textarea>
+				
+				<div class="cm_btn" @tap="_submit">提交评论</div>
+			</div>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+	swipeBack: true
+			});
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						product: '',
+						timeScore: 50, //守时分数
+						serverScore: 50, //服务分数
+						skillScore: 50, //技术分数
+						starLevel: 5,
+						type: 1, //总评
+						commontPic1:'',
+						commontPic2:'',
+						commontPic3:'',
+						content:''
+					},
+					created: function() {
+						app.initHeader();
+						//							console.log( app.mark + plus.storage.getItem('token'))
+					},
+					filters: {
+						commentTxt(value) {
+							switch(value) {
+								case '1':
+									return '非常非常嘿皮'
+									break;
+								case '2':
+									return '很嘿皮'
+									break;
+								case '3':
+									return '嘿皮'
+									break;
+								case '4':
+									return '不嘿皮'
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					mounted: function() {
+						//							console.log(app.mark + plus.storage.getItem('token'))
+						var _this = this;
+						var self = plus.webview.currentWebview();
+						this.product = self.product
+						//							初始化scroll的屏幕位置
+						this.tabContenTop = document.getElementById('header').offsetHeight + 40 + 'px';
+
+						plus.nativeUI.closeWaiting()
+						mui.currentWebview.show('pop-in', 300, function() {}, {});
+
+					},
+					methods: {
+						//						评分
+						_score(s) {
+							this.starLevel = s + 1
+
+						},
+						/*图片上传*/
+						_uploadPic(key) {
+
+							switch(key) {
+								case 1:
+									app.getIMG('评价图片', (src) => {
+										this.commontPic1 = src
+									})
+									break;
+								case 2:
+									app.getIMG('评价图片', (src) => {
+										this.commontPic2 = src
+									})
+									break;
+								case 3:
+									app.getIMG('评价图片', (src) => {
+										this.commontPic3 = src
+									})
+									break;
+								default:
+									break;
+							}
+						},
+						/*跳转页面*/
+						_navigateTo(dstUrl, dstId, extras) {
+							mui.openWindow({
+								url: dstUrl,
+								id: dstId,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+//						提交评价
+						_submit(){
+							if(!this.content){
+									plus.nativeUI.alert("请输入评价内容", function(){},'马嘿嘿提醒您');
+									return;
+							}
+							var _this =this
+							plus.nativeUI.showWaiting();
+								/*调用登陆接口*/
+								
+								var data ={
+									ORDER_CODE:this.product.ORDER_CODE,
+									REVIEW_CONTENT:this.content,
+									REVIEW_TYPE:this.type,
+									REVIEW_STAR:this.starLevel,		
+									PUNCTUAL_POINT:(this.timeScore/10).toFixed(1),
+									SEVICE_POINT:(this.serverScore/10).toFixed(1),
+									SKILL_POINT:(this.skillScore/10).toFixed(1)										
+								}
+								if(this.commontPic1)data.REPLY_IMG1 = this.commontPic1
+								if(this.commontPic2)data.REPLY_IMG2 = this.commontPic2
+								if(this.commontPic3)data.REPLY_IMG3 = this.commontPic3
+//								console.log(JSON.stringify(data))
+								
+								app.ajax(app.baseUrl + '/api/OrderReview/AddReview', {
+									data:data,
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									plus.nativeUI.closeWaiting();
+									if(result.Success) {
+										plus.nativeUI.toast('评论成功')
+										
+										mui.back()
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+						}
+					}
+				})
+
+			});
+		</script>
+	</body>
+
+</html>

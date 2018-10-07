@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>约去哪儿</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			/*搜索地址*/
+			.addresSearch{
+				border: 1px solid #d3d3d3;
+				border-radius: 20px;
+				box-sizing: border-box;
+				height: 36px;
+				line-height: 34px;
+				background: #fff!important;
+				box-sizing: border-box;
+				padding: 0 10px;
+				margin: 10px 10px 0 10px;
+			}
+			.addresSearch>i {
+				font-size: 18px;
+				margin-top: 2px;
+			}
+				/*<!--常用地址-->*/
+			.usualAddress{
+				background: #fff;
+				
+			}		
+				
+			.usualAddress>ul{
+/*				margin-top: 10px;*/
+				
+			}	
+			.addressItem{
+				line-height: 44px;
+				border-top: 1px solid #d3d3d3;
+			}
+			.default{
+				    padding:0 5px;
+				    border: 1px solid #e4b373;
+				    background: #e9d473;
+				    line-height: 14px;
+				    height: 14px;
+				    text-align: center;
+				    font-size: 10px;
+				    border-radius: 3px;
+				    color: white;
+				    margin-right: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					约去哪儿
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w" @tap="_navigateTo('./addAddress.html','addAddress')">
+					新增地址				
+				</button>
+			</header>
+
+			<!--搜索地址-->
+			<div class="address panelPad " id="content">
+				<div class="addresSearch f1 flex">
+					<i class="iconfont icon-search cor_g"></i>		
+					<div class="f1 cm_search_input " @tap="_navigateTo('./location.html','location')">搜索你的服务地址？</div>
+				</div>
+			</div>
+			<!--当前的定位-->
+			<div class="curPos panelPad">
+				<p>当前位置</p>
+				<div class="flex lh26">
+					<div class="f1   relative">
+						{{curPos?curPos:'请重新定位'}}
+						<div class="cm_loading flex " v-show="loading">
+							<span class="mui-icon mui-icon-spinner-cycle mui-spin"></span>
+						</div>
+					</div>
+					<div class="getPos " @tap="_initPos">
+						<span class="iconfont icon-wei-  cor_y"></span>
+						重新定位
+					</div>
+				</div>
+			</div>
+			<!--常用地址-->
+			<div class="usualAddress container" v-show="isLogin">
+				<div class="flex ">
+					<p class="f1 lh44">常用地址</p>
+					<aside class="f1 t_r lh44" @tap="_navigateTo('./address.html','address')">
+						<span class="iconfont icon-mudedi  cor_y"></span>
+						选用地址
+					</aside>
+				</div>			
+				<ul class="">
+					<li class="ellipsis addressItem" v-for="item in addressList" @tap="_setAddressPos(item)">
+						<span class="default" v-show="item.ISDEFAULT=='1'">默认</span>
+						{{item.REMARK}}
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+	swipeBack: true
+			})
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						curPos:'',/*当前位置*/
+						loading:false,/*加载中*/
+						isLogin:false,
+						/*常用地址列表*/
+						addressList:[]
+					},
+					created: function() {
+						//							alert(1)
+						app.initHeader();
+					},
+					mounted: function() {
+
+						var _this = this
+						var scroll = this.$refs.scroll
+						this.scrollTop = document.getElementById('header').offsetHeight;
+					
+						
+						/*首次加载获取当前位置*/
+						var co = JSON.parse(plus.storage.getItem('pos'))
+						if(co){
+							_this.curPos = co.address
+						}
+						
+						/*首次加载数据*/
+						this._getData(() => {
+								plus.nativeUI.closeWaiting()
+								mui.currentWebview.show('pop-in', 300, function() {}, {});
+						})					
+					},
+					methods: {
+						/*初始化位置*/
+						_initPos(){
+							this.loading = true;
+							var _this = this ;
+							plus.geolocation.getCurrentPosition((position)=>{
+								var obj = position.address
+								var add = obj.province +obj.city + position.addresses
+								
+								/*储存重新定位的地址*/
+								var co = {
+									longitude:position.coords.longitude,   /*经度*/
+									latitude:position.coords.latitude, /*纬度*/
+									address: obj.city + position.addresses
+								}
+								plus.storage.setItem('pos',JSON.stringify(co))
+								var s = plus.webview.getLaunchWebview()	
+								s.evalJS('setPos("' + co.address + '")')
+								mui.later(()=>{
+									_this.curPos = add;
+									_this.loading = false
+								},1000)
+								
+							}, ()=>{
+								plus.nativeUI.toast('位置获取失败，请手动选择地址')
+								_this.loading = false
+							},{
+								enableHighAccuracy:true,
+								timeout:()=>{
+									plus.nativeUI.toast('信号不佳，位置获取失败')
+								}
+							});
+						},
+						/*跳转页面*/
+						_navigateTo(dstUrl,dstId,extras){
+							mui.openWindow({
+								url: dstUrl,
+								id: dstId,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						/*获取常用地址数据*/
+						_getData(callback) {
+							let  i = plus.storage.getItem('isLogin');
+//							alert(i)
+							if(i!='1'){
+								if(callback) callback();
+								return
+							}
+							this.isLogin = true 
+//							alert(2)
+							var _this = this
+							
+							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										_this.addressList = result.Data.ListInfo
+										mui.later(() => {
+											if(callback) callback();
+										}, 300)
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								}
+							});
+						},
+						/*选用常用地址的经纬度来搜索*/
+						_setAddressPos(item){
+							if(!item)return;
+//							console.log(JSON.stringify(item))
+							plus.nativeUI.toast('重新定位中')
+							var co = {
+									longitude:item.LON,   /*经度*/
+									latitude:item.LAT, /*纬度*/
+									address: item.REMARK
+							}
+							var s = plus.webview.getLaunchWebview()	
+//							alert(s.id)
+							s.evalJS('setPos("' + item.REMARK + '")')
+							
+							if(plus.webview.getWebviewById('productList')){									
+									plus.webview.getWebviewById('productList').evalJS('setPos("' + item.REMARK + '")')									
+							}
+						
+							plus.storage.setItem('pos',JSON.stringify(co));
+							mui.back()
+						}
+					}
+				})
+			})
+
+			function refresh() {
+				APP._getData()
+			}
+		</script>
+	</body>
+
+</html>

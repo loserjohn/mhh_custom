@@ -1,0 +1,316 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>充值卡管理</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			/*充值卡管理*/
+			
+			.cards_ul {
+				box-sizing: border-box;
+				padding: 10px;
+			}
+		
+			
+			.cardList {
+				height: 120px;
+				position: relative;
+				margin-bottom: 10px;
+				background: url(../../images/card.png) 0 0 /100% 100% no-repeat;
+			}
+			
+			
+			.cardList .cardName {
+				border-bottom: 1px dotted #fbf0ce;
+				line-height: 60px;
+				/*margin: 10px auto;*/
+			}
+			.cardList .cardName .avatar{
+				margin-top: 12px;
+			}
+			.cardList .cardMsg {
+				box-sizing: border-box;
+				color: #fff;
+				line-height: 60px;
+				/*margin-top: 10px;*/
+			}
+			
+			.cardList .cardMsg .curprize {
+				font-size: 18px;
+				color: #fff1c5;
+			}
+			
+			.cardList .cardMsg div {
+				line-height: 60px;
+				color: #fff;
+			}
+			/*底部的按钮*/
+			
+			.bottomMenus {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				height: 50px;
+				right: 0;
+				background: rgba(21, 21, 21, 1);
+			}
+			
+			.menusTxt {
+				font-weight: 400;
+				line-height: 50px;
+			}
+			
+			.note {
+				padding-bottom: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					商铺充值卡管理
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>
+
+			<!--卡片-->
+			<div class="cards scrollBox " ref="scroll" :style="{top:scrollTop,bottom:0}" id="scroll">
+				<div class="cm_ul reset" style="min-height: 101%;">
+					<!--刷新提示框-->
+					<div class="refresh flex">
+						<div class="flex " style="bottom:95px ;">
+							<p class="f1 t_r "></p>
+							<i class="iconfont icon-hua cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:65px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-dianzan1 cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+						<div class="flex " style="bottom:35px ;">
+							<p class="f1 t_r"></p>
+							<i class="iconfont icon-zuanshi cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:5px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-jiangbei cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+					</div>
+					<ul class="reset cm_ul  cards_ul ">
+						<li class="cardList container " v-for="item in cardsList">					
+								<div class="flex cardName">
+									<img :src="item.SHOP_LOGO" alt="" class="avatar" />
+									<div class="cor_w ">{{item.SHOP_NAME}}</div>
+									<div class="f1 cor_w t_r" @tap="_toUse(item.SHOP_CODE)" >
+										去使用》
+									</div>
+								</div>
+								<div class="cardMsg container flex">
+										<div class="curprize" >买：￥{{item.RECHARGE_AMOUNT}}</div>
+										<div class="curprize" >送：￥{{item.RECHARGE_GRANT}}</div>
+										<div class="f1 t_r ">
+											余额: <span class="fs20">￥{{item.BUYCARD_RESIDUE}}</span>
+										</div>
+								</div>
+						</li>
+						<li class="t_c " v-show="cardsList.length!=0">{{more}}</li>
+					</ul>
+					<!--无数据提示-->
+					<div v-if="cardsList.length==0" class="t_c cm_noItem">
+						<div class="cm_noItem_box flex">
+							<img src="../../images/no1.png" alt="" clas/>
+							<div class="t_c ">您还没有充值卡</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+	swipeBack: true
+			})
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						scrollTop: '',
+						scroll: '',
+						cardsList: [],
+						more:'加载更多',
+						index:1
+					},
+					filters: {
+						getStatus(k) {
+							switch(k) {
+								case '0':
+									return '未启用'
+									break;
+								case '1':
+									return '启用中'
+									break;
+								case '2':
+									return '审核中'
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					created: function() {
+						//							alert(1)
+
+					},
+					mounted: function() {
+
+						var _this = this
+						app.initHeader();
+						var scroll = this.$refs.scroll;
+						this.scrollTop = document.getElementById('header').offsetHeight + 'px'
+
+						this.$nextTick(function() {
+							//							初始化scrool
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									pullDownRefresh: {
+										threshold: 50,
+										stop: 0
+									},
+									pullUpLoad: {
+										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									},
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+							/*下拉刷新*/
+							_this.scroll.on('pullingDown', function(e) {
+
+								plus.nativeUI.showWaiting()
+								_this.index = 1
+									_this.cardsList = []
+									_this.more = '加载更多'
+									_this._getData(()=>{
+										plus.nativeUI.closeWaiting();
+										_this.scroll.finishPullDown();
+										_this.scroll.finishPullUp()
+								})	
+
+							})
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getData((b) => {
+//									plus.nativeUI.closeWaiting();
+									_this.scroll.finishPullUp()
+								})
+							})
+						})
+
+						/*首次加载数据*/
+						this._getData(() => {
+							plus.nativeUI.closeWaiting()
+							mui.currentWebview.show('pop-in', 300, function() {}, {});
+						})
+					},
+					methods: {
+						/*去使用*/
+						_toUse(code){
+//							alert(1)
+							mui.openWindow({
+								url: '../technician/technician.html',
+								id: 'technician',
+								styles: { 
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: {
+									shopCode: code
+								},
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						/*添加新卡*/
+						_toAddNewCard(item) {
+							
+						},
+						/*读取卡列表*/
+						_getData(callback) {
+							var _this = this
+							app.ajax(app.baseUrl + '/api/Buycard/GetBycardList', {
+								data: {
+									pageIndex:_this.index,
+									pageSize:6
+								},
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+//										alert( result.Data.ListInfo.length)
+										var l = _this.cardsList.length
+										if(l == result.Data.Total ){	
+											_this.more = '没有数据了'
+											if(callback) callback();
+											return
+										}
+										_this.cardsList = _this.cardsList.concat(result.Data.ListInfo)	
+										_this.index+=1
+										_this.scroll.refresh();
+										if(callback) callback();
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									console.log(type);
+								}
+							});
+						}
+					}
+				})
+			})
+
+			function refresh() {
+				//				alert(1)
+				APP._getData()
+			}
+		</script>
+	</body>
+
+</html>

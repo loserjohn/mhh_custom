@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>个人设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/animate.css" />
+		<style>
+			.set .avatar{
+				width: 80px;
+				height: 80px;
+				border-radius: 0;
+			}
+			.set .cellInputTxt {
+				width: 100%;
+				border: none;
+				outline: none;
+				margin: 0;
+				padding: 0;
+				text-align: right;
+				height: auto;
+				font-size: 14px;
+			}
+			
+			.eletBox {
+				width: 50%;
+				border: none;
+				outline: none;
+				/*line-height: 56px;*/
+				margin: 0;
+				padding: 0;
+				text-align: right;
+				height: auto;
+				position: absolute;
+				top: 0;
+				right: 0;
+				height: 100%;
+				opacity: 0;
+			}
+			/*底部的按钮*/
+			
+			.bottomMenus {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				height: 50px;
+				right: 0;
+				background: #ccaa42;
+			}
+			
+			.menusTxt {
+				font-weight: 400;
+				line-height: 50px;
+			}
+			
+			.note {
+				padding-bottom: 20px;
+			}
+			
+			.lh26 {
+				line-height: 28px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					个人设置
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>
+
+			<!--卡片-->
+			<div class=" set" id="content">
+				<ul class="mui-table-view  personMsgList">
+					<li class="mui-table-view-cell flex">
+						<div class="f1 cellName">头像</div>
+						<div class="avatar " @tap="_uploadPic()">
+							<img :src="avatar?avatar:'./images/default_avatar.jpg'" alt="" class="cover" />
+						</div>
+						<!--<i class="iconfont icon-xiayibu "></i>-->
+					</li>
+					<li class="mui-table-view-cell flex">
+						<div class="f1 cellName">昵称</div>
+						<div class="f1">
+							<input type="text" class="cellInputTxt t_r red" v-model="nickname" placeholder="请输入你的昵称" @change="_updateMsg(1)"/>
+						</div>
+						
+					</li>
+
+					<!--<li class="mui-table-view-cell flex">
+						<div class="f1 cellName ">性别</div>
+						<div class="f1 cellName t_r " >{{agent=='1'?'男':'女'}}</div>
+						<select v-model="agent" class=" f1 t_r  reset eletBox" @change="_update()">
+							<option value="1">男</option>
+							<option value="0">女</option>
+						</select>
+						<i class="iconfont icon-xiayibu "></i>
+					</li>-->
+					<li class="mui-table-view-cell flex">
+						<!--<i class="iconfont icon-geren  mui-pull-left cor_y"></i>-->
+						<div>修改密码</div>
+						<div class="f1 t_r">
+
+						</div>
+						<i class="iconfont icon-xiayibu "></i>
+					</li>
+					<li class="mui-table-view-cell flex">
+						<!--<i class="iconfont icon-geren  mui-pull-left cor_y"></i>-->
+						<div>帮助中心</div>
+						<div class="f1 t_r">
+
+						</div>
+						<i class="iconfont icon-xiayibu "></i>
+					</li>
+
+				</ul>
+			</div>
+
+			<!--底部菜单-->
+			<div class=" bottomMenus flex">
+				<h3 class="cor_w t_c menusTxt f1 " @tap="_loginOut">
+					<i  class="iconfont icon-fanhui  " style="font-size: 20px;" ></i> 
+						退出登陆
+				</h3>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/vue.js"></script>
+		<!--<script src="../js/bscroll.min.js"></script>-->
+		<script src="../js/imgClip.js"></script>
+		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			})
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						avatar:'',
+						nickname:'',
+						agent:'',
+					},
+					created: function() {
+						app.initHeader();
+						var self = plus.webview.currentWebview();
+						this.avatar =  self.menber.MEMBER_HEAD;
+						this.nickname =  self.menber.MEMBER_NIKENAME;
+						this.agent =  self.menber.MEMBER_SEX;
+					},
+					mounted: function() {
+						//						alert('set'+plus.storage.getItem('isLogin'))
+						var _this = this
+						plus.nativeUI.closeWaiting()
+						mui.currentWebview.show('pop-in', 300, function() {}, {});
+					},
+					filters: {
+
+					},
+					methods: {
+//						上传头像
+						_uploadPic(){
+							Clip.getIMG('选择头像', (src) => {
+//								console.log(src)
+								mui.openWindow({
+									url: './imgClick.html',
+									id: 'imgClick',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {
+										img: src,
+										pid:'set',
+										size:3
+									},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})				
+							})
+						},
+//						选择了头像
+						_chooseAvatar(src){
+							var _this = this
+							if(!src)return;
+							this._upload({MEMBER_HEAD:src},(res)=>{
+									_this.avatar =  src									
+							})
+						},
+//						修改认证信息
+						_updateMsg(type){
+							type= parseInt(type)
+							switch (type){
+								case 1:
+								this._upload({MEMBER_NIKENAME:this.nickname},(res)=>{
+																	
+								})
+									break;
+								default:
+									break;
+							}
+						},
+//						修改资料
+						_upload(option,callback){
+							if(!option)return;
+							if(option.MEMBER_NIKENAME){
+								plus.storage.setItem('userNickName', option.MEMBER_NIKENAME);
+							}
+//							console.log(JSON.stringify(option))
+							plus.nativeUI.showWaiting()
+							app.ajax(app.baseUrl + '/api/MemberInfo/UpdateMemberInfo', {
+								data:option,
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										mui.later(()=>{
+											plus.nativeUI.closeWaiting()
+											if(callback) callback();
+											plus.webview.getWebviewById('mine').evalJS('refresh()')
+										},1000)
+										
+									} else {
+										plus.nativeUI.closeWaiting()
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									console.log(type);
+								}
+							});
+						},
+						/*退出登录*/
+						_loginOut() {
+							plus.nativeUI.confirm("退出当前用户？", function(e) {
+								if(e.index == 0) {
+									//										alert(1)
+									plus.storage.clear();
+									plus.nativeUI.toast('退出登录');
+									plus.storage.setItem('isLogin', '0');
+
+									plus.webview.getWebviewById('orders').evalJS('refresh()')
+									plus.webview.getWebviewById('mine').evalJS('refresh()')
+									plus.webview.getWebviewById('mine').evalJS('noNew()')
+							
+									if(plus.webview.getWebviewById('chat')){
+										plus.webview.getWebviewById('chat').close()
+									}
+									if(plus.webview.getWebviewById('information')){
+										plus.webview.getWebviewById('information').close()
+									}
+									
+									
+									
+									mui.back()
+								}
+
+							});
+						}
+					}
+				})
+			})
+			
+			function choosePic(src){
+//				alert(111)
+				APP._chooseAvatar(src)
+			}
+		</script>
+	</body>
+
+</html>

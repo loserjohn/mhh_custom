@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			#pos{
+				margin: 10px auto;
+				display: block;
+			}
+			#map{
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				width: 100%;	
+				height: 100%;
+			}
+			.content{
+				/*position: relative;*/
+			}
+			.bottomMenus{
+				position: fixed;
+				width: 100%;
+				bottom: 0;
+				height: 50px;			
+			}
+			#postSelft{
+				color: #fff;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background: #1f1f1f;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:#fff"></a>
+			<h1 class="mui-title" style="color:#fff"></h1>
+			<button class="mui-btn  mui-btn-link mui-pull-right" id="postSelft">发送我的位置</button>
+		</header>
+		<div class="content">
+			<iframe  id="map" src="https://m.amap.com/picker/?key=ec40b631f1d617a31eedca727b4d7d47"></iframe>
+			<div id="map2" style="display: none;"></div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script>
+			mui.init();	
+			mui.plusReady(function() {
+				var parent = plus.webview.getWebviewById('index');
+				var iframe = document.getElementById('map').contentWindow;
+				var map = new plus.maps.Map('map2');
+//				当前位置信息(我的位置)
+			    var latitude,longitude,poi;
+				
+//				初始化地图显示
+			    document.getElementById('map').onload = function(){				 					iframe.postMessage('location','https://m.amap.com/picker/');
+			    	plus.nativeUI.closeWaiting();
+			    	 mui.currentWebview.show("slide-in-bottom", 300, function() {
+								
+					}, {});
+			    };
+			    
+//			    mui自带地图做定位
+			    map.getUserLocation(function(state, point) {	
+					latitude = point.latitude;
+					longitude = point.longitude;
+					if(0 == state) {
+						plus.maps.Map.reverseGeocode(point, {}, function(event) {
+							poi = event.address; // 转换后的地理位置				
+						}, function(e) {
+							alert("Failed:" + JSON.stringify(e));
+						});
+					} else {
+						alert("Failed!");
+					}
+				});
+//			    选址回传			    
+			    window.addEventListener("message", function(ev){
+//			      alert('您选择了:' + e.data.name + ',' + e.data.location)
+					plus.nativeUI.confirm(ev.data.name, function(e) {
+						var arr =ev.data.location.split(','); 
+//						alert(JSON.stringify(arr))
+						if(e.index == 0) {
+							var point = {
+								longitude:arr[0],
+								latitude:arr[1],
+								poi:ev.data.name
+							}
+							parent.evalJS('getLocation('+JSON.stringify(point) +')')
+							mui.currentWebview.close()
+						}
+					},'确认发送所选位置', {
+						"buttons": ["确定", "取消"]
+					});		
+			    }, false);
+//				发送我的定位			
+				document.getElementById('postSelft').addEventListener('tap',function(){
+					plus.nativeUI.confirm('发送当前你所在的位置', function(e) {
+						if(e.index == 0) {
+							var point = {
+								longitude:longitude,
+								latitude:latitude,
+								poi:poi
+							}						
+							parent.evalJS('getLocation('+JSON.stringify(point) +')');
+							mui.currentWebview.close()
+						}
+					},{
+						"buttons": ["确定", "取消"]
+					});	
+				})
+					
+					
+			})			
+					
+		</script>
+	</body>
+</html>

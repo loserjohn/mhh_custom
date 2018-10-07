@@ -1,0 +1,444 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<style>
+			.detailTitle {
+				line-height: 60px;
+			}
+			
+			.detailAbstract {
+				width: 100%;
+				margin: 0 auto;
+				/*background: #eee;*/
+				box-sizing: border-box;
+				border: 1px dashed #d3d3d3;
+				padding:20px  10px;
+			}
+			.note p ,.note div{
+				line-height: 30px;
+			}
+			.tags {
+				margin-right: 10px;
+			}
+			.labels{
+				margin-left: 10px;
+			}
+			 .labels.active,
+			.labels.active i {
+				color: #ccaa42;
+			}
+			.picList{
+				width: 100%;
+				box-sizing: border-box;
+			}
+			.videoBox{
+				width: 100%;
+				box-sizing: border-box;
+				border: 1px dotted #d3d3d3;
+			}
+			.richTxt{
+				overflow: hidden;
+			}
+			.richTxt p,
+			.richTxt div,
+			.richTxt h1,
+			.richTxt h3,
+			.richTxt h2,
+			.richTxt h4,
+			.richTxt h5,
+			.richTxt h6,
+			.richTxt img,
+			.richTxt video{
+				max-width: 100%!important;
+				
+			}
+			
+			.commonEdit{
+				margin-bottom: 40px;
+			}
+			.commonEdit .submiComment{
+				width: 100px;
+				float: right;
+			}
+			.commonEdit .txtbox{
+				margin-top:20px;
+				font-size: 12px;
+			}
+			.commontsBox{
+				margin-bottom: 40px;
+				
+			}
+			.commontsBox .list{
+				border-bottom: 1px dotted #d3d3d3;
+				min-height: 70px;
+				margin-top: 10px;
+				
+			}
+			.commontsBox .list .avatar{
+				width: 40px;
+				height: 40px;
+				margin-right: 10px;
+				overflow: hidden;
+			}
+			.title{
+				border-bottom: 1px solid #212121;
+			}
+			.submitBox{
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					新闻详情
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>
+
+			<div class="container " id="content" style="background: #fff">
+				<div >
+					<h3 class="t_c detailTitle">{{detailContent.title}}</h3>
+					<div class="detailAbstract cor_y">{{detailContent.infoAbstract}}</div>
+					<ul class="clearfix " style="padding-top: 10px;margin-bottom: 20px;">
+						<li class="fl cor_g   tags " v-for="labels in detail.infoLable">
+							<i class="iconfont icon-shengqian"></i> {{labels}}
+						</li>
+					</ul>
+					<!--视频-->
+					<!--<video :src="detail.lstUrl[0]"  v-if="detail.type==2" controls="controls" class="videoBox" poster="../images/videoDefault.png"></video>-->
+					<div class="richTxt" v-html="detailContent.content"></div>				
+				</div>
+				
+				<div class="commonEdit">
+					<aside class="cm_name title">评论编辑</aside>
+					<textarea name="" rows="" cols="" class="txtbox" v-model="comment" placeholder="请输入评论内容"></textarea>
+					<div class="submiComment clearfix">
+						<div class="cm_btn_blank" @tap="_submit">提交评论</div>
+					</div>
+				</div>
+				
+				<div class="commontsBox">
+					<aside class="cm_name title">评论社区</aside>
+					<article style="padding: 15px 0; box-sizing: border-box;">
+						<ul class="">
+							<li class="list flex" v-for="(item,index) in commentList" :key="index">
+							
+								<aside class="avatar">
+									<img :src="item.REVIEW_USER_HEAD?item.REVIEW_USER_HEAD:'../images/default_avatar.jpg'" alt=""  class="cover"/>
+								</aside>
+								<article class="f1">
+									<div>{{item.REVIEW_USER_NAME}}</div>
+									<p>{{item.REVIEW_TIME}}</p>
+									<div v-html="item.REVIEW_CONTENT"></div>
+								</article>
+							</li>						
+						</ul>
+					</article>
+					<div class="submitBox">
+						<div class="cm_btn_blank" @tap="_scanMore">查看更多</div>
+					</div>
+					
+				</div>
+				
+				<div class=" flex note" >
+						<p class="f1 ">{{detail.views}}人已看</p>
+						<div class="f1">
+							<div class="fr labels cor_r" @tap.stop="_report" >
+								<i class="iconfont icon-xinxi cor_r"></i> 举报
+							</div>
+							<div class="fr labels" :class="{active:isGood}"  @tap="_good" >
+								<i class="iconfont icon-zan cor_g"></i> 点赞{{detail.goods}}
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+					swipeBack: true
+			})
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						detail: '',
+						detailContent: '',
+						isGood:false,
+						comment:'',//评论内容
+						commentIndex:1,
+						commentSize:8,
+						commentList:[],
+						norest:false
+					},
+					created: function() {
+						app.initHeader();
+					},
+					mounted: function() {
+						var self = plus.webview.currentWebview();
+						this.detail = self.detail;
+
+						this._getData(() => {
+							plus.nativeUI.closeWaiting()
+							mui.currentWebview.show('pop-in', 300, function () {}, {});
+						})
+						this._getComment()
+					},
+					methods: {
+						_scanMore(){
+							if(this.norest){
+								plus.nativeUI.toast('没有数据了');
+								return;
+							}
+							this.commentIndex +=1;
+							this._getComment((b)=>{
+								if(b){
+									plus.nativeUI.toast('没有评论了')
+								}
+							})
+						},
+//						提交评论
+						_submit(){
+							let s = plus.storage.getItem('isLogin');
+						    if(!s || s == '0'){
+						    	plus.nativeUI.toast('没有登陆状态，请先登陆');
+						    	mui.openWindow({
+									url: './login.html',
+									id: 'login',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+						    	
+						    	return
+						    }
+							if(!this.comment){
+								plus.nativeUI.toast('请填写评论内容')
+								return;
+							}
+							
+							
+							var _this =this
+							plus.nativeUI.showWaiting();
+							app.ajax(app.baseUrl + '/api/CmsInfoReview/Add', {
+								data: {
+									infoCode: this.detail.infoCode,
+									REVIEW_CONTENT:this.comment
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										plus.nativeUI.closeWaiting()
+										
+										plus.nativeUI.toast('评论成功')
+										_this.comment = '';
+										_this._refresh()
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								}
+							});
+						},
+//						刷新数据
+						_refresh(){
+							plus.nativeUI.showWaiting();
+							this.comment = '';
+							this.commentIndex = 1;
+							
+							this.norest = false;
+							mui.later(()=>{
+								this.commentList = [];
+								this._getComment(()=>{
+								
+								plus.nativeUI.closeWaiting()	
+								})
+								
+							},2000)
+							
+						},
+//						举报
+						_report(){
+							plus.nativeUI.confirm('由于该资讯涉及非法内容,您将向马嘿嘿平台举报该条资讯',(e)=>{
+								if(e.index==0){
+									plus.nativeUI.showWaiting();
+									mui.ajax(app.baseUrl + '/api/Recommend/GetRecommendTypes', {
+										type: 'get', //HTTP请求类型
+										timeout: 10000, //超时时间设置为10秒；
+										headers: {
+											'Content-Type': 'application/x-www-form-urlencoded'
+										},
+										success: function(result) {
+											mui.later(()=>{
+												plus.nativeUI.closeWaiting()
+												if(result.Success) {
+													plus.nativeUI.toast('您的检举信息已经提交')
+												} else {
+													/*验证失败*/
+												}
+											},1000)
+											
+										},
+										error: function(xhr, type, errorThrown) {
+
+										}
+									})
+								}
+							},'马嘿嘿提醒您')
+						},
+						/*获取数据*/
+						_getData(callback) {
+							var _this = this
+							plus.nativeUI.showWaiting()
+							app.ajax(app.baseUrl + '/api/Info/GetMhhCmsItem', {
+								data: {
+									infoCode: this.detail.infoCode
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										plus.nativeUI.closeWaiting()
+										_this.detailContent = result.Data	
+										_this.isGood = result.Data.isGood;
+										if(callback) callback();
+									} else {
+										/*验证失败*/
+										plus.nativeUI.closeWaiting()
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									app.catchErr(type)
+								}
+							});
+						},
+//						获取评论列表
+						_getComment(callback){
+							var _this = this
+							app.ajax(app.baseUrl + '/api/CmsInfoReview/GetReviews', {
+								data: {
+									infoCode: this.detail.infoCode,
+									pageIndex:_this.commentIndex,
+									pageSize:_this.commentSize,
+								},
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										plus.nativeUI.closeWaiting()
+										var l = _this.commentList.length;
+										_this.commentList = _this.commentList.concat(result.Data.ListInfo)
+										if(_this.commentList.length == l) {										
+											if(callback) callback(true);
+											_this.norest = true
+											return;
+										}
+										if(callback) callback(false);
+									} else {
+										/*验证失败*/
+										plus.nativeUI.closeWaiting()
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									app.catchErr(type)
+								}
+							});
+						},
+						/*点赞*/
+						_good(){
+//						    if(this.isGood )return false;
+						    let s = plus.storage.getItem('isLogin');
+						    if(!s || s == '0'){
+						    	plus.nativeUI.toast('没有登陆状态，请先登陆');
+						    	mui.openWindow({
+									url: './login.html',
+									id: 'login',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+						    	
+						    	return
+						    }
+					
+							var _this =this
+							app.ajax(app.baseUrl + '/api/InfoGoods/GoodInfo', {
+								data: {
+									infoCode: _this.detail.infoCode
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										_this.isGood = true
+										plus.nativeUI.closeWaiting()	
+										plus.nativeUI.toast('点赞成功')
+										_this.detail.goods +=1
+										
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+										
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									console.log(type);
+								}
+							});
+							
+							
+						}
+					}
+
+				})
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,311 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>手机登陆</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<style>
+			.goYZM{
+				justify-content: flex-end;
+				font-size: 14px;
+				line-height: 30px;
+				margin: 38px 0;
+			}
+			.goYZMoicon{
+				height: 30px;
+				margin-left: 10px;
+			}
+			.btns{
+				margin-top:15px
+			}
+			.wxBtn{
+				width: 80px;
+				height: 80px;
+				border-radius: 50%;
+				border: 1px solid #404040;
+				margin: 0 auto;
+				margin-top: 120px;
+				text-align: center;
+				font-size: 12px;
+			}
+			.wxBtn img{
+				margin-top: 10px;
+				width: 40px;
+				height: 40px;
+			}
+			.wxBtn div{
+				line-height: 1;
+			}
+		</style>
+	</head>
+
+	<body style="background: #fff;">
+		<div  id="app" >
+			<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					登陆
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>
+			
+			<div class="container " id = "content">
+				<header class="flex goYZM" @tap = "_toYZMlogin">
+					<p style="line-height: 30px">验证码登录</p>
+					<img src="../images/go.png" alt="" class="goYZMoicon" />
+				</header>
+				<div class="container">
+					<div class="cm_input_groups flex">
+						<div class="cm_groups_title">
+							手机
+						</div>	
+						<input class="f1 cm_groups_input" type="text" placeholder="请输入您的手机号码"  v-model.number="mobile" />
+					</div>
+					<div class="cm_input_groups flex">
+						<div class="cm_groups_title">
+							密码
+						</div>	
+						<input class="f1 cm_groups_input" :type="toggleType?'password':'text'" placeholder="请输入您的密码" v-model="password" />
+						<i class="iconfont icon-kanguo fs16" @tap="_toggleType" :class="{cor_y:toggleType?true:false}"></i>
+					</div>					
+				</div>
+				<div class="btns">
+					<div class="cm_btn" @tap = "_login"> 
+						登录
+					</div>
+					
+					<div class="flex">
+						<div class="f1 t_l cor_y" @tap="_toRegiste">
+							快速账号注册
+						</div>
+						<div class="f1 t_r" @tap="_toForget">
+							忘记密码？
+						</div>
+					</div>				
+				</div>
+				<div class="wxBtn " @tap = "_wxlogin"> 
+						<img src="../images/wxlogin.png" alt="" />
+						<div>微信登陆</div>
+				</div>
+				<!--<img src="../images/logo2.png" alt="" class="logo_bg" v-show="androidShow" />-->
+				
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+					swipeBack: true
+			})
+			mui.plusReady(function(){
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+						el: '#app',
+						data: {
+							mobile:'',/* 电话 */
+							password:'', /* 密码 */
+							toggleType:true,
+							androidShow:true
+						},
+						created: function() {
+							app.initHeader();
+						},
+						mounted: function() {
+							plus.nativeUI.closeWaiting()
+							mui.currentWebview.show('pop-in', 300, function () {}, {});
+								 
+							if(mui.os.android){
+								var originalHeight=document.documentElement.clientHeight || document.body.clientHeight;
+							
+								window.onresize=function(){
+								
+								    //软键盘弹起与隐藏  都会引起窗口的高度发生变化
+								    var  resizeHeight=document.documentElement.clientHeight || document.body.clientHeight;
+								
+								    if(resizeHeight*1<originalHeight*1){ //resizeHeight<originalHeight证明窗口被挤压了
+								
+								            plus.webview.currentWebview().setStyle({
+								                height:originalHeight
+								            });
+								
+								      }
+								}
+							}	 
+						},
+						methods: {
+							/*跳转到手机号码注册*/
+							_toRegiste(){
+								mui.openWindow({
+									url: './registe.html',
+									id: 'registe',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+							},
+							/*跳转忘记密码*/							
+							_toForget(){
+								mui.openWindow({
+									url: './forgetPass.html',
+									id: 'forgetPass',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+							},
+							/*	手机号码登陆*/
+							_login(){
+								/*号码验证*/
+								if(!this.mobile){
+									plus.nativeUI.alert("请输入手机号", function(){},'马嘿嘿提醒您');
+									return;
+								}else if(!app.checkPhone(this.mobile)){
+									plus.nativeUI.alert("手机号码不正确", function(){},'马嘿嘿提醒您');
+									return;
+								}else if(!this.password){
+									plus.nativeUI.alert("请输入密码", function(){},'马嘿嘿提醒您');
+									return;
+								}
+								plus.nativeUI.showWaiting();
+								/*调用登陆接口*/
+								
+								var data ={
+									username:this.mobile,
+									rpass:this.password,
+									password:this._Encrypt(this.password),
+									type:1,						
+								}
+								app.zhlogin(data,(status,msg)=>{
+									plus.nativeUI.closeWaiting();
+									if(status){
+										/*登陆成功*/
+										plus.nativeUI.toast('登陆成功')
+										plus.webview.getWebviewById('orders').evalJS('refresh()')
+										plus.webview.getWebviewById('mine').evalJS('refresh()')
+										mui.back()
+										/*跳转首页*/
+									}else{
+										plus.nativeUI.toast(msg)
+									}
+								})
+								
+							},
+							/* 加密 */
+							_Encrypt(str) {
+								str = str + '|.|' + new Date().getTime()
+								var key = CryptoJS.enc.Utf8.parse(app._KEY);
+								var iv = CryptoJS.enc.Utf8.parse(app._IV);
+								var encrypted = '';
+								var srcs = CryptoJS.enc.Utf8.parse(str);
+								encrypted = CryptoJS.AES.encrypt(srcs, key, {
+									iv: iv,
+									mode: CryptoJS.mode.CBC,
+									padding: CryptoJS.pad.Pkcs7
+								});
+								return encrypted.ciphertext.toString();
+							},
+//							切换密码框
+							_toggleType(){
+								this.toggleType =!this.toggleType
+							},
+							/*验证码登陆*/
+							_toYZMlogin(){
+								mui.openWindow({
+									url: './yzmLogin.html',
+									id: 'yzmLogin',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+							},
+							/*微信登陆*/
+							_wxlogin(){
+								plus.nativeUI.showWaiting()
+								app.reWxLogin((s,msg)=>{
+//									alert(1) ;
+									/*已有账号登陆成功*/
+									if(s){
+										plus.nativeUI.closeWaiting()
+
+										plus.webview.getWebviewById('orders').evalJS('refresh()')
+										plus.webview.getWebviewById('mine').evalJS('refresh()')
+										
+										mui.back()
+									}else{
+										plus.nativeUI.closeWaiting()
+//										plus.nativeUI.toast(msg)
+									/*用户不存在,先绑定手机号*/
+										mui.openWindow({
+											url: './bound.html',
+											id: 'bound',
+											styles: {
+												top: '0px', //新页面顶部位置
+												bottom: '0px', //新页面底部位置
+												scrollIndicator: "none",
+												plusrequire: 'ahead'
+											},
+											show: {
+												autoShow: false, //页面loaded事件发生后自动显示，默认为true
+												duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+											},
+											extras: {},
+											waiting: {
+												autoShow: true, //自动显示等待框，默认为true
+												title: '正在加载...', //等待对话框上显示的提示内容
+											}
+										})
+									}
+								})
+							}
+						}
+
+					})
+			})
+		</script>
+	</body>
+
+</html>

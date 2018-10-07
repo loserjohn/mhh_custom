@@ -1,0 +1,509 @@
+{
+	"@platforms": ["android", "iPhone", "iPad"],
+	"id": "mhhCustom",/*应用的标识，创建应用时自动生成，勿手动修改*/
+	"name": "马嘿嘿",/*应用名称，程序桌面图标名称*/
+	"version": {
+		"name": "1.1.4",/*应用版本名称*/
+		"code": "83"
+	},
+	"description": "",/*应用描述信息*/
+	"icons": {
+		"72": "icon.png"
+	},
+	"launch_path": "index.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
+	"developer": {
+		"name": "",/*开发者名称*/
+		"email": "",/*开发者邮箱地址*/
+		"url": "http://www.dcloud.io"
+	},
+	"permissions": {
+        "Cache": {
+            "description": "管理应用缓存"
+        },
+        "Console": {
+            "description": "跟踪调试输出日志"
+        },
+        "Contacts": {
+            "description": "访问系统联系人信息"
+        },
+        "Events": {
+            "description": "应用扩展事件"
+        },
+        
+        "Maps": {
+            "description": "管理地图插件"
+        },
+        "Payment":{},"Share":{},"OAuth":{},"Push":{}
+	},
+	"plus": {
+		"statusbar": {
+			"immersed": "supportedDevice",
+			"style": "light"
+		},
+		"launchwebview": {
+			"subNViews": [{
+							"id": "tabBar",
+							"styles": {
+								"bottom": "0px",
+								"left": "0",
+								"height": "50px",
+								"width": "100%",
+								"backgroundColor": "rgba(21,21,21,1)"
+							},
+							"tags": [{
+									"tag": "font",
+									"id": "homeIcon",
+									"text": "\ue605",
+									"position": {
+										"top": "4px",
+										"left": "0",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"fontSrc": "_www/fonts/iconfont.ttf",
+										"align": "center",
+										"size": "24px"
+									}
+								}, {
+									"tag": "font",
+									"id": "homeText",
+									"text": "首页",
+									"position": {
+										"top": "23px",
+										"left": "0",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"align": "center",
+										"size": "10px"
+									}
+								}, {
+									"tag": "font",
+									"id": "communityIcon",
+									"text": "\ue60a",
+									"position": {
+										"top": "4px",
+										"left": "25%",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"fontSrc": "_www/fonts/iconfont.ttf",
+										"align": "center",
+										"size": "24px"
+									}
+								}, {
+									"tag": "font",
+									"id": "communityText",
+									"text": "小草社区",
+									"position": {
+										"top": "23px",
+										"left": "25%",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"align": "center",
+										"size": "10px"
+									}
+								}, {
+									"tag": "font",
+									"id": "contactIcon",
+									"text": "\ue6ec",
+									"position": {
+										"top": "4px",
+										"left": "50%",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"fontSrc": "_www/fonts/iconfont.ttf",
+										"align": "center",
+										"size": "24px"
+									}
+								}, {
+									"tag": "font",
+									"id": "contactText",
+									"text": "订单",
+									"position": {
+										"top": "24px",
+										"left": "50%",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"align": "center",
+										"size": "10px"
+									}
+								}, {
+									"tag": "font",
+									"id": "manageIcon",
+									"text": "\ue657",
+									"position": {
+										"top": "4px",
+										"left": "75%",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"fontSrc": "_www/fonts/iconfont.ttf",
+										"align": "center",
+										"size": "24px"
+									}
+								}, {
+									"tag": "font",
+									"id": "manageText",
+									"text": "我的",
+									"position": {
+										"top": "24px",
+										"left": "75%",
+										"width": "25%",
+										"height": "24px"
+									},
+									"textStyles": {
+										"align": "center",
+										"size": "10px"
+									}
+								}
+							]
+						}]
+		},
+		"splashscreen": {
+			"autoclose": false,/*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
+			"waiting": true,"delay":"2000"
+		},
+		"runmode": "normal",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
+		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
+		"distribute": {"plugins":{"push":{"igexin":{"appid":"LT9b4ZJCis8gykZVU7B2j","appkey":"3ImCcxE21TAtxYKvTtnmo7","appsecret":"VvpjLMJASp86l8VcGDhcf1"}},"maps":{"amap":{"appkey_ios":"580f88edb5e73bae23d9438461f735b6","appkey_android":"6dcfcf880aac3f4542004f2324ac3405","description":""}},"oauth":{"weixin":{"appid":"wxf263f10496b2929a","appsecret":"f8d9f260da4226d0522c8954c4500a35"}},"share":{"weixin":{"appid":"wxf263f10496b2929a","appsecret":"f8d9f260da4226d0522c8954c4500a35","description":"可选，微信分享"}},"payment":{"alipay":{"description":"阿里支付","scheme":""},"weixin":{"description":"微信支付","appid":"wxf263f10496b2929a"}}},
+			"apple": {
+				"appid": "",/*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
+				"mobileprovision": "",/*iOS应用打包配置文件*/
+				"password": "",/*iOS应用打包个人证书导入密码*/
+				"p12": "",/*iOS应用打包个人证书，打包配置文件关联的个人证书*/
+				"devices": "universal",/*iOS应用支持的设备类型，可取值iphone/ipad/universal*/
+				"frameworks": [],
+				"plistcmds": [
+		            "Set :NSMicrophoneUsageDescription 录制音频文件/语音识别",
+		            "Set :NSPhotoLibraryUsageDescription 用于用户头像及其他图片在应用内的展示",
+		            "Set :NSCameraUsageDescription 用于用户头像及其他图片在应用内的展示",					
+				    "Set :NSLocationAlwaysUsageDescription 用于用户获取附近店铺以及附近的商品信息",
+				    "Set :NSLocationAlwaysAndWhenInUseUsageDescription  用于用户获取附近店铺以及附近的商品信息",
+          		    "Set :NSLocationWhenInUseUsageDescription 用于用户获取附近店铺以及附近的商品信息"
+		        ]
+			},
+			"google": {
+				"packagename": "",/*Android应用包名，如io.dcloud.HelloH5*/
+				"keystore": "",/*Android应用打包使用的密钥库文件*/
+				"password": "",/*Android应用打包使用密钥库中证书的密码*/
+				"aliasname": "",/*Android应用打包使用密钥库中证书的别名*/
+				"permissions": ["<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>","<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-feature android:name=\"android.hardware.camera.autofocus\"/>","<uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\"/>","<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>","<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>","<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.INTERNET\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>","<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"]
+			},
+			"orientation": ["portrait-primary"],/*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
+			"icons": {
+				"ios": {
+					"prerendered": true, /*应用图标是否已经高亮处理，在iOS6及以下设备上有效*/
+					 /*应用图标，分辨率：512x512，用于自动生成各种尺寸程序图标*/
+					"iphone": {
+						"normal": "",/*iPhone普通屏幕程序图标，分辨率：57x57*/
+						"retina": "",/*iPhone高分屏程序图标，分辨率：114x114*/
+						/*iPhone iOS7高分屏程序图标，分辨率：120x120*/
+						"spotlight-normal": "", /*iPhone Spotlight搜索程序图标，分辨率：29x29*/
+						"spotlight-retina": "", /*iPhone高分屏Spotlight搜索程序图标，分辨率：58x58*/
+						/*iPhone iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
+						"settings-normal": "", /*iPhone设置页面程序图标，分辨率：29x29*/
+						"app@2x":"unpackage/res/icons/120x120.png","app@3x":"unpackage/res/icons/180x180.png","settings@3x":"unpackage/res/icons/87x87.png","settings@2x":"unpackage/res/icons/58x58.png","spotlight@2x":"unpackage/res/icons/80x80.png","spotlight@3x":"unpackage/res/icons/120x120.png","notification@3x":"unpackage/res/icons/60x60.png","notification@2x":"unpackage/res/icons/40x40.png"
+					},
+					"ipad": {
+						"normal": "", /*iPad普通屏幕程序图标，分辨率：72x72*/
+						"retina": "", /*iPad高分屏程序图标，分辨率：144x144*/
+						 /*iPad iOS7程序图标，分辨率：76x76*/
+						 /*iPad iOS7高分屏程序图标，分辨率：152x152*/
+						"spotlight-normal": "", /*iPad Spotlight搜索程序图标，分辨率：50x50*/
+						"spotlight-retina": "", /*iPad高分屏Spotlight搜索程序图标，分辨率：100x100*/
+						/*iPad iOS7 Spotlight搜索程序图标，分辨率：40x40*/
+						/*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
+						/*iPad设置页面程序图标，分辨率：29x29*/
+						"app":"unpackage/res/icons/76x76.png","app@2x":"unpackage/res/icons/152x152.png","settings":"unpackage/res/icons/29x29.png","proapp@2x":"unpackage/res/icons/167x167.png","spotlight":"unpackage/res/icons/40x40.png","settings@2x":"unpackage/res/icons/58x58.png","spotlight@2x":"unpackage/res/icons/80x80.png","notification":"unpackage/res/icons/20x20.png","notification@2x":"unpackage/res/icons/40x40.png"
+					},"appstore":"unpackage/res/icons/1024x1024.png"
+				},
+				"android": {
+					"mdpi": "unpackage/res/icons/48x48.png", /*普通屏程序图标，分辨率：48x48*/
+					"ldpi": "unpackage/res/icons/48x48.png", /*大屏程序图标，分辨率：48x48*/
+					"hdpi": "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
+					"xhdpi": "unpackage/res/icons/96x96.png",/*720P高分屏程序图标，分辨率：96x96*/
+					"xxhdpi": "unpackage/res/icons/144x144.png","xxxhdpi":"unpackage/res/icons/192x192.png"
+				}
+			},
+			"splashscreen": {
+				"ios": {
+					"iphone": {
+						"default": ""
+					},
+					"ipad": {
+						"portrait": "", /*iPad竖屏启动图片，分辨率：768x1004*/
+						"portrait-retina": "",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
+						"landscape": "", /*iPad横屏启动图片，分辨率：1024x748*/
+						"landscape-retina": "", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
+						"portrait7": "", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
+						"portrait-retina7": "",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
+						"landscape7": "", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
+						"landscape-retina7": ""
+					}
+				},
+				"android": {
+					"mdpi": "", /*普通屏启动图片，分辨率：240x282*/
+					"ldpi": "", /*大屏启动图片，分辨率：320x442*/
+					"hdpi": "F:/work/马嘿嘿/商户端/马嘿嘿启动页/启动页/a480.png", /*高分屏启动图片，分辨率：480x762*/
+					"xhdpi": "F:/work/马嘿嘿/商户端/马嘿嘿启动页/启动页/a720.png", /*720P高分屏启动图片，分辨率：720x1242*/
+					"xxhdpi": "F:/work/马嘿嘿/商户端/马嘿嘿启动页/启动页/a1080.png"
+				}
+			},"debug":false
+		}
+	},
+	"dependencies": {
+		"pages": {
+			"index.html": {
+				"resources": [
+					"community.html",
+					"mine.html"
+				],
+				"refer": [
+					"orders.html",
+					"html/address/where.html",
+					"html/production/productList.html",
+					"html/production/productBuy.html"
+				],
+				"priority": 0
+			},
+			"mine.html": {
+				"resources": [],
+				"refer": [
+					"html/login.html",
+					"html/set.html",
+					"html/kefu.html",
+					"html/information/information.html"
+				],
+				"priority": 0
+			},
+			"html/login.html": {
+				"resources": [],
+				"refer": [
+					"html/bound.html",
+					"html/registe.html"
+				],
+				"priority": 0
+			},
+			"html/address/where.html": {
+				"resources": [],
+				"refer": [
+					"html/address/location.html"
+				],
+				"priority": 0
+			},
+			"html/production/productList.html": {
+				"resources": [],
+				"refer": [
+					"html/address/where.html",
+					"html/technician/technician.html"
+				],
+				"priority": 0
+			},
+			"community.html": {
+				"resources": [],
+				"refer": [
+					"html/community_detail.html"
+				],
+				"priority": 0
+			},
+			"html/set.html": {
+				"resources": [],
+				"refer": [
+					"html/imgClick.html"
+				],
+				"priority": 0
+			},
+			"html/information/information.html": {
+				"resources": [],
+				"refer": [
+					"html/information/chat.html"
+				],
+				"priority": 0
+			},
+			"html/production/productBuy.html": {
+				"resources": [],
+				"refer": [
+					"html/technician/technician.html"
+				],
+				"priority": 0
+			},
+			"html/information/chat.html": {
+				"resources": [],
+				"refer": [
+					"html/information/location.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"html/success.html",
+				"html/order/orderDetail.html",
+				"html/forgetPass.html",
+				"css/animate.css",
+				"images/community/community1.png",
+				"images/no1.png",
+				"images/faces/ee_2.png",
+				"images/ye.png",
+				"images/videoDefault.png",
+				"images/faces/ee_19.png",
+				"images/audioBg.png",
+				"css/iconfont.css",
+				"fonts/iconfont.ttf",
+				"images/faces/ee_16.png",
+				"js/mui.js",
+				"images/no3.png",
+				"images/no5.png",
+				"images/pg2.jpg",
+				"js/app.js",
+				"images/faces/ee_23.png",
+				"fonts/mui.ttf",
+				"images/star.png",
+				"images/faces/ee_8.png",
+				"images/audioRBg.png",
+				"images/community/refresh3.png",
+				"images/levelicon.png",
+				"images/Combined Shape.png",
+				"html/collection/collection.html",
+				"images/quan_bg.png",
+				"images/index/m6.png",
+				"images/mines/refresh2.png",
+				"images/faces/ee_21.png",
+				"images/icon.png",
+				"images/pyq.png",
+				"css/IMiconfont.css",
+				"images/noLogin.png",
+				"images/faces/ee_12.png",
+				"css/im.css",
+				"html/coupons/proCoupons.html",
+				"images/faces/ee_33.png",
+				"images/faces/ee_22.png",
+				"html/address/addAddress.html",
+				"images/sh.png",
+				"images/faces/ee_15.png",
+				"images/hint.png",
+				"images/btn_bg.png",
+				"images/faces/ee_4.png",
+				"html/yzmLogin.html",
+				"images/btn_bg.jpg",
+				"images/no2.png",
+				"css/common.css",
+				"js/mui.min.js",
+				"images/blank.png",
+				"images/spyy.png",
+				"html/coupons/coupons.html",
+				"images/wx_zf.png",
+				"images/index/index2.png",
+				"images/yhq_bg2.png",
+				"images/czk.png",
+				"js/bscroll.min.js",
+				"images/logo1.png",
+				"images/faces/ee_27.png",
+				"images/start_n.png",
+				"images/index/m4.png",
+				"images/faces/ee_1.png",
+				"images/success.png",
+				"images/index/index3.png",
+				"images/index/m5.png",
+				"images/faces/ee_28.png",
+				"html/production/search.html",
+				"images/start_y.png",
+				"css/mui.min.css",
+				"html/platformCard/platformCard.html",
+				"images/faces/ee_6.png",
+				"images/faces/ee_25.png",
+				"images/faces/ee_20.png",
+				"images/no4.png",
+				"html/production/proComment.html",
+				"html/coupons/expiredCoupons.html",
+				"images/index/m2.png",
+				"images/faces/ee_31.png",
+				"images/mines/mine1.png",
+				"images/faces/ee_5.png",
+				"images/yhq_bg.png",
+				"images/faces/ee_9.png",
+				"images/Group 7.png",
+				"images/index/demo1.jpg",
+				"images/zfb_zf.png",
+				"images/default_avatar.jpg",
+				"js/util.js",
+				"html/production/editComment.html",
+				"images/faces/ee_35.png",
+				"images/faces/ee_34.png",
+				"html/production/spread.html",
+				"images/m.jpg",
+				"images/no.png",
+				"images/card.png",
+				"html/production/productOrder.html",
+				"html/production/toPay.html",
+				"images/index/m1.png",
+				"js/RongIMLib-cs.min.js",
+				"images/index/m3.png",
+				"images/index/index1.png",
+				"images/faces/ee_7.png",
+				"css/cs.min.css",
+				"images/go.png",
+				"images/index/m8.png",
+				"images/label_bg.jpg",
+				"images/faces/ee_26.png",
+				"js/cs.min.js",
+				"html/production/timePicker.html",
+				"images/time.png",
+				"images/mhh_avator.png",
+				"images/index/refresh1.png",
+				"images/logo4.png",
+				"html/refillcard/refillcard.html",
+				"images/webBg.png",
+				"images/qq.png",
+				"images/faces/ee_14.png",
+				"html/cashPay.html",
+				"images/d.png",
+				"images/faces/ee_17.png",
+				"js/vue.js",
+				"images/faces/ee_32.png",
+				"images/index/m7.png",
+				"js/emoji.js",
+				"images/level.png",
+				"images/faces/ee_24.png",
+				"images/kefu.png",
+				"images/demo2.jpg",
+				"images/arecord.png",
+				"images/logo2.png",
+				"images/card_bg3.png",
+				"images/refresh4.png",
+				"images/index/bg.jpg",
+				"images/rl.png",
+				"images/card_bg2.png",
+				"images/faces/ee_30.png",
+				"js/aes.js",
+				"images/demo.jpg",
+				"images/wxlogin.png",
+				"images/wx.png",
+				"images/back.png",
+				"html/address/address.html",
+				"images/faces/ee_3.png",
+				"images/m_bg.png",
+				"js/Im.js",
+				"images/faces/ee_10.png",
+				"images/share.jpg",
+				"images/faces/ee_29.png",
+				"images/faces/ee_13.png",
+				"images/faces/ee_18.png",
+				"images/faces/ee_11.png",
+				"images/levelicon2.png",
+				"images/sptx.png"
+			]
+		}
+	}
+}

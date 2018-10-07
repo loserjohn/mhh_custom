@@ -1,0 +1,1156 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			.mainMsg {
+				padding: 10px 0;
+			}
+			/*头部锚点选项*/
+			
+			.tabBar {}
+			
+			.tabBarItem {
+				line-height: 44px;
+				color: #fff;
+				text-align: center;
+				position: relative;
+				/*background: red;*/
+			}
+			
+			.tabBarItem.active::before {
+				content: "";
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				height: 4px;
+				background: #fff;
+				z-index: 10;
+				left: 0;
+			}
+			/*手艺人信息*/
+			
+			.masterBox {
+				border-bottom: 1px dotted #d3d3d3;
+				padding: 10px 0;
+			}
+			
+			.masterBox .avatar {
+				width: 60px;
+				height: 60px;
+			}
+			/*充值卡*/
+			
+			.block2 {
+				border-top: 1px dotted #d3d3d3;
+				padding-top: 10px;
+			}
+			
+			.block1 .cardsBox {
+				height: 100px;
+				margin-left: 10px;
+				width: 80%;
+				/*background: red;*/
+				overflow: hidden;
+			}
+			
+			.block1 .cardsBox .cardItems {
+				width: 130px;
+				height: 80px;
+				overflow: hidden;
+				background: url(../../images/card.png) 0 0/contain no-repeat;
+				box-sizing: border-box;
+				padding: 5px;
+				margin-right: 10px;
+			}
+			/*优惠券*/
+			
+			.block3 {
+				border-bottom: 1px dotted #d3d3d3;
+			}
+			
+			.ticketBox {
+				height: 36px;
+				margin-left: 10px;
+				overflow: hidden;
+			}
+			
+			.ticketBox .ticketItems {
+				margin-right: 10px;
+				line-height: 24px;
+				background: url(../../images/quan_bg.png) 0 0/100% 100% no-repeat;
+				box-sizing: border-box;
+				padding: 0 10px;
+				text-align: center;
+				color: #fff;
+				width: 120px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			/*购买数量*/
+			
+			.block4 {
+				border-bottom: 1px dotted #d3d3d3;
+				height: 40px;
+				line-height: 40px;
+			}
+			/*可约时间*/
+			
+			.block5 {
+				/*padding: 10px 0;*/
+			}
+			
+			.block5>aside {
+				margin-top: 10px;
+			}
+			
+			.block5>article {
+				margin-top: 20px;
+			}
+			
+			.rulerUl {
+				/*background:red url(../../images/no.png) 0 0 /contain repeat-x;*/
+				height: 16px;
+				margin-left: 15px;
+				margin-top: 5px;
+				border-bottom: 1px solid #212121;
+			}
+			
+			.rulers {
+				height: 15px;
+				/*background: red;*/
+				box-sizing: border-box;
+				position: relative;
+			}
+			
+			.rulerUl>.rulers:last-child {
+				border-right: 1px solid #444;
+			}
+			
+			.rulers>p {
+				position: absolute;
+				top: -20px;
+				color: #404040;
+				font-size: 10px;
+				left: -30%;
+			}
+			
+			.rulerUl>.rulers:last-child>p {
+				position: absolute;
+				top: -25px;
+				color: #404040;
+				font-size: 10px;
+				left: 10px;
+			}
+			
+			.rulerUl>.rulers:nth-of-type(odd) {
+				/*background: #212121;*/
+				border-left: 1px solid #212121;
+			}
+			
+			.rulerUl>.rulers:nth-of-type(even) {
+				/*background: #212121;*/
+				border-left: 1px solid #444;
+				padding-top: 5px;
+				height: 10px;
+				margin-top: 5px;
+			}
+			
+			.timeBox .timeList {
+				margin-left: 15px;
+				height: 12px;
+				background: #eee;
+				margin-top: 5px;
+			}
+			
+			.timeBox .timeList .itemMark {
+				height: 12px;
+				background: url(../../images/no.png) 0 0 /contain repeat;
+			}
+			
+			.timeBox .itemMark.active {
+				background: #cadcf9!important;
+			}
+			/*标签*/
+			
+			.block6 {
+				border-top: 1px dotted #d3d3d3;
+			}
+			
+			.block6>li {
+				line-height: 30px;
+			}
+			
+			.block6>li>i {
+				margin-right: 10px;
+			}
+			/*用户评价*/
+			
+			.block6 {}
+			
+			.block6 .commontItem {
+				border-bottom: 1px dotted #d3d3d3;
+				padding: 10px 0;
+			}
+			
+			.block6 .commontPicBox {
+				justify-content: space-between;
+				margin: 10px 0;
+			}
+			
+			.block6 .commontPic {
+				width: 32%;
+				height: 80px;
+			}
+			
+			.block6 .more {
+				width: 120px;
+				line-height: 40px;
+				border: 1px solid #212121;
+				text-align: center;
+				margin: 0 auto;
+				border-radius: 5px;
+				margin-top: 10px;
+			}
+			
+			.timeDemo1 {
+				width: 14px;
+				height: 14px;
+				display: inline-block;
+				background: #cadcf9!important;
+				margin-right: 10px;
+			}
+			
+			.timeDemo2 {
+				width: 14px;
+				height: 14px;
+				display: inline-block;
+				background: url(../../images/no.png) 0 0 /contain repeat;
+				margin-right: 10px;
+			}
+			
+			.modal_timeBox {
+				width: 100%;
+				height: 400px;
+				overflow: hidden!important;
+				/*background: red;*/
+			}
+			
+			.mui-slider-item {
+				/*height:240px!important;*/
+				overflow: hidden;
+			}
+			
+			.mui-slider-item>img {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="app">
+			<header class="fixed   header flex " style="background: -webkit-linear-gradient(left top, #e2c773, #ccaa42);background: linear-gradient(left top, #e2c773, #ccaa42);" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class="tabBar f1">
+					<ul class=" flex">
+						<li class="f1  tabBarItem" @tap="_tabBar(1)" :class="{active:curTab==1}">信息</li>
+						<li class="f1  tabBarItem" @tap="_tabBar(2)" :class="{active:curTab==2}">详情</li>
+						<li class="f1  tabBarItem" @tap="_tabBar(3)" :class="{active:curTab==3}">评价</li>
+					</ul>
+				</div>
+			</header>
+			<div ref='scroll' class="scrollBox" :style="{top:appHeight+'px'}">
+				<div class="clearfix scrollContent">
+					<!--刷新提示框-->
+					<div class="refresh flex">
+						<div class="flex " style="bottom:110px ;">
+							<p class="f1 t_r "></p>
+							<i class="iconfont icon-hua cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:80px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-dianzan1 cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+						<div class="flex " style="bottom:50px ;">
+							<p class="f1 t_r"></p>
+							<i class="iconfont icon-zuanshi cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:20px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-jiangbei cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+					</div>
+
+					<!--主页面信息-->
+					<div class="relative">
+						<!--轮播图部分-->
+						<div class="carouselBox" ref='anchor1'>
+							<div id="slider" class="mui-slider" ref="slider">
+								<div class="mui-slider-group   mui-slider-loop">
+									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+									<div class="mui-slider-item mui-slider-item-duplicate" :style="{height:screenWidth}">
+										<img :src="imgprev">
+									</div>
+									<!-- 第一张 -->
+									<div class="mui-slider-item" v-for="item in product.PROJECT_IMGS" :style="{height:screenWidth}">
+										<img :src="item">
+									</div>
+									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+									<div class="mui-slider-item mui-slider-item-duplicate" :style="{height:screenWidth}">
+										<img :src="imgnext">
+									</div>
+								</div>
+								<div class="mui-slider-indicator">
+									<div class="mui-indicator" v-for="(item,index) in product.PROJECT_IMGS" :class="{'mui-active':index==0?true:false}"></div>
+								</div>
+							</div>
+						</div>
+
+						<!--项目信息-->
+						<div class="block1 panelPad container">
+							<!--手艺人信息-->
+							<div class="flex masterBox" @tap="_navigateTo('../technician/technician.html','technician',{'shopCode':product.SHOP_CODE})">
+								<img :src="product.SHOP_LOGO" class="avatar">
+								<div class="f1 ">
+									<div class="lh24 fs16 ">{{product.SHOP_NAME}}</div>
+									<p class="flex">嘿皮值:
+										<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="product in levels" />
+									</p>
+									<p class="ellipsis">{{shopMsg.SHOP_BUSINESS_TYPE | filterNull }}</p>
+								</div>
+								<!--<span class="mui-icon mui-icon-arrowright"></span>-->
+							</div>
+							<!--基本信息-->
+							<aside class="mainMsg">
+								<h3 class="cm_name">{{product.PROJECT_NAME}}</h3>
+								<div class="fs20  lh36">
+									<span class="cm_label">活动价</span><span class="cor_r">￥{{product.PROJECT_DISCOUNT}}</span>
+								</div>
+								<div class="flex">
+									<p class="delec_prize f1 ">原价: ￥{{product.PROJECT_PRICE}}</p>
+									<p class="f1 t_r">{{product.PROJECT_LOVE}}人喜欢</p>
+								</div>
+							</aside>
+							<!--最近活动公告-->
+							<div class="gonggao lh30">
+								{{product.PROJECT_TITLES}}
+							</div>
+							<!--充值卡-->
+							<div class="flex block2" v-show="refillcard.length!=0">
+								<div class="f1">充值卡:</div>
+								<div class="cardsBox " ref="wrapper">
+									<ul class="reset flex" :style="{width: 140*refillcard.length+'px'}">
+										<li class="cardItems" v-for="(item,index) in refillcard" @tap="_recharge(item.RECHARGE_CODE)">
+											<p class="cor_w ">充：￥{{item.RECHARGE_AMOUNT}}</p>
+											<div class="cor_w fs18 lh28"> 送：￥{{item.RECHARGE_GRANT}}</div>
+											<p class="t_r cor_w">立即充值》</p>
+										</li>
+
+									</ul>
+								</div>
+							</div>
+
+							<!--优惠券-->
+							<div class="flex block3" v-if="coupons.length!=0">
+								<div class="f1">优惠券:</div>
+								<div class="ticketBox" @tap="_navigateTo('../coupons/proCoupons.html','proCoupons',{'shopCoupons':coupons})">
+									<ul class="reset flex">
+										<li class="ticketItems" v-for="(item,index) in coupons" v-if="index==1||index==2">
+											{{item.DISCOUNT_NAME}}
+										</li>
+									</ul>
+								</div>
+								<i class=" iconfont icon-arrowright"></i>
+							</div>
+
+							<!--购买数量-->
+							<div class="flex lh30 block4">
+								<div class="f1">
+									购买数量：
+								</div>
+								<div class="f1 t_r fs16">
+									×1
+								</div>
+							</div>
+
+							<!--可约时间-->
+							<div class=" block5">
+								<aside class="flex lh28">
+									<div>可约时间：</div>
+									<div class="f1 t_c">
+										<span class="timeDemo1"></span>可约
+									</div>
+									<div class="f1 ">
+										<span class="timeDemo2"></span>不可约
+									</div>
+									<p class="lh28" @tap.self="_switchModal">查看全部<span class="mui-icon mui-icon-arrowright fs16"></span></p>
+								</aside>
+
+								<article class="container">
+									<div class="flex rulerBox">
+										<div class="lh24">时段</div>
+										<ul class="f1 flex rulerUl">
+											<li class="rulers f1">
+												<p>8</p>
+											</li>
+											<li class="rulers f1"></li>
+											<li class="rulers f1">
+												<p>10</p>
+											</li>
+											<li class="rulers f1"></li>
+											<li class="rulers f1">
+												<p>12</p>
+											</li>
+											<li class="rulers f1"></li>
+											<li class="rulers f1">
+												<p>14</p>
+											</li>
+											<li class="rulers f1"></li>
+											<li class="rulers f1">
+												<p>16</p>
+											</li>
+											<li class="rulers f1"></li>
+											<li class="rulers f1">
+												<p>18</p>
+											</li>
+											<li class="rulers f1"></li>
+											<li class="rulers f1">
+												<p>20</p>
+											</li>
+											<li class="rulers f1"></li>
+											<li class="rulers f1">
+												<p>22</p>
+											</li>
+											<li class="rulers f1">
+												<p>24</p>
+											</li>
+										</ul>
+									</div>
+									<ul class="timeBox">
+										<li class=" flex ">
+											<div class="lh24">今天</div>
+											<ul class="f1 timeList flex">
+												<li v-for="item in enabledTime[0]" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+											</ul>
+										</li>
+										<li class=" flex ">
+											<div class="lh24">明天</div>
+											<ul class="f1 timeList flex">
+												<li v-for="item in enabledTime[1]" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+											</ul>
+										</li>
+										<li class=" flex ">
+											<div class="lh24">后天</div>
+											<ul class="f1 timeList flex">
+												<li v-for="item in enabledTime[2]" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+											</ul>
+										</li>
+									</ul>
+								</article>
+							</div>
+
+							<!--标签-->
+							<ul class="flex block6">
+								<li class="f1">
+									<i class="iconfont icon-shijian cor_r fs16"></i>耗时：{{product.LIFETIME_COUNT}}分钟
+								</li>
+								<li class="f1">
+									<i class="iconfont icon-tianqi cor_r fs16"></i>保持：{{product.KEEP_COUNT}}分钟
+								</li>
+							</ul>
+						</div>
+						<!--项目详情-->
+						<div class="block7 container panelPad" ref='anchor2'>
+							<aside class="flex cm_name">
+								<div>项目详情：</div>
+							</aside>
+							<article class="container" v-html="product.PROJECT_DETAILS"></article>
+						</div>
+						
+						<div class="block7 container panelPad" >
+							<aside class="flex cm_name">
+								<div>注意事项：</div>
+							</aside>
+							<article class="container" v-html="product.PROJECT_STATE"></article>
+						</div>
+						<!--用户评价-->
+						<div class=" block6 container panelPad" ref='anchor3'>
+							<aside class="flex cm_name">
+								<div>用户评价：</div>
+								<!--<p class="f1 t_r lh30">查看全部<span class="mui-icon mui-icon-arrowright fs16"></span></p>-->
+							</aside>
+							<article class="container">
+								<ul class="reset">
+									<li class="flex commontItem" v-for="item in comment">
+										<img :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../../images/default_avatar.jpg'" alt="" class="avatar" />
+										<div class="f1">
+											<div class="">{{item.MEMBER_NIKENAME}}</div>
+											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
+
+											<div class="flex commontPicBox" v-show="item.HAS_PICTURE==1?true:false">
+												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
+												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
+												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+											</div>
+											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
+											<div class="reply cor_g" v-html="item.REPLY_CONTENT"></div>
+										</div>
+									</li>
+								</ul>
+							</article>
+							<footer>
+								<div class="more" @tap="_navigateTo('./proComment.html','proComment',{'proCode':product.PROJECT_CODE})">查看全部({{total}})</div>
+							</footer>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!--模态框-->
+			<div class="cm_mask_bot" v-show="modalShow" @tap.self="_switchModal">
+				<div class="cm_modal_bot  animated slideInUp ">
+					<div class="block5">
+						<aside class="flex lh28 container">
+							<div>可约时间：</div>
+							<div class="f1 t_c">
+								<span class="timeDemo1"></span>可约
+							</div>
+							<div class="f1 ">
+								<span class="timeDemo2"></span>不可约
+							</div>
+						</aside>
+
+						<article class="container">
+							<div class="flex rulerBox">
+								<div class="lh24" style="width: 60px;">时段</div>
+								<ul class="f1 flex rulerUl">
+									<li class="rulers f1">
+										<p>8</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>10</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>12</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>14</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>16</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>18</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>20</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>22</p>
+									</li>
+									<li class="rulers f1">
+										<p>24</p>
+									</li>
+								</ul>
+							</div>
+							<div class=" modal_timeBox ">
+								<div id="wrapper" style="width: 100%;height: 100%;">
+									<ul class="timeBox ">
+										<li class=" flex " v-for="(list,index) in enabledTime">
+											<div class="lh24 t_c " style="width: 60px;">{{index | dataTxt}}</div>
+											<ul class="f1 timeList flex">
+												<li v-for="item in list" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+
+			<!--底部菜单-->
+			<div class="cm_bottomBtn flex">
+				<div class="" @tap="_toChat">
+					<i class="iconfont icon-pinglun fs20"></i>
+					<p>联系她</p>
+				</div>
+				<div class="" @tap="_navigateTo('../technician/technician.html','technician',{'shopCode':product.SHOP_CODE})">
+					<i class="iconfont icon-wxbmingxingdianpu fs20"></i>
+					<p>查看名片</p>
+				</div>
+				<div class="" @tap="_collect">
+					<i class="iconfont icon-shoucang1 fs20"></i>
+					<p>收藏项目</p>
+				</div>
+				<div class="f1 yesBtn" @tap="_toOrder">
+					立即购买
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview()
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						proKey: '',
+						/*项目的Key*/
+						appHeight: '',
+						/*主屏高度*/
+						modalShow: false,
+						/*模态框*/
+						scroll: '',
+						/*主页面下拉框*/
+						wrapper: '',
+						/*横向滑动*/
+						levels: '',
+						product: '',
+						/*项目详情列表*/
+						/*项目详情*/
+						enabledTime: [],
+						/*可约时间*/
+
+						curTab: 1,
+						imgprev: '',
+						imgnext: '',
+
+						shopMsg: '',
+						refillcard: '',
+						coupons: '',
+
+						masterCode: '',
+						comment: '',
+						/*评价列表*/
+						total: 0,
+						screenWidth:'240px'
+					},
+					filters: {
+						dataTxt(value) {
+							if(value == 0) return '今天';
+							if(value == 1) return '明天';
+							if(value == 2) return '后天';
+							let today = new Date();
+							let dd = new Date();
+							dd.setDate(dd.getDate() + value);
+
+							let str = (dd.getMonth() + 1) + '月' + dd.getDate() + '日'
+							return str
+						},
+						commentTxt(value) {
+							switch(value) {
+								case '1':
+									return '非常非常嘿皮'
+									break;
+								case '2':
+									return '很嘿皮'
+									break;
+								case '3':
+									return '嘿皮'
+									break;
+								case '4':
+									return '不嘿皮'
+									break;
+								default:
+									break;
+							}
+						},
+						filterNull(value) {
+							if(value == null || value == 'undefined') {
+								return ''
+							}
+							return value
+						}
+					},
+					created: function() {
+						app.initHeader();
+						/*获取闯进来的项目id*/
+						var self = plus.webview.currentWebview();
+						this.proKey = self.proKey
+//												alert(this.proKey)
+						this.screenWidth = plus.screen.resolutionWidth+'px'
+					},
+					mounted: function() {
+						var _this = this
+
+						/*初始化主页面的高度*/
+						//this.appHeight = plus.display.resolutionHeight
+						this.appHeight = document.getElementById('header').offsetHeight;
+						/*初始化数据*/
+						this._initData(() => {
+							/*初始化轮播图*/
+							var slider = this.$refs.slider;
+							mui(slider).slider({
+								interval: 3000 //自动播放周期
+							});
+							mui.later(() => {
+								plus.nativeUI.closeWaiting()
+								mui.currentWebview.show('pop-in', 300, function() {}, {});
+							}, 500)
+
+						});
+//						alert(plus.storage.getItem('isLogin'))
+					},
+					methods: {
+//						与商家对话
+						_toChat(){
+							let isLogin = plus.storage.getItem('isLogin');
+							if(isLogin != '1') {
+								plus.nativeUI.toast('请您先登陆');
+								mui.openWindow({
+									url: '../login.html',
+									id: 'login',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+								return
+							}
+							let fdId = this.product.RY_ID;
+							let fdname = this.product.SHOP_NAME;
+							let fdAvatar = this.product.SHOP_LOGO;
+				
+							plus.webview.getWebviewById('chat').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
+							plus.webview.getWebviewById('chat').show('pop-in', 300, function() {}, {})
+						},
+						//						商铺充值卡购买
+						_recharge(code) {
+							if(!code) return;
+							let status = plus.storage.getItem('isLogin')
+							if(status != '1') {
+								/*没有登陆状态*/
+								plus.nativeUI.confirm('请您先登陆', (event) => {
+									if(event.index != 0) return;
+									mui.openWindow({
+										url: '../login.html',
+										id: "login",
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead'
+										},
+										createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: false, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										waiting: {
+											autoShow: true, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+								}, {
+									title: '马嘿嘿提醒您'
+								}, ['去登陆', '取消'])
+								return false
+							}
+							/*创建项目订单*/
+//							plus.nativeUI.showWaiting()
+							app.ajax(app.baseUrl + '/api/Order/CreateBusiRechargeOrder', {
+								data: {
+									RECHARGE_CODE: code
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+//									alert(0.5)
+									let payCode = result.Msg; //订单号
+//									plus.nativeUI.closeWaiting()
+									if(result.Success) {
+//alert(1)
+										plus.nativeUI.toast('订单创建成功')
+										mui.openWindow({
+											url: '../cashPay.html',
+											id: 'cashPay',
+											styles: {
+												top: '0px', //新页面顶部位置
+												bottom: '0px', //新页面底部位置
+												scrollIndicator: "none",
+												plusrequire: 'ahead'
+											},
+											createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+											show: {
+												autoShow: false, //页面loaded事件发生后自动显示，默认为true
+												duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+											},
+											extras: {
+												type: 2, //1表示的是只能现金支付,2可以平台余额支付
+												payCode: payCode
+											},
+											waiting: {
+												autoShow: true, //自动显示等待框，默认为true
+												title: '正在加载...', //等待对话框上显示的提示内容
+											}
+										})
+
+									} else {
+										plus.nativeUI.closeWaiting()
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								}
+							});
+						},
+						/*跳转页面*/
+						_navigateTo(desturl, destid, extras) {
+							mui.openWindow({
+								url: desturl,
+								id: destid,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						/*切换tab*/
+						_tabBar(k) {
+							this.curTab = k;
+							let anchor1 = this.$refs.anchor1;
+							let anchor2 = this.$refs.anchor2;
+							let anchor3 = this.$refs.anchor3;
+							switch(k) {
+								case 1:
+									this.scroll.scrollToElement(anchor1, 300, 0, 0, 'ease')
+									break;
+								case 2:
+									this.scroll.scrollToElement(anchor2, 300, 0, 0, 'ease')
+									break;
+								case 3:
+									this.scroll.scrollToElement(anchor3, 300, 0, 0, 'ease')
+									break;
+								default:
+									break;
+							}
+						},
+						/*模态框显示*/
+						_switchModal() {
+							this.modalShow = !this.modalShow
+						},
+						/*初始化数据*/
+						_initData(callback) {
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Project/GetProject', {
+								type: 'get', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								data: {
+									PROJECT_CODE: _this.proKey
+								},
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									/*登陆成功*/
+									if(result.Success) {
+										_this.product = result.Data.dataFormart
+										_this.enabledTime = result.Data.enabledTime
+										_this.imgprev = result.Data.dataFormart.PROJECT_IMGS[result.Data.dataFormart.PROJECT_IMGS.length - 1]
+										_this.imgnext = result.Data.dataFormart.PROJECT_IMGS[0]
+										_this.masterCode = result.Data.dataFormart.SHOP_CODE;
+										//										alert(parseInt(result.Data.dataFormart.SHOP_STAR) )
+										_this.levels = parseInt(result.Data.dataFormart.SHOP_STAR)
+										_this._initComment()
+										_this._initShopMsg()
+										_this._initScroll()
+
+										if(callback) callback()
+									} else {
+										plus.nativeUI.closeWaiting()
+										plus.nativeUI.toast('无效项目');
+										mui.back()
+										
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									app.catchErr(type);
+									
+								}
+							})
+						},
+						/*初始化下拉滑块*/
+						_initScroll() {
+							var _this = this
+							/*初始化下拉scroll*/
+							this.$nextTick(function() {
+								var scroll = this.$refs.scroll
+								var wrapper = this.$refs.wrapper
+								/*竖向下拉刷新*/
+								if(!_this.scroll) {
+									//							初始化标题栏
+									_this.scroll = new BScroll(scroll, {
+										click: true,
+										probeType: 3,
+										scrollX: false,
+										bounceTime: 200,
+										//										pullUpLoad: {
+										//											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+										//										}
+									})
+								} else {
+									_this.scroll.refresh();
+								};
+								/*横向滑动*/
+								if(!_this.wrapper) {
+									//	初始化充值卡
+									_this.wrapper = new BScroll(wrapper, {
+										click: true,
+										probeType: 3,
+										bounceTime: 200,
+										scrollX: true,
+										scrollY: false
+									})
+								} else {
+									_this.wrapper.refresh();
+								};
+
+								mui('#wrapper').scroll({
+									deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+									bounce: true, //是否启用回弹
+									indicators: false
+								});
+							})
+						},
+						/*获取手艺人信息*/
+						_initShopMsg() {
+							//							console.log(this.masterCode)
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Shop/ViewShop', {
+								type: 'post', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								data: {
+									SHOP_CODE: _this.masterCode
+								},
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									/*登陆成功*/
+									if(result.Success) {
+										/*店铺信息*/
+										_this.shopMsg = result.Data.Shop
+										/*充值卡*/
+										_this.refillcard = result.Data.Recharge
+										/*优惠券*/
+										_this.coupons = result.Data.Discount
+									} else {
+										/*验证失败*/
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									
+									app.catchErr(type)
+								}
+							})
+						},
+						/*获取评价数据*/
+						_initComment() {
+							var _this = this
+							//							console.log(_this.proKey)
+							mui.ajax(app.baseUrl + '/api/OrderReview/GetReviewList', {
+								type: 'get', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								data: {
+									PROJECT_CODE: _this.proKey,
+									REVIEW_TYPE: 1,
+									pageIndex: 1,
+									pageSize: 4,
+								},
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									/*登陆成功*/
+									if(result.Success) {
+										_this.comment = result.Data.ListInfo;
+										_this.total = result.Data.Total;
+										//										alert(result.Data.Total)
+									} else {
+										/*验证失败*/
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									app.catchErr(type)
+								}
+							})
+						},
+						/*下单*/
+						_toOrder() {
+							var _this = this
+							/*判断登陆状态*/
+							let status = plus.storage.getItem('isLogin')
+							if(status != '1') {
+								/*没有登陆状态*/
+								plus.nativeUI.confirm('请您先登陆', (event) => {
+									if(event.index != 0) return;
+									mui.openWindow({
+										url: '../login.html',
+										id: "login",
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead'
+										},
+										createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: false, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										waiting: {
+											autoShow: true, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+								}, {
+									title: '马嘿嘿提醒您'
+								}, ['去登陆', '取消'])
+							} else {
+								/*用户已登陆执行收藏操作*/
+								mui.openWindow({
+									url: './productOrder.html',
+									id: "productOrder",
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {
+										product: _this.product,
+										/*传入项目信息*/
+										masterCode: _this.masterCode /*传入手艺人的code*/
+									},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+							}
+
+						},
+						/*收藏项目*/
+						_collect() {
+							var _this = this
+							/*判断登陆状态*/
+							let status = plus.storage.getItem('isLogin')
+							if(status != '1') {
+								/*没有登陆状态*/
+								plus.nativeUI.confirm('请您先登陆', (event) => {
+									if(event.index != 0) return;
+									mui.openWindow({
+										url: '../login.html',
+										id: "login",
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead'
+										},
+										createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: false, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										waiting: {
+											autoShow: true, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+								}, {
+									title: '马嘿嘿提醒您'
+								}, ['去登陆', '取消'])
+							} else {
+								/*用户已登陆执行收藏操作*/
+								plus.nativeUI.showWaiting()
+								app.ajax(app.baseUrl + '/api/Project/LoveProject', {
+									type: 'post', //HTTP请求类型
+									data: {
+										PROJECT_CODE: _this.proKey,
+									},
+									success: function(result) {
+										/*登陆成功*/
+										plus.nativeUI.closeWaiting()
+										if(result.Success) {
+											plus.nativeUI.toast('收藏成功')
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast('收藏失败')
+										}
+									}
+								})
+							}
+						}
+					}
+				})
+
+			});
+			/*获取用户身份之后刷新页面*/
+			function initPage() {
+
+			}
+		</script>
+	</body>
+
+</html>

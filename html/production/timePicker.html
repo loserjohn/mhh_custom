@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>时间选择</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			.timeModel {
+				background: #fff;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				bottom: 0;
+			}
+			
+			.timeModel .footer {
+				width: 100%;
+				position: absolute;
+				bottom: 0;
+				padding: 0 15px;
+				border-top: 1px solid #d3d3d3;
+			}
+			
+			.timeModel .content {
+				/*border-top: 1px solid #ddd;
+				border-bottom: 1px solid #ddd;*/
+			}
+			
+			.timeModel .daysBox {
+				height: 60px;
+				width: 100%;
+			}
+			
+			.timeModel .daysBox .daysWrapper {
+				width: 80%;
+				overflow: hidden;
+				height: 60px;
+			}
+			
+			.timeModel .daysBox .btn {
+				/*width: 80px;*/
+				height: 100%;
+				border-left: 1px solid #d3d3d3;
+			}
+			
+			.timeModel .daysBox .btn>img {
+				width: 26px;
+				display: block;
+				margin: 0 auto;
+				margin-top: 10px;
+			}
+			
+			.timeModel .daysBox .daysItem {
+				width: 100px;
+				/*background: blue;*/
+				text-align: center;
+				font-size: 16px;
+				line-height: 60px;
+				/*border-right: 1px solid red;*/
+				position: relative;
+				/*transition: all .3s ease;*/
+			}
+			
+			.timeModel .daysBox .daysItem.active::before {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 4px;
+				bottom: 0;
+				left: 0;
+				background: #ccaa42;
+			}
+			
+			.timeModel .timesBox {
+				width: 100%;
+				top: 104px;
+				position: absolute;
+				bottom: 64px;
+				/*height: 300px;*/
+				overflow: hidden;
+			}
+			
+			.timeModel .timesBox ul {
+				width: 100%;
+				padding: 5px;
+			}
+			
+			.timeModel .timesBox .timeItem {
+				width: 24%;
+				height: 50px;
+				border: 1px solid #d3d3d3;
+				margin-bottom: 5px;
+				color: #d3d3d3;
+			}
+			.timeModel .timesBox .timeItem.active{
+				border: 1px solid #404040;
+				color: #101010;
+			}
+			.timeModel .timesBox .timeItem.active p{
+				color: #404040;
+			}
+			.timeModel .timesBox .timeItem.choose{
+				border: 1px solid #ccaa42!important;
+				box-shadow: 0 0 3px #ccaa42!important;
+				color: #ccaa42!important;
+			}
+			.timeModel .timesBox .timeItem.choose p{
+				color: #ccaa42!important;
+			}
+			/*日历试图*/
+			
+			.calendarBox {
+				left: 0;
+				right: 0;
+				position: absolute;
+				top: 44px;
+				bottom: 64px;
+				z-index: 10;
+				/*background: blue;*/
+			}
+			
+			.calendarBox .calendarList {
+				position: absolute;
+				top: 40px;
+				/*bottom: 0;*/
+				height: 310px;
+				width: 100%;
+				overflow: hidden;
+			}
+			
+			.weekBox {
+				/*background: #ccaa42;*/
+				color: #ccaa42;
+				height: 40px;
+				line-height: 40px;
+					border-bottom: 1px dotted #d3d3d3;
+			}
+			
+			.dateBox {
+				margin-top: 20px;
+			
+			}
+			
+			.dataList {
+				flex-wrap: wrap;
+				justify-content: space-between;
+			}
+			
+			.dateItem {
+				width: 14%;
+				line-height: 2.5;
+				box-sizing: border-box;
+				padding: 3px;
+				background: #f1f1f1;
+				margin-top: 3px;
+			}
+			
+			.dataTxt {
+				display: block;
+				width: 100%;
+				height: 100%;
+				line-height: 2.5;
+				color: #eee;
+				/*background: #eee;*/
+			}
+			
+			.dataTxt.active {
+				/*border: 1px solid #eee;*/
+				color: #212121;
+			}
+			
+			.cm_loading>span{
+				font-size: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app" class="">
+			<div class="timeModel animated fadeInUP relative">
+
+				<!--日期选择-->
+				<div class="flex lh44 container" v-show="type==1?true:false">
+					<div class="f1"></div>
+					<div class="f1 t_c fs20">时间选择</div>
+					<div class="f1 t_r" @tap="_close">
+						<i class="iconfont icon-close  fs20 "></i>
+					</div>
+				</div>
+
+				<div class="flex lh44 container" v-show="type==2?true:false">
+					<div class="f1" @tap="_switchType">
+						<i class="iconfont icon-arrowleft"></i>
+					</div>
+					<div class="f1 t_c fs20">日期选择</div>
+					<div class="f1 t_r"></div>
+				</div>
+
+				<div class="daysBox flex" v-show="type==1?true:false">
+					<div class="daysWrapper " ref="wrapper">
+						<ul class="flex" :style="{width:3000+'px'}">
+							<li class="daysItem " v-for="(item,index) in thirtyDate" @tap="_chooseDay(item.data,index)" :class="{active:curIndex==index}">{{item.text}}</li>
+						</ul>
+					</div>
+					<div class="btn f1" @tap="_switchType">
+						<img src="../../images/rl.png" />
+						<p class="t_c">30天</p>
+					</div>
+				</div>
+
+				<aside class="weekBox flex container" v-show="type==2?true:false">
+					<div class="t_c cor_y  f1">
+						日
+					</div>
+					<div class="t_c cor_y  f1">
+						一
+					</div>
+					<div class="t_c cor_y  f1">
+						二
+					</div>
+					<div class="t_c cor_y  f1">
+						三
+					</div>
+					<div class="t_c cor_y  f1">
+						四
+					</div>
+					<div class="t_c cor_y  f1">
+						五
+					</div>
+					<div class="t_c cor_y  f1">
+						六
+					</div>
+				</aside>
+
+				<!--时段选择-->
+				<div class="timesBox " ref="scroll">
+					<div class="reset " style="min-height:101%">
+						<!--类型1-->
+						<div v-show="type==1?true:false" class="animated slideInRight">
+
+							<ul class="flex scrollWrap  reset">
+								<li class="timeItem" v-for="item in dayTime" :class="{active:item.status==1?true:false,choose:chooseTime==item.text?true:false}"  @tap="_chooseTime(item.text,item.status)">
+									<div class="t_c fs16 lh28">{{item.text}}</div>
+									<p class="t_c fs12">{{item.status==1?'可预约':'已预约'}}</p>
+								</li>							
+							</ul>
+							
+						</div>
+						<!--类型2-->
+						<div v-show="type==2?true:false" class="animated slideInRight ">
+							<div class=" container">
+								<!--当前月份-->
+								<div class="dateBox">
+									<div class="mountedTitle flex" >
+										<h3 class="lh24" style="margin-right: 15px;">{{nowTime.m}}月</h3>
+										<p class="lh24">{{nowTime.y}}</p>
+									</div>
+									<ul class=" flex dataList">
+										<li v-for="item in curMount" class="dateItem t_c ">
+											<p class="dataTxt" :class="{active:_enbleData(item.date)}"  @tap.self="_chooseDate(item.date)">
+												{{ item.text? item.text:''}}
+											</p>
+										</li>
+									</ul>
+								</div>
+								<!--下个月-->
+								<div class="dateBox">
+									<div class="mountedTitle flex">
+										<h3 class="lh24" style="margin-right: 15px;">{{new Date(nowTime.y,nowTime.m,1).getMonth()+1 }}月</h3>
+										<p class="lh24">{{nowTime.m+1>12?nowTime.y+1:nowTime.y}}</p>
+									</div>
+									<ul class=" flex dataList">
+										<li v-for="item in nextMount" class="dateItem t_c " >
+											<p class="dataTxt " :class="{active:_enbleData(item.date)}" @tap.self="_chooseDate(item.date)">
+												{{ item.text? item.text:'' }}
+											</p>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+												
+					</div>
+				</div>
+				<div class="cm_loading flex " v-show="loading">
+					<span class="mui-icon mui-icon-spinner-cycle mui-spin fs36" ></span>
+				</div>	
+				<aside class="footer">
+					<div>
+						<div class="cm_btn" @tap="_issueTime">选择时间</div>
+					</div>
+				</aside>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+	swipeBack: true
+			});
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						/*滑动模块*/
+						scroll: '',
+						wrapper: '',
+						calendar: '',
+						/*日历相关*/
+						curMount: [],
+						nextMount: [],
+						nowTime: '',
+						
+						curIndex:0,//当前的日期的索引，今天是0
+						
+						thirtyDate: [],/*30天数组*/
+						dayTime: [],//时间段
+						type: 1 /*类型切换 1 或者2*/,
+						accountCode:'',/*账户code*/
+						loading:false,
+						
+						chooseDate:'',/*当前选择的日期*/
+						chooseTime:''/*当前选择的时段*/
+					},
+					created: function() {
+						var self = plus.webview.currentWebview();
+						this.accountCode = self.account
+//						alert(self.account)
+						/*赋值当前的日期*/
+						var n = new Date();
+						var year = n.getFullYear();
+						var mount = n.getMonth() + 1;
+						var date = n.getDate();
+
+						var nt = {
+							t: n,
+							//								年							
+							y: year,
+							//								月
+							m: mount,
+							//								日
+							d: date,
+							//								本月第一天是周几
+							s_week: new Date(year, mount - 1, 1).getDay(),
+							//								下月第一天是周几
+							n_s_week: new Date(year, mount, 1).getDay(),
+							//								当月的天数
+							c_fullday: new Date(year, mount, 0).getDate(),
+							//								下个月的总天数
+							n_fullday: new Date(year, mount + 1, 0).getDate(),
+						}
+						this.nowTime = nt
+					},
+					mounted: function() {
+						//							console.log(app.mark + plus.storage.getItem('token'))
+						var _this = this;
+
+						var scroll = this.$refs.scroll
+						var wrapper = this.$refs.wrapper
+						var calendar = this.$refs.calendar
+						
+						/*初始化横向scroll*/
+						this.$nextTick(function() {
+							//初始化类型1的 日期横条滑块
+							if(!_this.wrapper) {
+								//							初始化标题栏
+								_this.wrapper = new BScroll(wrapper, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									scrollX: true,
+									scrollY: false
+								})
+							} else {
+								_this.wrapper.refresh();
+							};
+
+							//	初始化类型1的 时间段横条滑块
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+
+							/*初始化日历*/
+							_this._initCalendar(() => {
+								_this._chooseDay(new Date(),0)
+							})
+						})
+	
+					},
+					methods: {
+						/*关闭选择框回传数据*/
+						_close() {
+							var w = plus.webview.getWebviewById('productOrder');
+							w.evalJS('hasTime()')
+							mui.back()
+						},
+						/*切换类型*/
+						_switchType() {
+
+							//							this.scroll.refresh();
+							if(this.type == 1) {
+
+								this.type = 2
+							} else {
+								this.type = 1
+								//								this.calendar.refresh()
+							}
+							this.scroll.refresh();
+						},
+						/*初始化日历*/
+						_initCalendar(callback) {
+							var c_arr = [];
+							var n_arr = [];
+							var s_week = this.nowTime.s_week;
+							var c_fullday = this.nowTime.c_fullday;
+							var n_fullday = this.nowTime.n_fullday;
+							var n_s_week = this.nowTime.n_s_week;
+
+							var d = 1;
+							var n_d = 1;
+
+							//当月
+							for(i = 0; i < 35; i++) {
+								if(i < s_week) {
+									c_arr.push('')
+								} else if(i < (c_fullday + s_week)) {
+									c_arr.push({
+										text: d,
+										date: new Date(this.nowTime.y, this.nowTime.m - 1, d).getTime()
+									});
+									d++
+								} else {
+									c_arr.push({
+										text: d - c_fullday,
+										date: new Date(this.nowTime.y, this.nowTime.m, d - c_fullday).getTime()
+									});
+									d++
+								}
+							}
+							this.curMount = c_arr;
+							//下个月
+							for(k = 0; k < 35; k++) {
+								if(k < n_s_week) {
+									if(d > c_fullday) {
+										//										n_arr.push(d-c_fullday)
+										n_arr.push({
+											text: d - c_fullday,
+											date: new Date(this.nowTime.y, this.nowTime.m, d - c_fullday).getTime()
+										})
+										d++
+									} else {
+										//										n_arr.push(d)
+										n_arr.push({
+											text: d,
+											date: new Date(this.nowTime.y, this.nowTime.m - 1, d).getTime()
+										})
+										d++
+									}
+								} else if((d - c_fullday) <= n_fullday) {
+									//									n_arr.push(d-c_fullday);
+									n_arr.push({
+										text: d - c_fullday,
+										date: (new Date(this.nowTime.y, this.nowTime.m, d - c_fullday)).getTime()
+									})
+									d++
+								} else {
+									n_arr.push('');
+								}
+							}
+							this.nextMount = n_arr;
+
+							/*储存30天数据*/
+							this._createDate(callback)
+						},
+						//	判断是否30天内样式
+						_enbleData(d) {
+							if(!d) return false;
+							var min_t = new Date(this.nowTime.y, this.nowTime.m - 1, this.nowTime.d);
+
+							var max_t = new Date(min_t);
+							max_t.setDate(max_t.getDate() + 29);
+
+							if(min_t <= d && d <= max_t) {
+								return true
+							} else {
+								return false
+							}
+						},
+						/*储存30天数据*/
+						_createDate(callback) {
+							var arr = []
+							var today = new Date();
+							for(i = 0; i < 30; i++) {
+								var nextday = new Date(today);
+								var data = {};
+								nextday.setDate(nextday.getDate() + i);
+								data.data = nextday;
+								var d = nextday.getDay();
+								switch(d) {
+									case 0:
+										d = '周日'
+										break;
+									case 1:
+										d = '周一'
+										break;
+									case 2:
+										d = '周二'
+										break;
+									case 3:
+										d = '周三'
+										break;
+									case 4:
+										d = '周四'
+										break;
+									case 5:
+										d = '周五'
+										break;
+									case 6:
+										d = '周六'
+										break;
+
+									default:
+										break;
+								}
+								if(i==0){
+										data.text = d + ' ' + '今天';
+								}else if(i==1){
+									data.text = d + ' ' + '明天';
+								}else if(i==2){
+									data.text = d + ' ' + '后天';
+								}else{
+									data.text = d + ' ' + (nextday.getMonth() + 1) + '/' + (nextday.getDate());
+								}
+								
+								
+								arr.push(data)
+							}
+							this.thirtyDate = arr;
+							if(callback) callback()
+						},
+						/*选择某一天*/
+						_chooseDay(date,index){
+							this.loading = true
+							var _this = this
+							this.curIndex = index;
+							
+							let t = date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
+							this.chooseDate = date.getFullYear()+'/'+(date.getMonth() + 1)+'/'+date.getDate()
+							this.chooseTime = '';//置为空
+//							console.log(t)
+							/*获取该天的服务时间段*/
+							app.ajax(app.baseUrl + '/api/Project/GetDayBookingTime', {
+								data:{
+									ACCOUNT_CODE:_this.accountCode,
+									date:t,
+								},
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										
+										mui.later(()=>{
+											_this.loading = false
+											_this.dayTime = result.Data.ListInfo
+										},500)
+										 
+//										 alert(result.Data.ListInfo.length)
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									console.log(type);
+								}
+							});
+						},
+						/*日历中选择呢一天*/
+						_chooseDate(date){
+//							alert(new Date(date));
+							let o = new Date(date);
+							let t = new Date()
+							let d = o.getFullYear()+'/'+(o.getMonth()+1)+'/' +o.getDate()
+							let today = t.getFullYear()+'/'+(t.getMonth()+1)+'/' +t.getDate()
+							
+							today = new Date(today);
+							let day = new Date(d);
+//							alert((day - today) / (1000 * 60 * 60 * 24));
+							let index = (day - today) / (1000 * 60 * 60 * 24)
+							
+							plus.nativeUI.alert(d,()=>{
+								this.type = 1;
+								this._chooseDay(o,index);
+//								var dom = document.getElementById('date'+index)
+								this.wrapper.scrollTo(-(100*index),0,300,'ease')
+							})
+							
+						},
+						/*时段选择*/
+						_chooseTime(time,status){
+							if(status==0)return;
+//							console.log( this.chooseDate+time);
+							this.chooseTime = time
+						},
+						/*确认时间选择*/
+						_issueTime(){
+							var  p  = plus.webview.getWebviewById('productOrder');
+							if(this.chooseDate && this.chooseTime){
+								let str = this.chooseDate+' '+this.chooseTime
+//								alert(str)
+//								console.log(new Date(str).getTime())
+								str=new Date(str).getTime()
+								p.evalJS('hasTime('+str+')');
+							}else{
+								p.evalJS('hasTime()');
+							}						
+							mui.back()
+						}
+					}
+				})
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,66 @@
+{
+  "index.html": {
+    "resources": [
+      "community.html",
+      "mine.html"
+    ],
+    "refer": [
+      "community.html",
+      "mine.html",
+      "orders.html",
+      "html/address/where.html",
+      "html/production/productList.html",
+      "html/production/productBuy.html"
+    ]
+  },
+  "mine.html": {
+    "refer": [
+      "html/login.html",
+      "html/set.html",
+      "html/kefu.html",
+      "html/information/information.html"
+    ]
+  },
+  "html/login.html": {
+    "refer": [
+      "html/bound.html",
+      "html/registe.html"
+    ]
+  },
+  "html/address/where.html": {
+    "refer": [
+      "html/address/location.html"
+    ]
+  },
+  "html/production/productList.html": {
+    "refer": [
+      "html/address/where.html",
+      "html/technician/technician.html"
+    ]
+  },
+  "community.html": {
+    "refer": [
+      "html/community_detail.html"
+    ]
+  },
+  "html/set.html": {
+    "refer": [
+      "html/imgClick.html"
+    ]
+  },
+  "html/information/information.html": {
+    "refer": [
+      "html/information/chat.html"
+    ]
+  },
+  "html/production/productBuy.html": {
+    "refer": [
+      "html/technician/technician.html"
+    ]
+  },
+  "html/information/chat.html": {
+    "refer": [
+      "html/information/location.html"
+    ]
+  }
+}
