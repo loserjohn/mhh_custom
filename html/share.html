@@ -50,13 +50,6 @@
 
 	<body>
 		<div id="app">
-			<header class="mui-bar mui-bar-nav transparent" style="background-color: rgba(21, 21, 21, 0)" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<h1 class="mui-title">店铺分享</h1>
-				<a class=" mui-pull-right cor_y fs16" style="line-height: 45px">
-					须知
-				</a>
-			</header>
 
 			<!--分享方式-->
 			<div class=" ">
@@ -85,7 +78,6 @@
 				updateSerivces();
 				plus.nativeUI.closeWaiting()
 				mui.currentWebview.show('pop-in', 300, function () {}, {});
-				app.initHeader();
 					var self = plus.webview.currentWebview();
 //				alert(self.num)
 			})

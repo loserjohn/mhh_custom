@@ -8,7 +8,7 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
-		<!--<link rel="stylesheet" href="//at.alicdn.com/t/font_759256_bj8r250ayq.css" />-->
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
 		<style>
 			/*分类*/
@@ -128,13 +128,14 @@
 			/*模态框定位*/
 			
 			.loactionBox {
-				margin-top: 60px;
 				border-bottom: 1px dotted #d3d3d3;
+				line-height: 44px;
+				height: 44px;
+				background: #fff;
 			}
 			
 			.currPosMark {
-				line-height: 36px;
-				margin: 10px auto;
+				line-height: 44px;				
 			}
 			
 			.starsBox {
@@ -157,6 +158,9 @@
 				padding: 0 5px;
 				margin: 10px;
 				width: 50px;
+				font-size: 12px;
+				line-height: 16px;
+				text-align: center;
 			}
 			
 			.starsBox li.active {
@@ -188,6 +192,21 @@
 
 	<body>
 		<div id="app">
+			
+			<!--等待页面-->
+			<div class="loader" style="top:0" v-show="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 			<header class="   header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_y"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
 				<div class="cm_search f1 flex">
@@ -195,6 +214,18 @@
 					<div class="f1 cm_search_input cor_g" @tap="_toSearch">马嘿嘿带你搜点啥？</div>
 				</div>
 			</header>
+			<div class="loactionBox container"  @tap="_navigateTo('../address/where.html','where')">
+						<!--<div class="flex">
+							<div class="f1 lh30">
+								服务地址
+							</div>
+							<div class="f1 lh30 t_r" @tap="_NWnavigateTo('../address/where.html','where')">
+								重新选择
+							</div>
+						</div>-->
+						<p class="currPosMark ellipsis"><span class="mui-icon mui-icon-location cor_y"></span>{{currPosMark}}</p>
+			</div>
+			
 			<!--筛选条件-->
 			<div class=" block1">
 				<ul class="flex filterBars ">
@@ -209,9 +240,6 @@
 						<span class="mui-icon mui-icon-list" v-show="!viewType"></span>
 						<i class="iconfont icon-zonghe" v-show="viewType"></i>
 					</li>
-					<li class="f1 t_c" @tap="_modelToggle">
-						筛选<i class="iconfont icon-filter"></i>
-					</li>
 				</ul>
 			</div>
 
@@ -220,7 +248,7 @@
 				<div class="scrollContent ">
 					<ul class="reset scrollWrap" :class="{scrollWrap2:!viewType}">
 						<!--样式1-->
-						<li class="list" :class="viewType?'cm_proItems':'cm_proItems2'" @tap="_navigateTo('../technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" v-for="item in result">
+						<li class="list" :class="viewType?'cm_proItems':'cm_proItems2'" @tap="_NWnavigateTo('../technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" v-for="item in result">
 							<article class="flex relative">
 								<!--<ul class="cm_label_tool">
 									<li v-for="item2 in _getArr(item.SHOP_BUSINESS_TYPE)">{{item2}}</li>
@@ -229,7 +257,7 @@
 									<img :src="item.SHOP_LOGO" class="cover" />
 								</div>
 								<div class="f1 cm_txt">
-									<h4 class="ellipsis">{{item.SHOP_NAME}}</h4>
+									<h4 class="txt">{{item.SHOP_NAME}}</h4>
 									 <p class="fs12">	{{item.SHOP_CONCERN}}人关注</p>
 									<div class=" flex ">
 										<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in parseInt(item.SHOP_STAR) " />
@@ -237,13 +265,13 @@
 									
 									<p class="lh28">{{item.SHOP_BUSINESS_TYPE}}</p>
 									<aside class="cor_g ">
-										<div class=" flex">
-											<i class="mui-icon mui-icon-map cor_r fs16" style="margin-right: 10px;"></i>
-											<p class=" f1 fs12 ellipsis">{{item.SHOP_ADDRESS}}</p>
+										<div class=" flex" >
+											<i class="mui-icon mui-icon-map cor_r fs16 " style="margin-right: 10px;"></i>
+											<p class=" f1 fs12 txt">{{item.SHOP_ADDRESS}}</p>
 										</div>
 										<div class=" flex">
 											<i class="mui-icon mui-icon-navigate cor_r fs16"  style="margin-right: 10px;"></i>
-											<p class=" f1 fs12 ellipsis" >距离：{{item.DISTANCE}}km</p>
+											<p class=" f1 fs12 txt" >距离：{{item.DISTANCE}}km</p>
 										</div>										
 									</aside>
 
@@ -260,17 +288,7 @@
 			<!--模态框-->
 			<div class="cm_mask " v-show="modalShow" @tap.self="_modelToggle">
 				<div class="cm_modal  animated slideInRight">
-					<header class="loactionBox container">
-						<div class="flex">
-							<div class="f1 lh30">
-								服务地址
-							</div>
-							<div class="f1 lh30 t_r" @tap="_navigateTo('../address/where.html','where')">
-								重新选择
-							</div>
-						</div>
-						<p class="currPosMark"><span class="mui-icon mui-icon-location cor_y"></span>{{currPosMark}}</p>
-					</header>
+					
 					<aside class="starsBox container ">
 						<div class="cm_name">星级选择</div>
 						<ul class="stars flex">
@@ -284,14 +302,13 @@
 
 					</aside>
 					<!--价格区间筛选-->
-					<article class="prizeBox container">
+					<!--<article class="prizeBox container">
 						<div class="cm_name">价格区间</div>
 						<div class="flex prizes">
 							<input type="number" class="f1 prizeInput" v-model="min" /> ~
 							<input type="number" class="f1 prizeInput" v-model="max" />
 						</div>
-
-					</article>
+					</article>-->
 					<!--确认-->
 					<div class="container ">
 						<div class="cm_btn" @tap="_submit">确认</div>
@@ -339,6 +356,7 @@
 				APP = new Vue({
 					el: '#app',
 					data: {
+						loader:true,
 						scroll: '',
 						scrollTop: '',
 						modalShow: false,
@@ -402,15 +420,10 @@
 
 						var scroll = this.$refs.scroll
 						//							初始化scroll的屏幕位置
-						this.scrollTop = document.getElementById('header').offsetHeight + 44 + 'px';
+						this.scrollTop = document.getElementById('header').offsetHeight + 88 + 'px';
 
 						/*初始化数据*/
-						this._getData(() => {
-							mui.later(() => {
-								plus.nativeUI.closeWaiting()
-								mui.currentWebview.show('pop-in', 300, function() {}, {});
-							}, 1000)
-						})
+						this._getData()
 
 						/*初始化scroll*/
 						this.$nextTick(function() {
@@ -455,7 +468,6 @@
 
 									} else {
 										_this.scroll.finishPullUp()
-
 									}
 									_this.scroll.finishPullDown()
 									plus.nativeUI.closeWaiting()
@@ -529,6 +541,29 @@
 
 						},
 						/*跳转页面*/
+						_NWnavigateTo(dstUrl, dstId, extras) {
+							mui.openWindow({
+								url: dstUrl,
+								id: dstId,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: false, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						/*跳转页面*/
 						_navigateTo(dstUrl, dstId, extras) {
 							mui.openWindow({
 								url: dstUrl,
@@ -555,22 +590,24 @@
 						_submit() {
 							this.index = 1
 							this.result = []
-							this._getData()
+							plus.nativeUI.showWaiting()
+							this._getData(()=>{
+								plus.nativeUI.closeWaiting()
+							})
 						},
 						/*获取数据*/
 						_getData(callback) {
-
+							
 							var _this = this
 							let pos = plus.storage.getItem('pos')
-							if(!pos){
-								
+							if(!pos){							
 								plus.nativeUI.closeWaiting();
 								plus.nativeUI.toast('无法获取您的定位，请你刷新')
 								plus.webview.currentWebview().close()
 								return;
 							}
 							
-							
+						
 							pos = JSON.parse(pos)
 							
 							this.currPosMark = pos.address
@@ -585,11 +622,11 @@
 								ORDER_TYPE: this.sort
 //								distance: 5000
 							}
-							//							console.log(data.lon+"##########"+data.lat)
+														
 							if(this.min) data.lowest = this.min
 							if(this.max) data.highest = this.max
 							if(this.level != 0) data.SHOP_STAR = this.level
-
+//console.log(JSON.stringify(data))
 							mui.ajax(app.baseUrl + '/api/Shop/GetShops', {
 								data: data,
 								type: 'get', //HTTP请求类型
@@ -598,8 +635,9 @@
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
 								success: function(result) {
+									_this.loader = false
 									if(result.Success) {										
-//										alert(result.Data.ListInfo[0].DISTANCE)
+										
 										if(_this.result.length == result.Data.Total) {
 											_this.scroll.refresh()
 											_this.node = '没有数据了'
@@ -621,6 +659,7 @@
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
+									_this.loader = false
 									app.catchErr(type)
 								}
 							});
@@ -671,59 +710,16 @@
 							})()
 							this.curType = k
 						},
-						_toDetail() {
-							mui.openWindow({
-								url: '../../html/technician/technician.html',
-								id: 'technician',
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {},
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
-						},
-						/*跳转页面*/
-						_navigateTo(dstUrl, dstId, extras) {
-							mui.openWindow({
-								url: dstUrl,
-								id: dstId,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
-						},
+
 					}
 				})
 
 			});
 
 			function setPos(a) {
-				//				alert(a)
 				APP.currPosMark = a
+				
+				APP._submit()
 			}
 		</script>
 	</body>

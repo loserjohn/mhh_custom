@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/loading.css" />
 		<style>
 			.block {
 				padding: 5px;
@@ -34,15 +35,7 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					我的收藏
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
+
 			<div id="content" class="cm_tabBars">
 				<div class="cm_tabsT">
 					<ul class="flex reset cm_ul">
@@ -50,6 +43,20 @@
 						<li class="cm_tabTitle f1" @tap="_switch(2)" :class="{active:type==2}">关注技师</li>
 					</ul>
 				</div>
+			</div>
+			<!--等待页面-->
+			<div class="loader" style="top:44px" v-show="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
 			</div>
 			<!--地址-->
 			<div class="cards scrollBox " :style="{top:scrollTop+ 'px',bottom:0}" ref="scroll">
@@ -116,7 +123,7 @@
 									</article>
 								</div>
 							</li>
-							<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{norest1?'没有数据咯':''}}</li>
+							<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;" v-if="proList.length!=0">{{norest1?'没有数据咯':''}}</li>
 						</ul>
 						<!--手艺人-->
 						<ul class="reset cm_ul animated slideInRight " v-show="type==2">
@@ -129,7 +136,7 @@
 										<img :src="item.SHOP_LOGO" class="avatar">
 										<div class="f1">
 											<div class="lh18 cm_name">{{item.SHOP_NAME}}</div>
-																			
+
 											<p class="flex">嘿皮值:
 												<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in _level(item.SHOP_STAR) " />
 											</p>
@@ -139,7 +146,7 @@
 									</div>
 								</div>
 							</li>
-							<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{norest2?'没有数据咯':''}}</li>
+							<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;" v-if="matList.length!=0">{{norest2?'没有数据咯':''}}</li>
 						</ul>
 					</div>
 					<!--无数据提示-->
@@ -171,9 +178,11 @@
 			var APP
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
+				//				app.initHeader();
 				APP = new Vue({
 					el: '#app',
 					data: {
+						loader: true,
 						scrollTop: '',
 						scroll: '',
 						show: false,
@@ -196,13 +205,13 @@
 					},
 					created: function() {
 						//							alert(1)
-						app.initHeader();
+
 					},
 					mounted: function() {
 
 						var _this = this
 						var scroll = this.$refs.scroll
-						this.scrollTop = document.getElementById('header').offsetHeight + 44
+						this.scrollTop = 44
 
 						var self = plus.webview.currentWebview();
 						if(self.type) {
@@ -230,7 +239,7 @@
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
-								plus.nativeUI.showWaiting();
+//								plus.nativeUI.showWaiting();
 								let t = _this.type
 								switch(t) {
 									case 1:
@@ -257,7 +266,7 @@
 
 									}
 									_this.scroll.finishPullDown()
-									plus.nativeUI.closeWaiting()
+//									plus.nativeUI.closeWaiting()
 								})
 
 							})
@@ -275,8 +284,8 @@
 						})
 						/*首次加载数据*/
 						this._getData(() => {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
+							//							plus.nativeUI.closeWaiting()
+							//							mui.currentWebview.show('pop-in', 300, function() {}, {});
 						})
 					},
 					filters: {
@@ -298,14 +307,14 @@
 						}
 					},
 					methods: {
-						_level(n){
-//							alert(parseInt(n))
-							if(!n){
+						_level(n) {
+							//							alert(parseInt(n))
+							if(!n) {
 								return 1
-							}else{
+							} else {
 								return parseInt(n)
 							}
-							
+
 						},
 						/*切换*/
 						_switch(t) {
@@ -415,6 +424,7 @@
 						},
 						/*获取收藏数据*/
 						_getData(callback) {
+							this.loader = true
 							var _this = this
 							var url = ''
 							var index;
@@ -440,59 +450,70 @@
 								pageIndex: index,
 								pageSize: 8
 							}
-							app.ajax(app.baseUrl + url, {
+							mui.ajax(app.baseUrl + url, {
 								data: data,
 								type: ajaxWay, //HTTP请求类型
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
 								success: function(result) {
-									if(result.Success) {
-										//										alert(2)
-										switch(t) {
-											case 1:
-												/*项目*/
-												let l1 = _this.proList.length;
-												if(l1 == result.Data.Total) {
-													if(callback) callback();
-													_this.norest1 = true
-													//													plus.nativeUI.closeWaiting();
-													if(callback) callback(true)
-													return;
-												}
+									
+									mui.later(() => {
+										_this.loader = false
+										if(result.Success) {
+											switch(t) {
+												case 1:
+													/*项目*/
+													let l1 = _this.proList.length;
+													if(l1 == result.Data.Total) {
+														if(callback) callback();
+														_this.norest1 = true
+														//													plus.nativeUI.closeWaiting();
+														if(callback) callback(true)
+														return;
+													}
 
-												_this.proList = _this.proList.concat(result.Data.ListInfo)
-												_this.index1 += 1
-												mui.later(() => {
+													_this.proList = _this.proList.concat(result.Data.ListInfo)
+													_this.index1 += 1
+
 													_this.scroll.refresh();
 													if(callback) callback(false);
-												}, 300)
 
-												break;
-											case 2:
-												/*手艺人*/
-												let l2 = _this.matList.length;
-												//												console.log(2,l2,result.Data.Total)
-												if(l2 == result.Data.Total) {
-													if(callback) callback();
-													_this.norest2 = true
-													if(callback) callback(true)
-													return;
-												}
+													break;
+												case 2:
+													/*手艺人*/
+													let l2 = _this.matList.length;
+													//												console.log(2,l2,result.Data.Total)
+													if(l2 == result.Data.Total) {
+														if(callback) callback();
+														_this.norest2 = true
+														if(callback) callback(true)
+														return;
+													}
 
-												_this.matList = _this.matList.concat(result.Data.ListInfo)
-												_this.index2 += 1
-												mui.later(() => {
-													_this.scroll.refresh();
-													if(callback) callback(false);
-												}, 300)
-												break;
-											default:
-												break;
+													_this.matList = _this.matList.concat(result.Data.ListInfo)
+													_this.index2 += 1
+				
+														_this.scroll.refresh();
+														if(callback) callback(false);
+									
+													break;
+												default:
+													break;
+											}
+
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast(result.Msg)
+
 										}
-
-									} else {
-										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
-									}
+									},300)
+								},
+								error: function(xhr, type, errorThrown) {
+									_this.loader = false
+									_this.scroll.refresh();
+									app.catchErr(xhr, type, errorThrown)
 								}
 							});
 						},
@@ -534,12 +555,12 @@
 								},
 								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: extras,
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})

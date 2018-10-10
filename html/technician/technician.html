@@ -8,6 +8,8 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+		
 		<style>
 			.box {
 				background: #fff;
@@ -341,6 +343,20 @@
 			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav cor_w"></span>返回</button>
 		</header>
 		<div id="app">
+			<!--等待页面-->
+			<div class="loader" style="top:0" v-if="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 
@@ -423,7 +439,7 @@
 											<div class="f1">优惠券:</div>
 											<div class="ticketBox" @tap="_navigateTo('../coupons/proCoupons.html','proCoupons',{'shopCoupons':coupons})">
 												<ul class="reset flex">
-													<li class="ticketItems" v-for="(item,index) in coupons" v-if="index==1||index==2">
+													<li class="ticketItems" v-for="(item,index) in coupons" v-if="index==1||index==0">
 														{{item.DISCOUNT_NAME}}
 													</li>
 												</ul>
@@ -512,27 +528,7 @@
 											<aside>商圈：</aside>
 											{{shopMsg.SHOP_AREA}}
 										</div>
-
-										<!--推荐项目-->
-										<!--<div class="block7 panel container">
-											<div class="cm_title t_c">
-												-- 店长推荐 --
-											</div>
-											<div class="newContent">
-												<ul class="reset flex">
-													<li class="newItem" v-for="item in  allProduct" @tap="_navigateTo('../production/productBuy.html','productBuy',{proKey:item.PROJECT_CODE})">
-														<img :src="item.PROJECT_IMG1" alt="" />
-														<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
-														<article class="flex">
-															<p class="prize  cor_r fs18 lh28">￥{{item.PROJECT_DISCOUNT}}</p>
-															<p class="delec_prize cor_g f1 t_r lh28">￥{{item.PROJECT_PRICE}}</p>
-														</article>
-														<div class="activityTool">{{item.PROJECT_CLASS}}</div>
-													</li>
-													<li class="t_c lh26" style="width: 100%;text-align: center;"  v-show="allProduct.length==0">-手艺人还未发布项目-</li>
-												</ul>
-											</div>
-										</div>-->
+									
 									</div>
 								</div>
 
@@ -701,6 +697,7 @@
 				var APP = new Vue({
 					el: '#app',
 					data: {
+						loader:true,
 						/*当前页面的手艺人code*/
 						shopCode: '',
 
@@ -779,13 +776,7 @@
 						this.scrollHeight = plus.screen.resolutionHeight - document.getElementById('header').offsetHeight - 44 + 'px';
 
 						/*初始化手艺人数据*/
-						this._initData(() => {
-							mui.later(() => {
-								plus.nativeUI.closeWaiting()
-								mui.currentWebview.show('pop-in', 300, function() {}, {});
-							}, 500)
-
-						})
+						this._initData()
 
 						/*初始化下拉scroll*/
 						this.$nextTick(function() {
@@ -1004,6 +995,7 @@
 						},
 						/*初始化数据*/
 						_initData(callback) {
+							this.loader = true
 							var _this = this
 							/*初始化店铺信息*/
 							mui.ajax(app.baseUrl + '/api/Shop/ViewShop', {
@@ -1017,25 +1009,29 @@
 								},
 								success: function(result) {
 									/*登陆成功*/
-									if(result.Success) {
-										/*店铺信息*/
-										_this.shopMsg = result.Data.Shop
-										_this.levels = parseInt(result.Data.Shop.SHOP_STAR)
-										/*充值卡*/
-										_this.refillcard = result.Data.Recharge
-										/*优惠券*/
-										_this.coupons = result.Data.Discount
-
-										_this._initComment()
-
-										_this.enabledTime = result.Data.enabledTime
-										if(callback) callback()
-									} else {
-										/*验证失败*/
-									}
+									mui.later(()=>{
+										_this.loader = false;
+										if(result.Success) {
+											/*店铺信息*/
+											_this.shopMsg = result.Data.Shop
+											_this.levels = parseInt(result.Data.Shop.SHOP_STAR)
+											/*充值卡*/
+											_this.refillcard = result.Data.Recharge
+											/*优惠券*/
+											_this.coupons = result.Data.Discount
+	
+											_this._initComment()
+	
+											_this.enabledTime = result.Data.enabledTime
+											if(callback) callback()
+										} else {
+											/*验证失败*/
+										}
+									},500)									
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
+									_this.loader = false;
 									app.catchErr(type)
 								}
 							})

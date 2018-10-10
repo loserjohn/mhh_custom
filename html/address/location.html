@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html>
-
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
@@ -24,9 +23,7 @@
 				padding: 0!important;
 				overflow: hidden;
 				font-size: 14px;
-				/*overflow: hidden;*/
-			}
-			
+			}			
 			p {
 				margin: 0;
 				padding: 0;
@@ -236,6 +233,7 @@
 				var lon = '';
 				var lan = '';
 				var address = '';
+				var street = ''
 
 				AMapUI.loadUI(['misc/PositionPicker', 'misc/PoiPicker'], function(PositionPicker, PoiPicker) {
 					var resBox = document.getElementById('resultBox')
@@ -341,11 +339,12 @@
 					// 拖拽选址
 
 					positionPicker.on('success', function(positionResult) {
-						//						console.log(JSON.stringify(positionResult.position) )
+												
 						lon = positionResult.position.lng
 						lan = positionResult.position.lat
+						street = positionResult.nearestRoad
 						address = positionResult.address;
-
+//						console.log(positionResult.nearestRoad)
 						$('.poi .nearpoi').text(positionResult.nearestPOI)
 						$('.address .info').text(positionResult.address)
 						
@@ -377,9 +376,10 @@
 							/*经度*/
 							latitude: lan,
 							/*纬度*/
-							address: address
+							address: address,
+							street: street
 						}
-
+//						console.log(JSON.stringify(co))
 						switch(prevID) {
 							case 'addAddress':
 								s.evalJS('setPos(' + JSON.stringify(co) + ')')

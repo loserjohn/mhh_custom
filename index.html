@@ -46,7 +46,7 @@
 			
 			.carouselBox .mui-slider-indicator {
 				position: absolute;
-				bottom: 24px!important;
+				bottom: 12px!important;
 				z-index: 1000;
 			}
 			/*菜单*/
@@ -242,12 +242,12 @@
 		<div id="app">
 			<!--头部-->
 			<header class="fixed container   header flex " :style="{background:'rgba(21,21,21,'+opacity+')'}" id="header">
-				<div class="curPos flex" @tap="_navigateTo('./html/address/where.html','where')">
+				<div class="curPos flex" @tap="_NWnavigateTo('./html/address/where.html','where')">
 					<i class="iconfont icon-wei- cor_y fs16"></i>
 					<div class="cor_w f1">{{curPos}}</div>
 					<i class="iconfont icon-xiayibu cor_w"></i>
 				</div>
-				<div class="cm_search f1 flex" @tap="_navigateTo('./html/production/search.html','search')">
+				<div class="cm_search f1 flex" @tap="_NWnavigateTo('./html/production/search.html','search')">
 					<i class="iconfont icon-search cor_g"></i>
 					<div class="f1 cm_search_input ">马嘿嘿带你搜点啥？</div>
 				</div>
@@ -287,14 +287,14 @@
 						<!--轮播图部分-->
 						<div class="carouselBox ">
 							<div id="slider" class="mui-slider" ref='slider'>
-								<div class="mui-slider-group mui-slider-loop" style="min-height: 200px;">
+								<div class="mui-slider-group mui-slider-loop" style="min-height: 150px;">
 									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate">
 										<img :src="prevPic">
 									</div>
 									<!-- 第一张 -->
-									<div class="mui-slider-item" v-for="item in activityPics">
-										<img :src="item.ACTIVITY_IMG">
+									<div class="mui-slider-item" v-for="item in activityPics" @tap="_jump(item.LINK_URL)">
+										<img :src="item.LINK_IMAGE">
 									</div>
 									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate">
@@ -362,21 +362,64 @@
 							</ul>
 						</div>
 
-						<!--红包-->
-						<div class="block1 flex panel">
-							<img src="./images/index/index1.png" alt="" />
-						</div>
-
-						<!--特惠部分-->
-						<div class="block2 flex panel">
-							<div class="f1"></div>
-							<div class="f1"></div>
+						<!--导航栏豆腐块-->
+						<div v-for="item in blockData">
+							<div class=" flex " v-if="item.type==1" >
+								<div class="f1 t_c"  @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img" alt="" class="contain "/>
+								</div>
+							</div>
+							<div class=" flex " v-else-if="item.type==2">
+								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img" alt="" class="contain "/>
+								</div>
+								<div class="f1 t_c" @tap="_jump(item.listData[1].keyCode)">
+									<img :src="item.listData[1].img" alt="" class="contain"/>
+								</div>
+							</div>
+							
+							
+							<div class="flex " v-else-if="item.type==3">
+								<div class=" f2">
+									<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+										<img :src="item.listData[0].img" alt="" class="contain"/>
+									</div>
+									
+								</div>
+								<div class="f3 ">  
+									<div class=" t_c" @tap="_jump(item.listData[1].keyCode)">
+										<img :src="item.listData[1].img" alt="" class="contain"/>
+									</div>
+									<div class=" t_c" @tap="_jump(item.listData[2].keyCode)">
+											<img :src="item.listData[2].img" alt="" class="contain"/>
+									</div>							
+								</div>
+							</div>
+							<div class=" flex " v-else-if="item.type==4">
+								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />
+								</div>
+								<div class="f1 t_c" >
+									<div class="" @tap="_jump(item.listData[1].keyCode)">
+										<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain"/>
+									</div>
+									<div class="flex">
+										<div class="f1 t_c" @tap="_jump(item.listData[2].keyCode)">
+											<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain "/>
+										</div>
+										<div class="f1 t_c" @tap="_jump(item.listData[3].keyCode)">
+											<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain"/>
+										</div> 
+									</div>
+								</div> 
+							</div>
+							 
 						</div>
 
 						<!--推荐活动-->
 						<div class="block3  panel" v-for="(item,index) in  recommend" v-show="item.Items.length>1">
-							<img src="./images/index/index3.png" alt="" class="contain" />
-							<!--<img :src="item.TYPE_IMAGE" alt="" class="contain"/>-->
+							<!--<img src="./images/index/index3.png" alt="" class="contain" />-->
+							<img :src="item.TYPE_IMAGE?item.TYPE_IMAGE:'./images/index/index3.png'" alt="" class="contain" />
 							<div class="mui-scroll-wrapper activityBox " :id="'wrapper'+index">
 								<ul class="reset flex mui-scroll " :style="{width:100*(item.Items.length)+'px'}">
 									<li class="activityItem " v-for="list in item.Items" @tap="_navigateTo('./html/production/productBuy.html','productBuy',{proKey:list.PROJECT_CODE})">
@@ -439,6 +482,7 @@
 			<img src="images/share.jpg" alt="" width="60" height="60" class="versionLoad" />
 			<div class="versionTxt" id="versionTxt">加载中...</div>
 		</div>
+		
 		<script src="./js/mui.min.js"></script>
 		<script src="./js/util.js"></script>
 		<script src="./js/app.js"></script>
@@ -480,9 +524,9 @@
 						prevPic: '',
 						nextPic: '',
 
+						blockData: []
 					},
 					created: function() {
-
 						app.initHeader();
 						//						/*页面首次加载,将登陆默认为0*/
 						plus.storage.setItem('isLogin', '0')
@@ -498,7 +542,9 @@
 						this.appHeight = plus.display.resolutionHeight
 
 						this._initScroll() //初始化下拉
-
+						
+						this._initBlock() //初始化豆腐块
+						
 						this._initCarousel() //初始化轮播图
 
 						this._initRecommont() /*获取推荐项目*/
@@ -509,16 +555,170 @@
 							// alert(t)
 							if(t) {
 								//没有更新版本
-								mui.later(function(){
+								mui.later(function() {
 									plus.webview.getWebviewById('mine').evalJS('autoLogin()')
-								},500)
-								
+								}, 500)
+
 							}
 						})
 						//新版本检测
 
 					},
 					methods: {
+//						初始化豆腐块
+						_initBlock(){
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Carousel/GetPannelList', {
+								type: 'get', //HTTP请求类型
+								timeout: 5000, //超时时间设置为10秒；
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+
+									/*登陆成功*/
+									plus.nativeUI.closeWaiting()
+									if(result.Success) {
+										_this.blockData = result.Data.ListInfo
+									} else {
+										/*验证失败*/								
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+
+								}
+							})
+						},
+						//						跳转活动页面
+						_jump(str) {
+							var key = str.split('||')[0];
+							var code = str.split('||')[1];
+
+							switch(key) {
+								case 'A':
+									//								活动								
+									mui.openWindow({
+										url: 'code',
+										id: 'activity' + new Date().getTime(),
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead',
+											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+											titleNView: { // 窗口的标题栏控件
+												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+												titleSize: "14px", // 字体大小,默认17px
+												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+												progress: { // 标题栏控件的进度条样式
+													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+													height: "2px" // 进度条高度,默认值为"2px"         
+												},
+												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+													height: "1px" // 分割线高度,默认值为"2px"
+												}
+											}
+										},
+										createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: true, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										extras: {
+											//自定义扩展参数，可以用来处理页面间传值  
+											detail: data
+										},
+										waiting: {
+											autoShow: false, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+
+									break;
+								case 'W':
+									//								外链
+									mui.openWindow({
+										url: 'code',
+										id: 'activity' + new Date().getTime(),
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead',
+											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+											titleNView: { // 窗口的标题栏控件
+												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+												titleSize: "14px", // 字体大小,默认17px
+												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+												progress: { // 标题栏控件的进度条样式
+													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+													height: "2px" // 进度条高度,默认值为"2px"         
+												},
+												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+													height: "1px" // 分割线高度,默认值为"2px"
+												}
+											}
+										},
+										createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: true, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										extras: {
+											//自定义扩展参数，可以用来处理页面间传值  
+											detail: data
+										},
+										waiting: {
+											autoShow: false, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+									break;
+								case 'B':
+									//								社区新闻
+									var data = {
+										infoCode: code
+									}
+									mui.openWindow({
+										url: './html/community_detail.html',
+										id: 'community_detail',
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead'
+										},
+										createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: true, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										extras: {
+											//自定义扩展参数，可以用来处理页面间传值  
+											detail: data
+										},
+										waiting: {
+											autoShow: false, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+
+									break;
+								case 'P':
+									//项目
+									this._NWnavigateTo('./html/production/productBuy.html', 'productBuy', {
+										proKey: code
+									})
+									break;
+								default:
+									break;
+							}
+						},
+						//						判断定位权限
 						_checkPermissionPos() {
 							var pp = plus.navigator.checkPermission('LOCATION');
 							switch(pp) {
@@ -539,7 +739,7 @@
 									return false
 									break;
 								default:
-//									plus.nativeUI.alert('不支持定位权限');
+									//									plus.nativeUI.alert('不支持定位权限');
 									return true
 									break;
 							}
@@ -548,57 +748,44 @@
 						_initCarousel() {
 							var _this = this;
 							_this.activityPics = [{
-									ACTIVITY_IMG: './images/index/banner1.jpg'
+									LINK_IMAGE: './images/index/banner1.png',
+									LINK_URL: '-1||'
 								},
 								{
-									ACTIVITY_IMG: './images/index/banner2.jpg'
+									LINK_IMAGE: './images/index/banner2.png',
+									LINK_URL: '-1||'
 								},
 								{
-									ACTIVITY_IMG: './images/index/banner3.jpg'
-								},
-								{
-									ACTIVITY_IMG: './images/index/banner4.jpg'
-								},
-								{
-									ACTIVITY_IMG: './images/index/banner5.jpg'
-								},
-								{
-									ACTIVITY_IMG: './images/index/banner6.jpg'
-								},
-								{
-									ACTIVITY_IMG: './images/index/banner7.jpg'
-								},
-								{
-									ACTIVITY_IMG: './images/index/banner8.jpg'
-								},
+									LINK_IMAGE: './images/index/banner3.png',
+									LINK_URL: '-1||'
+								}
 							]
-
-							_this.prevPic = _this.activityPics[_this.activityPics.length - 1].ACTIVITY_IMG
-							_this.nextPic = _this.activityPics[0].ACTIVITY_IMG;
+							_this.prevPic = _this.activityPics[_this.activityPics.length - 1].LINK_IMAGE
+							_this.nextPic = _this.activityPics[0].LINK_IMAGE;
 							var slider = _this.$refs.slider;
 							//							mui(slider).slider({
 							//								interval: 3000 //自动播放周期
 							//							});
-							mui.ajax(app.baseUrl + '/api/Carousel/GetActivityList', {
+							mui.ajax(app.baseUrl + '/api/Link/GetLinks/4', {
 								type: 'get', //HTTP请求类型
 								timeout: 5000, //超时时间设置为10秒；
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
 								success: function(result) {
+
 									/*登陆成功*/
 									plus.nativeUI.closeWaiting()
 									if(result.Success) {
 										_this.activityPics = result.Data.ListInfo
 										if(result.Data.ListInfo.length >= 1) {
-											_this.prevPic = _this.activityPics[_this.activityPics.length - 1].ACTIVITY_IMG
-											_this.nextPic = _this.activityPics[0].ACTIVITY_IMG;
+											_this.prevPic = _this.activityPics[_this.activityPics.length - 1].LINK_IMAGE
+											_this.nextPic = _this.activityPics[0].LINK_IMAGE;
 										}
 										var status = 0;
-
 										_this.activityPics.forEach((item, index) => {
 											let img = new Image();
-											img.src = item.ACTIVITY_IMG;
+											img.src = item.LINK_IMAGE;
 
 											img.onload = function() {
 												status += 1;
@@ -616,15 +803,16 @@
 										/*验证失败*/
 										mui(slider).slider({
 											interval: 3000 //自动播放周期
-										});	
+										});
 									}
 								},
 								error: function(xhr, type, errorThrown) {
 									//									加载失败则使用默认图片
+
 									plus.nativeUI.closeWaiting()
 									mui(slider).slider({
 										interval: 3000 //自动播放周期
-									});				
+									});
 								}
 							})
 						},
@@ -748,6 +936,7 @@
 						},
 						/*获取【推荐项目】列表*/
 						_initRecommont(callback) {
+
 							/*获取【推荐项目】列表*/
 							var _this = this
 							mui.ajax(app.baseUrl + '/api/Recommend/GetRecommendItems', {
@@ -774,7 +963,7 @@
 												});
 											})
 										}, 500)
-
+										//										console.log(JSON.stringify(result.Data.ListInfo))
 									} else {
 										if(callback) callback()
 										_this.scroll.refresh()
@@ -833,17 +1022,39 @@
 								},
 								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: {
 									proType: extras
 								},
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})
+						},
+						_NWnavigateTo(dstUrl, dstId, extras){
+							mui.openWindow({
+									url: dstUrl,
+									id: dstId,
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: extras,
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
 						},
 						/*跳转页面*/
 						_navigateTo(dstUrl, dstId, extras) {
@@ -861,12 +1072,12 @@
 									},
 									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 									show: {
-										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										autoShow: true, //页面loaded事件发生后自动显示，默认为true
 										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 									},
 									extras: extras,
 									waiting: {
-										autoShow: true, //自动显示等待框，默认为true
+										autoShow: false, //自动显示等待框，默认为true
 										title: '正在加载...', //等待对话框上显示的提示内容
 									}
 								})
@@ -897,7 +1108,7 @@
 						_initPos(callback) {
 							var _this = this;
 							plus.geolocation.getCurrentPosition((position) => {
-								if(!position || !position.address||!position.address.city) return;
+								if(!position || !position.address || !position.address.city) return;
 								var obj = position.address
 
 								_this.co = {
@@ -968,9 +1179,9 @@
 
 				}
 			}
-// 			function test(){
-// 				alert(4)
-// 			}
+			// 			function test(){
+			// 				alert(4)
+			// 			}
 		</script>
 	</body>
 

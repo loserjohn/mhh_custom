@@ -24,6 +24,8 @@
 		.block1 .hisItem{
 			text-decoration: underline;
 			margin: 0 10px;
+			padding: 0 10px;
+			background: #f1f1f1;
 		}
 		.block1  .hotWord{
 			line-height: 24px;
@@ -44,6 +46,14 @@
 		.cm_search_input{
 			height: 36px!important;
 			line-height: 36px;
+		}
+		.cm_proItems>article  .cm_itemPic{
+			width: 100px!important;
+			height: 100px!important;
+		}
+		.cm_proItems>article  .cm_itemPic img{
+			width: 100px!important;
+			height: 100px!important;
 		}
 		</style>
 	</head>
@@ -96,8 +106,7 @@
 						<li class="  panel cm_proItems" @tap="_navigateTo('./productBuy.html','productBuy',{proKey:item.PROJECT_CODE})" v-for="item in resultList">
 							<article class="flex relative">
 								<ul class="cm_label_tool">
-									<li>会员价</li>
-									<li>新客满减</li>
+									<li>{{item.PROJECT_CLASS}}</li>
 								</ul>
 								<div class="cm_itemPic">
 									<img :src="item.PROJECT_IMG1" class="cover" />
@@ -105,7 +114,7 @@
 								<div class="f1 cm_txt">
 									<h4 class="ellipsis">{{item.PROJECT_NAME}} </h4>
 									<div class="cm_technician flex">
-										<img :src="item.SHOP_LOGO"  class="avatar"/>
+										<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'"  class="avatar"/>
 										<div class="f1">
 											<p class="lh18">{{item.SHOP_NAME}} </p>
 											<p class="flex">嘿皮值:
@@ -125,10 +134,10 @@
 							<!--<aside>
 								<span class="cm_label" style="margin-right: 15px;">限购:</span>限购备注
 							</aside>-->
-							<aside class="cor_g"> 
+							<!--<aside class="cor_g"> 
 								<span class="cm_label" style="margin-right: 15px;">距离我:</span>
 								<span class="">{{item.DISTANCE}}米</span>
-							</aside>
+							</aside>-->
 						</li>					
 					</ul>
 					<p class="t_c lh28" style="width: 100%;">没有数据咯</p>
@@ -262,12 +271,12 @@
 								},
 								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: extras,
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})
@@ -301,7 +310,7 @@
 								type: 'get', //HTTP请求类型
 								success: function(result) {
 									if(result.Success) {
-
+										plus.nativeUI.closeWaiting();
 										var b = false;
 										
 										var l = _this.resultList.length;
@@ -319,6 +328,7 @@
 										_this._save()
 										if(callback) callback();
 									} else {
+										plus.nativeUI.closeWaiting();
 										/*验证失败*/
 										plus.nativeUI.toast(result.Msg)
 										if(callback) callback();
@@ -326,8 +336,8 @@
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
-									plus.nativeUI.closeWaiting()
-									console.log(type);
+									plus.nativeUI.closeWaiting();
+									app.catchErr(xhr, type, errorThrown)
 								}
 							});
 						},

@@ -8,6 +8,7 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../css/common.css" />
 		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/loading.css" />
 		<style>
 			.detailTitle {
 				line-height: 60px;
@@ -98,20 +99,25 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					新闻详情
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
-
+			
+			<!--等待页面-->
+			<div class="loader" style="top:0" v-show="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 			<div class="container " id="content" style="background: #fff">
 				<div >
 					<h3 class="t_c detailTitle">{{detailContent.title}}</h3>
-					<div class="detailAbstract cor_y">{{detailContent.infoAbstract}}</div>
+					<div class="detailAbstract cor_y" v-if="detailContent.infoAbstract">{{detailContent.infoAbstract}}</div>
 					<ul class="clearfix " style="padding-top: 10px;margin-bottom: 20px;">
 						<li class="fl cor_g   tags " v-for="labels in detail.infoLable">
 							<i class="iconfont icon-shengqian"></i> {{labels}}
@@ -134,10 +140,9 @@
 					<aside class="cm_name title">评论社区</aside>
 					<article style="padding: 15px 0; box-sizing: border-box;">
 						<ul class="">
-							<li class="list flex" v-for="(item,index) in commentList" :key="index">
-							
+							<li class="list flex" v-for="(item,index) in commentList" :key="index">						
 								<aside class="avatar">
-									<img :src="item.REVIEW_USER_HEAD?item.REVIEW_USER_HEAD:'../images/default_avatar.jpg'" alt=""  class="cover"/>
+									<img @error="noPic($event)" :src="item.REVIEW_USER_HEAD?item.REVIEW_USER_HEAD:'../images/default_avatar.jpg'"   alt=""  class="cover"/>
 								</aside>
 								<article class="f1">
 									<div>{{item.REVIEW_USER_NAME}}</div>
@@ -179,6 +184,7 @@
 				var APP = new Vue({
 					el: '#app',
 					data: {
+						loader:true,
 						detail: '',
 						detailContent: '',
 						isGood:false,
@@ -189,19 +195,21 @@
 						norest:false
 					},
 					created: function() {
-						app.initHeader();
+	
 					},
 					mounted: function() {
 						var self = plus.webview.currentWebview();
 						this.detail = self.detail;
 
-						this._getData(() => {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function () {}, {});
-						})
+						this._getData()
 						this._getComment()
 					},
 					methods: {
+						noPic(e){
+//							console.log(e.target)
+							var dom = e.target
+							dom.src = '../images/default_avatar.jpg'
+						},
 						_scanMore(){
 							if(this.norest){
 								plus.nativeUI.toast('没有数据了');
@@ -319,16 +327,18 @@
 						},
 						/*获取数据*/
 						_getData(callback) {
+							this.loader = true
 							var _this = this
-							plus.nativeUI.showWaiting()
+//							plus.nativeUI.showWaiting()
 							app.ajax(app.baseUrl + '/api/Info/GetMhhCmsItem', {
 								data: {
 									infoCode: this.detail.infoCode
 								},
 								type: 'post', //HTTP请求类型
 								success: function(result) {
+									_this.loader = false
 									if(result.Success) {
-										plus.nativeUI.closeWaiting()
+//										plus.nativeUI.closeWaiting()
 										_this.detailContent = result.Data	
 										_this.isGood = result.Data.isGood;
 										if(callback) callback();
@@ -336,10 +346,11 @@
 										/*验证失败*/
 										plus.nativeUI.closeWaiting()
 										plus.nativeUI.toast(result.Msg)
-
+										
 									}
 								},
 								error: function(xhr, type, errorThrown) {
+									_this.loader = false
 									app.catchErr(type)
 								}
 							});
@@ -418,12 +429,10 @@
 										_this.isGood = true
 										plus.nativeUI.closeWaiting()	
 										plus.nativeUI.toast('点赞成功')
-										_this.detail.goods +=1
-										
+										_this.detail.goods +=1										
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-										
+										plus.nativeUI.toast(result.Msg)									
 									}
 								},
 								error: function(xhr, type, errorThrown) {

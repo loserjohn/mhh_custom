@@ -654,7 +654,10 @@ li {
 	height: 120px;
 	margin-right: 15px;
 }
-
+.cm_proItems>article .cm_itemPic img{
+	width: 120px;
+	height: 120px;
+}
 .cm_proItems>article .cm_txt>div {
 	margin-top: 8px;
 }
@@ -705,7 +708,11 @@ li {
 .cm_proItems2>article .cm_itemPic>img {
 	margin: 0;
 }
-
+.cm_proItems2 .cm_txt .txt{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 .cm_proItems2>article .cm_label_tool {
 	position: absolute;
 	left: 0;

@@ -9,30 +9,33 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<style>
-			.mui-table-view-cell{
+			.mui-table-view-cell {
 				margin-bottom: 10px;
 				background: #fff;
 			}
-			.addressList{
+			
+			.addressList {
 				width: 100%;
 				box-sizing: border-box;
 				min-height: 50px;
-				padding:10px;
+				padding: 10px;
 				padding-bottom: 0;
 			}
-			.addressList .addressTxt{
-				border-bottom: 1px dotted #d3d3d3;	
-					
+			
+			.addressList .addressTxt {
+				border-bottom: 1px dotted #d3d3d3;
 			}
 			/*默认地址*/
-			.default ,
-			.default span{
-				/*background: #212121;*/
-				color: #ccaa42!important;	
-			}
 			
-			/*底部的按钮*/			
+			.default,
+			.default span {
+				/*background: #212121;*/
+				color: #ccaa42!important;
+			}
+			/*底部的按钮*/
+			
 			.bottomMenus {
 				position: fixed;
 				bottom: 0;
@@ -53,20 +56,24 @@
 		</style>
 	</head>
 
-	<body>
-		<div id="app">
-			<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					地址管理
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
-
+	<body>	
+		<div id="app">		
+			<!--等待页面-->
+			<div class="loader" style="top:0;bottom:50px" v-show="loader">
+				<ul >
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 			<!--地址-->
-			<div class="cards scrollBox " :style="{top:scrollTop+ 'px'}"  ref="scroll">
+			<div class="cards scrollBox " :style="{top:scrollTop+ 'px'}" ref="scroll">
 				<div class="reset relative" style="min-height: 101%;padding: 10px 0;">
 					<!--刷新提示框-->
 					<div class="refresh flex">
@@ -92,24 +99,24 @@
 						</div>
 					</div>
 					<ul class="reset cm_ul ">
-						<li class="panel  reset"  v-for="(item,index) in  addressList" >
-								<div class="addressList  " >
-									<aside class="lh24 addressTxt">{{item.REMARK}}</aside>
-									<article class="addressMsg flex">
-										<div class="f1 t_l lh30" :class="{cor_y:item.ISDEFAULT=='1'?true:false}" @tap="_handle(item.ADDRESS_CODE,item.ISDEFAULT)"><span class=" mui-icon mui-icon-checkmarkempty fs20"></span>{{item.ISDEFAULT=='1'?'默认地址':'设为默认'}}</div>
-										<div class="f1 t_c lh30" @tap="_edit(item)"><span class="mui-icon mui-icon-compose fs20" ></span>编辑</div>
-										<div class="f1 t_r lh30" @tap="_delect(item.ADDRESS_CODE)"><span class="mui-icon mui-icon-close fs20 " ></span>删除</div>
-									</article>
-								</div>
-						</li>				
-						
+						<li class="panel  reset" v-for="(item,index) in  addressList">
+							<div class="addressList  ">
+								<aside class="lh24 addressTxt">{{item.REMARK}}</aside>
+								<article class="addressMsg flex">
+									<div class="f1 t_c lh30" :class="{cor_y:item.ISDEFAULT=='1'?true:false}" @tap="_handle(item.ADDRESS_CODE,item.ISDEFAULT)"><span class=" mui-icon mui-icon-checkmarkempty fs20"></span>{{item.ISDEFAULT=='1'?'默认地址':'设为默认'}}</div>
+									<!--<div class="f1 t_c lh30" @tap="_edit(item)"><span class="mui-icon mui-icon-compose fs20"></span>编辑</div>-->
+									<div class="f1 t_c lh30" @tap="_delect(item.ADDRESS_CODE)"><span class="mui-icon mui-icon-close fs20 "></span>删除</div>
+								</article>
+							</div>
+						</li>
+
 					</ul>
 					<!--无数据提示-->
-					<div v-if="addressList.length==0" class="t_c cm_noItem" >
+					<div v-if="addressList.length==0" class="t_c cm_noItem">
 						<div class="cm_noItem_box flex">
 							<img src="../../images/no4.png" alt="" clas/>
 							<div class="t_c ">您还没添加地址</div>
-						</div>					
+						</div>
 					</div>
 				</div>
 			</div>
@@ -120,23 +127,24 @@
 						添加地址
 					</h3>
 			</div>
-
+			
 		</div>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/app.js"></script>
 		<script src="../../js/vue.js"></script>
 		<script src="../../js/bscroll.min.js"></script>
-				<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			})
-			var APP 
+			var APP
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
 				APP = new Vue({
 					el: '#app',
 					data: {
+						loader:true,						
 						scrollTop: '',
 						scroll: '',
 						show: false,
@@ -145,20 +153,16 @@
 					},
 					created: function() {
 						//							alert(1)
-						app.initHeader();
+//						app.initHeader();
 					},
 					mounted: function() {
-							
+
 						var _this = this
 						var scroll = this.$refs.scroll
-						this.scrollTop = document.getElementById('header').offsetHeight 
+						this.scrollTop = 0
 						/*首次加载数据*/
-						this._getData(() => {
-								plus.nativeUI.closeWaiting()
-								mui.currentWebview.show('pop-in', 300, function () {}, {});
-						
-						})
-						
+						this._getData()
+
 						this.$nextTick(function() {
 							//							初始化scrool
 							if(!_this.scroll) {
@@ -177,10 +181,9 @@
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
-
-								plus.nativeUI.showWaiting()
+//								plus.nativeUI.showWaiting()
 								_this._getData(() => {
-									plus.nativeUI.closeWaiting();
+//									plus.nativeUI.closeWaiting();
 									_this.scroll.refresh();
 									_this.scroll.finishPullDown()
 								})
@@ -207,7 +210,7 @@
 						}
 					},
 					methods: {
-						/*添加新卡*/
+						/*添加新地址*/
 						_toAddNew() {
 							mui.openWindow({
 								url: './addAddress.html',
@@ -216,54 +219,74 @@
 									top: '0px', //新页面顶部位置
 									bottom: '0px', //新页面底部位置
 									scrollIndicator: "none",
-									plusrequire: 'ahead'
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true,
+										 // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
+										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1px" // 分割线高度,默认值为"2px"
+										},
+										buttons:[{
+											type:'none',
+											fontSize:'12px',
+											text:'当前位置',
+											onclick:place
+										}]
+									}
 								},
 								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
-								extras: {
-									//自定义扩展参数，可以用来处理页面间传值  
-								},
+								extras: {},
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})
 						},
 						/*删除操作*/
-						_delect(code) {			
+						_delect(code) {
 							var _this = this
-//							alert(code)
-							plus.nativeUI.confirm('删除该地址？',(event)=>{
-								if(event.index==0){
-										var data = {
+							//							alert(code)
+							plus.nativeUI.confirm('删除该地址？', (event) => {
+								if(event.index == 0) {
+									var data = {
 										ADDRESS_CODE: code,
-										}
+									}
 									//
 									plus.nativeUI.showWaiting('删除中...')
 									app.ajax(app.baseUrl + '/api/Address/DeleteAddress', {
 										data: data,
 										type: 'post', //HTTP请求类型
 										success: function(result) {
-											if(result.Success) {		
+											if(result.Success) {
 												var msg = "删除成功";
-												if(plus.webview.getWebviewById('productOrder')){
+												if(plus.webview.getWebviewById('productOrder')) {
 													plus.webview.getWebviewById('productOrder').evalJS('refresh()')
-												}	
+												}
 												mui.later(() => {
 													plus.nativeUI.closeWaiting()
 													plus.nativeUI.toast(msg)
 													_this._getData()
-												}, 1000)		
+												}, 1000)
 												/*还原数据*/
 											} else {
 												plus.nativeUI.closeWaiting()
 												plus.nativeUI.toast(result.Msg)
 												console.log(result.Msg)
 											}
-		
+
 										},
 										error: function(xhr, type, errorThrown) {
 											//异常处理；
@@ -271,97 +294,128 @@
 										}
 									});
 								}
-							})														
-						},
-						/*设为默认*/
-						_handle(code,status) {	
-							if(status=='1')return
-							var _this = this 
-							plus.nativeUI.showWaiting('设置中...')
-								app.ajax(app.baseUrl + '/api/Address/SetDefaultAddress', {
-									// dataType:'json',//服务器返回json格式数据
-									data: {
-										ADDRESS_CODE:code
-									},
-									type: 'post', //HTTP请求类型
-									success: function(result) {											
-										if(result.Success) {										
-											var msg = "设置成功";
-											mui.later(()=>{
-												plus.nativeUI.closeWaiting()
-												plus.nativeUI.toast(msg)
-												_this._getData()
-											},1000)											
-											/*还原数据*/										
-										} else {
-											plus.nativeUI.closeWaiting()
-											plus.nativeUI.toast(result.Msg)
-											console.log(result.Msg)
-										}
-	
-									},
-									error: function(xhr, type, errorThrown) {
-										//异常处理；
-										console.log(type);
-									}
-								});	
-							
-						},
-						/*编辑*/
-						_edit(item){
-							mui.openWindow({
-								url: './addAddress.html',
-								id: 'addAddress',
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {
-									addressItem: item
-								},
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
 							})
 						},
-						/*获取地址数据*/
-						_getData(callback) {
+						/*设为默认*/
+						_handle(code, status) {
+							if(status == '1') return
 							var _this = this
-							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
-								type: 'get', //HTTP请求类型
+							plus.nativeUI.showWaiting('设置中...')
+							app.ajax(app.baseUrl + '/api/Address/SetDefaultAddress', {
+								// dataType:'json',//服务器返回json格式数据
+								data: {
+									ADDRESS_CODE: code
+								},
+								type: 'post', //HTTP请求类型
 								success: function(result) {
 									if(result.Success) {
-										_this.addressList = result.Data.ListInfo
-//										alert(result.Data.ListInfo.length)
-										mui.later(()=>{
-											if(callback)callback()
-										},500)
-										
-
+										var msg = "设置成功";
+										mui.later(() => {
+											plus.nativeUI.closeWaiting()
+											plus.nativeUI.toast(msg)
+											_this._getData()
+										}, 1000)
+										/*还原数据*/
 									} else {
-										/*验证失败*/
+										plus.nativeUI.closeWaiting()
 										plus.nativeUI.toast(result.Msg)
-
+										console.log(result.Msg)
 									}
+
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
 									console.log(type);
 								}
 							});
+
+						},
+						/*编辑*/
+						_edit(item) {
+//							alert(0)
+//							mui.openWindow({
+//								url: './addAddress.html',
+//								id: 'addAddress',
+//								styles: {
+//									top: '0px', //新页面顶部位置
+//									bottom: '0px', //新页面底部位置
+//									scrollIndicator: "none",
+//									plusrequire: 'ahead',
+//									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+//									titleNView: { // 窗口的标题栏控件
+//										autoBackButton: true,
+//										titleText:'编辑地址', // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+//										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+//										titleSize: "14px", // 字体大小,默认17px
+//										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+//										progress: { // 标题栏控件的进度条样式
+//											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+//											height: "2px" // 进度条高度,默认值为"2px"         
+//										},
+//										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+//											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+//											height: "1px" // 分割线高度,默认值为"2px"
+//										},
+//										buttons:[{
+//											type:'none',
+//											fontSize:'12px',
+//											text:'当前位置',
+//											onclick:place
+//										}]
+//									}
+//								},
+//								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+//								show: {
+//									autoShow: true, //页面loaded事件发生后自动显示，默认为true
+//									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+//								},
+//								extras: {
+//									addressItem: item
+//								},
+//								waiting: {
+//									autoShow: false, //自动显示等待框，默认为true
+//									title: '正在加载...', //等待对话框上显示的提示内容
+//								}
+//							})
+						},
+						/*获取地址数据*/
+						_getData(callback) {
+							this.loader = true
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Address/GetListAddress', {
+								type: 'get', //HTTP请求类型
+								timeout : 5000,
+								headers : {
+										'Content-Type': 'application/x-www-form-urlencoded',
+										'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								success: function(result) {
+									mui.later(() => {
+										_this.loader = false
+										if(result.Success) {
+											_this.addressList = result.Data.ListInfo											
+										} else {
+											plus.nativeUI.toast(result.Msg)											
+										}
+										if(callback) callback()
+									}, 500)									
+								},
+								error: function(xhr, type, errorThrown) {
+									_this.loader = false;
+									app.catchErr(xhr, type, errorThrown);
+								}
+							});
 						}
 					}
 				})
 			})
-			function refresh(){
+			function place(){
+				var s = plus.webview.getWebviewById('addAddress')
+				if(s){
+					s.evalJS('_initPosition()')
+				}
+			}
+			function refresh() {
 				APP._getData()
 			}
 		</script>

@@ -54,7 +54,6 @@
 	//	owner.baseUrl = "http://192.168.1.6:8089/Data"
 	//	owner.baseUrl = "http://mobile.mhh999.com"
 	owner.baseUrl = "https://mobile.mhh999.com"
-
 	/* 初始化沉浸式导航栏 */
 	owner.initHeader = function() {
 		var isImmersedStatusbar = plus.navigator.isImmersedStatusbar();
@@ -361,9 +360,7 @@
 						//						console.log(result.DataExt)
 					}
 					owner.postDevice() //发送uid --个推
-					
-					
-					
+			
 					if(callback) callback(true, null)
 				} else {
 					/*验证失败*/
@@ -573,7 +570,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				//异常处理；
-				console.log(type);
+					owner.catchErr(type, errorThrown);
 			}
 		});
 	}
@@ -822,7 +819,7 @@
 //		}
 	}
 	//	错误捕获
-	owner.catchErr = function(type) {
+	owner.catchErr = function(xhr, type, errorThrown) {
 		plus.nativeUI.closeWaiting()
 		if(type == 'timeout') {
 			plus.nativeUI.toast('网络不佳');

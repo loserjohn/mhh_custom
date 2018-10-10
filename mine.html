@@ -134,10 +134,11 @@
 				color: #ccaa42;
 			}
 			
-			.new{
+			.new {
 				position: relative;
 			}
-			.new::before{
+			
+			.new::before {
 				content: '';
 				position: absolute;
 				right: 10px;
@@ -146,8 +147,6 @@
 				height: 10px;
 				background: red;
 				border-radius: 50%;
-				
-				
 			}
 		</style>
 	</head>
@@ -202,9 +201,9 @@
 								<div v-show="islogin">
 									<div class="flex">
 										<div class="cm_name cor_w">{{userMsg.MEMBER_NIKENAME}}</div>
-										<div class="level cor_y">{{userMsg.POINTS_LEVEL_NAME+'会员'}}</div>
+										<div class="level cor_y">{{userMsg.POINTS_LEVEL_NAME?userMsg.POINTS_LEVEL_NAME+'会员':'未登陆'}}</div>
 									</div>
-									<p>积分：{{userMsg.MEMBER_INTEGRAL}}</p>
+									<p>{{userMsg.MEMBER_INTEGRAL?'积分：'+userMsg.MEMBER_INTEGRAL:''}}</p>
 									<p>{{userMsg.MEMBER_MOBILE}}</p>
 								</div>
 
@@ -240,11 +239,7 @@
 						</div>
 					</div>
 
-					<!--新人红包活动-->
-					<div class="block2 panel">
-
-					</div>
-
+					
 					<!--菜单-->
 					<div class="block3 panel menus">
 						<ul class="flex">
@@ -266,8 +261,8 @@
 								<p>商铺充值卡</p>
 								<!--</a>-->
 							</li>
-							<li class="menusItem">
-							<!--<li class="menusItem" @tap="_navigateTo('./html/platformCard/platformCard.html','platformCard')">-->
+							<!--<li class="menusItem">-->
+							<li class="menusItem" @tap="_navigateTo('./html/platformCard/platformCard.html','platformCard')">
 								<!--<a href="">-->
 								<i class="iconfont icon-xinyongqia "></i>
 								<p>平台充值卡</p>
@@ -312,7 +307,60 @@
 							</li>
 						</ul>
 					</div>
-
+					
+					<!--豆腐块-->
+						<div v-for="item in blockData" class="reset">
+							<div class=" flex " v-if="item.type==1" >
+								<div class="f1 t_c"  @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img" alt="" class="contain "/>
+								</div>
+							</div>
+							<div class=" flex " v-else-if="item.type==2">
+								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img" alt="" class="contain "/>
+								</div>
+								<div class="f1 t_c" @tap="_jump(item.listData[1].keyCode)">
+									<img :src="item.listData[1].img" alt="" class="contain"/>
+								</div>
+							</div>
+							
+							
+							<div class="flex " v-else-if="item.type==3">
+								<div class=" f2">
+									<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+										<img :src="item.listData[0].img" alt="" class="contain"/>
+									</div>
+									
+								</div>
+								<div class="f3 ">  
+									<div class=" t_c" @tap="_jump(item.listData[1].keyCode)">
+										<img :src="item.listData[1].img" alt="" class="contain"/>
+									</div>
+									<div class=" t_c" @tap="_jump(item.listData[2].keyCode)">
+											<img :src="item.listData[2].img" alt="" class="contain"/>
+									</div>							
+								</div>
+							</div>
+							<div class=" flex " v-else-if="item.type==4">
+								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />
+								</div>
+								<div class="f1 t_c" >
+									<div class="" @tap="_jump(item.listData[1].keyCode)">
+										<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain"/>
+									</div>
+									<div class="flex">
+										<div class="f1 t_c" @tap="_jump(item.listData[2].keyCode)">
+											<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain "/>
+										</div>
+										<div class="f1 t_c" @tap="_jump(item.listData[3].keyCode)">
+											<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain"/>
+										</div> 
+									</div>
+								</div> 
+							</div>
+							 
+						</div>
 					<!--历史订单-->
 					<div class="block4 panel ">
 						<div class="cm_title t_c">
@@ -320,7 +368,7 @@
 						</div>
 						<div class="activityBox" ref="wrapper">
 							<ul class="reset flex" :style="{width:110*(hisList.length)+'px'}">
-								<li class="activityItem" v-for="item in hisList" @tap="_navigateTo('./html/production/productBuy.html','productBuy.html',{'proKey':item.PROJECT_CODE})">
+								<li class="activityItem" v-for="item in hisList" @tap="_toDetail('./html/production/productBuy.html','productBuy.html',{'proKey':item.PROJECT_CODE})">
 									<img :src="item.PROJECT_IMG1" alt="" class="contain" />
 									<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
 									<article class="flex">
@@ -375,8 +423,10 @@
 						num: '',
 						hisList: [],
 						/*历史订单列表*/
-						userMsg: '' ,/*个人数据*/
-						hasNew:false
+						userMsg: '',
+						/*个人数据*/
+						hasNew: false,
+						blockData:[]
 					},
 					created: function() {
 						app.initHeader();
@@ -392,9 +442,161 @@
 
 						/*初始化下拉scroll*/
 						this._initScroll()
-
+						this._initBlock() //初始化豆腐块
 					},
 					methods: {
+						_jump(str) {
+							var key = str.split('||')[0];
+							var code = str.split('||')[1];
+
+							switch(key) {
+								case 'A':
+									//								活动								
+									mui.openWindow({
+										url: 'code',
+										id: 'activity' + new Date().getTime(),
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead',
+											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+											titleNView: { // 窗口的标题栏控件
+												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+												titleSize: "14px", // 字体大小,默认17px
+												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+												progress: { // 标题栏控件的进度条样式
+													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+													height: "2px" // 进度条高度,默认值为"2px"         
+												},
+												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+													height: "1px" // 分割线高度,默认值为"2px"
+												}
+											}
+										},
+										createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: true, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										extras: {
+											//自定义扩展参数，可以用来处理页面间传值  
+											detail: data
+										},
+										waiting: {
+											autoShow: false, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+
+									break;
+								case 'W':
+									//								外链
+									mui.openWindow({
+										url: 'code',
+										id: 'activity' + new Date().getTime(),
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead',
+											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+											titleNView: { // 窗口的标题栏控件
+												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+												titleSize: "14px", // 字体大小,默认17px
+												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+												progress: { // 标题栏控件的进度条样式
+													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+													height: "2px" // 进度条高度,默认值为"2px"         
+												},
+												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+													height: "1px" // 分割线高度,默认值为"2px"
+												}
+											}
+										},
+										createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: true, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										extras: {
+											//自定义扩展参数，可以用来处理页面间传值  
+											detail: data
+										},
+										waiting: {
+											autoShow: false, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+									break;
+								case 'B':
+									//								社区新闻
+									var data = {
+										infoCode: code
+									}
+									mui.openWindow({
+										url: './html/community_detail.html',
+										id: 'community_detail',
+										styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead'
+										},
+										createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+										show: {
+											autoShow: true, //页面loaded事件发生后自动显示，默认为true
+											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+										},
+										extras: {
+											//自定义扩展参数，可以用来处理页面间传值  
+											detail: data
+										},
+										waiting: {
+											autoShow: false, //自动显示等待框，默认为true
+											title: '正在加载...', //等待对话框上显示的提示内容
+										}
+									})
+
+									break;
+								case 'P':
+									//项目
+									this._NWnavigateTo('./html/production/productBuy.html', 'productBuy', {
+										proKey: code
+									})
+									break;
+								default:
+									break;
+							}
+						},
+						//						初始化豆腐块
+						_initBlock(){
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Carousel/GetMinePannelList', {
+								type: 'get', //HTTP请求类型
+								timeout: 5000, //超时时间设置为10秒；
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+
+									/*登陆成功*/
+									plus.nativeUI.closeWaiting()
+									if(result.Success) {
+										_this.blockData = result.Data.ListInfo
+									} else {
+										/*验证失败*/								
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+
+								}
+							})
+						},
 						/*初始化滑动模块*/
 						_initScroll() {
 							var _this = this
@@ -470,11 +672,11 @@
 										_this.store = result.Data.BUYCARD_COUNT
 										_this.coupon = result.Data.DISCOUNTENTRY_COUNT
 										_this.num = result.Data.MEMBER_MOBILE
-								
+
 										plus.storage.setItem('userNickName', result.Data.MEMBER_NIKENAME)
 										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD)
 										plus.storage.setItem('myId', result.Data.MEMBER_MOBILE)
-										
+										_this.scroll.refresh()
 										
 										if(callback) callback()
 									} else {
@@ -504,7 +706,7 @@
 							});
 
 						},
-						
+
 						_toChat() {
 							let isLogin = plus.storage.getItem('isLogin');
 							this.hasNew = false;
@@ -517,7 +719,8 @@
 										top: '0px', //新页面顶部位置
 										bottom: '0px', //新页面底部位置
 										scrollIndicator: "none",
-										plusrequire: 'ahead'
+										plusrequire: 'ahead',
+
 									},
 									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 									show: {
@@ -532,11 +735,11 @@
 								})
 								return
 							}
-							if(mainPage){
+							if(mainPage) {
 								mainPage.show('pop-in', 300, function() {}, {})
 							}
-							
-						},	
+
+						},
 						/*跳转页面*/
 						_navigateTo(desturl, destid, extras) {
 							let isLogin = plus.storage.getItem('isLogin');
@@ -549,7 +752,8 @@
 										top: '0px', //新页面顶部位置
 										bottom: '0px', //新页面底部位置
 										scrollIndicator: "none",
-										plusrequire: 'ahead'
+										plusrequire: 'ahead',
+
 									},
 									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 									show: {
@@ -571,27 +775,62 @@
 									top: '0px', //新页面顶部位置
 									bottom: '0px', //新页面底部位置
 									scrollIndicator: "none",
-									plusrequire: 'ahead'
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
+										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1px" // 分割线高度,默认值为"2px"
+										}
+									}
 								},
 								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: extras ? extras : {},
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})
+						},
+						_toDetail(dstUrl, dstId, extras){
+							mui.openWindow({
+									url: dstUrl,
+									id: dstId,
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: true, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: extras,
+									waiting: {
+										autoShow: false, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
 						},
 						_initUser() {
 							let isLogin = plus.storage.getItem('isLogin');
 							if(isLogin == '1') {
 								/*登陆状态*/
 								this.islogin = true;
-								
-								
 
 							} else {
 								this.islogin = false;
@@ -611,39 +850,41 @@
 			/*获取用户身份之后刷新页面*/
 			function refresh() {
 				mainPage.evalJS('getList()')
-				APP._initUser();				
-				
+				APP._initUser();
+				APP._initBlock()
 			}
-//			重新链接im
-			function initIM(){
-//				alert(0)
+			//			重新链接im
+			function initIM() {
+				//				alert(0)
 				mainPage = mui.preload({
-							"id": 'information',
-							"url": './html/information/information.html',
-							'styles': {}
+					"id": 'information',
+					"url": './html/information/information.html',
+					'styles': {}
 				});
-						
-//				if(plus.webview.getWebviewById('chat') ){
-//					plus.webview.getWebviewById('chat').evalJS('refresh()')
-//				}
+
+				//				if(plus.webview.getWebviewById('chat') ){
+				//					plus.webview.getWebviewById('chat').evalJS('refresh()')
+				//				}
 			}
+
 			function autoLogin() {
 				/*执行自动登陆状态判断*/
 				app.autoLogin((s) => {
 					plus.navigator.closeSplashscreen();
 					if(s) {
-						plus.webview.getLaunchWebview().evalJS('closeVersion()');											
+						plus.webview.getLaunchWebview().evalJS('closeVersion()');
 						APP._initData()
 					} else {
 						plus.webview.getLaunchWebview().evalJS('closeVersion()')
 					}
 				})
 			}
-			
-			function hasNew(){
+
+			function hasNew() {
 				APP.hasNew = true
 			}
-			function noNew(){
+
+			function noNew() {
 				APP.hasNew = false
 			}
 		</script>

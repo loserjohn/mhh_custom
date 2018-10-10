@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/loading.css"/>
 		<style>
 			/*余额*/
 			.leftPic{
@@ -95,15 +96,20 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					平台充值卡
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
+			<!--等待页面-->
+			<div class="loader" style="top:44px" v-if="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 			<!--我的余额-->
 			<div id="content">
 				<div class=" flex block1 container">
@@ -187,7 +193,7 @@
 
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			})
 			var APP
 			mui.plusReady(function() {
@@ -195,6 +201,7 @@
 				APP = new Vue({
 					el: '#app',
 					data: {
+						loader:true,
 						scrollTop: '',
 						scroll: '',
 						cardsList: [],
@@ -220,14 +227,13 @@
 						}
 					},
 					created: function() {
-							app.initHeader();
 					},
 					mounted: function() {
 
 						var _this = this
 					
 						var scroll = this.$refs.scroll;
-						this.scrollTop = document.getElementById('header').offsetHeight+50 + 'px'
+						this.scrollTop = 44 + 'px'
 
 						this.$nextTick(function() {
 							//							初始化scrool
@@ -248,19 +254,16 @@
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
 
-								plus.nativeUI.showWaiting()
+//								plus.nativeUI.showWaiting()
 								_this._getData(() => {
-									plus.nativeUI.closeWaiting();
+//									plus.nativeUI.closeWaiting();
 									_this.scroll.finishPullDown()
 								})
 
 							})
 						})
 						/*首次加载数据*/
-						this._getData(() => {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						})
+						this._getData()
 
 					},
 					methods: {
@@ -275,6 +278,7 @@
 						},
 						/*读取卡列表*/
 						_getData(callback) {
+							this.loader = true
 							var _this = this
 							/*获取账户信息*/
 							/*获取用户总账户余额*/
@@ -292,24 +296,30 @@
 							});
 																				
 							/*获取充值卡列表*/
-							app.ajax(app.baseUrl + '/api/SiteRecharge/GetList', {
+							mui.ajax(app.baseUrl + '/api/SiteRecharge/GetList', {
 								type: 'get', //HTTP请求类型
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
 								success: function(result) {
-									if(result.Success) {
-										_this.cardsList = result.Data.ListInfo
-										mui.later(() => {
-											_this.scroll.refresh();
-											if(callback) callback();
-										}, 300)
-									} else {
-										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
-									}
+									mui.later(() => {
+									_this.loader = false								
+										if(result.Success) {
+											_this.cardsList = result.Data.ListInfo											
+												_this.scroll.refresh();
+												if(callback) callback();
+											
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast(result.Msg)
+	
+										}
+									}, 500)
 								},
 								error: function(xhr, type, errorThrown) {
-									//异常处理；
-									console.log(type);
+									_this.loader = false
+									app.catchErr(xhr, type, errorThrown)
 								}
 							});
 						},

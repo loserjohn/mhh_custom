@@ -135,11 +135,13 @@
 				height: 100%;
 				opacity: 0;
 			}
-			.addressItem{
+			
+			.addressItem {
 				line-height: 44px;
 				border-top: 1px solid #d3d3d3;
 			}
-			.addresSearch{
+			
+			.addresSearch {
 				border: 1px solid #d3d3d3;
 				border-radius: 20px;
 				box-sizing: border-box;
@@ -150,14 +152,17 @@
 				padding: 0 10px;
 				margin: 0 10px;
 			}
-			.cm_search_input{
+			
+			.cm_search_input {
 				border: 1px solid #d3d3d3;
 				border-radius: 15px;
 			}
-			.cm_loading span{
+			
+			.cm_loading span {
 				font-size: 26px;
 			}
-			.cellArea{
+			
+			.cellArea {
 				border: none;
 				outline: none;
 				padding: 0;
@@ -173,7 +178,7 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
+			<!--<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
 				<div class=" f1  cor_w t_c page_title">
 					{{title}}
@@ -181,7 +186,7 @@
 				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w" @tap="_initPos">
 					<span class="mui-icon mui-icon-location "></span>定位				
 				</button>
-			</header>
+			</header>-->
 
 			<!--新地址信息-->
 			<div class="newCardMsg" id="content">
@@ -229,7 +234,7 @@
 								</div>
 								<i class="iconfont icon-xiayibu "></i>
 							</div>
-							<div class=" relative ">	
+							<div class=" relative ">
 								{{street}}
 							</div>
 						</li>
@@ -244,7 +249,7 @@
 							</div>
 						</li>
 					</ul>
-					
+
 				</div>
 			</div>
 
@@ -259,7 +264,7 @@
 				</div>
 
 			</div>
-			
+
 			<div class="cm_loading flex " v-show="loading">
 				<span class="mui-icon mui-icon-spinner-cycle mui-spin "></span>
 			</div>
@@ -271,109 +276,105 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			})
-			var APP 
+			var APP
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
 				APP = new Vue({
 					el: '#app',
 					data: {
 						/*当前的地址*/
-						addressMsg:'',
-						title:'',
-						type:'',
-						
+						addressMsg: '',
+						title: '',
+						type: '',
+
 						provinceList: [], //省
-						province: '',//当前位置 省
+						province: '', //当前位置 省
 						townList: [], //市
-						town: '',//当前位置市
+						town: '', //当前位置市
 						areaList: [], //区
-						area: '',//当前位置区
-						
-						
+						area: '', //当前位置区
+
 						loading: false,
-						street: '',//当前位置 街道
-						address: '',//具体地址
-						latitude:'',/*当前地址纬度*/
-						longitude:'',/*当前地址经度*/
-						isDefault:false
+						street: '', //当前位置 街道
+						address: '', //具体地址
+						latitude: '',
+						/*当前地址纬度*/
+						longitude: '',
+						/*当前地址经度*/
+						isDefault: false
 					},
 					created: function() {
-						app.initHeader();
 
 					},
 					mounted: function() {
-						var _this = this						
-						
+						var _this = this
+
 						/*添加新卡操作则初始化定位*/
 						var self = plus.webview.currentWebview();
 						this.addressMsg = self.addressItem;
-						
-						if(this.addressMsg){
+
+						if(this.addressMsg) {
 							/*编辑操作*/
 							this.title = '编辑地址';
-							this.type="edit";
+							this.type = "edit";
 							this._initAddress()
-						}else{
+						} else {
 							/*添加新地址操作*/
 							this.title = '添加新地址';
-							this.type="add";
+							this.type = "add";
 							this._initPos();
 						}
-						mui.later(()=>{
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						},500)
-					
 					},
 					methods: {
 						/*初始化信息 编辑操作的话*/
-						_initAddress(){
-							
+						_initAddress() {
+
 							this.province = this.addressMsg.ADDRESS_SHENG
 							this.town = this.addressMsg.ADDRESS_SHI
 							this.area = this.addressMsg.ADDRESS_QU
 							this.street = this.addressMsg.ADDRESS_JIE
 							this.address = this.addressMsg.ADDRESS_MEN
-							
+
 							/*初始化选择选项*/
-								this._updatedTown(0,()=>{
-									this._updatedTown(1,()=>{
-										this._updatedTown(2,()=>{
-											this.loading = false
-										})
+							this._updatedTown(0, () => {
+								this._updatedTown(1, () => {
+									this._updatedTown(2, () => {
+										this.loading = false
 									})
 								})
+							})
 						},
 						/*切换开关*/
-						_switch(){
+						_switch() {
 							this.isDefault = !this.isDefault
 						},
 						/*初始化位置*/
 						_initPos() {
+//							alert(1)
 							this.loading = true;
 							var _this = this;
 							plus.geolocation.getCurrentPosition((position) => {
 								var obj = position.address
-//								console.log(JSON.stringify(position))
-								
+								//								console.log(JSON.stringify(position))
+
 								_this.province = position.address.province
 								_this.town = position.address.city
 								_this.area = position.address.district
 								_this.street = position.address.street
-//								_this.house = position.address.street
-									
+								//								_this.house = position.address.street
+
 								_this.longitude = (position.coords.longitude).toFixed(6)
-								_this.latitude = ( position.coords.latitude).toFixed(6)
-															
-//								var add = obj.province + obj.city + position.addresses
+								_this.latitude = (position.coords.latitude).toFixed(6)
+
+								//								var add = obj.province + obj.city + position.addresses
 								var add = obj.street
-								
+
 								/*初始化选择选项*/
-								_this._updatedTown(0,()=>{
-									_this._updatedTown(1,()=>{
-										_this._updatedTown(2,()=>{
+								_this._updatedTown(0, () => {
+									_this._updatedTown(1, () => {
+										_this._updatedTown(2, () => {
 											_this.loading = false
 										})
 									})
@@ -389,12 +390,12 @@
 							});
 						},
 						//	更新城市选项
-						_updatedTown(t,callback) {
+						_updatedTown(t, callback) {
 
 							var _this = this
 							switch(t) {
 								case 0:
-									
+
 									/*首次进入加载省份信息*/
 									mui.ajax(app.baseUrl + '/api/Area/GetListProvince', {
 										// dataType:'json',//服务器返回json格式数据
@@ -407,7 +408,7 @@
 											/*登陆成功*/
 											// 储存本地 记录登陆时间		
 											_this.provinceList = result
-											
+
 										},
 										error: function(xhr, type, errorThrown) {
 											//异常处理；
@@ -461,15 +462,14 @@
 									});
 									break;
 								case 3:
-								alert(1)
 									/*更新区信息*/
-									_this.street =''
-									break;	
-								
+									_this.street = ''
+									break;
+
 								default:
 									break;
 							}
-							if(callback)callback()
+							if(callback) callback()
 
 						},
 						/*提交添加*/
@@ -477,11 +477,11 @@
 							if(!this.province || !this.town || !this.area) {
 								plus.nativeUI.alert("请选择省市县", function() {}, "马嘿嘿提醒您", "ok");
 								return;
-								
-							}else if(!this.street) {
+
+							} else if(!this.street) {
 								plus.nativeUI.alert("请填写街道", function() {}, "马嘿嘿提醒您", "ok");
 								return;
-							}else if(!this.address) {
+							} else if(!this.address) {
 								plus.nativeUI.alert("请填写详细地址", function() {}, "马嘿嘿提醒您", "ok");
 								return;
 							}
@@ -492,40 +492,41 @@
 								ADDRESS_QU: this.area,
 								ADDRESS_JIE: this.street,
 								ADDRESS_MEN: this.address,
-								LON:this.longitude,
-								LAT:this.latitude,
-								ISDEFAULT:this.isDefault?'1':'0'
+								LON: this.longitude,
+								LAT: this.latitude,
+								ISDEFAULT: this.isDefault ? '1' : '0'
 							}
-//							console.log()
-							var msg ;
-							switch (this.type){
+							//							console.log()
+							var msg;
+//							alert(this.type)
+							switch(this.type) {
 								case 'add':
-								msg = "添加成功";
+									msg = "添加成功";
 									break;
 								case 'edit':
-								data.ADDRESS_CODE = this.addressMsg.ADDRESS_CODE;
-								msg = "修改成功"
-									break;	
+									data.ADDRESS_CODE = this.addressMsg.ADDRESS_CODE;
+									msg = "修改成功"
+									break;
 								default:
 									break;
 							}
-							
+//							console.log(JSON.stringify(data))
 							plus.nativeUI.showWaiting('提交中...')
 							app.ajax(app.baseUrl + '/api/Address/AddAddress', {
 								// dataType:'json',//服务器返回json格式数据
 								data: data,
 								type: 'post', //HTTP请求类型
 								success: function(result) {
-									if(result.Success) {										
+									if(result.Success) {
 										mui.later(() => {
 											plus.nativeUI.closeWaiting()
-											if(plus.webview.getWebviewById('address')){
+											if(plus.webview.getWebviewById('address')) {
 												plus.webview.getWebviewById('address').evalJS('refresh()')
 											}
-											
-											if(plus.webview.getWebviewById('productOrder')){
+
+											if(plus.webview.getWebviewById('productOrder')) {
 												plus.webview.getWebviewById('productOrder').evalJS('refresh()')
-											}										
+											}
 											plus.nativeUI.alert(msg, function() {
 												mui.back()
 											}, "马嘿嘿提醒您", "ok");
@@ -568,17 +569,24 @@
 							})
 						},
 						/*从地图选址*/
-						_setPos(pos){							
+						_setPos(pos) {
+//							console.log(JSON.stringify(pos))
+//alert(this.street 	)
 							this.longitude = pos.longitude;
 							this.latitude = pos.latitude;
-							this.street = pos.address
+							this.street = pos.street;
+							this.address = pos.address
 						}
 
 					}
 				})
 			})
-			function setPos(pos){
-//				alert( pos.location)
+			function _initPosition(){
+//				alert(2)
+				APP._initPos()
+			}
+			function setPos(pos) {
+//								alert( pos)
 				APP._setPos(pos)
 			}
 		</script>

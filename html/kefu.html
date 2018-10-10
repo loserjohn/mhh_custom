@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="../css/common.css" />
 		<link rel="stylesheet" href="../css/cs.min.css">
 		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
 		<!-- 可以将 SDK 下载到本地 配置 gruntfile 与 cs.js 合并压缩成一个 js 文件 -->
 		<style>
 			#btn {
@@ -36,10 +37,19 @@
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav" style="background: #212121;" id="header">
-			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-			<h1 class="mui-title" style="color:#fff">常见问题</h1>
-		</header>
+			<div class="loader" style="top:0" id="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 		<div id="content">
 			<div id="rcs-app"></div>
 		</div>
@@ -59,8 +69,6 @@
 
 			mui.plusReady(function() {
 				
-				app.initHeader();
-				
 				RCS.init({
 					appKey: "n19jmcy5n8ke9", // 应用 appkey
 					token: plus.storage.getItem('IMtoken'), // 当前游客或登录用户 token
@@ -76,11 +84,10 @@
 					//是否需要按钮主动发起，设为false的时候，init()方法直接唤起聊天窗口,需客户自己编写按钮，点击之后调用init(),templates中的button模板不可用;设为true的时候，init()首先唤起客服咨询按钮，点击之后才连接客服，唤起聊天窗口，在进入页面之后就需调用init()方法。此参数是为了方便客户在点击客服按钮后自行获取token，在获取到token之后，执行init()即可。
 					connectingCallback: function() {
 //						console.log('1111,连接中');
-						mui.later(function() {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function () {}, {});
-						}, 2000)
-					
+						mui.later(()=>{
+							document.getElementById('loader').style.display = 'none'
+						},2000)
+						
 
 					}, //连接中的执行的方法，例如显示加载页面,可不传
 					connectedCallback: function() {
@@ -89,6 +96,7 @@
 					}, //连接成功之后的方法，例如关闭加载页面,可不传
 					disconnectedCallback: function() {
 						plus.nativeUI.toast('客服连接断开');
+						document.getElementById('loader').style.display = 'none'
 					}
 				});
 			})

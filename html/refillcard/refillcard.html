@@ -8,6 +8,7 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<style>
 			/*充值卡管理*/
 			
@@ -15,7 +16,6 @@
 				box-sizing: border-box;
 				padding: 10px;
 			}
-		
 			
 			.cardList {
 				height: 120px;
@@ -24,15 +24,16 @@
 				background: url(../../images/card.png) 0 0 /100% 100% no-repeat;
 			}
 			
-			
 			.cardList .cardName {
 				border-bottom: 1px dotted #fbf0ce;
 				line-height: 60px;
 				/*margin: 10px auto;*/
 			}
-			.cardList .cardName .avatar{
+			
+			.cardList .cardName .avatar {
 				margin-top: 12px;
 			}
+			
 			.cardList .cardMsg {
 				box-sizing: border-box;
 				color: #fff;
@@ -73,16 +74,20 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					商铺充值卡管理
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
-
+			<!--等待页面-->
+			<div class="loader" style="top:0" v-show="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 			<!--卡片-->
 			<div class="cards scrollBox " ref="scroll" :style="{top:scrollTop,bottom:0}" id="scroll">
 				<div class="cm_ul reset" style="min-height: 101%;">
@@ -110,21 +115,21 @@
 						</div>
 					</div>
 					<ul class="reset cm_ul  cards_ul ">
-						<li class="cardList container " v-for="item in cardsList">					
-								<div class="flex cardName">
-									<img :src="item.SHOP_LOGO" alt="" class="avatar" />
-									<div class="cor_w ">{{item.SHOP_NAME}}</div>
-									<div class="f1 cor_w t_r" @tap="_toUse(item.SHOP_CODE)" >
-										去使用》
-									</div>
+						<li class="cardList container " v-for="item in cardsList">
+							<div class="flex cardName">
+								<img :src="item.SHOP_LOGO" alt="" class="avatar" />
+								<div class="cor_w ">{{item.SHOP_NAME}}</div>
+								<div class="f1 cor_w t_r" @tap="_toUse(item.SHOP_CODE)">
+									去使用》
 								</div>
-								<div class="cardMsg container flex">
-										<div class="curprize" >买：￥{{item.RECHARGE_AMOUNT}}</div>
-										<div class="curprize" >送：￥{{item.RECHARGE_GRANT}}</div>
-										<div class="f1 t_r ">
-											余额: <span class="fs20">￥{{item.BUYCARD_RESIDUE}}</span>
-										</div>
+							</div>
+							<div class="cardMsg container flex">
+								<div class="curprize">买：￥{{item.RECHARGE_AMOUNT}}</div>
+								<div class="curprize">送：￥{{item.RECHARGE_GRANT}}</div>
+								<div class="f1 t_r ">
+									余额: <span class="fs20">￥{{item.BUYCARD_RESIDUE}}</span>
 								</div>
+							</div>
 						</li>
 						<li class="t_c " v-show="cardsList.length!=0">{{more}}</li>
 					</ul>
@@ -147,7 +152,7 @@
 
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			})
 			var APP
 			mui.plusReady(function() {
@@ -158,8 +163,9 @@
 						scrollTop: '',
 						scroll: '',
 						cardsList: [],
-						more:'加载更多',
-						index:1
+						more: '加载更多',
+						index: 1,
+						loader: true
 					},
 					filters: {
 						getStatus(k) {
@@ -185,9 +191,9 @@
 					mounted: function() {
 
 						var _this = this
-						app.initHeader();
+
 						var scroll = this.$refs.scroll;
-						this.scrollTop = document.getElementById('header').offsetHeight + 'px'
+						this.scrollTop = 0 + 'px'
 
 						this.$nextTick(function() {
 							//							初始化scrool
@@ -210,41 +216,37 @@
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
-
-								plus.nativeUI.showWaiting()
+								//								plus.nativeUI.showWaiting()
 								_this.index = 1
-									_this.cardsList = []
-									_this.more = '加载更多'
-									_this._getData(()=>{
-										plus.nativeUI.closeWaiting();
-										_this.scroll.finishPullDown();
-										_this.scroll.finishPullUp()
-								})	
+								_this.cardsList = []
+								_this.more = '加载更多'
+								_this._getData(() => {
+									//										plus.nativeUI.closeWaiting();
+									_this.scroll.finishPullDown();
+									_this.scroll.finishPullUp()
+								})
 
 							})
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
 								_this._getData((b) => {
-//									plus.nativeUI.closeWaiting();
+									//									plus.nativeUI.closeWaiting();
 									_this.scroll.finishPullUp()
 								})
 							})
 						})
 
 						/*首次加载数据*/
-						this._getData(() => {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						})
+						this._getData()
 					},
 					methods: {
 						/*去使用*/
-						_toUse(code){
-//							alert(1)
+						_toUse(code) {
+							//							alert(1)
 							mui.openWindow({
 								url: '../technician/technician.html',
 								id: 'technician',
-								styles: { 
+								styles: {
 									top: '0px', //新页面顶部位置
 									bottom: '0px', //新页面底部位置
 									scrollIndicator: "none",
@@ -252,53 +254,63 @@
 								},
 								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: {
 									shopCode: code
 								},
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})
 						},
 						/*添加新卡*/
 						_toAddNewCard(item) {
-							
+
 						},
 						/*读取卡列表*/
 						_getData(callback) {
+							this.loader = true
 							var _this = this
-							app.ajax(app.baseUrl + '/api/Buycard/GetBycardList', {
+							mui.ajax(app.baseUrl + '/api/Buycard/GetBycardList', {
 								data: {
-									pageIndex:_this.index,
-									pageSize:6
+									pageIndex: _this.index,
+									pageSize: 6
+								},
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
 								},
 								type: 'get', //HTTP请求类型
 								success: function(result) {
-									if(result.Success) {
-//										alert( result.Data.ListInfo.length)
-										var l = _this.cardsList.length
-										if(l == result.Data.Total ){	
-											_this.more = '没有数据了'
+									mui.later(() => {
+										_this.loader = false
+										if(result.Success) {
+											//										alert( result.Data.ListInfo.length)
+											var l = _this.cardsList.length
+											if(l == result.Data.Total) {
+												_this.more = '没有数据了'
+												if(callback) callback();
+												return
+											}
+											_this.cardsList = _this.cardsList.concat(result.Data.ListInfo)
+											_this.index += 1
+											_this.scroll.refresh();
 											if(callback) callback();
-											return
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast(result.Msg)
+											if(callback) callback();
 										}
-										_this.cardsList = _this.cardsList.concat(result.Data.ListInfo)	
-										_this.index+=1
-										_this.scroll.refresh();
-										if(callback) callback();
-									} else {
-										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+									}, 500)
 
-									}
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
-									console.log(type);
+									_this.loader = false
+									app.catchErr(xhr, type, errorThrown)
 								}
 							});
 						}

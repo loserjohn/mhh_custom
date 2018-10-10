@@ -9,6 +9,8 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+		
 		<style>
 			.mainMsg {
 				padding: 10px 0;
@@ -258,8 +260,23 @@
 	<body>
 
 		<div id="app">
+			<!--等待页面-->
+			<div class="loader" style="top:0" v-if="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
+			
 			<header class="fixed   header flex " style="background: -webkit-linear-gradient(left top, #e2c773, #ccaa42);background: linear-gradient(left top, #e2c773, #ccaa42);" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav cor_w"></span>返回</button>
 				<div class="tabBar f1">
 					<ul class=" flex">
 						<li class="f1  tabBarItem" @tap="_tabBar(1)" :class="{active:curTab==1}">信息</li>
@@ -368,7 +385,7 @@
 								<div class="f1">优惠券:</div>
 								<div class="ticketBox" @tap="_navigateTo('../coupons/proCoupons.html','proCoupons',{'shopCoupons':coupons})">
 									<ul class="reset flex">
-										<li class="ticketItems" v-for="(item,index) in coupons" v-if="index==1||index==2">
+										<li class="ticketItems" v-for="(item,index) in coupons" v-if="index==1||index==0">
 											{{item.DISCOUNT_NAME}}
 										</li>
 									</ul>
@@ -621,9 +638,11 @@
 			mui.plusReady(function() {
 				var self = plus.webview.currentWebview()
 				app.WXinit(CryptoJS)
+				app.initHeader();
 				var APP = new Vue({
 					el: '#app',
 					data: {
+						loader:true,
 						proKey: '',
 						/*项目的Key*/
 						appHeight: '',
@@ -663,7 +682,6 @@
 							let today = new Date();
 							let dd = new Date();
 							dd.setDate(dd.getDate() + value);
-
 							let str = (dd.getMonth() + 1) + '月' + dd.getDate() + '日'
 							return str
 						},
@@ -693,7 +711,7 @@
 						}
 					},
 					created: function() {
-						app.initHeader();
+						
 						/*获取闯进来的项目id*/
 						var self = plus.webview.currentWebview();
 						this.proKey = self.proKey
@@ -707,19 +725,15 @@
 						//this.appHeight = plus.display.resolutionHeight
 						this.appHeight = document.getElementById('header').offsetHeight;
 						/*初始化数据*/
+						
 						this._initData(() => {
-							/*初始化轮播图*/
+							/*初始化轮播图*/						
 							var slider = this.$refs.slider;
 							mui(slider).slider({
 								interval: 3000 //自动播放周期
 							});
-							mui.later(() => {
-								plus.nativeUI.closeWaiting()
-								mui.currentWebview.show('pop-in', 300, function() {}, {});
-							}, 500)
-
 						});
-//						alert(plus.storage.getItem('isLogin'))
+
 					},
 					methods: {
 //						与商家对话
@@ -796,11 +810,8 @@
 								},
 								type: 'post', //HTTP请求类型
 								success: function(result) {
-//									alert(0.5)
 									let payCode = result.Msg; //订单号
-//									plus.nativeUI.closeWaiting()
 									if(result.Success) {
-//alert(1)
 										plus.nativeUI.toast('订单创建成功')
 										mui.openWindow({
 											url: '../cashPay.html',
@@ -847,12 +858,12 @@
 								},
 								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: extras,
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})
@@ -883,6 +894,7 @@
 						},
 						/*初始化数据*/
 						_initData(callback) {
+							this.loader = true
 							var _this = this
 							mui.ajax(app.baseUrl + '/api/Project/GetProject', {
 								type: 'get', //HTTP请求类型
@@ -894,26 +906,29 @@
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
 								success: function(result) {
-									/*登陆成功*/
-									if(result.Success) {
-										_this.product = result.Data.dataFormart
-										_this.enabledTime = result.Data.enabledTime
-										_this.imgprev = result.Data.dataFormart.PROJECT_IMGS[result.Data.dataFormart.PROJECT_IMGS.length - 1]
-										_this.imgnext = result.Data.dataFormart.PROJECT_IMGS[0]
-										_this.masterCode = result.Data.dataFormart.SHOP_CODE;
-										//										alert(parseInt(result.Data.dataFormart.SHOP_STAR) )
-										_this.levels = parseInt(result.Data.dataFormart.SHOP_STAR)
-										_this._initComment()
-										_this._initShopMsg()
-										_this._initScroll()
-
-										if(callback) callback()
-									} else {
-										plus.nativeUI.closeWaiting()
-										plus.nativeUI.toast('无效项目');
-										mui.back()
-										
-									}
+									mui.later(()=>{
+										_this.loader = false								
+										if(result.Success) {
+											_this.product = result.Data.dataFormart
+											_this.enabledTime = result.Data.enabledTime
+											_this.imgprev = result.Data.dataFormart.PROJECT_IMGS[result.Data.dataFormart.PROJECT_IMGS.length - 1]
+											_this.imgnext = result.Data.dataFormart.PROJECT_IMGS[0]
+											_this.masterCode = result.Data.dataFormart.SHOP_CODE;
+											//										alert(parseInt(result.Data.dataFormart.SHOP_STAR) )
+											_this.levels = parseInt(result.Data.dataFormart.SHOP_STAR)
+											_this._initComment()
+											_this._initShopMsg()
+											_this._initScroll()
+	
+											if(callback) callback()
+										} else {
+											plus.nativeUI.closeWaiting()
+											plus.nativeUI.toast('无效项目');
+											mui.back()
+											
+										}
+									},500)
+									
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；

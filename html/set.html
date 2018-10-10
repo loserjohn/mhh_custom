@@ -69,16 +69,7 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					个人设置
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
-
+		
 			<!--卡片-->
 			<div class=" set" id="content">
 				<ul class="mui-table-view  personMsgList">
@@ -156,7 +147,6 @@
 						agent:'',
 					},
 					created: function() {
-						app.initHeader();
 						var self = plus.webview.currentWebview();
 						this.avatar =  self.menber.MEMBER_HEAD;
 						this.nickname =  self.menber.MEMBER_NIKENAME;
@@ -166,7 +156,7 @@
 						//						alert('set'+plus.storage.getItem('isLogin'))
 						var _this = this
 						plus.nativeUI.closeWaiting()
-						mui.currentWebview.show('pop-in', 300, function() {}, {});
+
 					},
 					filters: {
 
