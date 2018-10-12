@@ -208,7 +208,7 @@
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_toPay(item.ORDER_CODE)">去付款</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_navigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==3||item.ORDER_STATUS_TYPE==1" @tap="_navigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_navigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==3" @tap="_navigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
 										</div>
 									</li>
@@ -697,8 +697,31 @@
 									return
 								}
 						},
-						/*跳转页面*/
+						/*跳转页面无等待*/
 						_navigateTo(dstUrl, dstId, extras) {
+							mui.openWindow({
+								url: dstUrl,
+								id: dstId,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						/*跳转页面*/
+						_NWnavigateTo(dstUrl, dstId, extras) {
 							mui.openWindow({
 								url: dstUrl,
 								id: dstId,
@@ -819,6 +842,7 @@
 						},
 						/*刷新*/
 						_refreshData() {
+
 							var _this = this
 							plus.nativeUI.showWaiting()
 
@@ -885,7 +909,7 @@
 
 			function refresh() {
 				mui.later(function(){
-					APP._refresh()
+					APP._refreshData()
 				},500)			
 			}
 		</script>

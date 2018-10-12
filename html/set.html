@@ -10,11 +10,12 @@
 		<link rel="stylesheet" href="../css/iconfont.css" />
 		<link rel="stylesheet" href="../css/animate.css" />
 		<style>
-			.set .avatar{
+			.set .avatar {
 				width: 80px;
 				height: 80px;
 				border-radius: 0;
 			}
+			
 			.set .cellInputTxt {
 				width: 100%;
 				border: none;
@@ -69,7 +70,7 @@
 
 	<body>
 		<div id="app">
-		
+
 			<!--卡片-->
 			<div class=" set" id="content">
 				<ul class="mui-table-view  personMsgList">
@@ -83,9 +84,9 @@
 					<li class="mui-table-view-cell flex">
 						<div class="f1 cellName">昵称</div>
 						<div class="f1">
-							<input type="text" class="cellInputTxt t_r red" v-model="nickname" placeholder="请输入你的昵称" @change="_updateMsg(1)"/>
+							<input type="text" class="cellInputTxt t_r red" v-model="nickname" placeholder="请输入你的昵称" @change="_updateMsg(1)" />
 						</div>
-						
+
 					</li>
 
 					<!--<li class="mui-table-view-cell flex">
@@ -97,7 +98,7 @@
 						</select>
 						<i class="iconfont icon-xiayibu "></i>
 					</li>-->
-					<li class="mui-table-view-cell flex">
+					<li class="mui-table-view-cell flex" @tap="_updatedNum">
 						<!--<i class="iconfont icon-geren  mui-pull-left cor_y"></i>-->
 						<div>修改密码</div>
 						<div class="f1 t_r">
@@ -142,15 +143,18 @@
 				APP = new Vue({
 					el: '#app',
 					data: {
-						avatar:'',
-						nickname:'',
-						agent:'',
+						avatar: '',
+						nickname: '',
+						agent: '',
+						phone:''
 					},
 					created: function() {
 						var self = plus.webview.currentWebview();
-						this.avatar =  self.menber.MEMBER_HEAD;
-						this.nickname =  self.menber.MEMBER_NIKENAME;
-						this.agent =  self.menber.MEMBER_SEX;
+						this.avatar = self.menber.MEMBER_HEAD;
+						this.nickname = self.menber.MEMBER_NIKENAME;
+						this.agent = self.menber.MEMBER_SEX;
+						this.agent = self.menber.USERNAME
+//						alert(this.agent)
 					},
 					mounted: function() {
 						//						alert('set'+plus.storage.getItem('isLogin'))
@@ -162,10 +166,51 @@
 
 					},
 					methods: {
-//						上传头像
-						_uploadPic(){
+						//						修改电话号码
+						_updatedNum() {
+							var _this = this
+							mui.openWindow({
+								url: './updatedNum.html',
+								id: 'updatedNum',
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
+										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1px" // 分割线高度,默认值为"2px"
+										}
+									}
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: {
+									phone:_this.agent
+								},
+								waiting: {
+									autoShow: false, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						//						上传头像
+						_uploadPic() {
 							Clip.getIMG('选择头像', (src) => {
-//								console.log(src)
+								//								console.log(src)
 								mui.openWindow({
 									url: './imgClick.html',
 									id: 'imgClick',
@@ -182,56 +227,60 @@
 									},
 									extras: {
 										img: src,
-										pid:'set',
-										size:3
+										pid: 'set',
+										size: 3
 									},
 									waiting: {
 										autoShow: true, //自动显示等待框，默认为true
 										title: '正在加载...', //等待对话框上显示的提示内容
 									}
-								})				
-							})
-						},
-//						选择了头像
-						_chooseAvatar(src){
-							var _this = this
-							if(!src)return;
-							this._upload({MEMBER_HEAD:src},(res)=>{
-									_this.avatar =  src									
-							})
-						},
-//						修改认证信息
-						_updateMsg(type){
-							type= parseInt(type)
-							switch (type){
-								case 1:
-								this._upload({MEMBER_NIKENAME:this.nickname},(res)=>{
-																	
 								})
+							})
+						},
+						//						选择了头像
+						_chooseAvatar(src) {
+							var _this = this
+							if(!src) return;
+							this._upload({
+								MEMBER_HEAD: src
+							}, (res) => {
+								_this.avatar = src
+							})
+						},
+						//						修改认证信息
+						_updateMsg(type) {
+							type = parseInt(type)
+							switch(type) {
+								case 1:
+									this._upload({
+										MEMBER_NIKENAME: this.nickname
+									}, (res) => {
+
+									})
 									break;
 								default:
 									break;
 							}
 						},
-//						修改资料
-						_upload(option,callback){
-							if(!option)return;
-							if(option.MEMBER_NIKENAME){
+						//						修改资料
+						_upload(option, callback) {
+							if(!option) return;
+							if(option.MEMBER_NIKENAME) {
 								plus.storage.setItem('userNickName', option.MEMBER_NIKENAME);
 							}
-//							console.log(JSON.stringify(option))
+							//							console.log(JSON.stringify(option))
 							plus.nativeUI.showWaiting()
 							app.ajax(app.baseUrl + '/api/MemberInfo/UpdateMemberInfo', {
-								data:option,
+								data: option,
 								type: 'post', //HTTP请求类型
 								success: function(result) {
 									if(result.Success) {
-										mui.later(()=>{
+										mui.later(() => {
 											plus.nativeUI.closeWaiting()
 											if(callback) callback();
 											plus.webview.getWebviewById('mine').evalJS('refresh()')
-										},1000)
-										
+										}, 1000)
+
 									} else {
 										plus.nativeUI.closeWaiting()
 										plus.nativeUI.toast(result.Msg)
@@ -255,16 +304,14 @@
 									plus.webview.getWebviewById('orders').evalJS('refresh()')
 									plus.webview.getWebviewById('mine').evalJS('refresh()')
 									plus.webview.getWebviewById('mine').evalJS('noNew()')
-							
-									if(plus.webview.getWebviewById('chat')){
+
+									if(plus.webview.getWebviewById('chat')) {
 										plus.webview.getWebviewById('chat').close()
 									}
-									if(plus.webview.getWebviewById('information')){
+									if(plus.webview.getWebviewById('information')) {
 										plus.webview.getWebviewById('information').close()
 									}
-									
-									
-									
+
 									mui.back()
 								}
 
@@ -273,9 +320,9 @@
 					}
 				})
 			})
-			
-			function choosePic(src){
-//				alert(111)
+
+			function choosePic(src) {
+				//				alert(111)
 				APP._chooseAvatar(src)
 			}
 		</script>

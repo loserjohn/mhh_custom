@@ -119,18 +119,7 @@
 	</head>
 
 	<body>
-		<div id="app">
-			<!--<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					优惠券
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>-->
-			<!--等待页面-->
-			<div class="loader" style="top:0;bottom:50px" v-show="loader">
+		<div class="loader" style="top:0;" id="loader">
 				<ul>
 					<li id='a'></li>
 					<li id='b'></li>
@@ -143,6 +132,9 @@
 					<li id='i'></li>
 				</ul>
 			</div>
+		<div id="app">
+		
+			
 			<!--卡片-->
 			<div class="cards scrollBox " style="top:0" ref="scroll">
 				<div class="reset" style="min-height: 101%;">
@@ -264,10 +256,7 @@
 						var scroll = this.$refs.scroll
 						this.scrollTop = 0 + 'px'
 						/*首次加载数据*/
-						this._getData(() => {
-							//							plus.nativeUI.closeWaiting()
-							//							mui.currentWebview.show('pop-in', 300, function () {}, {});
-						})
+						this._getData()
 						this.$nextTick(function() {
 							//							初始化scrool
 							if(!_this.scroll) {
@@ -363,7 +352,7 @@
 						},
 						/*获取数据*/
 						_getData(callback) {
-							this.loader = true
+							
 							var _this = this
 							mui.ajax(app.baseUrl + '/api/Discount/GetDiscountList', {
 								data: {
@@ -376,8 +365,9 @@
 								},
 								type: 'post', //HTTP请求类型
 								success: function(result) {
-									_this.loader = false
+									
 									mui.later(() => {
+										document.getElementById('loader').style.display="none"
 										if(result.Success) {
 											var l = _this.couponsList.length
 											if(l == result.Data.Total) {

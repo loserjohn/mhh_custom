@@ -289,7 +289,8 @@
 					"html/address/address.html",
 					"html/collection/collection.html",
 					"html/platformCard/platformCard.html",
-					"html/production/productBuy.html"
+					"html/production/productBuy.html",
+					"html/coupons/coupons.html"
 				],
 				"priority": 0
 			},
@@ -328,7 +329,8 @@
 			"html/set.html": {
 				"resources": [],
 				"refer": [
-					"html/imgClick.html"
+					"html/imgClick.html",
+					"html/updatedNum.html"
 				],
 				"priority": 0
 			},
@@ -343,7 +345,8 @@
 				"resources": [],
 				"refer": [
 					"html/technician/technician.html",
-					"html/login.html"
+					"html/login.html",
+					"html/production/productOrder.html"
 				],
 				"priority": 0
 			},
@@ -373,7 +376,8 @@
 				"resources": [],
 				"refer": [
 					"html/technician/technician.html",
-					"html/order/orderDetail.html"
+					"html/order/orderDetail.html",
+					"html/order/refund.html"
 				],
 				"priority": 0
 			},
@@ -403,6 +407,21 @@
 				"resources": [],
 				"refer": [
 					"html/production/productBuy.html"
+				],
+				"priority": 0
+			},
+			"html/production/productOrder.html": {
+				"resources": [],
+				"refer": [
+					"html/production/timePicker.html",
+					"html/production/toPay.html"
+				],
+				"priority": 0
+			},
+			"html/production/toPay.html": {
+				"resources": [],
+				"refer": [
+					"html/success.html"
 				],
 				"priority": 0
 			}
@@ -459,7 +478,6 @@
 				"js/mui.min.js",
 				"images/blank.png",
 				"images/spyy.png",
-				"html/coupons/coupons.html",
 				"images/wx_zf.png",
 				"images/index/index2.png",
 				"images/yhq_bg2.png",
@@ -500,8 +518,6 @@
 				"images/m.jpg",
 				"images/no.png",
 				"images/card.png",
-				"html/production/productOrder.html",
-				"html/production/toPay.html",
 				"images/index/m1.png",
 				"js/RongIMLib-cs.min.js",
 				"images/index/m3.png",
@@ -513,7 +529,6 @@
 				"images/label_bg.jpg",
 				"images/faces/ee_26.png",
 				"js/cs.min.js",
-				"html/production/timePicker.html",
 				"images/time.png",
 				"images/mhh_avator.png",
 				"images/index/refresh1.png",

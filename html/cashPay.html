@@ -139,7 +139,7 @@
 
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true		
+				swipeBack: true		
 			});
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
@@ -460,6 +460,32 @@
 //							alert(1)
 							if(this.curWay==1){
 								plus.webview.currentWebview().close()
+								plus.webview.getWebviewById('orders').evalJS('refresh()')
+								if(plus.webview.getWebviewById('toPay')){
+									plus.webview.getWebviewById('toPay').close();
+								}
+								
+								if(plus.webview.getWebviewById('productOrder')){
+									plus.webview.getWebviewById('productOrder').close();
+								}
+								if(plus.webview.getWebviewById('productBuy')){
+									plus.webview.getWebviewById('productBuy').close();
+								}
+								if(plus.webview.getWebviewById('productList')){
+									plus.webview.getWebviewById('productList').close();
+								}
+								
+								if(plus.webview.getWebviewById('platformCard')){
+									plus.webview.getWebviewById('platformCard').close();
+								}
+								if(plus.webview.getWebviewById('spread')){
+									plus.webview.getWebviewById('spread').close();
+								}
+								mui.later(()=>{
+									plus.webview.getLaunchWebview().show();
+									plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
+								},500)
+										
 								return;
 							}
 //							alert(2)

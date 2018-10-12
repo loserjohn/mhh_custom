@@ -8,6 +8,8 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+		
 		<style>
 			/*底部菜单*/
 			
@@ -127,6 +129,21 @@
 	</head>
 
 	<body>
+		<!--等待页面-->
+			<div class="loader" style="top:0px" id="loader" style="display: block;">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
+		
 		<div id="app">
 
 			<!--分类作品-->
@@ -346,10 +363,10 @@
 									},
 									type: 'get', //HTTP请求类型
 									success: function(result) {
-										/*登陆成功*/
+										
+										document.getElementById('loader').style.display = 'none'
 										if(result.Success) {
 											// 储存本地 记录登陆时间	
-//											console.log(JSON.stringify(result.Data.data))
 											_this.detail = result.Data.data
 											_this.coupon = result.Data.Coupon;
 											_this.serverNum = result.Data.data.SERVICE_NUM

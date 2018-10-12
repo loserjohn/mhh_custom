@@ -24,7 +24,8 @@
 			"html/address/address.html",
 			"html/collection/collection.html",
 			"html/platformCard/platformCard.html",
-			"html/production/productBuy.html"
+			"html/production/productBuy.html",
+			"html/coupons/coupons.html"
 		]
 	},
 	"html/login.html": {
@@ -53,7 +54,8 @@
 	},
 	"html/set.html": {
 		"refer": [
-			"html/imgClick.html"
+			"html/imgClick.html",
+			"html/updatedNum.html"
 		]
 	},
 	"html/information/information.html": {
@@ -64,7 +66,8 @@
 	"html/production/productBuy.html": {
 		"refer": [
 			"html/technician/technician.html",
-			"html/login.html"
+			"html/login.html",
+			"html/production/productOrder.html"
 		]
 	},
 	"html/information/chat.html": {
@@ -86,7 +89,8 @@
 	"orders.html": {
 		"refer": [
 			"html/technician/technician.html",
-			"html/order/orderDetail.html"
+			"html/order/orderDetail.html",
+			"html/order/refund.html"
 		]
 	},
 	"html/cashPay.html": {
@@ -108,6 +112,17 @@
 	"html/production/search.html": {
 		"refer": [
 			"html/production/productBuy.html"
+		]
+	},
+	"html/production/productOrder.html": {
+		"refer": [
+			"html/production/timePicker.html",
+			"html/production/toPay.html"
+		]
+	},
+	"html/production/toPay.html": {
+		"refer": [
+			"html/success.html"
 		]
 	}
 }

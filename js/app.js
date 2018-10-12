@@ -106,13 +106,13 @@
 		}, false);
 		//		点击消息监听
 		plus.push.addEventListener("click", function(msg) {
-			
+
 			switch(msg.payload) {
 				case "LocalMSG":
 					/*本地消息*/
 					break;
 				default:
-					
+
 					break;
 			}
 			mui.openWindow({
@@ -144,7 +144,7 @@
 			cover: false
 		};
 		plus.push.createMessage(msg.content, "LocalMSG", options);
-		
+
 		//		if(plus.os.name == "iOS") {
 		//			alert('*如果无法创建消息，请到"设置"->"通知"中配置应用在通知中心显示!');
 		//		}
@@ -282,7 +282,7 @@
 						if(callback) callback(true, msg)
 
 					} else {
-//						plus.nativeUI.toast('登陆失败，请手动登陆')
+						//						plus.nativeUI.toast('登陆失败，请手动登陆')
 					}
 				})
 
@@ -304,7 +304,7 @@
 						if(callback) callback(true)
 					} else {
 						//						alert('登陆失败')
-						if(callback) callback(false,msg)
+						if(callback) callback(false, msg)
 					}
 				})
 				break;
@@ -344,7 +344,7 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 
-					mui.later(function(){
+					mui.later(function() {
 						plus.webview.getWebviewById('orders').evalJS('refresh()')
 						plus.webview.getWebviewById('mine').evalJS('refresh()')
 					}, 500)
@@ -360,7 +360,7 @@
 						//						console.log(result.DataExt)
 					}
 					owner.postDevice() //发送uid --个推
-			
+
 					if(callback) callback(true, null)
 				} else {
 					/*验证失败*/
@@ -403,10 +403,10 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 					plus.storage.setItem('isLogin', '1');
-					mui.later(function(){
+					mui.later(function() {
 						plus.webview.getWebviewById('orders').evalJS('refresh()')
 						plus.webview.getWebviewById('mine').evalJS('refresh()')
-						
+
 					}, 500)
 
 					if(result.DataExt) {
@@ -459,14 +459,14 @@
 				//				alert(error)
 			}
 		});
-		
-		if(plus.webview.getWebviewById('mine')){
+
+		if(plus.webview.getWebviewById('mine')) {
 			plus.webview.getWebviewById('mine').evalJS('initIM()')
 		}
-//		if(plus.webview.getWebviewById('chat')){
-//			plus.webview.getWebviewById('chat').evalJS('ImInit()')
-//		}
-		
+		//		if(plus.webview.getWebviewById('chat')){
+		//			plus.webview.getWebviewById('chat').evalJS('ImInit()')
+		//		}
+
 	}
 	/*页面跳转*/
 	var jumpPage = function(id) {
@@ -520,12 +520,12 @@
 					plus.storage.setItem('userName', Info.mobile.toString());
 					plus.storage.setItem('userNickName', Info.mobile.toString());
 					plus.storage.setItem('userPass', loginInfo.password);
-//					console.log(JSON.stringify( loginInfo.password))
+					//					console.log(JSON.stringify( loginInfo.password))
 					var t = new Date().getTime().toString();
 					plus.storage.setItem('lastLoginTime', t);
 					/*注册成功后直接登陆*/
 					plus.nativeUI.toast('注册成功')
-					
+
 					if(callback) callback(true, null)
 					/*直接登陆*/
 				} else {
@@ -570,7 +570,7 @@
 			},
 			error: function(xhr, type, errorThrown) {
 				//异常处理；
-					owner.catchErr(type, errorThrown);
+				owner.catchErr(type, errorThrown);
 			}
 		});
 	}
@@ -609,7 +609,6 @@
 						break;
 					case 1:
 						//拍照 
-
 						owner.cameraImages(function(src) {
 							if(callback) callback(src);
 						});
@@ -620,8 +619,6 @@
 						owner.galleryImages(1, function(src) {
 							if(callback) callback(src);
 						});
-
-						break;
 					default:
 						break;
 				}
@@ -653,12 +650,12 @@
 	}
 	/*拍照获取图片--  单张*/
 	owner.cameraImages = function(callback) {
+
 		var mobileCamera = plus.camera.getCamera();
 		mobileCamera.captureImage(function(e) {
 			plus.io.resolveLocalFileSystemURL(e, function(entry) {
 				var path = entry.toLocalURL() + '?version=' + new Date().getTime();
-				//				console.log(path);
-				//				return path
+				
 				owner.uploadIMG(path, function(src) {
 					if(callback) callback(src);
 				})
@@ -668,42 +665,69 @@
 		}, function(e) {
 			console.log("er", err);
 		}, function() {
+			alert(2)
 			filename: '_doc/head.png';
 		});
 	}
 	/*图片上传*/
 	owner.uploadIMG = function(src, callback) {
-		//		alert(src)
-		var img = new Image();
-		img.src = src;
-		plus.nativeUI.showWaiting();
-		var url = app.baseUrl + '/api/Upload/UploadImage';
-		var task = plus.uploader.createUpload(url, {
-				method: "POST"
-			},
-			function(t, status) { //上传完成
-				if(status == 200) {
-					//		            	console.log("上传成功："+t.responseText);
-					//		            	alert(t.responseText)
-					var res = JSON.parse(t.responseText)
-					//		            	console.log(res.Data)
-					if(callback) callback(res.Data);
-					mui.later(function() {
-						plus.nativeUI.closeWaiting();
-					}, 1500)
 
-				} else {
-					console.log("上传失败：" + status);
-				}
-			}
-		);
-		var foldName = plus.storage.getItem('userName')
-		//添加其他参数
-		task.addData("foldName", foldName);
-		task.addFile(src, {
-			key: src
-		});
-		task.start();
+//		var a = src.split('?')
+//		var pu = a[0]+new Date().getTime();
+//		var ext = a[1]
+//		
+//		var dst = pu +'?' +ext
+//		console.log(src)
+//      console.log(dst)
+		//		压缩图片
+		plus.zip.compressImage({
+				src: src,
+				dst: src,
+				quality: 50,
+				width: "50%",
+				overwrite: true
+			},
+			function(event) {	
+				dstSRC = event.target;
+				
+				var img = new Image();
+				img.src = dstSRC;
+
+				plus.nativeUI.showWaiting();
+				var url = app.baseUrl + '/api/Upload/UploadImage';
+
+				var task = plus.uploader.createUpload(url, {
+						method: "POST"
+					},
+					function(t, status) { //上传完成
+						if(status == 200) {
+							//		            	console.log("上传成功："+t.responseText);
+
+							var res = JSON.parse(t.responseText)
+							//		            	console.log(res.Data)
+							if(callback) callback(res.Data);
+							mui.later(function() {
+								plus.nativeUI.closeWaiting();
+							}, 1500)
+
+						} else {
+							console.log("上传失败：" + status);
+						}
+					}
+				);
+				var foldName = plus.storage.getItem('userName')
+				//添加其他参数
+				task.addData("foldName", foldName);
+				task.addFile(src, {
+					key: src
+				});
+				task.start();
+			},
+			function(error) {
+				alert("压缩失败 error!");
+//				console.log(JSON.stringify(error))
+			})
+
 	}
 	/*base64*/
 	owner.getBase64Image = function(img) {
@@ -737,86 +761,86 @@
 		var tokenLife = plus.storage.getItem('tokenLife');
 		option.timeout = 5000;
 		option.headers = {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Authorization': owner.mark + plus.storage.getItem('token')
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Authorization': owner.mark + plus.storage.getItem('token')
 		}
 
 		option.error = function(xhr, type, errorThrown) {
 			plus.nativeUI.closeWaiting()
 			if(type == 'timeout') {
 				plus.nativeUI.toast('网络超时！请稍后重试')
-			}else if(type == 'abort') {
+			} else if(type == 'abort') {
 				plus.nativeUI.toast('网络未连接');
 			} else if(errorThrown == 'Unauthorized') {
-//				plus.nativeUI.toast('重新登陆中');
+				//				plus.nativeUI.toast('重新登陆中');
 				owner.autoLogin()
-			}  else {
+			} else {
 				alert(type)
 				plus.nativeUI.toast('未知错误');
-//				mui.openWindow({
-//					url: './html/error.html',
-//					id: 'error',
-//					styles: {
-//						top: '0px', //新页面顶部位置
-//						bottom: '0px', //新页面底部位置
-//						scrollIndicator: "none",
-//						plusrequire: 'ahead'
-//					},
-//					show: {
-//						autoShow: true, //页面loaded事件发生后自动显示，默认为true
-//						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-//					},
-//					extras: {
-//						//自定义扩展参数，可以用来处理页面间传值  
-//					},
-//					waiting: {
-//						autoShow: false, //自动显示等待框，默认为true
-//						title: '正在加载...', //等待对话框上显示的提示内容
-//					}
-//				})
+				//				mui.openWindow({
+				//					url: './html/error.html',
+				//					id: 'error',
+				//					styles: {
+				//						top: '0px', //新页面顶部位置
+				//						bottom: '0px', //新页面底部位置
+				//						scrollIndicator: "none",
+				//						plusrequire: 'ahead'
+				//					},
+				//					show: {
+				//						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+				//						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+				//					},
+				//					extras: {
+				//						//自定义扩展参数，可以用来处理页面间传值  
+				//					},
+				//					waiting: {
+				//						autoShow: false, //自动显示等待框，默认为true
+				//						title: '正在加载...', //等待对话框上显示的提示内容
+				//					}
+				//				})
 			}
 		}
 		mui.ajax(url, option)
-//		if(curTime < tokenLife) {
-//			mui.ajax(url, option)
-//		} else {
-//			switch(lastLoginWay) {
-//				/* 最后的登陆方式               1 为账号登陆 */
-//				case '1':
-//					//							alert('账号登陆')
-//					//	判断是否过期
-//					if(!userName || !userPass) return;
-//					var data = {
-//						rpass: userPass,
-//						username: userName,
-//						password: owner._Encrypt(userPass),
-//						type: 3
-//					}
-//					owner.zhlogin(data, function() {
-//						mui.ajax(url, option)
-//					})
-//					break;
-//				case '2':
-//					/* 2为微信登陆
-//					判断是否过期 */
-//
-//					if(!opId) return;
-//					var data = {
-//						opid: opId,
-//						aseopid: owner._Encrypt(opId),
-//						type: 2
-//					}
-//					//					console.log(data2)
-//					owner.wxlogin(data, function() {
-//						mui.ajax(url, option)
-//					});
-//					//					mui.ajax(url, option)
-//					break;
-//				default:
-//					break;
-//			}
-//			//			mui.ajax(url, option)
-//		}
+		//		if(curTime < tokenLife) {
+		//			mui.ajax(url, option)
+		//		} else {
+		//			switch(lastLoginWay) {
+		//				/* 最后的登陆方式               1 为账号登陆 */
+		//				case '1':
+		//					//							alert('账号登陆')
+		//					//	判断是否过期
+		//					if(!userName || !userPass) return;
+		//					var data = {
+		//						rpass: userPass,
+		//						username: userName,
+		//						password: owner._Encrypt(userPass),
+		//						type: 3
+		//					}
+		//					owner.zhlogin(data, function() {
+		//						mui.ajax(url, option)
+		//					})
+		//					break;
+		//				case '2':
+		//					/* 2为微信登陆
+		//					判断是否过期 */
+		//
+		//					if(!opId) return;
+		//					var data = {
+		//						opid: opId,
+		//						aseopid: owner._Encrypt(opId),
+		//						type: 2
+		//					}
+		//					//					console.log(data2)
+		//					owner.wxlogin(data, function() {
+		//						mui.ajax(url, option)
+		//					});
+		//					//					mui.ajax(url, option)
+		//					break;
+		//				default:
+		//					break;
+		//			}
+		//			//			mui.ajax(url, option)
+		//		}
 	}
 	//	错误捕获
 	owner.catchErr = function(xhr, type, errorThrown) {
@@ -826,29 +850,29 @@
 		} else if(type == 'abort') {
 			plus.webview.getLaunchWebview().evalJS('closeVersion()')
 			plus.nativeUI.toast('网络未连接');
-//			if(plus.webview.currentWebview().id == plus.webview.getLaunchWebview().id) {
-//				mui.openWindow({
-//					url: './html/error.html',
-//					id: 'error',
-//					styles: {
-//						top: '0px', //新页面顶部位置
-//						bottom: '0px', //新页面底部位置
-//						scrollIndicator: "none",
-//						plusrequire: 'ahead'
-//					},
-//					show: {
-//						autoShow: true, //页面loaded事件发生后自动显示，默认为true
-//						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-//					},
-//					extras: {
-//						//自定义扩展参数，可以用来处理页面间传值  
-//					},
-//					waiting: {
-//						autoShow: false, //自动显示等待框，默认为true
-//						title: '正在加载...', //等待对话框上显示的提示内容
-//					}
-//				})
-//			}
+			//			if(plus.webview.currentWebview().id == plus.webview.getLaunchWebview().id) {
+			//				mui.openWindow({
+			//					url: './html/error.html',
+			//					id: 'error',
+			//					styles: {
+			//						top: '0px', //新页面顶部位置
+			//						bottom: '0px', //新页面底部位置
+			//						scrollIndicator: "none",
+			//						plusrequire: 'ahead'
+			//					},
+			//					show: {
+			//						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+			//						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+			//					},
+			//					extras: {
+			//						//自定义扩展参数，可以用来处理页面间传值  
+			//					},
+			//					waiting: {
+			//						autoShow: false, //自动显示等待框，默认为true
+			//						title: '正在加载...', //等待对话框上显示的提示内容
+			//					}
+			//				})
+			//			}
 
 		}
 	}

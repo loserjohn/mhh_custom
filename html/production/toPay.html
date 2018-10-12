@@ -517,6 +517,32 @@
 						success() {
 							if(this.curWay==1 || this.curWay==2){
 								plus.webview.currentWebview().close()
+								plus.webview.getWebviewById('orders').evalJS('refresh()')
+								if(plus.webview.getWebviewById('toPay')){
+									plus.webview.getWebviewById('toPay').close();
+								}
+								
+								if(plus.webview.getWebviewById('productOrder')){
+									plus.webview.getWebviewById('productOrder').close();
+								}
+								if(plus.webview.getWebviewById('productBuy')){
+									plus.webview.getWebviewById('productBuy').close();
+								}
+								if(plus.webview.getWebviewById('productList')){
+									plus.webview.getWebviewById('productList').close();
+								}
+								
+								if(plus.webview.getWebviewById('platformCard')){
+									plus.webview.getWebviewById('platformCard').close();
+								}
+								if(plus.webview.getWebviewById('spread')){
+									plus.webview.getWebviewById('spread').close();
+								}
+								mui.later(()=>{
+									plus.webview.getLaunchWebview().show();
+									plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
+								},500)
+																
 								return;
 							}
 							mui.openWindow({
