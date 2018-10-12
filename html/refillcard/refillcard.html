@@ -37,8 +37,7 @@
 			.cardList .cardMsg {
 				box-sizing: border-box;
 				color: #fff;
-				line-height: 60px;
-				/*margin-top: 10px;*/
+				line-height: 30px;
 			}
 			
 			.cardList .cardMsg .curprize {
@@ -47,7 +46,7 @@
 			}
 			
 			.cardList .cardMsg div {
-				line-height: 60px;
+				line-height: 30px;
 				color: #fff;
 			}
 			/*底部的按钮*/
@@ -117,12 +116,13 @@
 					<ul class="reset cm_ul  cards_ul ">
 						<li class="cardList container " v-for="item in cardsList">
 							<div class="flex cardName">
-								<img :src="item.SHOP_LOGO" alt="" class="avatar" />
+								<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
 								<div class="cor_w ">{{item.SHOP_NAME}}</div>
 								<div class="f1 cor_w t_r" @tap="_toUse(item.SHOP_CODE)">
 									去使用》
 								</div>
 							</div>
+							<div class="cor_w container lh24">{{item.BUYCARD_CODE}}</div>
 							<div class="cardMsg container flex">
 								<div class="curprize">买：￥{{item.RECHARGE_AMOUNT}}</div>
 								<div class="curprize">送：￥{{item.RECHARGE_GRANT}}</div>
@@ -240,6 +240,12 @@
 						this._getData()
 					},
 					methods: {
+						//						默认头像
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="../../images/default_avatar.jpg"
+						},
 						/*去使用*/
 						_toUse(code) {
 							//							alert(1)

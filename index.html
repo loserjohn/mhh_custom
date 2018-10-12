@@ -364,7 +364,7 @@
 						</div>
 
 						<!--导航栏豆腐块-->
-						<div v-for="item in blockData">
+						<div v-for="item in blockData" style="background: #fff;">
 							<div class=" flex " v-if="item.type==1" >
 								<div class="f1 t_c"  @tap="_jump(item.listData[0].keyCode)">
 									<img :src="item.listData[0].img" alt="" class="contain "/>
@@ -447,7 +447,7 @@
 							<div class="newContent">
 								<ul class="reset flex">
 									<li class="newItem" v-for="item in newst" @tap="_navigateTo('./html/production/productBuy.html','productBuy',{proKey:item.PROJECT_CODE})">
-										<img :src="item.PROJECT_IMG1" alt="" />
+										<img :src="item.PROJECT_IMG1"  alt="" />
 										<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
 										<article class="flex">
 											<p class="prize  cor_r fs18 lh28" style="margin-right: 10px;">￥{{item.PROJECT_DISCOUNT}}</p>
@@ -455,7 +455,7 @@
 										</article>
 										<div class="flex">
 											<aside class="shopAvatar">
-												<img :src="item.SHOP_LOGO" class="cover" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'./images/default_avatar.jpg'" @error="_default" class="cover" />
 											</aside>
 											<div class="f1">
 												<p>{{item.SHOP_NAME}}</p>
@@ -566,6 +566,12 @@
 
 					},
 					methods: {
+							//						默认头像
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="./images/default_avatar.jpg"
+						},
 //						初始化豆腐块
 						_initBlock(){
 							var _this = this

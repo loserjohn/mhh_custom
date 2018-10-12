@@ -104,7 +104,7 @@
 										<div class="f1 cm_txt">
 											<h4 class="">{{item.PROJECT_NAME}}</h4>
 											<div class="cm_technician flex">
-												<img :src="item.SHOP_LOGO" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'"  @error="_default" class="avatar" />
 												<div class="f1">
 													<p class="lh18">{{item.SHOP_NAME}}</p>
 													<p class="flex">嘿皮值:
@@ -133,7 +133,7 @@
 								</div>
 								<div class="mui-slider-handle cm_proItems container" style="transform: translate(0px, 0px);" @tap="_toDetail(item.SHOP_CODE)">
 									<div class="block flex">
-										<img :src="item.SHOP_LOGO" class="avatar">
+										<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" class="avatar">
 										<div class="f1">
 											<div class="lh18 cm_name">{{item.SHOP_NAME}}</div>
 
@@ -307,6 +307,12 @@
 						}
 					},
 					methods: {
+						//						默认头像
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="../../images/default_avatar.jpg"
+						},
 						_level(n) {
 							//							alert(parseInt(n))
 							if(!n) {

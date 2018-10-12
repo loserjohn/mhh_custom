@@ -23,10 +23,29 @@
 				width: 100%;
 				position: absolute;
 				bottom: 0;
+				height: 60px;
 				padding: 0 15px;
 				border-top: 1px solid #d3d3d3;
 			}
-			
+			.timeModel .footer .chooseTimeBtn{
+				margin-top: 6px;
+				height: 44px;
+				text-align: center;
+				box-sizing: border-box;
+				line-height: 44px;
+				background:#ccaa42 ;
+				color: #fff;
+			}
+			.timeModel .footer .noTimeBtn{
+					margin-top: 6px;
+				width: 120px;
+				height: 44px;
+				text-align: center;
+				box-sizing: border-box;
+				line-height: 44px;
+				border: 1px solid #ccaa42;
+				color: #ccaa42;
+			}
 			.timeModel .content {
 				/*border-top: 1px solid #ddd;
 				border-bottom: 1px solid #ddd;*/
@@ -291,10 +310,9 @@
 				<div class="cm_loading flex " v-show="loading">
 					<span class="mui-icon mui-icon-spinner-cycle mui-spin fs36" ></span>
 				</div>	
-				<aside class="footer">
-					<div>
-						<div class="cm_btn" @tap="_issueTime">选择时间</div>
-					</div>
+				<aside class="footer flex">
+					<div class="chooseTimeBtn f1" @tap="_issueTime">选择时间</div>
+					<div class="noTimeBtn"  @tap="_withoutTime">暂不选择</div>
 				</aside>
 			</div>
 		</div>
@@ -313,6 +331,7 @@
 				var APP = new Vue({
 					el: '#app',
 					data: {
+						pId:'',//上一级的id
 						/*滑动模块*/
 						scroll: '',
 						wrapper: '',
@@ -336,6 +355,7 @@
 					created: function() {
 						var self = plus.webview.currentWebview();
 						this.accountCode = self.account
+						this.pId = self.pId
 //						alert(self.account)
 						/*赋值当前的日期*/
 						var n = new Date();
@@ -408,7 +428,7 @@
 					methods: {
 						/*关闭选择框回传数据*/
 						_close() {
-							var w = plus.webview.getWebviewById('productOrder');
+							var w = plus.webview.getWebviewById(this.pId);
 							w.evalJS('hasTime()')
 							mui.back()
 						},
@@ -605,13 +625,12 @@
 							let day = new Date(d);
 //							alert((day - today) / (1000 * 60 * 60 * 24));
 							let index = (day - today) / (1000 * 60 * 60 * 24)
-							
-							plus.nativeUI.alert(d,()=>{
+
 								this.type = 1;
 								this._chooseDay(o,index);
 //								var dom = document.getElementById('date'+index)
 								this.wrapper.scrollTo(-(100*index),0,300,'ease')
-							})
+
 							
 						},
 						/*时段选择*/
@@ -622,16 +641,22 @@
 						},
 						/*确认时间选择*/
 						_issueTime(){
-							var  p  = plus.webview.getWebviewById('productOrder');
+							var  p  = plus.webview.getWebviewById(this.pId);
+							
 							if(this.chooseDate && this.chooseTime){
 								let str = this.chooseDate+' '+this.chooseTime
-//								alert(str)
-//								console.log(new Date(str).getTime())
+
 								str=new Date(str).getTime()
 								p.evalJS('hasTime('+str+')');
 							}else{
 								p.evalJS('hasTime()');
 							}						
+							mui.back()
+						},
+						_withoutTime(){
+							var w = plus.webview.getWebviewById(this.pId);
+							w.evalJS('hasTime("-")')
+							
 							mui.back()
 						}
 					}

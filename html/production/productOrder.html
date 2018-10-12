@@ -171,7 +171,7 @@
 						<div class=" mui-table-view">
 							<div class="mui-table-view-cell flex" @tap="_chooseTime">
 								<div class="f1 cellName ">服务时间：</div>
-								<div class="f1 cellName t_r cor_g">{{orderTime?orderTime:'请预约时间'}}</div>
+								<div class="f1 cellName t_r cor_g">{{orderTime?orderTime:'暂不选择'}}</div>
 								<i class="iconfont icon-xiayibu "></i>
 							</div>
 						</div>
@@ -441,10 +441,11 @@
 							if(!this.address) {
 								plus.nativeUI.alert("请选择服务人地址", function() {}, '马嘿嘿提醒您');
 								return;
-							} else if(!this.orderTime) {
-								plus.nativeUI.alert("请选择预约时间", function() {}, '马嘿嘿提醒您');
-								return;
-							}
+							} 
+//							else if(!this.orderTime) {
+//								plus.nativeUI.alert("请选择预约时间", function() {}, '马嘿嘿提醒您');
+//								return;
+//							}
 							plus.nativeUI.showWaiting('订单生成中')
 							var data = {
 								PROJECT_CODE: _this.product.PROJECT_CODE,
@@ -522,7 +523,8 @@
 								top: '200px',
 								bottom: '0'
 							}, {
-								account: this.product.ACCOUNT_CODE
+								account: this.product.ACCOUNT_CODE,
+								pId: 'productOrder'
 							});
 							mui.later(()=>{
 								plus.nativeUI.closeWaiting()
@@ -532,8 +534,12 @@
 						},
 						/*回传接受预约时间*/
 						_orderTime(date) {
-							//							let t = app.dateFormate(date);
-							this.orderTime = app.dateFormate(date)
+							if(date=="-"){
+								this.orderTime = ''
+							}else{
+								this.orderTime = app.dateFormate(date)
+							}
+							
 						},
 						/*选择呢使用优惠券*/
 						_chooseCoupons(item) {
@@ -594,14 +600,18 @@
 			});
 
 			function hasTime(date) {
-				//				alert(new Date(date) )
-				let time = new Date(date)
-				//				alert(date+time)
-				if(date) {
+				if(date=="-"){
+					APP._orderTime('-')
+					
+				}else if(date) {
 					/*如果有回传选择的日期*/
-					//					alert(666)
-					APP._orderTime(time)
+					let time = new Date(date)
+					APP._orderTime(time)					
 				}
+				
+				//				alert(date+time)
+				
+				
 				var self = plus.webview.currentWebview();
 				self.setStyle({
 					mask: 'none'

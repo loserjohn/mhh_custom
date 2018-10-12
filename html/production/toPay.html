@@ -46,7 +46,7 @@
 			.cardsItem {
 				/*background: red;*/
 				line-height: 44px;
-				height: 44px;
+				border-bottom: 1px dotted #d3d3d3;
 				color: #d3d3d3;
 			}
 			/*.cardsItem span{
@@ -57,7 +57,7 @@
 				color: #212121!important;
 			}
 			
-			.cardsItem>i {
+			.cardsItem i {
 				margin-right: 10px;
 				font-size: 28px;
 			}
@@ -107,15 +107,18 @@
 						</div>	-->
 					</div>
 					<ul class="cardsBox">
-						<li class="cardsItem flex " v-for="item in cardsList" @tap="_payWay(2,item)" :class="{enabled:_enabledCard(item.BUYCARD_RESIDUE)}">
-							<i class="iconfont icon-bangdingyinhangqia"></i>
-							<div>{{item.RECHARGE_NAME}}</div>
-							<div class="f1 t_r cardsName lh44 ">
-								余额：￥{{item.BUYCARD_RESIDUE}}
-							</div>
-							<div class="t_r cor_y" style="width: 20px;">
-								<span class="iconfont icon-gou3" v-show="curWay==2 && buyCarCode==item.BUYCARD_CODE"></span>
-							</div>
+						<li class="cardsItem  " v-for="item in cardsList" @tap="_payWay(2,item)" :class="{enabled:_enabledCard(item.BUYCARD_RESIDUE)}">
+							<div class="flex">
+								<i class="iconfont icon-bangdingyinhangqia"></i>
+								<div>{{item.RECHARGE_NAME}}</div>
+								<div class="f1 t_r cardsName lh44 ">
+									余额：￥{{item.BUYCARD_RESIDUE}} 
+								</div>
+								<div class="t_r cor_y" style="width: 20px;">
+									<span class="iconfont icon-gou3" v-show="curWay==2 && buyCarCode==item.BUYCARD_CODE"></span>
+								</div>
+							</div>					
+							<div class="lh24 cor_g">{{item.BUYCARD_CODE}}</div>
 						</li>
 					</ul>
 				</div>
@@ -152,8 +155,8 @@
 					<div class="cm_btn " :class="{cm_disable:!disable}" @tap="_paySubmit">确认支付</div>
 				</div>
 				<!--支付问题-->
-				<p class="container">
-					<span class="mui-icon mui-icon-help fs16"></span>支付遇到问题
+				<p class="container lh36">
+					<span class="mui-icon mui-icon-help fs16"></span>支付遇到问题?
 				</p>
 			</div>
 		</div>
@@ -357,8 +360,10 @@
 									/*BUYCARD_RESIDUE是剩余总面额*/
 									if(item.BUYCARD_RESIDUE < _this.order.ORDER_PAY_AMOUNT) {
 										plus.nativeUI.toast('余额不足，无法完成支付');
+										this.disable = false
 										return;
 									}
+									this.disable = true
 									this.buyCarCode = item.BUYCARD_CODE
 
 									break;
@@ -538,10 +543,8 @@
 								if(plus.webview.getWebviewById('spread')){
 									plus.webview.getWebviewById('spread').close();
 								}
-								mui.later(()=>{
-									plus.webview.getLaunchWebview().show();
-									plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
-								},500)
+								plus.webview.getLaunchWebview().show();
+								plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
 																
 								return;
 							}

@@ -334,6 +334,15 @@
 			.cm_bottomBtn {
 				z-index: 10;
 			}
+			
+			.hasCollec{
+				background: #fff;
+				color: #f50f60;
+			}
+			.hasCollec p,
+			.hasCollec i{
+				color: #f50f60;
+			}
 		</style>
 	</head>
 
@@ -363,10 +372,7 @@
 					<!--技师基本信息-->
 					<div class="personMsg flex " id="content">
 						<aside class="personMsgPic relative">
-							<img :src="shopMsg.SHOP_LOGO?shopMsg.SHOP_LOGO:'../../images/default_avatar.jpg'" alt="" class="cover" />
-							<!--<div class="collecBox">
-								<div class="collecBtn" >关注</div>
-							</div>-->
+							<img :src="shopMsg.SHOP_LOGO?shopMsg.SHOP_LOGO:'../../images/default_avatar.jpg'"  alt="" @error="_default" class="cover" />
 						</aside>
 						<article class="f1">
 							<div class="flex ">
@@ -404,7 +410,7 @@
 						<ul class=" flex">
 							<li class="f1  tabBarItem" @tap="_switch(1)" :class="{active:curTabType==1}">手艺人信息</li>
 							<li class="f1  tabBarItem" @tap="_switch(2)" :class="{active:curTabType==2}">全部项目</li>
-							<li class="f1  tabBarItem" @tap="_switch(3)" :class="{active:curTabType==3}">客户评价</li>
+							<!--<li class="f1  tabBarItem" @tap="_switch(3)" :class="{active:curTabType==3}">客户评价</li>-->
 						</ul>
 					</div>
 					<!--选项卡内容-->
@@ -437,7 +443,7 @@
 										<!--优惠券-->
 										<div class="flex block3" v-if="coupons.length!=0">
 											<div class="f1">优惠券:</div>
-											<div class="ticketBox" @tap="_navigateTo('../coupons/proCoupons.html','proCoupons',{'shopCoupons':coupons})">
+											<div class="ticketBox" @tap="_navigateTitle('../coupons/proCoupons.html','proCoupons',{'shopCoupons':coupons})">
 												<ul class="reset flex">
 													<li class="ticketItems" v-for="(item,index) in coupons" v-if="index==1||index==0">
 														{{item.DISCOUNT_NAME}}
@@ -558,11 +564,10 @@
 									</div>
 								</div>
 								<!--用户评价-->
-								<div v-show="curTabType==3">
+								<!--<div v-show="curTabType==3">
 									<div class=" block6 container panelPad" ref='anchor3'>
 										<aside class="flex cm_name">
 											<div>用户评价：</div>
-											<!--<p class="f1 t_r lh30">查看全部<span class="mui-icon mui-icon-arrowright fs16"></span></p>-->
 										</aside>
 										<article class="container">
 											<ul class="reset">
@@ -587,7 +592,7 @@
 											<div class="more" @tap="_navigateTo('../production/proComment.html','proComment',{'shopCode':shopCode.shopMsg})">查看全部({{total}})</div>
 										</footer>
 									</div>
-								</div>
+								</div>-->
 							</div>
 						</div>
 					</div>
@@ -667,17 +672,17 @@
 
 			<!--底部菜单-->
 			<div class="cm_bottomBtn flex fixed">
-				<div class="" @tap="_phone">
+				<div class="f1" @tap="_phone">
 					<i class="iconfont icon-phone fs20" ></i>
 					<p>致电技师</p>
 				</div>
-				<div class="" @tap="_toChat">
+				<div class="f1" @tap="_toChat">
 					<i class="iconfont icon-pinglun fs20"></i>
 					<p>联系她</p>
 				</div>
-				<div class="f1 bg_y cor_w" @tap="_collect">
+				<div class="f1 bg_y cor_w" @tap="_collect" v-if="islogin" :class="{hasCollec:hasCollec}">
 					<i class="iconfont icon-shoucang1 fs20 "></i>
-					<p class="cor_w">收藏</p>
+					<p class="cor_w">{{hasCollec?'已关注':'关注技师'}} </p>
 				</div>
 
 			</div>
@@ -697,6 +702,8 @@
 				var APP = new Vue({
 					el: '#app',
 					data: {
+						islogin:false,
+						hasCollec:false,
 						loader:true,
 						/*当前页面的手艺人code*/
 						shopCode: '',
@@ -766,7 +773,12 @@
 
 						var self = plus.webview.currentWebview();
 						this.shopCode = self.shopCode
-						//						alert(self.shopCode)
+						var isLogin = plus.storage.getItem('isLogin');
+
+						if(isLogin == '1'){
+							this.islogin = true;
+						}; //没有登陆状态则不获取数据
+
 					},
 					mounted: function() {
 						var _this = this
@@ -817,6 +829,13 @@
 						})
 					},
 					methods: {
+//						默认头像
+						_default(e){
+							var dom = e.target;
+							console.log(dom)
+							dom.src="../../images/default_avatar.jpg"
+						},
+						
 //						与商家对话
 						_toChat(){
 							let isLogin = plus.storage.getItem('isLogin');
@@ -859,6 +878,33 @@
 						//						商铺充值卡购买
 						_recharge(code) {
 							if(!code) return;
+							
+							let isLogin = plus.storage.getItem('isLogin');
+							if(isLogin != '1') {
+								plus.nativeUI.toast('请您先登陆');
+								mui.openWindow({
+									url: '../login.html',
+									id: 'login',
+									styles: {
+										top: '0px', //新页面顶部位置
+										bottom: '0px', //新页面底部位置
+										scrollIndicator: "none",
+										plusrequire: 'ahead'
+									},
+									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+									show: {
+										autoShow: false, //页面loaded事件发生后自动显示，默认为true
+										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+									},
+									extras: {},
+									waiting: {
+										autoShow: true, //自动显示等待框，默认为true
+										title: '正在加载...', //等待对话框上显示的提示内容
+									}
+								})
+								return
+							}
+							
 							/*创建项目订单*/
 							plus.nativeUI.showWaiting()
 							app.ajax(app.baseUrl + '/api/Order/CreateBusiRechargeOrder', {
@@ -903,10 +949,48 @@
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
-									console.log(type);
+									console.log(111+type);
 								}
 							});
 
+						},
+						_navigateTitle(desturl, destid, extras) {
+							//							alert(1)
+							mui.openWindow({
+								url: desturl,
+								id: destid,
+								styles: {
+											top: '0px', //新页面顶部位置
+											bottom: '0px', //新页面底部位置
+											scrollIndicator: "none",
+											plusrequire: 'ahead',
+											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+											titleNView: { // 窗口的标题栏控件
+												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+												titleSize: "14px", // 字体大小,默认17px
+												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+												progress: { // 标题栏控件的进度条样式
+													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+													height: "2px" // 进度条高度,默认值为"2px"         
+												},
+												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+													height: "1px" // 分割线高度,默认值为"2px"
+												}
+											}
+										},
+								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: false, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
 						},
 						/*跳转页面*/
 						_navigateTo(desturl, destid, extras) {
@@ -922,18 +1006,21 @@
 								},
 								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: extras,
 								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
+									autoShow: false, //自动显示等待框，默认为true
 									title: '正在加载...', //等待对话框上显示的提示内容
 								}
 							})
 						},
 						/*收藏手艺人*/
 						_collect() {
+							if(this.hasCollec){
+								return;
+							}
 							var _this = this
 							/*判断登陆状态*/
 							let status = plus.storage.getItem('isLogin')
@@ -976,6 +1063,7 @@
 										plus.nativeUI.closeWaiting()
 										if(result.Success) {
 											plus.nativeUI.toast('收藏成功')
+											_this.hasCollec = true
 										} else {
 											/*验证失败*/
 											plus.nativeUI.toast('收藏失败')
@@ -998,15 +1086,13 @@
 							this.loader = true
 							var _this = this
 							/*初始化店铺信息*/
-							mui.ajax(app.baseUrl + '/api/Shop/ViewShop', {
+							app.ajax(app.baseUrl + '/api/Shop/ViewShop', {
 								type: 'post', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
 								data: {
 									SHOP_CODE: _this.shopCode
 								},
-								headers: {
-									'Content-Type': 'application/x-www-form-urlencoded'
-								},
+
 								success: function(result) {
 									/*登陆成功*/
 									mui.later(()=>{
@@ -1019,7 +1105,8 @@
 											_this.refillcard = result.Data.Recharge
 											/*优惠券*/
 											_this.coupons = result.Data.Discount
-	
+											_this.hasCollec =  result.Data.Shop.IS_ATTENTION
+//											alert(_this.hasCollec)
 											_this._initComment()
 	
 											_this.enabledTime = result.Data.enabledTime
@@ -1087,7 +1174,7 @@
 								type: 'get', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
 								data: {
-									PROJECT_CODE: _this.proKey,
+//									PROJECT_CODE: _this.proKey,
 									REVIEW_TYPE: 1,
 									pageIndex: 1,
 									pageSize: 4,

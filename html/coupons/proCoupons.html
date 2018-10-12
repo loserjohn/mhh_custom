@@ -3,12 +3,13 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>优惠券管理</title>
+		<title>优惠券领取</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<style>
 			/*充值卡管理*/
 			
@@ -108,17 +109,22 @@
 	</head>
 
 	<body>
+		<!--等待页面-->
+			<div class="loader" style="top:0" id="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					优惠券领取
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
-
+			
 			<!--卡片-->
 			<div class="cards scrollBox " :style="{top:scrollTop}" id="scroll" ref="scroll">
 				<div class="reset" style="min-height: 101%;">
@@ -202,7 +208,7 @@
 
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			})
 			var APP
 			mui.plusReady(function() {
@@ -216,20 +222,19 @@
 						couponsList: '',
 						detailPre: {},
 					},
-					created: function() {
-						app.initHeader();
-					},
+					created: function() {},
 					mounted: function() {
 
 						var _this = this
 						var scroll = this.$refs.scroll
-						this.scrollTop = document.getElementById('header').offsetHeight + 'px'
+						this.scrollTop = 0+ 'px'
 						var self = plus.webview.currentWebview();
-						//						alert(self.shopCode)
+
 						this.couponsList = self.shopCoupons
+						
+						
 						/*首次加载数据*/
-						plus.nativeUI.closeWaiting()
-						mui.currentWebview.show('pop-in', 300, function() {}, {});
+						document.getElementById('loader').style.display = 'none'
 						this.$nextTick(function() {
 							//							初始化scrool
 							if(!_this.scroll) {
@@ -269,6 +274,8 @@
 								this.detailPre = item
 							}
 							this.show = !this.show;
+							
+							
 						},
 						/*立即领取券*/
 						_getCoupons() {
@@ -303,13 +310,14 @@
 								}, ['去登陆', '取消'])
 							} else {
 								/*用户已登陆执行领取操作*/
-								console.log(_this.detailPre.DISCOUNT_CODE)
+//								console.log(_this.detailPre.DISCOUNT_CODE)
 								app.ajax(app.baseUrl + '//api/Discount/ReceiveDiscount', {
 									data: {
 										DISCOUNT_CODE: _this.detailPre.DISCOUNT_CODE
 									},
 									type: 'post', //HTTP请求类型
 									success: function(result) {
+										
 										if(result.Success) {
 											plus.nativeUI.toast('领取成功');
 											

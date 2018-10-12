@@ -481,10 +481,8 @@
 								if(plus.webview.getWebviewById('spread')){
 									plus.webview.getWebviewById('spread').close();
 								}
-								mui.later(()=>{
-									plus.webview.getLaunchWebview().show();
-									plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
-								},500)
+								plus.webview.getLaunchWebview().show();
+							plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
 										
 								return;
 							}

@@ -344,10 +344,10 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 
-					mui.later(function() {
+//					mui.later(function() {
 						plus.webview.getWebviewById('orders').evalJS('refresh()')
 						plus.webview.getWebviewById('mine').evalJS('refresh()')
-					}, 500)
+//					}, 500)
 					//					refresh
 
 					if(result.Data) {
@@ -403,11 +403,11 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 					plus.storage.setItem('isLogin', '1');
-					mui.later(function() {
+//					mui.later(function() {
 						plus.webview.getWebviewById('orders').evalJS('refresh()')
 						plus.webview.getWebviewById('mine').evalJS('refresh()')
 
-					}, 500)
+//					}, 500)
 
 					if(result.DataExt) {
 						/*储存token过期的时间*/
@@ -767,6 +767,8 @@
 
 		option.error = function(xhr, type, errorThrown) {
 			plus.nativeUI.closeWaiting()
+			var l = document.getElementById('loader')
+			if(l){l.style.display = 'none'}
 			if(type == 'timeout') {
 				plus.nativeUI.toast('网络超时！请稍后重试')
 			} else if(type == 'abort') {
@@ -775,76 +777,16 @@
 				//				plus.nativeUI.toast('重新登陆中');
 				owner.autoLogin()
 			} else {
-				alert(type)
 				plus.nativeUI.toast('未知错误');
-				//				mui.openWindow({
-				//					url: './html/error.html',
-				//					id: 'error',
-				//					styles: {
-				//						top: '0px', //新页面顶部位置
-				//						bottom: '0px', //新页面底部位置
-				//						scrollIndicator: "none",
-				//						plusrequire: 'ahead'
-				//					},
-				//					show: {
-				//						autoShow: true, //页面loaded事件发生后自动显示，默认为true
-				//						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-				//					},
-				//					extras: {
-				//						//自定义扩展参数，可以用来处理页面间传值  
-				//					},
-				//					waiting: {
-				//						autoShow: false, //自动显示等待框，默认为true
-				//						title: '正在加载...', //等待对话框上显示的提示内容
-				//					}
-				//				})
 			}
 		}
 		mui.ajax(url, option)
-		//		if(curTime < tokenLife) {
-		//			mui.ajax(url, option)
-		//		} else {
-		//			switch(lastLoginWay) {
-		//				/* 最后的登陆方式               1 为账号登陆 */
-		//				case '1':
-		//					//							alert('账号登陆')
-		//					//	判断是否过期
-		//					if(!userName || !userPass) return;
-		//					var data = {
-		//						rpass: userPass,
-		//						username: userName,
-		//						password: owner._Encrypt(userPass),
-		//						type: 3
-		//					}
-		//					owner.zhlogin(data, function() {
-		//						mui.ajax(url, option)
-		//					})
-		//					break;
-		//				case '2':
-		//					/* 2为微信登陆
-		//					判断是否过期 */
-		//
-		//					if(!opId) return;
-		//					var data = {
-		//						opid: opId,
-		//						aseopid: owner._Encrypt(opId),
-		//						type: 2
-		//					}
-		//					//					console.log(data2)
-		//					owner.wxlogin(data, function() {
-		//						mui.ajax(url, option)
-		//					});
-		//					//					mui.ajax(url, option)
-		//					break;
-		//				default:
-		//					break;
-		//			}
-		//			//			mui.ajax(url, option)
-		//		}
 	}
 	//	错误捕获
 	owner.catchErr = function(xhr, type, errorThrown) {
 		plus.nativeUI.closeWaiting()
+		var l = document.getElementById('loader')
+			if(l){l.style.display = 'none'}
 		if(type == 'timeout') {
 			plus.nativeUI.toast('网络不佳');
 		} else if(type == 'abort') {

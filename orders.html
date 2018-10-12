@@ -167,7 +167,7 @@
 									<li class="tabsItems panel" v-for="item in orderList[0].infoList">
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
-												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" alt="" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
 												<div class="">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class="f1 t_r" v-if="item.ORDER_STATUS_TYPE==4">
@@ -221,7 +221,7 @@
 									<li class="tabsItems panel" v-for="item in orderList[1].infoList">
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
-												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" alt="" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'"  @error="_default" alt="" class="avatar" />
 												<div class="">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class="f1 t_r">
@@ -269,7 +269,7 @@
 									<li class="tabsItems panel" v-for="item in orderList[2].infoList">
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
-												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" alt="" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
 												<div class="">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class="f1 t_r">
@@ -313,7 +313,7 @@
 									<li class="tabsItems panel" v-for="item in orderList[3].infoList">
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
-												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" alt="" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
 												<div class="">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class="f1 t_r">
@@ -358,7 +358,7 @@
 									<li class="tabsItems panel" v-for="item in orderList[4].infoList">
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
-												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" alt="" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
 												<div class="">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class="f1 t_r">
@@ -404,7 +404,7 @@
 									<li class="tabsItems panel" v-for="item in orderList[5].infoList">
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
-												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" alt="" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
 												<div class="">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class="f1 t_r">
@@ -563,9 +563,10 @@
 						
 					},
 					methods: {
-//						退款
-						_refund(){
-								
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="./images/default_avatar.jpg"
 						},
 						/*未付款订单 直接付款*/
 						_toPay(payCode) {
@@ -606,8 +607,10 @@
 							let i = plus.storage.getItem('isLogin');
 							if(i == '1') {
 								this.islogin = true
+								return true
 							} else {
 								this.islogin = false
+								return false
 							}
 						},
 						/*初始化下拉框*/
@@ -787,7 +790,7 @@
 						/*获取数据*/
 						_getData(callback) {
 
-							if(plus.storage.getItem('isLogin') != '1') {
+							if(!this._whetherLogin()) {
 								if(callback) callback();
 								return
 							}
@@ -842,7 +845,7 @@
 						},
 						/*刷新*/
 						_refreshData() {
-
+							this._whetherLogin();	
 							var _this = this
 							plus.nativeUI.showWaiting()
 
@@ -908,9 +911,9 @@
 			});
 
 			function refresh() {
-				mui.later(function(){
+//				mui.later(function(){
 					APP._refreshData()
-				},500)			
+//				},500)			
 			}
 		</script>
 	</body>

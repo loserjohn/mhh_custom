@@ -275,7 +275,7 @@
 				</ul>
 			</div>
 			
-			<header class="fixed   header flex " style="background: -webkit-linear-gradient(left top, #e2c773, #ccaa42);background: linear-gradient(left top, #e2c773, #ccaa42);" id="header">
+			<header class="fixed   header flex mui-bar-transparent" style="background-color: rgba(21, 21, 21, .5)" data-top='0' data-offset='250' data-duration='16' id="header">
 			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav cor_w"></span>返回</button>
 				<div class="tabBar f1">
 					<ul class=" flex">
@@ -285,7 +285,7 @@
 					</ul>
 				</div>
 			</header>
-			<div ref='scroll' class="scrollBox" :style="{top:appHeight+'px'}">
+			<div ref='scroll' class="scrollBox" :style="{top:0+'px'}">
 				<div class="clearfix scrollContent">
 					<!--刷新提示框-->
 					<div class="refresh flex">
@@ -340,7 +340,7 @@
 						<div class="block1 panelPad container">
 							<!--手艺人信息-->
 							<div class="flex masterBox" @tap="_navigateTo('../technician/technician.html','technician',{'shopCode':product.SHOP_CODE})">
-								<img :src="product.SHOP_LOGO" class="avatar">
+								<img :src="product.SHOP_LOGO?product.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" class="avatar">
 								<div class="f1 ">
 									<div class="lh24 fs16 ">{{product.SHOP_NAME}}</div>
 									<p class="flex">嘿皮值:
@@ -617,9 +617,9 @@
 					<i class="iconfont icon-wxbmingxingdianpu fs20"></i>
 					<p>查看名片</p>
 				</div>
-				<div class="" @tap="_collect">
-					<i class="iconfont icon-shoucang1 fs20"></i>
-					<p>收藏项目</p>
+				<div class="" @tap="_collect" v-show="islogin">
+					<i class="iconfont icon-shoucang1 fs20" :class="{cor_r:hasCollec}"></i>
+					<p :class="{cor_r:hasCollec}">{{hasCollec?'已收藏':'收藏项目'}}</p>
 				</div>
 				<div class="f1 yesBtn" @tap="_toOrder">
 					立即购买
@@ -642,6 +642,8 @@
 				var APP = new Vue({
 					el: '#app',
 					data: {
+						islogin:false,
+						hasCollec:false,
 						loader:true,
 						proKey: '',
 						/*项目的Key*/
@@ -715,7 +717,12 @@
 						/*获取闯进来的项目id*/
 						var self = plus.webview.currentWebview();
 						this.proKey = self.proKey
-//												alert(this.proKey)
+						let isLogin = plus.storage.getItem('isLogin');
+
+						if(isLogin == '1'){
+							this.islogin = true;
+						}; //没有登陆状态则不获取数据
+
 						this.screenWidth = plus.screen.resolutionWidth+'px'
 					},
 					mounted: function() {
@@ -736,6 +743,12 @@
 
 					},
 					methods: {
+						//						默认头像
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="../../images/default_avatar.jpg"
+						},
 //						与商家对话
 						_toChat(){
 							let isLogin = plus.storage.getItem('isLogin');
@@ -896,14 +909,11 @@
 						_initData(callback) {
 							this.loader = true
 							var _this = this
-							mui.ajax(app.baseUrl + '/api/Project/GetProject', {
+							app.ajax(app.baseUrl + '/api/Project/GetProject', {
 								type: 'get', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
 								data: {
 									PROJECT_CODE: _this.proKey
-								},
-								headers: {
-									'Content-Type': 'application/x-www-form-urlencoded'
 								},
 								success: function(result) {
 									mui.later(()=>{
@@ -914,12 +924,13 @@
 											_this.imgprev = result.Data.dataFormart.PROJECT_IMGS[result.Data.dataFormart.PROJECT_IMGS.length - 1]
 											_this.imgnext = result.Data.dataFormart.PROJECT_IMGS[0]
 											_this.masterCode = result.Data.dataFormart.SHOP_CODE;
-											//										alert(parseInt(result.Data.dataFormart.SHOP_STAR) )
+											_this.hasCollec = result.Data.dataFormart.IS_ATTENTION;
+//											alert(result.Data.dataFormart.IS_ATTENTION)
 											_this.levels = parseInt(result.Data.dataFormart.SHOP_STAR)
 											_this._initComment()
 											_this._initShopMsg()
 											_this._initScroll()
-	
+											
 											if(callback) callback()
 										} else {
 											plus.nativeUI.closeWaiting()
@@ -1107,6 +1118,9 @@
 						},
 						/*收藏项目*/
 						_collect() {
+							if(this.hasCollec){
+								return;
+							}
 							var _this = this
 							/*判断登陆状态*/
 							let status = plus.storage.getItem('isLogin')
@@ -1149,6 +1163,7 @@
 										plus.nativeUI.closeWaiting()
 										if(result.Success) {
 											plus.nativeUI.toast('收藏成功')
+											_this.hasCollec = true
 										} else {
 											/*验证失败*/
 											plus.nativeUI.toast('收藏失败')

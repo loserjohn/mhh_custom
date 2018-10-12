@@ -1,6 +1,6 @@
 {
 	"@platforms": ["android", "iPhone", "iPad"],
-	"id": "ios.app.mhhCustom",/*应用的标识，创建应用时自动生成，勿手动修改*/
+	"id": "mhhCustom",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "马嘿嘿",/*应用名称，程序桌面图标名称*/
 	"version": {
 		"name": "1.1.4",/*应用版本名称*/
@@ -239,7 +239,7 @@
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						"default": "","iphonex":"F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/ix.png","retina40":"F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/i5.png","retina47":"F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/i6.png","retina55":"F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/i6p.png","retina35":"F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/i4.png"
+						"default": "","iphonex":"F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/ix.png","retina40":"F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/i5.png","retina47":"F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/i6.png","retina55":"F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/i6p.png","retina35":"F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/i4.png"
 					},
 					"ipad": {
 						"portrait": "", /*iPad竖屏启动图片，分辨率：768x1004*/
@@ -255,9 +255,9 @@
 				"android": {
 					"mdpi": "", /*普通屏启动图片，分辨率：240x282*/
 					"ldpi": "", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/a480.png", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/a720.png", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": "F:/mywork/马嘿嘿/马嘿嘿启动页/启动页/a1080.png"
+					"hdpi": "F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/a480.png", /*高分屏启动图片，分辨率：480x762*/
+					"xhdpi": "F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/a720.png", /*720P高分屏启动图片，分辨率：720x1242*/
+					"xxhdpi": "F:/work/马嘿嘿/客户端/马嘿嘿启动页/启动页/a1080.png"
 				}
 			},"debug":false
 		}

@@ -254,7 +254,7 @@
 									<li v-for="item2 in _getArr(item.SHOP_BUSINESS_TYPE)">{{item2}}</li>
 								</ul>-->
 								<div class="cm_itemPic ">
-									<img :src="item.SHOP_LOGO" class="cover" />
+									<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" class="cover" />
 								</div>
 								<div class="f1 cm_txt">
 									<h4 class="txt">{{item.SHOP_NAME}}</h4>
@@ -477,6 +477,12 @@
 						})
 					},
 					methods: {
+						//						默认头像
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="../../images/default_avatar.jpg"
+						},
 						_getArr(str){
 							var arr = str.split(',')
 							var res = []
