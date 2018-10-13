@@ -33,6 +33,12 @@
 				border-radius: 3px;
 				text-align: center;
 			}
+			.header{
+				position: fixed;
+				left:0;
+				right: 0;
+				top: 0;
+			}
 		</style>
 	</head>
 
@@ -50,7 +56,17 @@
 					<li id='i'></li>
 				</ul>
 			</div>
-		<div id="content">
+		<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					平台客服
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>
+		</header>	
+		<div id="content" class="main red">
 			<div id="rcs-app"></div>
 		</div>
 		<div class="resetBtn" id="resetBtn">返回</div>
@@ -66,7 +82,7 @@
 			mui.init({
 				swipeBack: true
 			});
-
+			app.initHeader()
 			mui.plusReady(function() {
 				
 				RCS.init({

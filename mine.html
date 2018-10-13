@@ -281,7 +281,7 @@
 								<!--</a>-->
 							</li>
 							<!--<li class="menusItem">-->
-							<li class="menusItem" @tap="_navigateTo('./html/kefu.html','kefu')">
+							<li class="menusItem" @tap="_toDetail('./html/kefu.html','kefu')">
 								<!--<a href="">-->
 								<i class="iconfont icon-service "></i>
 								<p>联系客服</p>
@@ -435,7 +435,7 @@
 					mounted: function() {
 						//						plus.storage.clear();
 						var _this = this
-						//						canLogin判断是否可以直接登陆 还是需要更新；
+						this.islogin = plus.storage.getItem('isLogin')=='1'?true:false
 
 						/*初始化主页面的高度*/
 						this.appHeight = plus.display.resolutionHeight
@@ -629,9 +629,10 @@
 									_this._initData(() => {
 										mui.later(() => {
 											plus.nativeUI.closeWaiting();
-											_this.scroll.finishPullDown();
-											_this.scroll.finishPullUp()
+											
 										}, 1000)
+										_this.scroll.finishPullDown();
+//										_this.scroll.finishPullUp()
 
 									})
 								})
@@ -872,7 +873,8 @@
 			});
 			/*获取用户身份之后刷新页面*/
 			function refresh() {
-				mainPage.evalJS('getList()')
+//				if(mainPage){mainPage.evalJS('getList()')}
+				
 				APP._initUser();
 				APP._initBlock()
 			}
