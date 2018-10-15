@@ -100,7 +100,7 @@
 					</li>-->
 					<li class="mui-table-view-cell flex" @tap="_updatedNum">
 						<!--<i class="iconfont icon-geren  mui-pull-left cor_y"></i>-->
-						<div>修改密码</div>
+						<div>修改绑定手机号</div>
 						<div class="f1 t_r">
 
 						</div>
@@ -153,7 +153,7 @@
 						this.avatar = self.menber.MEMBER_HEAD;
 						this.nickname = self.menber.MEMBER_NIKENAME;
 						this.agent = self.menber.MEMBER_SEX;
-						this.agent = self.menber.USERNAME
+						this.phone = self.menber.USERNAME
 //						alert(this.agent)
 					},
 					mounted: function() {
@@ -199,7 +199,7 @@
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: {
-									phone:_this.agent
+									phone:_this.phone
 								},
 								waiting: {
 									autoShow: false, //自动显示等待框，默认为true
@@ -275,11 +275,11 @@
 								type: 'post', //HTTP请求类型
 								success: function(result) {
 									if(result.Success) {
-										mui.later(() => {
+//										mui.later(() => {
 											plus.nativeUI.closeWaiting()
 											if(callback) callback();
 											plus.webview.getWebviewById('mine').evalJS('refresh()')
-										}, 1000)
+//										}, 1000)
 
 									} else {
 										plus.nativeUI.closeWaiting()

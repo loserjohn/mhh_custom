@@ -192,7 +192,7 @@
 													<div class=" t_l f1">
 													{{item.ORDER_STATUS_TYPE == '0'?'需支付':'已支付'}}
 													</div>
-													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.ORDER_TOTAL_AMOUNT}}</span></div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
@@ -206,6 +206,7 @@
 										</div>
 										<div class="itemFoot flex cor_g">
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_toPay(item.ORDER_CODE)">去付款</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_navigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==3||item.ORDER_STATUS_TYPE==1" @tap="_navigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
@@ -240,7 +241,7 @@
 												</div>
 												<div class="flex ">
 													<div class=" t_l f1" >  需支付:</div>
-													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.ORDER_TOTAL_AMOUNT}}</span></div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
@@ -254,10 +255,9 @@
 										</div>
 										<div class="itemFoot flex cor_g ">
 											<div class="f1 btns" @tap="_toPay(item.ORDER_CODE)">去付款</div>
+											<div class="f1 btns" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
 										</div>
-										<!--<div class="itemFoot flex cor_g" @tap="_navigateTo('./html/production/editComment.html','editComment',{product:item})">
-											<div class="f1 btns">去评价</div>
-										</div>-->
+
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[1].norest?'没有数据咯':''}}</li>
 								</ul>
@@ -288,7 +288,7 @@
 												</div>
 												<div class="flex ">
 													<div class=" t_l f1">已支付:</div>
-													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.ORDER_TOTAL_AMOUNT}}</span></div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
@@ -332,7 +332,7 @@
 												</div>
 												<div class="flex ">
 													<div class=" t_l f1">已支付:</div>
-													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.ORDER_TOTAL_AMOUNT}}</span></div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
@@ -378,7 +378,7 @@
 												</div>
 												<div class="flex ">
 													<div class=" t_l f1">已支付:</div>
-													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.ORDER_TOTAL_AMOUNT}}</span></div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
@@ -423,7 +423,7 @@
 												</div>
 												<div class="flex ">
 													<div class=" t_l f1">退款金额:</div>
-													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.ORDER_TOTAL_AMOUNT}}</span></div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
@@ -563,6 +563,27 @@
 						
 					},
 					methods: {
+//						删除订单
+						_delectOrder(code){
+							var _this = this 
+							plus.nativeUI.showWaiting()
+							app.ajax(app.baseUrl + '/api/Order/CancelOrder', {
+								data: {ORDER_CODE:code},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									plus.nativeUI.closeWaiting()
+									if(result.Success) {
+										plus.nativeUI.toast('删除订单成功')
+										_this._refreshData()
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								}
+							});
+						},
+//						头像丢失处理
 						_default(e){
 							var dom = e.target;
 //							console.log(dom)
@@ -836,10 +857,6 @@
 										plus.nativeUI.toast(result.Msg)
 
 									}
-								},
-								error: function(xhr, type, errorThrown) {
-									//异常处理；
-									console.log(type);
 								}
 							});
 						},
@@ -898,9 +915,10 @@
 						_refresh() {
 							plus.nativeUI.showWaiting()
 							mui.later(() => {
+								this._whetherLogin();
 								this._getData(() => {
 									plus.nativeUI.closeWaiting()
-									this._whetherLogin();
+									
 								})
 							}, 1500)
 

@@ -94,15 +94,19 @@
 			.rangeBox {
 				height: 120px;
 			}
-			.picPreBox{
+			
+			.picPreBox {
 				justify-content: space-around;
 				padding: 10px 0;
 			}
-			.picPre{
+			
+			.picPre {
 				width: 100px;
 				height: 100px;
+				overflow: hidden;
 			}
-			.cellInputArea{
+			
+			.cellInputArea {
 				height: 150px;
 			}
 		</style>
@@ -215,10 +219,10 @@
 					<li class="picPre" @tap="_uploadPic(3)"><img :src="commontPic3?commontPic3:'../../images/blank.png'" alt="" class="contain" />
 					</li>
 				</ul>
-				
+
 				<p class="container cm_name ">评级内容</p>
 				<textarea name="" rows="" cols="" v-model="content" class="cellInputArea" placeholder="说点什么"></textarea>
-				
+
 				<div class="cm_btn" @tap="_submit">提交评论</div>
 			</div>
 
@@ -230,7 +234,7 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			});
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
@@ -243,10 +247,10 @@
 						skillScore: 50, //技术分数
 						starLevel: 5,
 						type: 1, //总评
-						commontPic1:'',
-						commontPic2:'',
-						commontPic3:'',
-						content:''
+						commontPic1: '',
+						commontPic2: '',
+						commontPic3: '',
+						content: ''
 					},
 					created: function() {
 						app.initHeader();
@@ -336,38 +340,38 @@
 								}
 							})
 						},
-//						提交评价
-						_submit(){
-							if(!this.content){
-									plus.nativeUI.alert("请输入评价内容", function(){},'马嘿嘿提醒您');
-									return;
+						//						提交评价
+						_submit() {
+							if(!this.content) {
+								plus.nativeUI.alert("请输入评价内容", function() {}, '马嘿嘿提醒您');
+								return;
 							}
-							var _this =this
+							var _this = this
 							plus.nativeUI.showWaiting();
-								/*调用登陆接口*/
-								
-								var data ={
-									ORDER_CODE:this.product.ORDER_CODE,
-									REVIEW_CONTENT:this.content,
-									REVIEW_TYPE:this.type,
-									REVIEW_STAR:this.starLevel,		
-									PUNCTUAL_POINT:(this.timeScore/10).toFixed(1),
-									SEVICE_POINT:(this.serverScore/10).toFixed(1),
-									SKILL_POINT:(this.skillScore/10).toFixed(1)										
-								}
-								if(this.commontPic1)data.REPLY_IMG1 = this.commontPic1
-								if(this.commontPic2)data.REPLY_IMG2 = this.commontPic2
-								if(this.commontPic3)data.REPLY_IMG3 = this.commontPic3
-//								console.log(JSON.stringify(data))
-								
-								app.ajax(app.baseUrl + '/api/OrderReview/AddReview', {
-									data:data,
+							/*调用登陆接口*/
+
+							var data = {
+								ORDER_CODE: this.product.ORDER_CODE,
+								REVIEW_CONTENT: this.content,
+								REVIEW_TYPE: this.type,
+								REVIEW_STAR: this.starLevel,
+								PUNCTUAL_POINT: (this.timeScore / 10).toFixed(1),
+								SEVICE_POINT: (this.serverScore / 10).toFixed(1),
+								SKILL_POINT: (this.skillScore / 10).toFixed(1)
+							}
+							if(this.commontPic1) data.REPLY_IMG1 = this.commontPic1
+							if(this.commontPic2) data.REPLY_IMG2 = this.commontPic2
+							if(this.commontPic3) data.REPLY_IMG3 = this.commontPic3
+							//								console.log(JSON.stringify(data))
+
+							app.ajax(app.baseUrl + '/api/OrderReview/AddReview', {
+								data: data,
 								type: 'post', //HTTP请求类型
 								success: function(result) {
 									plus.nativeUI.closeWaiting();
 									if(result.Success) {
 										plus.nativeUI.toast('评论成功')
-										
+
 										mui.back()
 									} else {
 										/*验证失败*/

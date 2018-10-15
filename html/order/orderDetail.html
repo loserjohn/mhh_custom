@@ -175,7 +175,7 @@
 					</div>
 					<div class="orderTime flex cor_w " >
 						<div class="f1">
-							{{currntType}}{{orderType}}预约时间： {{detail.BOOK_DATE?(detail.BOOK_DATE).replace('00:00:00',detail.BOOK_PERIOD):'尚未预约时间' }}
+							预约时间： {{detail.BOOK_DATE?(detail.BOOK_DATE).replace('00:00:00',detail.BOOK_PERIOD):'尚未预约时间' }}
 						</div>
 						<!--1是没有预约-->
 						<div class="orderBtn" v-if="currntType == 1&&orderType == 1" @tap="toOrder">
@@ -208,7 +208,7 @@
 							</div>
 							<div class="flex tabsItemsRow">
 								<p class=" t_l f1 ">原价:</p>
-								<div class="  t_r cor_g delec_prize">￥{{detail.ORDER_TOTAL_AMOUNT}}</div>
+								<div class="  t_r cor_g delec_prize">￥{{detail.PROJECT_PRICE}}</div>
 							</div>
 							<div class="ticketBox flex " v-show="coupon.Name?true:false">
 								<div class="ticketItems">{{coupon.Name}}</div>
