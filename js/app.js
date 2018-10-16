@@ -344,10 +344,10 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 
-//					mui.later(function() {
-						plus.webview.getWebviewById('orders').evalJS('refresh()')
-						plus.webview.getWebviewById('mine').evalJS('refresh()')
-//					}, 500)
+					//					mui.later(function() {
+					plus.webview.getWebviewById('orders').evalJS('refresh()')
+					plus.webview.getWebviewById('mine').evalJS('refresh()')
+					//					}, 500)
 					//					refresh
 
 					if(result.Data) {
@@ -403,11 +403,11 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 					plus.storage.setItem('isLogin', '1');
-//					mui.later(function() {
-						plus.webview.getWebviewById('orders').evalJS('refresh()')
-						plus.webview.getWebviewById('mine').evalJS('refresh()')
+					//					mui.later(function() {
+					plus.webview.getWebviewById('orders').evalJS('refresh()')
+					plus.webview.getWebviewById('mine').evalJS('refresh()')
 
-//					}, 500)
+					//					}, 500)
 
 					if(result.DataExt) {
 						/*储存token过期的时间*/
@@ -631,7 +631,7 @@
 		plus.gallery.pick(function(e) {
 			for(var i in e.files) {
 				var fileSrc = e.files[i]
-				owner.uploadIMG(fileSrc, function(src) {
+				owner.uploadIMG64(fileSrc, function(src) {
 					if(callback) callback(src);
 				})
 			}
@@ -654,9 +654,9 @@
 		var mobileCamera = plus.camera.getCamera();
 		mobileCamera.captureImage(function(e) {
 			plus.io.resolveLocalFileSystemURL(e, function(entry) {
-				var path = entry.toLocalURL() + '?version=' + new Date().getTime();
-				
-				owner.uploadIMG(path, function(src) {
+				var path = entry.toLocalURL()
+
+				owner.uploadIMG64(path, function(src) {
 					if(callback) callback(src);
 				})
 			}, function(err) {
@@ -671,14 +671,6 @@
 	}
 	/*图片上传*/
 	owner.uploadIMG = function(src, callback) {
-
-//		var a = src.split('?')
-//		var pu = a[0]+new Date().getTime();
-//		var ext = a[1]
-//		
-//		var dst = pu +'?' +ext
-//		console.log(src)
-//      console.log(dst)
 		//		压缩图片
 		plus.zip.compressImage({
 				src: src,
@@ -687,9 +679,9 @@
 				width: "50%",
 				overwrite: true
 			},
-			function(event) {	
+			function(event) {
 				dstSRC = event.target;
-				
+
 				var img = new Image();
 				img.src = dstSRC;
 
@@ -725,20 +717,66 @@
 			},
 			function(error) {
 				alert("压缩失败 error!");
-//				console.log(JSON.stringify(error))
+				//				console.log(JSON.stringify(error))
 			})
+
+	}
+	/*图片上传*/
+	owner.uploadIMG64 = function(src, callback) {
+//		console.log(src)
+		var img = new Image();
+		img.src = src;
+		img.onload = function() {
+			var r = owner.getBase64Image(img)
+			var dstsrc = r.url
+			var ext = r.ext
+			plus.nativeUI.showWaiting();
+
+			var Info = {
+				image_base64: dstsrc,
+				file_name: '.' + ext,
+				foldName: plus.storage.getItem('userName'),
+				size: 1,
+				isPrj:false
+			}
+//			console.log(dstsrc)
+			mui.ajax(owner.baseUrl + '/api/Upload/UploadByBase64', {
+				data: Info,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				success: function(result) {
+					console.log(result.Data)
+					if(callback) callback(result.Data);
+					mui.later(function() {
+						plus.nativeUI.closeWaiting();
+					}, 1500)
+				},
+				error: function(xhr, type, errorThrown) {
+					plus.nativeUI.closeWaiting();
+				}
+			})
+		}
 
 	}
 	/*base64*/
 	owner.getBase64Image = function(img) {
 		var canvas = document.createElement("canvas"); //创建canvas DOM元素，并设置其宽高和图片一样
-		canvas.width = img.width;
-		canvas.height = img.height;
+		var radio = img.width / img.height
+		canvas.width = 1200;
+		canvas.height = canvas.width / radio;
+
 		var ctx = canvas.getContext("2d");
-		ctx.drawImage(img, 0, 0, img.width, img.height); //使用画布画图
+		ctx.drawImage(img, 0, 0, canvas.width, canvas.height); //使用画布画图
 		var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase(); //动态截取图片的格式
 		var dataURL = canvas.toDataURL("image/" + ext); //返回的是一串Base64编码的URL并指定格式
-		return dataURL;
+		return {
+			url: dataURL,
+			ext: ext
+		};
 	}
 	/*初始化app*/
 	owner.resetViews = function() {
@@ -768,7 +806,9 @@
 		option.error = function(xhr, type, errorThrown) {
 			plus.nativeUI.closeWaiting()
 			var l = document.getElementById('loader')
-			if(l){l.style.display = 'none'}
+			if(l) {
+				l.style.display = 'none'
+			}
 			if(type == 'timeout') {
 				plus.nativeUI.toast('网络超时！请稍后重试')
 			} else if(type == 'abort') {
@@ -786,7 +826,9 @@
 	owner.catchErr = function(xhr, type, errorThrown) {
 		plus.nativeUI.closeWaiting()
 		var l = document.getElementById('loader')
-			if(l){l.style.display = 'none'}
+		if(l) {
+			l.style.display = 'none'
+		}
 		if(type == 'timeout') {
 			plus.nativeUI.toast('网络不佳');
 		} else if(type == 'abort') {

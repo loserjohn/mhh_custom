@@ -208,14 +208,15 @@
 							</div>
 							<div class="flex tabsItemsRow">
 								<p class=" t_l f1 ">原价:</p>
-								<div class="  t_r cor_g delec_prize">￥{{detail.PROJECT_PRICE}}</div>
+								<div class="  t_r cor_g ">￥{{detail.PROJECT_PRICE}}</div>
 							</div>
 							<div class="ticketBox flex " v-show="coupon.Name?true:false">
 								<div class="ticketItems">{{coupon.Name}}</div>
 							</div>
-							<!--<div class="flex tabsItemsRow">
-								<div class="label_tool">{{detail.CREATE_TIME}}</div>
-							</div>-->
+							<div class="flex tabsItemsRow">
+								<p class=" t_l f1 ">差价金额:</p>
+								<div class="  t_r cor_g ">￥{{detail.ORDER_AGIO_AMOUNT}}</div>
+							</div>
 							<div class="flex tabsItemsRow">
 								<div class=" t_l f1">交易价格:</div>
 								<div class="  t_r ">￥{{detail.ORDER_PAY_AMOUNT}}</div>

@@ -239,7 +239,7 @@
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
-//								plus.nativeUI.showWaiting();
+								plus.nativeUI.showWaiting();
 								let t = _this.type
 								switch(t) {
 									case 1:
@@ -266,7 +266,7 @@
 
 									}
 									_this.scroll.finishPullDown()
-//									plus.nativeUI.closeWaiting()
+									plus.nativeUI.closeWaiting()
 								})
 
 							})
@@ -430,7 +430,7 @@
 						},
 						/*获取收藏数据*/
 						_getData(callback) {
-							this.loader = true
+//							this.loader = true
 							var _this = this
 							var url = ''
 							var index;

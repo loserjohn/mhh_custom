@@ -148,6 +148,13 @@
 				background: red;
 				border-radius: 50%;
 			}
+				.mainBox {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				top: 0;
+				overflow: hidden;
+			}
 		</style>
 	</head>
 
@@ -164,8 +171,8 @@
 				</button>
 			</header>
 
-			<div ref='scroll' :style="{height:appHeight+'px'}">
-				<div class="clearfix scrollContent ">
+			<div ref='scroll' :style="{height:appHeight+'px'}" >
+				<div class="clearfix scrollContent " style="min-height: 101%;">
 
 					<!--刷新提示框-->
 					<div class="refresh flex">
@@ -439,10 +446,10 @@
 
 						/*初始化主页面的高度*/
 						this.appHeight = plus.display.resolutionHeight
-
+						this._initBlock() //初始化豆腐块
 						/*初始化下拉scroll*/
 						this._initScroll()
-						this._initBlock() //初始化豆腐块
+						
 					},
 					methods: {
 						_jump(str) {
@@ -587,7 +594,8 @@
 									/*登陆成功*/
 									plus.nativeUI.closeWaiting()
 									if(result.Success) {
-										_this.blockData = result.Data.ListInfo
+										_this.blockData = result.Data.ListInfo;
+										_this.scroll.refresh()
 									} else {
 										/*验证失败*/								
 									}
@@ -623,13 +631,13 @@
 								};
 								/*下拉刷新*/
 								_this.scroll.on('pullingDown', function(e) {
-									if(!_this.islogin) return;
+//									if(!_this.islogin) return;
 
 									plus.nativeUI.showWaiting()
 									_this._initData(() => {
 										mui.later(() => {
-											plus.nativeUI.closeWaiting();
-											
+											plus.nativeUI.closeWaiting();	
+											_this.scroll.refresh()
 										}, 1000)
 										_this.scroll.finishPullDown();
 //										_this.scroll.finishPullUp()
@@ -658,7 +666,12 @@
 							var _this = this
 							let isLogin = plus.storage.getItem('isLogin');
 
-							if(isLogin != '1') return; //没有登陆状态则不获取数据
+							if(isLogin != '1'){
+								
+								if(callback) callback()
+								
+								return
+							} ; //没有登陆状态则不获取数据
 							this.islogin = true;
 
 							/*登陆状态则获取客户数据*/
@@ -677,7 +690,9 @@
 										plus.storage.setItem('userNickName', result.Data.MEMBER_NIKENAME)
 										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD)
 										plus.storage.setItem('myId', result.Data.MEMBER_MOBILE)
-										_this.scroll.refresh()
+//										记录认证状态
+										plus.storage.setItem('realStatus', result.Data.MEMBER_STATUS)
+										
 										
 										if(callback) callback()
 									} else {
@@ -697,15 +712,16 @@
 								success: function(result) {
 									if(result.Success) {
 										_this.hisList = result.Data.ListInfo
-										//										alert(result.Data.ListInfo.length)
-										//										if(callback)callback()
+										
 									} else {
 										plus.nativeUI.closeWaiting();
 										plus.nativeUI.toast(result.Msg)
 									}
 								}
 							});
-
+							
+							
+							
 						},
 
 						_toChat() {
@@ -877,19 +893,16 @@
 				
 				APP._initUser();
 				APP._initBlock()
+//				initIM()
 			}
 			//			重新链接im
 			function initIM() {
-				//				alert(0)
 				mainPage = mui.preload({
 					"id": 'information',
 					"url": './html/information/information.html',
 					'styles': {}
 				});
 
-				//				if(plus.webview.getWebviewById('chat') ){
-				//					plus.webview.getWebviewById('chat').evalJS('refresh()')
-				//				}
 			}
 
 			function autoLogin() {

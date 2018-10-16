@@ -360,7 +360,6 @@ li {
 
 .cm_btn {
 	background: url(../images/btn_bg.jpg) 0 0/auto 100%;
-	repeat-x;
 	height: 100%;
 	text-align: center;
 	color: #ccaa42;
@@ -1084,4 +1083,13 @@ li {
 	border-radius: 3px;
 	border: 1px solid #404040;
 	text-align: center;
+}
+.cm_btn_disabled{
+	box-shadow: none;
+	background: #404040;
+	line-height: 44px;
+	height: 44px;
+	text-align: center;
+	color: #ccaa42;
+	font-size: 16px;
 }

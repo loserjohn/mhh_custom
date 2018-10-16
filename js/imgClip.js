@@ -150,7 +150,6 @@
 			},
 			error:function(xhr, type, errorThrown){
 				plus.nativeUI.closeWaiting();
-//				alert(type)
 			}
 		})
    }

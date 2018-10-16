@@ -344,7 +344,7 @@
 								console.log('正在链接');
 								break;
 							case RongIMLib.ConnectionStatus.DISCONNECTED:
-								console.log('断开连接');
+//								alert('断开连接');
 								linking = false;
 								//				试探重连
 								 var callback = {
@@ -378,7 +378,29 @@
 								break;
 							case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:
 								console.log('网络不可用');
-								linking = false
+								linking = false;
+								var callback = {
+							        onSuccess: function(userId) {
+							            console.log("Reconnect successfully." + userId);
+							        },
+							        onTokenIncorrect: function() {
+							            console.log('token无效');
+							        },
+							        onError:function(errorCode){
+							            console.log(errorcode);
+							        }
+							    };
+							    var config = {
+							        // 默认 false, true 启用自动重连，启用则为必选参数
+							        auto: true,
+							        token:IMtoken,
+							        // 重试频率 [100, 1000, 3000, 6000, 10000, 18000] 单位为毫秒，可选
+				//			        url: 'cdn.ronghub.com/RongIMLib-2.2.6.min.js',
+							       url: ' https://cdn.ronghub.com/RongIMLib-2.3.2.min.js',
+							        // 网络嗅探地址 [http(s)://]cdn.ronghub.com/RongIMLib-2.2.6.min.js 可选
+							        rate: [100, 1000, 3000, 6000, 10000]
+							    };
+							    RongIMClient.reconnect(callback, config);
 								break;
 						}
 					}

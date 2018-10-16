@@ -168,13 +168,13 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
-											<div class="f1 t_r" v-if="item.ORDER_STATUS_TYPE==4">
+											<div class=" t_r" v-if="item.ORDER_STATUS_TYPE==4">
 												{{item.ORDER_STATUS | getStatus}}
 												<!--{{item.ORDER_STATUS_TYPE | getStatus}}-->
 											</div>
-											<div class="f1 t_r" v-else>
+											<div class=" t_r" v-else>
 												{{item.ORDER_STATUS_TYPE | getStatus}}
 											</div>
 										</div>
@@ -223,9 +223,9 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'"  @error="_default" alt="" class="avatar" />
-												<div class="">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
-											<div class="f1 t_r">
+											<div class=" t_r">
 												{{item.ORDER_STATUS_TYPE | getStatus}}
 											</div>
 										</div>
@@ -270,9 +270,9 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
-											<div class="f1 t_r">
+											<div class=" t_r">
 												{{item.ORDER_STATUS_TYPE | getStatus}}
 											</div>
 										</div>
@@ -314,9 +314,9 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
-											<div class="f1 t_r">
+											<div class=" t_r">
 												{{item.ORDER_STATUS_TYPE | getStatus}}
 											</div>
 										</div>
@@ -359,9 +359,9 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
-											<div class="f1 t_r">
+											<div class=" t_r">
 												{{item.ORDER_STATUS_TYPE | getStatus}}
 												<!--{{item.ORDER_STATUS_TYPE}}-->
 											</div>
@@ -405,9 +405,9 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
-											<div class="f1 t_r">
+											<div class=" t_r">
 												{{item.ORDER_STATUS | getStatus}}
 											</div>
 										</div>
@@ -565,23 +565,32 @@
 					methods: {
 //						删除订单
 						_delectOrder(code){
-							var _this = this 
-							plus.nativeUI.showWaiting()
-							app.ajax(app.baseUrl + '/api/Order/CancelOrder', {
-								data: {ORDER_CODE:code},
-								type: 'post', //HTTP请求类型
-								success: function(result) {
-									plus.nativeUI.closeWaiting()
-									if(result.Success) {
-										plus.nativeUI.toast('删除订单成功')
-										_this._refreshData()
-									} else {
-										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
-									}
+							plus.nativeUI.confirm('确定删除该订单？', (event) => {
+								var k = event.index
+								//								alert(k)
+								if(k == 0) {
+									var _this = this 
+									plus.nativeUI.showWaiting()
+									app.ajax(app.baseUrl + '/api/Order/CancelOrder', {
+										data: {ORDER_CODE:code},
+										type: 'post', //HTTP请求类型
+										success: function(result) {
+											plus.nativeUI.closeWaiting()
+											if(result.Success) {
+												plus.nativeUI.toast('删除订单成功')
+												_this._refreshData()
+											} else {
+												/*验证失败*/
+												plus.nativeUI.toast(result.Msg)
+		
+											}
+										}
+									});
+								} else {
+									return false
 								}
-							});
+
+							})							
 						},
 //						头像丢失处理
 						_default(e){
