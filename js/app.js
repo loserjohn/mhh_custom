@@ -629,12 +629,11 @@
 	owner.galleryImages = function(num, callback) {
 		// 从相册中选择图片
 		plus.gallery.pick(function(e) {
-			for(var i in e.files) {
-				var fileSrc = e.files[i]
-				owner.uploadIMG64(fileSrc, function(src) {
-					if(callback) callback(src);
-				})
-			}
+			var fileSrc = e.files[0]
+			//						alert(fileSrc)
+			owner.uploadIMG64(fileSrc, function(src) {
+				if(callback) callback(src);
+			})
 		}, function(e) {
 			plus.nativeUI.closeWaiting();
 			console.log("取消选择图片");
@@ -654,8 +653,7 @@
 		var mobileCamera = plus.camera.getCamera();
 		mobileCamera.captureImage(function(e) {
 			plus.io.resolveLocalFileSystemURL(e, function(entry) {
-				var path = entry.toLocalURL()
-
+				var path = entry.toLocalURL();
 				owner.uploadIMG64(path, function(src) {
 					if(callback) callback(src);
 				})
@@ -670,97 +668,116 @@
 		});
 	}
 	/*图片上传*/
-	owner.uploadIMG = function(src, callback) {
-		//		压缩图片
-		plus.zip.compressImage({
-				src: src,
-				dst: src,
-				quality: 50,
-				width: "50%",
-				overwrite: true
-			},
-			function(event) {
-				dstSRC = event.target;
-
-				var img = new Image();
-				img.src = dstSRC;
-
-				plus.nativeUI.showWaiting();
-				var url = app.baseUrl + '/api/Upload/UploadImage';
-
-				var task = plus.uploader.createUpload(url, {
-						method: "POST"
-					},
-					function(t, status) { //上传完成
-						if(status == 200) {
-							//		            	console.log("上传成功："+t.responseText);
-
-							var res = JSON.parse(t.responseText)
-							//		            	console.log(res.Data)
-							if(callback) callback(res.Data);
-							mui.later(function() {
-								plus.nativeUI.closeWaiting();
-							}, 1500)
-
-						} else {
-							console.log("上传失败：" + status);
-						}
-					}
-				);
-				var foldName = plus.storage.getItem('userName')
-				//添加其他参数
-				task.addData("foldName", foldName);
-				task.addFile(src, {
-					key: src
-				});
-				task.start();
-			},
-			function(error) {
-				alert("压缩失败 error!");
-				//				console.log(JSON.stringify(error))
-			})
-
-	}
+	//	owner.uploadIMG = function(src, callback) {
+	//		//		压缩图片
+	//		plus.zip.compressImage({
+	//				src: src,
+	//				dst: src,
+	//				quality: 50,
+	//				width: "50%",
+	//				overwrite: true
+	//			},
+	//			function(event) {
+	//				dstSRC = event.target;
+	//
+	//				var img = new Image();
+	//				img.src = dstSRC;
+	//
+	//				plus.nativeUI.showWaiting();
+	//				var url = app.baseUrl + '/api/Upload/UploadImage';
+	//
+	//				var task = plus.uploader.createUpload(url, {
+	//						method: "POST"
+	//					},
+	//					function(t, status) { //上传完成
+	//						if(status == 200) {
+	//							//		            	console.log("上传成功："+t.responseText);
+	//
+	//							var res = JSON.parse(t.responseText)
+	//							//		            	console.log(res.Data)
+	//							if(callback) callback(res.Data);
+	//							mui.later(function() {
+	//								plus.nativeUI.closeWaiting();
+	//							}, 1500)
+	//
+	//						} else {
+	//							console.log("上传失败：" + status);
+	//						}
+	//					}
+	//				);
+	//				var foldName = plus.storage.getItem('userName')
+	//				//添加其他参数
+	//				task.addData("foldName", foldName);
+	//				task.addFile(src, {
+	//					key: src
+	//				});
+	//				task.start();
+	//			},
+	//			function(error) {
+	//				alert("压缩失败 error!");
+	//				//				console.log(JSON.stringify(error))
+	//			})
+	//
+	//	}
 	/*图片上传*/
 	owner.uploadIMG64 = function(src, callback) {
-//		console.log(src)
+		plus.nativeUI.showWaiting();
 		var img = new Image();
-		img.src = src;
-		img.onload = function() {
-			var r = owner.getBase64Image(img)
-			var dstsrc = r.url
-			var ext = r.ext
-			plus.nativeUI.showWaiting();
+		owner.zipPic(src, function(dsrc) {
+			img.src = dsrc;
+			img.onload = function() {
+				var r = owner.getBase64Image(img)
+				var dstsrc = r.url
+				var ext = r.ext
 
-			var Info = {
-				image_base64: dstsrc,
-				file_name: '.' + ext,
-				foldName: plus.storage.getItem('userName'),
-				size: 1,
-				isPrj:false
-			}
-//			console.log(dstsrc)
-			mui.ajax(owner.baseUrl + '/api/Upload/UploadByBase64', {
-				data: Info,
-				dataType: 'json', //服务器返回json格式数据
-				type: 'post', //HTTP请求类型
-				timeout: 10000, //超时时间设置为10秒；
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				success: function(result) {
-					console.log(result.Data)
-					if(callback) callback(result.Data);
-					mui.later(function() {
-						plus.nativeUI.closeWaiting();
-					}, 1500)
-				},
-				error: function(xhr, type, errorThrown) {
-					plus.nativeUI.closeWaiting();
+				var Info = {
+					image_base64: dstsrc,
+					file_name: '.jpg',
+					foldName: plus.storage.getItem('userName'),
+					size: 1,
+					isPrj: false
 				}
-			})
-		}
+				//			console.log(dstsrc)
+				mui.ajax(owner.baseUrl + '/api/Upload/UploadByBase64', {
+					data: Info,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(result) {
+						//					console.log(result.Data)
+						if(callback) callback(result.Data);
+						mui.later(function() {
+							plus.nativeUI.closeWaiting();
+						}, 1500)
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.closeWaiting();
+					}
+				})
+			}
 
+		})
+
+	}
+	//	压缩图片
+	owner.zipPic = function(src, callback) {
+		//		console.log('ZIP--'+src)
+		plus.zip.compressImage({
+			src: src,
+			dst: '_doc/zip_' + src.substr(src.lastIndexOf('/') + 1),
+			overwrite: true,
+			quality: 100,
+			format: 'jpg'
+		}, function(zip) {
+			plus.nativeUI.closeWaiting();
+			if(callback)(callback(zip.target))
+		}, function() {
+			plus.nativeUI.closeWaiting();
+			mui.toast('压缩失败！');
+		})
 	}
 	/*base64*/
 	owner.getBase64Image = function(img) {
