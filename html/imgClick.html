@@ -340,7 +340,7 @@
 									<div class="uni-cropper-point point-t" data-drag="top" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></div>
 									<div class="uni-cropper-point point-tr" data-drag="topTight"></div>
 									<div class="uni-cropper-point point-r" data-drag="right" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></div>
-									<!--<div class="uni-cropper-point point-rb" data-drag="rightBottom" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></div>-->
+									<div class="uni-cropper-point point-rb" data-drag="rightBottom" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></div>
 									<div class="uni-cropper-point point-b" data-drag="bottom" @touchstart.stop="dragStart" @touchmove.stop="dragMove" @touchend.stop="dragEnd"></div>
 									<div class="uni-cropper-point point-bl" data-drag="bottomLeft"></div>
 									<div class="uni-cropper-point point-l" data-drag="left" @touchstart.stop="dragStart" @touchmove.stop="dragMove"></div>
@@ -591,59 +591,60 @@
 					
 					plus.nativeUI.showWaiting()
 					var _this = this;
-//					var canvas=document.getElementById('myCanvas');
-					var canvas=this.$refs.myCanvas;
+
 					var realCanvas = this.$refs.realCanvas
-//					alert( this.clipW*this.rRadio)
-					realCanvas.width = this.clipW*this.rRadio
-					realCanvas.height = this.clipW*this.rRadio
-					var ctx=canvas.getContext("2d") 
+
+					realCanvas.width = 1000
+					realCanvas.height = 1000
+					
+
 					var rctx=realCanvas.getContext("2d") 		
 					
 					var x = this.cutL*this.rRadio;
-					var y = this.cutT*this.rRadio;					
-
-					ctx.drawImage(img, x, y,this.clipW*this.rRadio, this.clipW*this.rRadio,0,0,300,150); 
-					rctx.drawImage(img, x, y,this.clipW*this.rRadio, this.clipW*this.rRadio,0,0,this.clipW*this.rRadio,this.clipW*this.rRadio); 
+					var y = this.cutT*this.rRadio;	
 					
-					mui.later(()=>{
-						if(callback)callback()
-						
-					},1500)
+					var wl =  this.cropperW - this.cutR - this.cutL
+//					console.log(wl)
+					rctx.drawImage(img, x, y,wl*this.rRadio, wl*this.rRadio,0,0,1000,1000); 
 					
-					_this.convertCanvasToImage(realCanvas)  
+					
+					_this.convertCanvasToImage(realCanvas, callback)
 				},
 				
 //				存为图片
-				convertCanvasToImage(canvas) {
+				convertCanvasToImage(canvas,callback) {
 						var image = new Image();
-						image.src = canvas.toDataURL("image/png");
+						image.src = canvas.toDataURL("image/jpg");
 						
 						var src = image.src;
 						src= src.substr(22);
 						this.curSrc = 	src
-
+					if(callback) callback()
 				},
 				// 设置大小的时候触发的touchStart事件
 				dragStart(e) {
-//					T_PAGE_X = e.touches[0].pageX
-//					T_PAGE_Y = e.touches[0].pageY
-//					CUT_L = this.cutL
-//					CUT_R = this.cutR
-//					CUT_B = this.cutB
-//					CUT_T = this.cutT
+					T_PAGE_X = e.touches[0].pageX
+					T_PAGE_Y = e.touches[0].pageY
+					CUT_L = this.cutL
+					CUT_R = this.cutR
+					CUT_B = this.cutB
+					CUT_T = this.cutT
 				},
 
 				// 设置大小的时候触发的touchMove事件
 				dragMove(e) {
-//					var _this = this
-//					var dragType = e.target.dataset.drag
-//					switch(dragType) {
+					var _this = this
+					var dragType = e.target.dataset.drag
+					switch(dragType) {
 //						case 'right':
 //							var dragLength = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO
+//							var dragLength2 = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO
 //							if(CUT_R + dragLength < 0) dragLength = -CUT_R
+//							if(CUT_B + dragLength2 < 0) dragLength2 = -CUT_B	
+//							
 //							this.setData({
-//								cutR: CUT_R + dragLength
+//								cutR: CUT_R + dragLength,
+//								cutB: CUT_B + dragLength2
 //							})
 //							break;
 //						case 'left':
@@ -669,23 +670,23 @@
 //								cutB: CUT_B + dragLength
 //							})
 //							break;
-//						case 'rightBottom':
-//							var dragLengthX = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO
-//							var dragLengthY = (T_PAGE_Y - e.touches[0].pageY) * DRAFG_MOVE_RATIO
-//
-//							if(CUT_B + dragLengthY < 0) dragLengthY = -CUT_B
-//							if(CUT_R + dragLengthX < 0) dragLengthX = -CUT_R
-//							let cutB = CUT_B + dragLengthY;
-//							let cutR = CUT_R + dragLengthX;
-//
-//							this.setData({
-//								cutB: cutB,
-//								cutR: cutR
-//							})
-//							break;
-//						default:
-//							break;
-//					}
+						case 'rightBottom':
+							var dragLengthX = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO
+							var dragLengthY = (T_PAGE_X - e.touches[0].pageX) * DRAFG_MOVE_RATIO
+
+							if(CUT_B + dragLengthY < 0) dragLengthY = -CUT_B
+							if(CUT_R + dragLengthX < 0) dragLengthX = -CUT_R
+							let cutB = CUT_B + dragLengthY;
+							let cutR = CUT_R + dragLengthX;
+
+							this.setData({
+								cutB: cutB,
+								cutR: cutR
+							})
+							break;
+						default:
+							break;
+					}
 			},
 			_upload(){
 				this.getImageInfo(()=>{
