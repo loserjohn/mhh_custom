@@ -436,7 +436,7 @@
 											</div>
 										</div>
 										<div class="itemFoot flex cor_g">
-											<div class="f1 btns" @tap="_navigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
+											<div class="f1 btns" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[5].norest?'没有数据咯':''}}</li>
@@ -839,9 +839,13 @@
 								data.ORDER_STATUS_TYPE = proType
 							}
 							//							console.log(JSON.stringify(data))
-							app.ajax(app.baseUrl + '/api/OrderService/GetOrderList', {
+							mui.ajax(app.baseUrl + '/api/OrderService/GetOrderList', {
 								data: data,
 								type: 'post', //HTTP请求类型
+								headers :{
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
 								success: function(result) {
 									//										plus.nativeUI.closeWaiting()
 									if(result.Success) {
@@ -866,6 +870,11 @@
 										plus.nativeUI.toast(result.Msg)
 
 									}
+								},
+								error:function(xhr, type, errorThrown){
+									_this.scroll.finishPullDown()
+
+									app.catchErr(xhr, type, errorThrown)
 								}
 							});
 						},

@@ -460,7 +460,7 @@
 								case 'A':
 									//								活动								
 									mui.openWindow({
-										url: 'code',
+										url: code,
 										id: 'activity' + new Date().getTime(),
 										styles: {
 											top: '0px', //新页面顶部位置
@@ -502,7 +502,7 @@
 								case 'W':
 									//								外链
 									mui.openWindow({
-										url: 'code',
+										url: code,
 										id: 'activity' + new Date().getTime(),
 										styles: {
 											top: '0px', //新页面顶部位置
@@ -638,7 +638,7 @@
 										mui.later(() => {
 											plus.nativeUI.closeWaiting();	
 											_this.scroll.refresh()
-										}, 1000)
+										}, 2000)
 										_this.scroll.finishPullDown();
 //										_this.scroll.finishPullUp()
 

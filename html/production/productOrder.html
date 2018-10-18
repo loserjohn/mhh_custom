@@ -418,7 +418,7 @@
 								success: function(result) {
 									//									console.log(JSON.stringify(result.Data) )
 									if(result.Success) {
-										_this.couponsList = result.Data.ListInfo
+										_this.couponsList = result.Data.ListInfo?result.Data.ListInfo:[]
 										//										alert(result.Data.ListInfo.length)
 										if(callback) callback()
 									} else {

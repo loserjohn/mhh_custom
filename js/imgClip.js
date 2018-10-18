@@ -146,7 +146,7 @@
 
 	owner.unpload64 = function(src, size, callback) {
 		size = size || 1
-		plus.nativeUI.showWaiting();
+		plus.nativeUI.showWaiting('图片上传中，请耐心等待');
 		var Info = {
 			image_base64: src,
 			file_name: '.jpg',
@@ -171,7 +171,8 @@
 				}, 1500)
 			},
 			error: function(xhr, type, errorThrown) {
-				plus.nativeUI.closeWaiting()
+				plus.nativeUI.closeWaiting();
+				plus.nativeUI.toast('网络不稳定，请重新上传')
 			}
 		})
 	}
