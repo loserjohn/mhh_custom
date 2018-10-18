@@ -314,7 +314,25 @@
 							</li>
 						</ul>
 					</div>
-					
+					<!--历史订单-->
+					<div class="block4 panel ">
+						<div class="cm_title t_c">
+							-- 历史订单 --
+						</div>
+						<div class="activityBox" ref="wrapper">
+							<ul class="reset flex" :style="{width:110*(hisList.length)+'px'}">
+								<li class="activityItem" v-for="item in hisList" @tap="_toDetail('./html/production/productBuy.html','productBuy.html',{'proKey':item.PROJECT_CODE})">
+									<img :src="item.PROJECT_IMG1" alt="" class="contain" />
+									<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
+									<article class="flex">
+										<p class="prize  cor_r fs18 lh28">￥{{item.ORDER_PAY_AMOUNT}}</p>
+										<p class="delec_prize cor_g f1 t_r lh28">￥{{item.ORDER_TOTAL_AMOUNT}}</p>
+									</article>
+								</li>
+							</ul>
+							<p class="t_c" v-show="hisList.length==0">--您还没有完成过订单哦--</p>
+						</div>
+					</div>
 					<!--豆腐块-->
 						<div v-for="item in blockData" class="reset " style="background: #fff;">
 							<div class=" flex " v-if="item.type==1" >
@@ -368,25 +386,7 @@
 							</div>
 							 
 						</div>
-					<!--历史订单-->
-					<div class="block4 panel ">
-						<div class="cm_title t_c">
-							-- 历史订单 --
-						</div>
-						<div class="activityBox" ref="wrapper">
-							<ul class="reset flex" :style="{width:110*(hisList.length)+'px'}">
-								<li class="activityItem" v-for="item in hisList" @tap="_toDetail('./html/production/productBuy.html','productBuy.html',{'proKey':item.PROJECT_CODE})">
-									<img :src="item.PROJECT_IMG1" alt="" class="contain" />
-									<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
-									<article class="flex">
-										<p class="prize  cor_r fs18 lh28">￥{{item.ORDER_PAY_AMOUNT}}</p>
-										<p class="delec_prize cor_g f1 t_r lh28">￥{{item.ORDER_TOTAL_AMOUNT}}</p>
-									</article>
-								</li>
-							</ul>
-							<p class="t_c" v-show="hisList.length==0">--您还没有完成过订单哦--</p>
-						</div>
-					</div>
+					
 					<!--提示语-->
 					<div class="cm_hint flex">
 						<div class="f1"><img src="./images/hint.png" alt="" /></div>
@@ -595,7 +595,10 @@
 									plus.nativeUI.closeWaiting()
 									if(result.Success) {
 										_this.blockData = result.Data.ListInfo;
-										_this.scroll.refresh()
+										mui.later(()=>{
+											_this.scroll.refresh()
+										},2000)
+										
 									} else {
 										/*验证失败*/								
 									}
@@ -892,7 +895,7 @@
 //				if(mainPage){mainPage.evalJS('getList()')}
 				
 				APP._initUser();
-				APP._initBlock()
+//				APP._initBlock()
 //				initIM()
 			}
 			//			重新链接im
