@@ -717,6 +717,7 @@
 						/*获取闯进来的项目id*/
 						var self = plus.webview.currentWebview();
 						this.proKey = self.proKey
+		
 						let isLogin = plus.storage.getItem('isLogin');
 
 						if(isLogin == '1'){
@@ -975,7 +976,7 @@
 											if(callback) callback()
 										} else {
 											plus.nativeUI.closeWaiting()
-											plus.nativeUI.toast('无效项目');
+											plus.nativeUI.toast(result.Msg);
 											mui.back()
 											
 										}

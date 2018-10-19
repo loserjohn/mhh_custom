@@ -455,7 +455,7 @@
 						_jump(str) {
 							var key = str.split('||')[0];
 							var code = str.split('||')[1];
-
+							if(!code){return};
 							switch(key) {
 								case 'A':
 									//								活动								
@@ -493,7 +493,7 @@
 											detail: data
 										},
 										waiting: {
-											autoShow: false, //自动显示等待框，默认为true
+											autoShow: true, //自动显示等待框，默认为true
 											title: '正在加载...', //等待对话框上显示的提示内容
 										}
 									})
@@ -535,7 +535,7 @@
 											detail: data
 										},
 										waiting: {
-											autoShow: false, //自动显示等待框，默认为true
+											autoShow: true, //自动显示等待框，默认为true
 											title: '正在加载...', //等待对话框上显示的提示内容
 										}
 									})
