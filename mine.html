@@ -148,7 +148,8 @@
 				background: red;
 				border-radius: 50%;
 			}
-				.mainBox {
+			
+			.mainBox {
 				position: absolute;
 				width: 100%;
 				left: 0;
@@ -171,7 +172,7 @@
 				</button>
 			</header>
 
-			<div ref='scroll' :style="{height:appHeight+'px'}" >
+			<div ref='scroll' :style="{height:appHeight+'px'}">
 				<div class="clearfix scrollContent " style="min-height: 101%;">
 
 					<!--刷新提示框-->
@@ -246,7 +247,6 @@
 						</div>
 					</div>
 
-					
 					<!--菜单-->
 					<div class="block3 panel menus">
 						<ul class="flex">
@@ -334,59 +334,58 @@
 						</div>
 					</div>
 					<!--豆腐块-->
-						<div v-for="item in blockData" class="reset " style="background: #fff;">
-							<div class=" flex " v-if="item.type==1" >
-								<div class="f1 t_c"  @tap="_jump(item.listData[0].keyCode)">
-									<img :src="item.listData[0].img" alt="" class="contain "/>
-								</div>
+					<div v-for="item in blockData" class="reset " style="background: #fff;">
+						<div class=" flex " v-if="item.type==1">
+							<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+								<img :src="item.listData[0].img" alt="" class="contain " />
 							</div>
-							<div class=" flex " v-else-if="item.type==2">
-								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-									<img :src="item.listData[0].img" alt="" class="contain "/>
-								</div>
-								<div class="f1 t_c" @tap="_jump(item.listData[1].keyCode)">
-									<img :src="item.listData[1].img" alt="" class="contain"/>
-								</div>
-							</div>
-							
-							
-							<div class="flex " v-else-if="item.type==3">
-								<div class=" f2">
-									<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-										<img :src="item.listData[0].img" alt="" class="contain"/>
-									</div>
-									
-								</div>
-								<div class="f3 ">  
-									<div class=" t_c" @tap="_jump(item.listData[1].keyCode)">
-										<img :src="item.listData[1].img" alt="" class="contain"/>
-									</div>
-									<div class=" t_c" @tap="_jump(item.listData[2].keyCode)">
-											<img :src="item.listData[2].img" alt="" class="contain"/>
-									</div>							
-								</div>
-							</div>
-							<div class=" flex " v-else-if="item.type==4">
-								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-									<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />
-								</div>
-								<div class="f1 t_c" >
-									<div class="" @tap="_jump(item.listData[1].keyCode)">
-										<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain"/>
-									</div>
-									<div class="flex">
-										<div class="f1 t_c" @tap="_jump(item.listData[2].keyCode)">
-											<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain "/>
-										</div>
-										<div class="f1 t_c" @tap="_jump(item.listData[3].keyCode)">
-											<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain"/>
-										</div> 
-									</div>
-								</div> 
-							</div>
-							 
 						</div>
-					
+						<div class=" flex " v-else-if="item.type==2">
+							<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+								<img :src="item.listData[0].img" alt="" class="contain " />
+							</div>
+							<div class="f1 t_c" @tap="_jump(item.listData[1].keyCode)">
+								<img :src="item.listData[1].img" alt="" class="contain" />
+							</div>
+						</div>
+
+						<div class="flex " v-else-if="item.type==3">
+							<div class=" f2">
+								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img" alt="" class="contain" />
+								</div>
+
+							</div>
+							<div class="f3 ">
+								<div class=" t_c" @tap="_jump(item.listData[1].keyCode)">
+									<img :src="item.listData[1].img" alt="" class="contain" />
+								</div>
+								<div class=" t_c" @tap="_jump(item.listData[2].keyCode)">
+									<img :src="item.listData[2].img" alt="" class="contain" />
+								</div>
+							</div>
+						</div>
+						<div class=" flex " v-else-if="item.type==4">
+							<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+								<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />
+							</div>
+							<div class="f1 t_c">
+								<div class="" @tap="_jump(item.listData[1].keyCode)">
+									<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain" />
+								</div>
+								<div class="flex">
+									<div class="f1 t_c" @tap="_jump(item.listData[2].keyCode)">
+										<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain " />
+									</div>
+									<div class="f1 t_c" @tap="_jump(item.listData[3].keyCode)">
+										<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
 					<!--提示语-->
 					<div class="cm_hint flex">
 						<div class="f1"><img src="./images/hint.png" alt="" /></div>
@@ -433,7 +432,7 @@
 						userMsg: '',
 						/*个人数据*/
 						hasNew: false,
-						blockData:[]
+						blockData: []
 					},
 					created: function() {
 						app.initHeader();
@@ -442,20 +441,22 @@
 					mounted: function() {
 						//						plus.storage.clear();
 						var _this = this
-						this.islogin = plus.storage.getItem('isLogin')=='1'?true:false
+						this.islogin = plus.storage.getItem('isLogin') == '1' ? true : false
 
 						/*初始化主页面的高度*/
 						this.appHeight = plus.display.resolutionHeight
 						this._initBlock() //初始化豆腐块
 						/*初始化下拉scroll*/
 						this._initScroll()
-						
+
 					},
 					methods: {
 						_jump(str) {
 							var key = str.split('||')[0];
 							var code = str.split('||')[1];
-							if(!code){return};
+							if(!code) {
+								return
+							};
 							switch(key) {
 								case 'A':
 									//								活动								
@@ -469,7 +470,7 @@
 											plusrequire: 'ahead',
 											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
 											titleNView: { // 窗口的标题栏控件
-												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
 												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
 												titleSize: "14px", // 字体大小,默认17px
 												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
@@ -511,7 +512,7 @@
 											plusrequire: 'ahead',
 											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
 											titleNView: { // 窗口的标题栏控件
-												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
 												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
 												titleSize: "14px", // 字体大小,默认17px
 												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
@@ -581,7 +582,7 @@
 							}
 						},
 						//						初始化豆腐块
-						_initBlock(){
+						_initBlock() {
 							var _this = this
 							mui.ajax(app.baseUrl + '/api/Carousel/GetMinePannelList', {
 								type: 'get', //HTTP请求类型
@@ -595,12 +596,12 @@
 									plus.nativeUI.closeWaiting()
 									if(result.Success) {
 										_this.blockData = result.Data.ListInfo;
-										mui.later(()=>{
+										mui.later(() => {
 											_this.scroll.refresh()
-										},2000)
-										
+										}, 2000)
+
 									} else {
-										/*验证失败*/								
+										/*验证失败*/
 									}
 								},
 								error: function(xhr, type, errorThrown) {
@@ -634,16 +635,16 @@
 								};
 								/*下拉刷新*/
 								_this.scroll.on('pullingDown', function(e) {
-//									if(!_this.islogin) return;
+									//									if(!_this.islogin) return;
 
 									plus.nativeUI.showWaiting()
 									_this._initData(() => {
 										mui.later(() => {
-											plus.nativeUI.closeWaiting();	
+											plus.nativeUI.closeWaiting();
 											_this.scroll.refresh()
 										}, 2000)
 										_this.scroll.finishPullDown();
-//										_this.scroll.finishPullUp()
+										//										_this.scroll.finishPullUp()
 
 									})
 								})
@@ -669,12 +670,12 @@
 							var _this = this
 							let isLogin = plus.storage.getItem('isLogin');
 
-							if(isLogin != '1'){
-								
+							if(isLogin != '1') {
+
 								if(callback) callback()
-								
+
 								return
-							} ; //没有登陆状态则不获取数据
+							}; //没有登陆状态则不获取数据
 							this.islogin = true;
 
 							/*登陆状态则获取客户数据*/
@@ -693,10 +694,9 @@
 										plus.storage.setItem('userNickName', result.Data.MEMBER_NIKENAME)
 										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD)
 										plus.storage.setItem('myId', result.Data.MEMBER_MOBILE)
-//										记录认证状态
+										//										记录认证状态
 										plus.storage.setItem('realStatus', result.Data.MEMBER_STATUS)
-										
-										
+
 										if(callback) callback()
 									} else {
 										plus.nativeUI.closeWaiting();
@@ -715,16 +715,14 @@
 								success: function(result) {
 									if(result.Success) {
 										_this.hisList = result.Data.ListInfo
-										
+
 									} else {
 										plus.nativeUI.closeWaiting();
 										plus.nativeUI.toast(result.Msg)
 									}
 								}
 							});
-							
-							
-							
+
 						},
 
 						_toChat() {
@@ -760,28 +758,28 @@
 							}
 
 						},
-						_toLoginPage(){
+						_toLoginPage() {
 							mui.openWindow({
-									url: './html/login.html',
-									id: 'login',
-									styles: {
-										top: '0px', //新页面顶部位置
-										bottom: '0px', //新页面底部位置
-										scrollIndicator: "none",
-										plusrequire: 'ahead',
+								url: './html/login.html',
+								id: 'login',
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead',
 
-									},
-									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-									show: {
-										autoShow: false, //页面loaded事件发生后自动显示，默认为true
-										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-									},
-									extras:{},
-									waiting: {
-										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
-									}
-								})
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: {},
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
 						},
 						/*跳转页面*/
 						_navigateTo(desturl, destid, extras) {
@@ -821,7 +819,7 @@
 									plusrequire: 'ahead',
 									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
 									titleNView: { // 窗口的标题栏控件
-										autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
 										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
 										titleSize: "14px", // 字体大小,默认17px
 										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
@@ -847,27 +845,27 @@
 								}
 							})
 						},
-						_toDetail(dstUrl, dstId, extras){
+						_toDetail(dstUrl, dstId, extras) {
 							mui.openWindow({
-									url: dstUrl,
-									id: dstId,
-									styles: {
-										top: '0px', //新页面顶部位置
-										bottom: '0px', //新页面底部位置
-										scrollIndicator: "none",
-										plusrequire: 'ahead'
-									},
-									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-									show: {
-										autoShow: true, //页面loaded事件发生后自动显示，默认为true
-										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-									},
-									extras: extras,
-									waiting: {
-										autoShow: false, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
-									}
-								})
+								url: dstUrl,
+								id: dstId,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: extras,
+								waiting: {
+									autoShow: false, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
 						},
 						_initUser() {
 							let isLogin = plus.storage.getItem('isLogin');
@@ -892,19 +890,26 @@
 			});
 			/*获取用户身份之后刷新页面*/
 			function refresh() {
-//				if(mainPage){mainPage.evalJS('getList()')}
-				
+				//				if(mainPage){mainPage.evalJS('getList()')}
+
 				APP._initUser();
-//				APP._initBlock()
-//				initIM()
+				//				APP._initBlock()
+				//				initIM()
 			}
 			//			重新链接im
 			function initIM() {
-				mainPage = mui.preload({
-					"id": 'information',
-					"url": './html/information/information.html',
-					'styles': {}
-				});
+				var mainPage = plus.webview.getWebviewById('information')
+				if(!mainPage) {
+					alert(666)
+					mainPage = mui.preload({
+						"id": 'information',
+						"url": './html/information/information.html',
+						'styles': {}
+					});
+				} else {
+					alert(111)
+					mainPage.evalJS('connectIM()')
+				}
 
 			}
 

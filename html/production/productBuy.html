@@ -781,8 +781,8 @@
 							let fdname = this.product.SHOP_NAME;
 							let fdAvatar = this.product.SHOP_LOGO;
 				
-							plus.webview.getWebviewById('chat').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
-							plus.webview.getWebviewById('chat').show('pop-in', 300, function() {}, {})
+							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
+							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {})
 						},
 						//						商铺充值卡购买
 						_recharge(code) {

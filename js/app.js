@@ -460,13 +460,21 @@
 			}
 		});
 
-		if(plus.webview.getWebviewById('mine')) {
-			plus.webview.getWebviewById('mine').evalJS('initIM()')
-		}
+		app.ajax(app.baseUrl + '/api/MemberInfo/Ry_Token', {
+			type: 'post', //HTTP请求类型
+			success: function(result) {
+				if(result.Success) {
+					plus.storage.setItem('IMtoken', result.Msg);
+					plus.storage.setItem('myId', result.Data)
+					alert(result.Msg)
+					//预加载页面,之前需要通过后台获取token
+					plus.webview.getWebviewById('mine').evalJS('initIM()')
+				} else {}
+			}
+		});
 		//		if(plus.webview.getWebviewById('chat')){
 		//			plus.webview.getWebviewById('chat').evalJS('ImInit()')
 		//		}
-
 	}
 	/*页面跳转*/
 	var jumpPage = function(id) {

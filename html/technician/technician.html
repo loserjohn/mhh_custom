@@ -867,9 +867,8 @@
 							let fdname = this.shopMsg.SHOP_NAME;
 							let fdAvatar = this.shopMsg.SHOP_LOGO;
 
-							plus.webview.getWebviewById('chat').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
-					
-							plus.webview.getWebviewById('chat').show('pop-in', 300, function() {}, {})
+							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
+							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {})
 						},
 						_phone(){
 							plus.nativeUI.toast('致电中，请稍等')
