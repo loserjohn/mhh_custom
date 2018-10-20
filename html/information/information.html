@@ -222,7 +222,7 @@
 				menusBox: document.getElementById('menusBox')
 			}
 
-			var pageSize = 10 //当前页条数					
+			//			var pageSize = 10 //当前页条数					
 			var pageIndex = 1 //当前页码	
 			var friends; //最近聊天列表
 
@@ -254,7 +254,7 @@
 			var realHisRecords = []; //真实渲染的记录
 
 			var pageIndex = 1;
-			var pageSize = 30
+			var pageSize = 20
 			var isHome = true //判断是否在前台
 
 			var linking; //判断链接状态
@@ -269,8 +269,7 @@
 			mui.plusReady(function() {
 
 				IMtoken = plus.storage.getItem('IMtoken')
-				//初始化聊天记录列表
-				initChatList();
+
 				//初始化IM
 				initIM();
 				//   初始化scroll	
@@ -349,7 +348,7 @@
 					return false;
 				};
 			})
-//			初始化下拉框
+			//			初始化下拉框
 			function initScroll(callback) {
 				//	聊天内容的scroll
 				scroll = new BScroll(document.getElementById('chatContainer'), {
@@ -397,7 +396,7 @@
 				scroll.finishPullDown();
 
 				DB.getDataByIndex(TargetChat.userid + '', function(list) {
-					//					alert(list.length)
+					
 					allHisRecords = list;
 					paging(function() {
 						resultFresh(false, true)
@@ -411,9 +410,11 @@
 				TargetChat.avatar = avatar;
 				TargetChat.nickName = name;
 
-				renderChatList(function() {
+				initChatList(function() {
+					initChatContent()
 					ui.blockChat.style.display = 'block';
 					onChatPage = true
+//					resultFresh(false, true)
 				})
 
 			}
@@ -446,7 +447,7 @@
 			}
 			//初始化IM
 			function initIM() {
-				
+
 				r = plus.audio.getRecorder(); //储存mui录音对象、
 				myAvatar = plus.storage.getItem('pic_head')
 				myNickName = plus.storage.getItem('userNickName')
@@ -494,7 +495,7 @@
 					li.appendChild(item.node)
 					emojis.appendChild(li)
 				})
-
+				template.defaults.escape = false;
 				// 消息监听器
 				RongIMClient.setOnReceiveMessageListener({
 					// 接收到的消息 
@@ -585,7 +586,7 @@
 			}
 			//	链接服务器
 			function connectIM() {
-				alert('@@@@@@@@@@@@'+IMtoken)
+				friends = []
 				RongIMClient.connect(IMtoken, {
 					onSuccess: function(userId) {
 						ImStaus = true
@@ -613,6 +614,8 @@
 						console.log(errorCode);
 					}
 				});
+				//初始化聊天记录列表
+				initChatList();
 			}
 			//	页面事件监听
 			function eventInit() {
@@ -782,7 +785,7 @@
 
 					//					alert(voice)
 					DB.getData(key, function(message) {
-						console.log('666' + JSON.stringify(message))
+						//						console.log('666' + JSON.stringify(message))
 						message.content.extra.isNew = false
 						DB.updatedData(key, message)
 
@@ -798,18 +801,16 @@
 				//            点击图片预览
 				mui('#chatContent').on('tap', '.picMsg', function() {
 					var url = this.getAttribute('src');
+					url = url.replace('_mini', '_small')
+					//					console.log(url)
 					plus.nativeUI.previewImage(url, {});
-					console.log(url)
 				})
 				//            点击位置预览图打开第三方定位
 				mui('#chatContent').on('tap', '.posMsg', function() {
 					var dstlo = this.getAttribute('dstlo');
 					var dstla = this.getAttribute('dstla');
 					var poi = this.getAttribute('poi');
-					//			var dst = new plus.maps.Point(dstlo, dstla); // 目的地
-					//			var src = new plus.maps.Point(longitude, latitude); // 定位位置
-					//			// 调用系统地图显示 
-					//			plus.maps.openSysMap(dst, poi, src);
+
 					mui.openWindow({
 						url: './mapPre.html',
 						id: 'mapPre',
@@ -993,7 +994,7 @@
 							file_name: '.' + ext,
 							foldName: plus.storage.getItem('userName'),
 							size: 3,
-							isPrj: false,
+							//							isPrj: false,
 
 						}
 						mui.ajax(app.baseUrl + '/api/Upload/UploadByBase64', {
@@ -1005,7 +1006,7 @@
 								'Content-Type': 'application/json'
 							},
 							success: function(result) {
-								//							console.log(result.Data)
+								//															console.log(result.Data)
 								if(result.Success) {
 									var msg = new RongIMLib.ImageMessage({
 										content: 'base64 格式缩略图',
@@ -1219,12 +1220,13 @@
 					onSuccess: function(message) {
 
 						if(callback) {
-							resultFresh(true, true)
+							
 
 							//							自己发送的信息
 							initChatList()
 
 							callback(message)
+							resultFresh(true, true)
 						}
 					},
 					onError: function(errorCode, message) {
@@ -1262,15 +1264,14 @@
 			function resultFresh(ismine, ifFresh) {
 				scroll.refresh()
 				if(ifFresh) { //是否需要自动下拉
-					mui.later(function() {
-						scroll.scrollToElement(document.getElementById('resultEnd'), 300, 0, 0, 'ease-in');
-					}, 200)
+
+					scroll.scrollToElement(document.getElementById('resultEnd'), 300, 0, 0, 'ease-in');
 				}
 
-				ismine = ismine || false;
-				if(ismine) {
-					ui.sayBox.classList.remove('showMenu')
-				}
+//				ismine = ismine || false;
+//				if(ismine) {
+//					ui.sayBox.classList.remove('showMenu')
+//				}
 			}
 			//	历史记录本地储存
 			function createHistory(message) {
@@ -1287,7 +1288,9 @@
 			//			计算分页
 			function paging(callback) {
 				var rCount = pageIndex * pageSize;
+
 				realHisRecords = allHisRecords.slice(-rCount);
+
 				render(callback)
 			}
 			//  渲染条目
@@ -1300,7 +1303,7 @@
 				l.myAvatar = myAvatar ? myAvatar : '../../images/default_avatar.jpg'
 				l.ListInfo = realHisRecords;
 				l.emoji = RongIMLib.RongIMEmoji;
-				//								console.log(l.ListInfo.length)
+
 				var html = template('chatList', l);
 				document.getElementById('chatContent').innerHTML = html;
 
@@ -1310,9 +1313,7 @@
 					if(callback) callback(false)
 				}
 
-				mui.later(function() {
 					scroll.refresh();
-				}, 200)
 
 			}
 

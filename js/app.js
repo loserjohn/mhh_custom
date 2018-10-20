@@ -344,11 +344,6 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 
-					//					mui.later(function() {
-					plus.webview.getWebviewById('orders').evalJS('refresh()')
-					plus.webview.getWebviewById('mine').evalJS('refresh()')
-					//					}, 500)
-					//					refresh
 
 					if(result.Data) {
 						/*验证码登陆,返回密码存储*/
@@ -403,11 +398,6 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 					plus.storage.setItem('isLogin', '1');
-					//					mui.later(function() {
-					plus.webview.getWebviewById('orders').evalJS('refresh()')
-					plus.webview.getWebviewById('mine').evalJS('refresh()')
-
-					//					}, 500)
 
 					if(result.DataExt) {
 						/*储存token过期的时间*/
@@ -459,22 +449,22 @@
 				//				alert(error)
 			}
 		});
-
+		//预加载页面,之前需要通过后台获取token
 		app.ajax(app.baseUrl + '/api/MemberInfo/Ry_Token', {
 			type: 'post', //HTTP请求类型
 			success: function(result) {
 				if(result.Success) {
 					plus.storage.setItem('IMtoken', result.Msg);
 					plus.storage.setItem('myId', result.Data)
-					alert(result.Msg)
-					//预加载页面,之前需要通过后台获取token
-					plus.webview.getWebviewById('mine').evalJS('initIM()')
-				} else {}
+					
+					plus.webview.getWebviewById('orders').evalJS('refresh()')
+					plus.webview.getWebviewById('mine').evalJS('refresh()')
+				} else {
+
+				}
 			}
 		});
-		//		if(plus.webview.getWebviewById('chat')){
-		//			plus.webview.getWebviewById('chat').evalJS('ImInit()')
-		//		}
+
 	}
 	/*页面跳转*/
 	var jumpPage = function(id) {

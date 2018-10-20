@@ -753,9 +753,12 @@
 								})
 								return
 							}
+							mainPage = plus.webview.getWebviewById('information')
 							if(mainPage) {
 								mainPage.show('pop-in', 300, function() {}, {})
 							}
+							
+							
 
 						},
 						_toLoginPage() {
@@ -893,21 +896,26 @@
 				//				if(mainPage){mainPage.evalJS('getList()')}
 
 				APP._initUser();
-				//				APP._initBlock()
-				//				initIM()
+				
+				if(plus.storage.getItem('isLogin')=='1'){
+//					若是登陆,就刷新融云链接
+					initIM()
+				}				
 			}
 			//			重新链接im
 			function initIM() {
-				var mainPage = plus.webview.getWebviewById('information')
+			
+				mainPage = plus.webview.getWebviewById('information')
+
 				if(!mainPage) {
-					alert(666)
+//					alert(666)
 					mainPage = mui.preload({
 						"id": 'information',
 						"url": './html/information/information.html',
 						'styles': {}
 					});
 				} else {
-					alert(111)
+//					alert(111)
 					mainPage.evalJS('connectIM()')
 				}
 
@@ -933,6 +941,10 @@
 			function noNew() {
 				APP.hasNew = false
 			}
+			
+window.addEventListener('demo',function(event){
+  alert('@@@@')
+})
 		</script>
 	</body>
 

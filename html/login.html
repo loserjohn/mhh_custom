@@ -212,8 +212,6 @@
 									if(status){
 										/*登陆成功*/
 										plus.nativeUI.toast('登陆成功')
-										plus.webview.getWebviewById('orders').evalJS('refresh()')
-										plus.webview.getWebviewById('mine').evalJS('refresh()')
 										mui.back()
 										/*跳转首页*/
 									}else{
