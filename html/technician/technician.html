@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/loading.css" />
-		
+
 		<style>
 			.box {
 				background: #fff;
@@ -335,12 +335,13 @@
 				z-index: 10;
 			}
 			
-			.hasCollec{
+			.hasCollec {
 				background: #fff;
 				color: #f50f60;
 			}
+			
 			.hasCollec p,
-			.hasCollec i{
+			.hasCollec i {
 				color: #f50f60;
 			}
 		</style>
@@ -370,41 +371,44 @@
 				<div class="mui-scroll">
 
 					<!--技师基本信息-->
-					<div class="personMsg flex " id="content">
-						<aside class="personMsgPic relative">
-							<img :src="shopMsg.SHOP_LOGO?shopMsg.SHOP_LOGO:'../../images/default_avatar.jpg'"  alt="" @error="_default" class="cover" />
-						</aside>
-						<article class="f1">
-							<div class="flex ">
-								<div class="cor_w fs16 lh28">{{shopMsg.SHOP_NAME}}</div>
-								<p class="lh28  cor_w f1 t_r">{{shopMsg.SHOP_CONCERN}}人关注</p>
-							</div>
+					<div class="personMsg  " id="content">
+						<div class="flex">
+							<aside class="personMsgPic relative">
+								<img :src="shopMsg.SHOP_LOGO?shopMsg.SHOP_LOGO:'../../images/default_avatar.jpg'" alt="" @error="_default" class="cover" />
+							</aside>
+							<article class="f1">
+								<div class="flex ">
+									<div class="cor_w fs16 lh28">{{shopMsg.SHOP_NAME}}</div>
+									<p class="lh28  cor_w f1 t_r">{{shopMsg.SHOP_CONCERN}}人关注</p>
+								</div>
 
-							<div class="flex lh28">
-								<aside class="cor_w flex">嘿皮值:
-									<img src="../../images/levelicon2.png" alt="" style="margin-top: 6px;" class="cm_level" v-for="item in levels" />
-								</aside>
-								<article></article>
+								<div class="flex lh28">
+									<aside class="cor_w flex">嘿皮值:
+										<img src="../../images/levelicon2.png" alt="" style="margin-top: 6px;" class="cm_level" v-for="item in levels" />
+									</aside>
+									<article></article>
+								</div>
+								<div class="flex cor_w scoreBox">
+									<div class="f1 t_c">守时：{{shopMsg.PUNCTUAL_POINT}}分</div>
+									<div class="f1 t_c">服务：{{shopMsg.SEVICE_POINT}}分</div>
+									<div class="f1 t_c">技术：{{shopMsg.SKILL_POINT}}分</div>
+								</div>
+							</article>
+						</div>
+						<!--品牌承诺：-->
+						<div class="container  flex" style="margin-top: 5px;">
+							<div class="f1 lh24 t_c cor_w">
+								<i class="iconfont icon-hua cor_w"></i>不满意重做
 							</div>
-							<div class="flex cor_w scoreBox">
-								<div class="f1 t_c">守时：{{shopMsg.PUNCTUAL_POINT}}分</div>
-								<div class="f1 t_c">服务：{{shopMsg.SEVICE_POINT}}分</div>
-								<div class="f1 t_c">技术：{{shopMsg.SKILL_POINT}}分</div>
+							<div class="f1 lh24 t_c cor_w">
+								<i class="iconfont icon-hua cor_w"></i>迟到半价
 							</div>
-						</article>
-					</div>
-					<!--品牌承诺：-->
-					<div class="container box flex">
-						<div class="f1 lh24 t_c">
-							<i class="iconfont icon-hua cor_y"></i>不满意重做
-						</div>
-						<div class="f1 lh24 t_c">
-							<i class="iconfont icon-hua cor_y"></i>迟到半价
-						</div>
-						<div class="f1 lh24 t_c">
-							<i class="iconfont icon-hua cor_y"></i>爽约3倍赔偿
+							<div class="f1 lh24 t_c cor_w">
+								<i class="iconfont icon-hua cor_w"></i>爽约3倍赔偿
+							</div>
 						</div>
 					</div>
+
 					<!--选项卡切换-->
 					<div class="tabBar box">
 						<ul class=" flex">
@@ -534,7 +538,7 @@
 											<aside>商圈：</aside>
 											{{shopMsg.SHOP_AREA}}
 										</div>
-									
+
 									</div>
 								</div>
 
@@ -673,7 +677,7 @@
 			<!--底部菜单-->
 			<div class="cm_bottomBtn flex fixed">
 				<div class="f1" @tap="_phone">
-					<i class="iconfont icon-phone fs20" ></i>
+					<i class="iconfont icon-phone fs20"></i>
 					<p>致电技师</p>
 				</div>
 				<div class="f1" @tap="_toChat">
@@ -702,9 +706,9 @@
 				var APP = new Vue({
 					el: '#app',
 					data: {
-						islogin:false,
-						hasCollec:false,
-						loader:true,
+						islogin: false,
+						hasCollec: false,
+						loader: true,
 						/*当前页面的手艺人code*/
 						shopCode: '',
 
@@ -775,7 +779,7 @@
 						this.shopCode = self.shopCode
 						var isLogin = plus.storage.getItem('isLogin');
 
-						if(isLogin == '1'){
+						if(isLogin == '1') {
 							this.islogin = true;
 						}; //没有登陆状态则不获取数据
 
@@ -829,15 +833,15 @@
 						})
 					},
 					methods: {
-//						默认头像
-						_default(e){
+						//						默认头像
+						_default(e) {
 							var dom = e.target;
 							console.log(dom)
-							dom.src="../../images/default_avatar.jpg"
+							dom.src = "../../images/default_avatar.jpg"
 						},
-						
-//						与商家对话
-						_toChat(){
+
+						//						与商家对话
+						_toChat() {
 							let isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
@@ -870,7 +874,7 @@
 							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
 							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {})
 						},
-						_phone(){
+						_phone() {
 							plus.nativeUI.toast('致电中，请稍等')
 							plus.device.dial(this.shopMsg.SHOP_MOBILE, false);
 						},
@@ -902,7 +906,7 @@
 									}
 								})
 								return
-							}else if(real != '1'){
+							} else if(real != '1') {
 								plus.nativeUI.confirm('您尚未通过实名认证', (event) => {
 									if(event.index != 0) return;
 									mui.openWindow({
@@ -915,7 +919,7 @@
 											plusrequire: 'ahead',
 											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
 											titleNView: { // 窗口的标题栏控件
-												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+												autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
 												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
 												titleSize: "14px", // 字体大小,默认17px
 												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
@@ -944,7 +948,7 @@
 								}, ['前往认证', '取消'])
 								return
 							}
-							
+
 							/*创建项目订单*/
 							plus.nativeUI.showWaiting()
 							app.ajax(app.baseUrl + '/api/Order/CreateBusiRechargeOrder', {
@@ -989,7 +993,7 @@
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
-									console.log(111+type);
+									console.log(111 + type);
 								}
 							});
 
@@ -1000,26 +1004,26 @@
 								url: desturl,
 								id: destid,
 								styles: {
-											top: '0px', //新页面顶部位置
-											bottom: '0px', //新页面底部位置
-											scrollIndicator: "none",
-											plusrequire: 'ahead',
-											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-											titleNView: { // 窗口的标题栏控件
-												autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-												titleSize: "14px", // 字体大小,默认17px
-												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-												progress: { // 标题栏控件的进度条样式
-													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-													height: "2px" // 进度条高度,默认值为"2px"         
-												},
-												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-													height: "1px" // 分割线高度,默认值为"2px"
-												}
-											}
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
 										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1px" // 分割线高度,默认值为"2px"
+										}
+									}
+								},
 								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
 									autoShow: true, //页面loaded事件发生后自动显示，默认为true
@@ -1058,7 +1062,7 @@
 						},
 						/*收藏手艺人*/
 						_collect() {
-							if(this.hasCollec){
+							if(this.hasCollec) {
 								return;
 							}
 							var _this = this
@@ -1135,7 +1139,7 @@
 
 								success: function(result) {
 									/*登陆成功*/
-									mui.later(()=>{
+									mui.later(() => {
 										_this.loader = false;
 										if(result.Success) {
 											/*店铺信息*/
@@ -1145,16 +1149,16 @@
 											_this.refillcard = result.Data.Recharge
 											/*优惠券*/
 											_this.coupons = result.Data.Discount
-											_this.hasCollec =  result.Data.Shop.IS_ATTENTION
-//											alert(_this.hasCollec)
+											_this.hasCollec = result.Data.Shop.IS_ATTENTION
+											//											alert(_this.hasCollec)
 											_this._initComment()
-	
+
 											_this.enabledTime = result.Data.enabledTime
 											if(callback) callback()
 										} else {
 											/*验证失败*/
 										}
-									},500)									
+									}, 500)
 								},
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
@@ -1214,7 +1218,7 @@
 								type: 'get', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
 								data: {
-//									PROJECT_CODE: _this.proKey,
+									//									PROJECT_CODE: _this.proKey,
 									REVIEW_TYPE: 1,
 									pageIndex: 1,
 									pageSize: 4,

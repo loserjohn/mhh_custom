@@ -374,7 +374,8 @@
 				"resources": [],
 				"refer": [
 					"html/coupons/proCoupons.html",
-					"html/cashPay.html"
+					"html/cashPay.html",
+					"html/login.html"
 				],
 				"priority": 0
 			},

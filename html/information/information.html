@@ -254,7 +254,7 @@
 			var realHisRecords = []; //真实渲染的记录
 
 			var pageIndex = 1;
-			var pageSize = 20
+			var pageSize = 15
 			var isHome = true //判断是否在前台
 
 			var linking; //判断链接状态
@@ -390,7 +390,6 @@
 
 			//			初始化聊天内容记录
 			function initChatContent() {
-				//				targetId = id;
 				pageIndex = 1;
 				allHisRecords = [];
 				scroll.finishPullDown();
@@ -506,7 +505,7 @@
 							case RongIMClient.MessageType.TextMessage:
 								// message.content.content => 消息内容
 								//console.log(JSON.stringify(message))
-								alert(0)
+//								alert(0)
 								receiveMsg(message)
 								break;
 							case RongIMClient.MessageType.VoiceMessage:
