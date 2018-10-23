@@ -193,11 +193,11 @@
 				} else {
 					//					alert('过期')
 					/* 不存在则重新登陆 */
-					var time = setInterval(function() {
-						if(!auths.s_server) return;
-						owner.reWxLogin(callback);
-						clearInterval(time);
-					}, 200)
+//					var time = setInterval(function() {
+//						if(!auths.s_server) return;
+//						owner.reWxLogin(callback);
+//						clearInterval(time);
+//					}, 200)
 				}
 				break;
 			default:
@@ -349,11 +349,11 @@
 						/*验证码登陆,返回密码存储*/
 						plus.storage.setItem('userPass', result.Data.toString());
 					}
-					if(result.DataExt) {
-						/*储存token过期的时间*/
-						plus.storage.setItem('tokenLife', result.DataExt);
-						//						console.log(result.DataExt)
-					}
+//					if(result.DataExt) {
+//						/*储存token过期的时间*/
+//						plus.storage.setItem('tokenLife', result.DataExt);
+//						//						console.log(result.DataExt)
+//					}
 					owner.postDevice() //发送uid --个推
 
 					if(callback) callback(true, null)
@@ -399,11 +399,11 @@
 					plus.storage.setItem('token', result.Msg);
 					plus.storage.setItem('isLogin', '1');
 
-					if(result.DataExt) {
-						/*储存token过期的时间*/
-						plus.storage.setItem('tokenLife', result.DataExt);
-						//						console.log(result.DataExt)
-					}
+//					if(result.DataExt) {
+//						/*储存token过期的时间*/
+//						plus.storage.setItem('tokenLife', result.DataExt);
+//						//						console.log(result.DataExt)
+//					}
 					owner.postDevice() //发送uid --个推
 
 					/*返回用户的状态码*/
@@ -849,30 +849,7 @@
 		} else if(type == 'abort') {
 			plus.webview.getLaunchWebview().evalJS('closeVersion()')
 			plus.nativeUI.toast('网络未连接');
-			//			if(plus.webview.currentWebview().id == plus.webview.getLaunchWebview().id) {
-			//				mui.openWindow({
-			//					url: './html/error.html',
-			//					id: 'error',
-			//					styles: {
-			//						top: '0px', //新页面顶部位置
-			//						bottom: '0px', //新页面底部位置
-			//						scrollIndicator: "none",
-			//						plusrequire: 'ahead'
-			//					},
-			//					show: {
-			//						autoShow: true, //页面loaded事件发生后自动显示，默认为true
-			//						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-			//					},
-			//					extras: {
-			//						//自定义扩展参数，可以用来处理页面间传值  
-			//					},
-			//					waiting: {
-			//						autoShow: false, //自动显示等待框，默认为true
-			//						title: '正在加载...', //等待对话框上显示的提示内容
-			//					}
-			//				})
-			//			}
-
+		
 		}
 	}
 	/*加密函数*/
