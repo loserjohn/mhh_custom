@@ -101,12 +101,13 @@
 				line-height: 50px;
 				text-align: center;
 			}
-			.numBox{
-				border-top:1px solid #d3d3d3;
+			
+			.numBox {
+				border-top: 1px solid #d3d3d3;
 				margin-top: 10px;
-				
 			}
-			.nums{
+			
+			.nums {
 				width: 150px;
 				height: 40px;
 				/*background: red;*/
@@ -117,24 +118,39 @@
 				border-radius: 3px;
 				overflow: hidden;
 				padding: 0;
-				margin-top: 5px;	
+				margin-top: 5px;
 			}
-			.numBtns{
+			
+			.numBtns {
 				color: #e1e1e1;
-				line-height: 34px;	
+				line-height: 34px;
 			}
-			.numBtns.sub{
+			
+			.numBtns.sub {
 				border-right: 1px solid #ddd;
 			}
-			.numBtns.add{
+			
+			.numBtns.add {
 				border-left: 1px solid #ddd;
 			}
-			.amount{
+			
+			.amount {
 				line-height: 40px;
 				font-size: 22px;
 				/*background: red;*/
 				height: 40px;
-				margin-top: 5px;	
+				margin-top: 5px;
+			}
+			.cellInputArea{
+				/*background: red;*/
+				border: none;
+				font-size: 14px;
+			}
+			.inputs{
+				color:#404040;
+				font-size: 12px;
+				border: 1px solid #f1f1f1!important;
+				
 			}
 		</style>
 	</head>
@@ -187,18 +203,18 @@
 								<p>技师：{{product.SHOP_NAME}} </p>
 								<p class="flex">嘿皮值:
 									<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item in parseInt(product.SHOP_STAR) " />
-								</p>	
+								</p>
 								<p>(仅限购一份)</p>
 							</div>
 						</div>
 						<div class=" numBox flex">
-							<div class="lh28 cor_r f1 fs18 amount">￥{{product.PROJECT_DISCOUNT}}</div>								
-							<!--<div class="lh28 f1 t_r ">	-->					
-									<div class="flex nums">
-										<div class="f1 numBtns sub">-</div>
-										<div class="f1"><span class="lh24 fs16">×1</span></div>
-										<div class="f1 numBtns add">+</div>
-									</div>								
+							<div class="lh28 cor_r f1 fs18 amount">￥{{product.PROJECT_DISCOUNT}}</div>
+							<!--<div class="lh28 f1 t_r ">	-->
+							<div class="flex nums">
+								<div class="f1 numBtns sub">-</div>
+								<div class="f1"><span class="lh24 fs16">×1</span></div>
+								<div class="f1 numBtns add">+</div>
+							</div>
 							<!--</div>-->
 						</div>
 					</div>
@@ -209,7 +225,7 @@
 						<div class=" mui-table-view" @tap="_modelToggle(1)">
 							<div class="mui-table-view-cell flex">
 								<div class="f1 cellName ">优惠券:</div>
-								<div class="f1 cellName t_r cor_y">优惠券</div>
+								<div class="f1 cellName t_r cor_y">选择优惠券</div>
 								<i class="iconfont icon-xiayibu cor_y"></i>
 							</div>
 						</div>
@@ -220,12 +236,39 @@
 							</div>
 						</div>
 					</div>
-
+					
+					
+					<!--购买保险-->
+					<div class="panel  block3">
+						<!--优惠券-->
+						<div class=" mui-table-view" >
+							<div class="mui-table-view-cell ">
+								<!--<div class=" mui-input-group">-->
+									<div class=" mui-checkbox "  >
+										<label :for="inssure">意外险:保障人身及财产安全</label>
+										<input id="inssure" @change="_toInsure" name="checkbox" value="yes" type="checkbox" class="checks" style="margin-top: -7px;margin-right: -10px;" v-model="inssure">
+									</div>
+								<!--</div>-->
+							</div>
+						</div>
+						<div class=" mui-table-view" v-show="showInsure">
+							<div class="mui-table-view-cell ">
+								<div class="">
+									<input type="text" placeholder="投保人姓名" class="inputs" />
+								</div>
+								<div class="">
+									<input type="text" placeholder="投保人身份证号码" class="inputs" />
+								</div>
+								<p class="fs12">本保险保费由马嘿嘿承担，选择即为默认同意<span class="cor_y">《投保须知》</span><span class="cor_y">&</span><span class="cor_y">《保险同款》</span></p>
+							</div>
+						</div>
+					</div>
+					
 					<!--备注-->
 					<div class="panel  block3">
 						<div class="mui-table-view">
 							<div class="mui-table-view-cell">
-								<textarea class="cellInputArea" v-model="remark"  placeholder="备注"></textarea>
+								<textarea class="cellInputArea" v-model="remark" placeholder="备注"></textarea>
 							</div>
 						</div>
 					</div>
@@ -265,7 +308,7 @@
 					</div>
 					<footer class="btnBox">
 						<p v-show="chooseType==1" @tap="_noUse"> <i class="iconfont icon-close cor_w"></i> 不使用优惠券</p>
-						<p v-show="chooseType==3"  @tap="_address"> <i class="iconfont icon-bianji cor_w"></i> 地址管理</p>
+						<p v-show="chooseType==3" @tap="_address"> <i class="iconfont icon-bianji cor_w"></i> 地址管理</p>
 					</footer>
 				</div>
 			</div>
@@ -289,7 +332,7 @@
 
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			});
 			var APP;
 			mui.plusReady(function() {
@@ -324,10 +367,13 @@
 						/*项目详情*/
 						address: '', //联系人地址
 						curCoupon: '',
-						remark:'',//备注
+						remark: '', //备注
 						/*当前使用的优惠券*/
 						orderTime: '',
 						/*预约时间*/
+						
+						inssure:'',//保险
+						showInsure:false
 					},
 					created: function() {
 						app.initHeader();
@@ -355,6 +401,12 @@
 						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
 					},
 					methods: {
+//						投保
+						_toInsure(){
+							console.log(this.inssure);
+			
+							this.showInsure = this.inssure
+						},
 						/*初始化下拉框*/
 						_initScroll() {
 							var _this = this
@@ -418,7 +470,7 @@
 								success: function(result) {
 									//									console.log(JSON.stringify(result.Data) )
 									if(result.Success) {
-										_this.couponsList = result.Data.ListInfo?result.Data.ListInfo:[]
+										_this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
 										//										alert(result.Data.ListInfo.length)
 										if(callback) callback()
 									} else {
@@ -441,18 +493,18 @@
 							if(!this.address) {
 								plus.nativeUI.alert("请选择服务人地址", function() {}, '马嘿嘿提醒您');
 								return;
-							} 
-//							else if(!this.orderTime) {
-//								plus.nativeUI.alert("请选择预约时间", function() {}, '马嘿嘿提醒您');
-//								return;
-//							}
+							}
+							//							else if(!this.orderTime) {
+							//								plus.nativeUI.alert("请选择预约时间", function() {}, '马嘿嘿提醒您');
+							//								return;
+							//							}
 							plus.nativeUI.showWaiting('订单生成中')
 							var data = {
 								PROJECT_CODE: _this.product.PROJECT_CODE,
 								ADDRESS: _this.address,
 								date: _this.orderTime.split(' ')[0],
 								point: _this.orderTime.split(' ')[1],
-								REMARK:_this.remark
+								REMARK: _this.remark
 							}
 							if(this.curCoupon) {
 								data.ENTRY_CODE = this.curCoupon.ENTRY_CODE
@@ -463,11 +515,11 @@
 								data: data,
 								success: function(result) {
 									plus.nativeUI.closeWaiting()
-									
+
 									if(result.Success) {
 										plus.nativeUI.toast('订单创建成功')
-										mui.later(()=>{
-											let payCode = result.Msg;//订单号
+										mui.later(() => {
+											let payCode = result.Msg; //订单号
 											mui.openWindow({
 												url: './toPay.html',
 												id: "toPay",
@@ -490,9 +542,9 @@
 													title: '正在加载...', //等待对话框上显示的提示内容
 												}
 											})
-										},1000)
+										}, 1000)
 										/*成功跳转支付页面*/
-										
+
 									} else {
 										/*验证失败*/
 										plus.nativeUI.toast(result.Msg)
@@ -526,20 +578,20 @@
 								account: this.product.ACCOUNT_CODE,
 								pId: 'productOrder'
 							});
-							mui.later(()=>{
+							mui.later(() => {
 								plus.nativeUI.closeWaiting()
 								w.show('slide-in-bottom', 300, function() {}, {})
-							},1000)
-							
+							}, 1000)
+
 						},
 						/*回传接受预约时间*/
 						_orderTime(date) {
-							if(date=="-"){
+							if(date == "-") {
 								this.orderTime = ''
-							}else{
+							} else {
 								this.orderTime = app.dateFormate(date)
 							}
-							
+
 						},
 						/*选择呢使用优惠券*/
 						_chooseCoupons(item) {
@@ -552,15 +604,15 @@
 							}
 
 							this.curCoupon = item;
-							if(this.product.PROJECT_DISCOUNT<=amount){
+							if(this.product.PROJECT_DISCOUNT <= amount) {
 								this.totalAmount = 0
-							}else{
+							} else {
 								this.totalAmount = this.product.PROJECT_DISCOUNT - amount;
-							}							
+							}
 							this._modelToggle()
 						},
 						/*选择地址*/
-						_chooseAddress(str){
+						_chooseAddress(str) {
 							this.address = str
 							this._modelToggle()
 						},
@@ -571,27 +623,42 @@
 							this._modelToggle()
 						},
 						/*跳转地址管理*/
-						_address(){
+						_address() {
 							mui.openWindow({
-											url: '../address/address.html',
-											id: "address",
-											styles: {
-												top: '0px', //新页面顶部位置
-												bottom: '0px', //新页面底部位置
-												scrollIndicator: "none",
-												plusrequire: 'ahead'
-											},
-											createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-											show: {
-												autoShow: false, //页面loaded事件发生后自动显示，默认为true
-												duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-											},
-											waiting: {
-												autoShow: true, //自动显示等待框，默认为true
-												title: '正在加载...', //等待对话框上显示的提示内容
-											}
+								url: '../address/address.html',
+								id: "address",
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
+										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1px" // 分割线高度,默认值为"2px"
+										}
+									}
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								waiting: {
+									autoShow: false, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
 							})
-							
+
 							this._modelToggle()
 						}
 					}
@@ -600,25 +667,24 @@
 			});
 
 			function hasTime(date) {
-				if(date=="-"){
+				if(date == "-") {
 					APP._orderTime('-')
-					
-				}else if(date) {
+
+				} else if(date) {
 					/*如果有回传选择的日期*/
 					let time = new Date(date)
-					APP._orderTime(time)					
+					APP._orderTime(time)
 				}
-				
+
 				//				alert(date+time)
-				
-				
+
 				var self = plus.webview.currentWebview();
 				self.setStyle({
 					mask: 'none'
 				});
 			}
-			
-			function refresh(){
+
+			function refresh() {
 				APP._getData()
 			}
 		</script>

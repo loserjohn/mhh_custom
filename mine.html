@@ -227,7 +227,7 @@
 							<ul class="flex">
 								<li class="f1 fastItem">
 									<a @tap="_navigateTo('./html/platformCard/platformCard.html','platformCard')">
-										<p class="t_c ">{{parseInt(account) }}</p>
+										<p class="t_c ">{{account | wan}} <span v-if="parseInt(account)>10000 " class="fs14">万</span></p>
 										<div class="t_c">账户余额 </div>
 									</a>
 								</li>
@@ -269,12 +269,10 @@
 								<!--</a>-->
 							</li>
 							<!--<li class="menusItem">-->
-							<li class="menusItem" @tap="_navigateTo('./html/platformCard/platformCard.html','platformCard')">
-								<!--<a href="">-->
+							<!--<li class="menusItem" @tap="_navigateTo('./html/platformCard/platformCard.html','platformCard')">
 								<i class="iconfont icon-xinyongqia "></i>
 								<p>平台充值卡</p>
-								<!--</a>-->
-							</li>
+							</li>-->
 							<li class="menusItem" @tap="_navigateTo('./html/collection/collection.html','collection',{'type':1})">
 								<!--<a href="">-->
 								<i class="iconfont icon-shoucangxihuan "></i>
@@ -306,12 +304,10 @@
 								<p>消息</p>
 								<!--</a>-->
 							</li>
-							<li class="menusItem">
-								<!--<a href="">-->
+							<!--<li class="menusItem">
 								<i class="iconfont icon-more "></i>
 								<p>正在努力中</p>
-								<!--</a>-->
-							</li>
+							</li>-->
 						</ul>
 					</div>
 					<!--历史订单-->
@@ -433,6 +429,18 @@
 						/*个人数据*/
 						hasNew: false,
 						blockData: []
+					},
+					filters:{
+						wan(value){
+							let num = parseInt(value);
+							if(num>=10000){
+								let a = (num/10000).toFixed(2)
+								return a 
+							}else{
+								return num
+							}
+							
+						}
 					},
 					created: function() {
 						app.initHeader();
@@ -626,7 +634,7 @@
 										scrollX: false,
 										bounceTime: 200,
 										pullDownRefresh: {
-											threshold: 50,
+											threshold: 80,
 											stop: 0
 										}
 									})
@@ -639,12 +647,14 @@
 
 									plus.nativeUI.showWaiting()
 									_this._initData(() => {
-										mui.later(() => {
+//										mui.later(() => {
 											plus.nativeUI.closeWaiting();
-											_this.scroll.refresh()
-										}, 2000)
+											
+//										}, 2000)
 										_this.scroll.finishPullDown();
-										//										_this.scroll.finishPullUp()
+										mui.later(()=>{
+											_this.scroll.refresh()
+										},2000)
 
 									})
 								})

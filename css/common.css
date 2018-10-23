@@ -1093,3 +1093,6 @@ li {
 	color: #ccaa42;
 	font-size: 16px;
 }
+.mui-checkbox input[type=checkbox]:checked:before, .mui-radio input[type=radio]:checked:before {
+    color: #ccaa42;
+}

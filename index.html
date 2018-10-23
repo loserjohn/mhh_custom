@@ -916,7 +916,7 @@
 										scrollX: false,
 										bounceTime: 200,
 										pullDownRefresh: {
-											threshold: 40,
+											threshold: 80,
 											stop: 0
 										}
 									})
@@ -940,17 +940,19 @@
 								/*下拉刷新数据*/
 								_this.scroll.on('pullingDown', function(e) {
 									plus.nativeUI.showWaiting()
-									_this._initRecommont(() => {
-										mui.later(() => {
-											plus.nativeUI.closeWaiting()
-										}, 1000)
-									});
+//									_this._initRecommont(() => {
+////										mui.later(() => {
+//											plus.nativeUI.closeWaiting()
+////										}, 1000)
+//									});
 									_this._initPos(() => {
 										/*位置信息获取之后初始化最新上架*/
-										_this._initNew()
+										_this._initNew(()=>{
+											plus.nativeUI.closeWaiting()
+											_this.scroll.finishPullDown()
+										})
 									})
-
-									_this.scroll.finishPullDown()
+									
 								})
 
 							})
