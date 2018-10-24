@@ -246,7 +246,7 @@
 								<!--<div class=" mui-input-group">-->
 									<div class=" mui-checkbox "  >
 										<label :for="inssure">意外险:保障人身及财产安全</label>
-										<input id="inssure" @change="_toInsure" name="checkbox" value="yes" type="checkbox" class="checks" style="margin-top: -7px;margin-right: -10px;" v-model="inssure">
+										<input id="inssure" @change="_toInsure" name="checkbox" value="yes"  type="checkbox" class="checks" style="margin-top: -7px;margin-right: -10px;" v-model="inssure">
 									</div>
 								<!--</div>-->
 							</div>
@@ -254,10 +254,10 @@
 						<div class=" mui-table-view" v-show="showInsure">
 							<div class="mui-table-view-cell ">
 								<div class="">
-									<input type="text" placeholder="投保人姓名" class="inputs" />
+									<input type="text" v-model="realName" placeholder="投保人姓名" class="inputs" />
 								</div>
 								<div class="">
-									<input type="text" placeholder="投保人身份证号码" class="inputs" />
+									<input type="text" v-model="realIdCard" placeholder="投保人身份证号码" class="inputs" />
 								</div>
 								<p class="fs12">本保险保费由马嘿嘿承担，选择即为默认同意<span class="cor_y">《投保须知》</span><span class="cor_y">&</span><span class="cor_y">《保险同款》</span></p>
 							</div>
@@ -372,15 +372,22 @@
 						orderTime: '',
 						/*预约时间*/
 						
-						inssure:'',//保险
-						showInsure:false
+						inssure:['yes'],//保险
+						showInsure:true,
+						
+						realName:'' ,// 投保人真实姓名
+						realIdCard:'' //投保人真实身份证号码
 					},
 					created: function() {
 						app.initHeader();
 						var self = plus.webview.currentWebview();
 						this.product = self.product
 						this.masterCode = self.masterCode
-						this.totalAmount = self.product.PROJECT_DISCOUNT
+						this.totalAmount = self.product.PROJECT_DISCOUNT;
+						
+						this.realName = plus.storage.getItem('realName')?plus.storage.getItem('realName'):''
+						this.realIdCard =  plus.storage.getItem('realIdCard')?plus.storage.getItem('realIdCard'):''
+						
 					},
 					mounted: function() {
 						var _this = this;
@@ -403,9 +410,14 @@
 					methods: {
 //						投保
 						_toInsure(){
-							console.log(this.inssure);
-			
-							this.showInsure = this.inssure
+//							alert(1)
+//							console.log(JSON.stringify(this.inssure) );
+							if(this.inssure.length==0){
+								this.showInsure = false
+							}else{
+								this.showInsure = true
+							}
+							
 						},
 						/*初始化下拉框*/
 						_initScroll() {
@@ -453,7 +465,7 @@
 								success: function(result) {
 									if(result.Success) {
 										_this.addressList = result.Data.ListInfo
-										//										 alert(result.Data.ListInfo.length)
+										
 									} else {
 										/*验证失败*/
 										plus.nativeUI.toast(result.Msg)
@@ -494,10 +506,18 @@
 								plus.nativeUI.alert("请选择服务人地址", function() {}, '马嘿嘿提醒您');
 								return;
 							}
-							//							else if(!this.orderTime) {
-							//								plus.nativeUI.alert("请选择预约时间", function() {}, '马嘿嘿提醒您');
-							//								return;
-							//							}
+							if(this.showInsure){
+								if(!this.realName){
+									plus.nativeUI.alert("请输入投保人真实名称", function() {}, '马嘿嘿提醒您');
+									return;
+								}
+								if(!this.realIdCard){
+									plus.nativeUI.alert("请输入投保人身份证号码", function() {}, '马嘿嘿提醒您');
+									return;
+								}
+							}
+							
+							
 							plus.nativeUI.showWaiting('订单生成中')
 							var data = {
 								PROJECT_CODE: _this.product.PROJECT_CODE,
@@ -506,6 +526,12 @@
 								point: _this.orderTime.split(' ')[1],
 								REMARK: _this.remark
 							}
+							if(this.showInsure){
+								data.INSURER = this.realName;
+								data.INSURER_IDCARD = this.realIdCard
+							}
+							
+							
 							if(this.curCoupon) {
 								data.ENTRY_CODE = this.curCoupon.ENTRY_CODE
 							}

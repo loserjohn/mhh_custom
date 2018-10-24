@@ -87,16 +87,20 @@
 						</div>
 
 					</li>
+					
+					<li class="mui-table-view-cell flex">
+						<div class="f1 cellName">真实姓名</div>
+						<div class="f1">
+							<input type="text" class="cellInputTxt t_r red" v-model="realname" placeholder="请输入你的真实姓名" @change="_updateMsg(2)" />
+						</div>
+					</li>
+					<li class="mui-table-view-cell flex">
+						<div class="f1 cellName">身份证号码</div>
+						<div class="f1">
+							<input type="text" class="cellInputTxt t_r red" v-model="cardNum" placeholder="请输入身份证号码" @change="_updateMsg(3)" />
+						</div>
 
-					<!--<li class="mui-table-view-cell flex">
-						<div class="f1 cellName ">性别</div>
-						<div class="f1 cellName t_r " >{{agent=='1'?'男':'女'}}</div>
-						<select v-model="agent" class=" f1 t_r  reset eletBox" @change="_update()">
-							<option value="1">男</option>
-							<option value="0">女</option>
-						</select>
-						<i class="iconfont icon-xiayibu "></i>
-					</li>-->
+					</li>
 					<li class="mui-table-view-cell flex" @tap="_updatedNum">
 						<!--<i class="iconfont icon-geren  mui-pull-left cor_y"></i>-->
 						<div>修改绑定手机号</div>
@@ -152,14 +156,18 @@
 						avatar: '',
 						nickname: '',
 						agent: '',
-						phone:''
+						phone:'',
+						realname:'',
+						cardNum:''
 					},
 					created: function() {
 						var self = plus.webview.currentWebview();
 						this.avatar = self.menber.MEMBER_HEAD;
 						this.nickname = self.menber.MEMBER_NIKENAME;
-						this.agent = self.menber.MEMBER_SEX;
-						this.phone = self.menber.USERNAME
+//						this.agent = self.menber.MEMBER_SEX;
+						this.phone = self.menber.USERNAME;
+						this.realname = self.menber.MEMBER_REALNAME;
+						this.cardNum = self.menber.CARD_NUM;
 //						alert(this.agent)
 					},
 					mounted: function() {
@@ -174,42 +182,7 @@
 					methods: {
 //					    实名认证
 						_realCheck(){
-							var _this = this
-							mui.openWindow({
-								url: './realCheck.html',
-								id: 'realCheck',
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead',
-									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-									titleNView: { // 窗口的标题栏控件
-										autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-										titleSize: "14px", // 字体大小,默认17px
-										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-										progress: { // 标题栏控件的进度条样式
-											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-											height: "2px" // 进度条高度,默认值为"2px"         
-										},
-										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-											height: "1px" // 分割线高度,默认值为"2px"
-										}
-									}
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {},
-								waiting: {
-									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+	
 						},
 						//						修改电话号码
 						_updatedNum() {
@@ -299,6 +272,20 @@
 								case 1:
 									this._upload({
 										MEMBER_NIKENAME: this.nickname
+									}, (res) => {
+
+									})
+									break;
+								case 2:
+									this._upload({
+										MEMBER_REALNAME: this.realname
+									}, (res) => {
+
+									})
+									break;
+								case 3:
+									this._upload({
+										CARD_NUM: this.cardNum
 									}, (res) => {
 
 									})
