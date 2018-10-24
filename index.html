@@ -58,14 +58,16 @@
 				overflow: hidden;
 				position: relative;
 				z-index: 999;
-				/*background: ;*/
+				background-image:url(./images/bg1111.jpg);
+				background-position: center;
+				background-size: contain;
 			}
 			
 			.menus ul {
 				width: 100%;
 				justify-content: space-around;
 				flex-wrap: wrap;
-				/*margin-top: 10px;*/
+				
 			}
 			
 			.menusItem {
@@ -82,11 +84,12 @@
 				height: 100%;
 				display: block;
 				/*background: url(images/m_bg.png) 0 0 /cover no-repeat;*/
-				background: #fff;
+				/*background: #fff;*/
 			}
 			
 			.menusItem a p {
 				font-size: 12px;
+				color:#fff
 			}
 			/*红包*/
 			
@@ -309,9 +312,15 @@
 						</div>
 
 						<!--分类按钮-->
-						<div class="menus ">
-							<ul class="flex">
-								<li class="menusItem" @tap="_menuTo('美妆')">
+						<div class="menus " :style="{backgroundImage:menusBackgroundPic}">
+							<ul class="flex" >
+								<li class="menusItem" v-for="item in menusList" @tap="_menuTo(item.text)">
+									<a href="####">
+										<img :src="item.backgroundPic" width="50" />
+										<p>{{item.text}}</p>
+									</a>
+								</li>
+								<!--<li class="menusItem" @tap="_menuTo('美妆')">
 									<a href="####">
 										<img src="./images/index/m1.png" width="50" />
 										<p>美妆</p>
@@ -359,7 +368,7 @@
 										<img src="./images/index/m8.png" width="50" />
 										<p>其他</p>
 									</a>
-								</li>
+								</li>-->
 							</ul>
 						</div>
 
@@ -524,7 +533,43 @@
 						prevPic: '',
 						nextPic: '',
 
-						blockData: []
+						blockData: [],//豆腐块设计
+						
+						menusBackgroundPic:'./images/bg1111.jpg',//menu整块的背景图片
+						menusList:[
+							{
+								text:'美妆',   //文字
+								backgroundPic:'./images/index/m1.png' //对应的图片icon 大小为282*282
+							},
+							{
+								text:'美甲',
+								backgroundPic:'./images/index/m2.png'
+							},
+							{
+								text:'美睫',
+								backgroundPic:'./images/index/m3.png'
+							},
+							{
+								text:'美体',
+								backgroundPic:'./images/index/m4.png'
+							},
+							{
+								text:'半永久纹眉',
+								backgroundPic:'./images/index/m5.png'
+							},
+							{
+								text:'美容',
+								backgroundPic:'./images/index/m6.png'
+							},
+							{
+								text:'美发尽请期待',
+								backgroundPic:'./images/index/m7.png' 
+							},
+							{
+								text:'美甲',
+								backgroundPic:'./images/index/m11.png'
+							}
+						]
 					},
 					created: function() {
 						app.initHeader();

@@ -254,6 +254,7 @@ li {
 #header {
 	/*background: rgba(21, 21, 21, 1);*/
 	box-sizing: border-box;
+	top: constant(safe-area-inset-top);
 }
 
 #app {
@@ -1096,3 +1097,8 @@ li {
 .mui-checkbox input[type=checkbox]:checked:before, .mui-radio input[type=radio]:checked:before {
     color: #ccaa42;
 }
+
+.mui-bar.mui-bar-nav {
+  top: constant(safe-area-inset-top);
+}
+
