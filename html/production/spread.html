@@ -156,7 +156,7 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
+			<!--<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
 				<div class=" f1  cor_w t_c page_title">
 					差价补足
@@ -164,7 +164,7 @@
 				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
 					须知				
 				</button>
-			</header>
+			</header>-->
 
 			<!--订单内容-->
 			<div ref='scroll' class="scrollBox" :style="{top:appHeight+'px'}">
@@ -258,7 +258,6 @@
 						remark: '', //备注
 					},
 					created: function() {
-						app.initHeader();
 						var self = plus.webview.currentWebview();
 						this.orderCode = self.orderCode
 
@@ -269,16 +268,12 @@
 						var scroll = this.$refs.scroll
 						//						var wraper = this.$refs.wraper
 						//							初始化scroll的屏幕位置
-						this.appHeight = document.getElementById('header').offsetHeight;
+						this.appHeight = 0;
 
 						/*初始化横向scroll*/
 						//						this._initScroll()
 						/*初始化数据*/
-						this._getData(() => {
-							//							alert(3)
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						})
+						this._getData(() => {})
 						//						plus.nativeUI.closeWaiting()
 						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
 					},
@@ -300,29 +295,7 @@
 							this.count++;
 							this.totalAmount = (this.count * 0.01).toFixed(2)
 						},
-						/*初始化下拉框*/
-						_initScroll() {
-							var _this = this
-							/*初始化下拉scroll*/
-							this.$nextTick(function() {
-								var scroll = this.$refs.scroll
-								/*竖向下拉刷新*/
-								if(!_this.scroll) {
-									//							初始化标题栏
-									_this.scroll = new BScroll(scroll, {
-										click: true,
-										probeType: 3,
-										scrollX: false,
-										bounceTime: 200,
-										//										pullUpLoad: {
-										//											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
-										//										}
-									})
-								} else {
-									_this.scroll.refresh();
-								};
-							})
-						},
+						
 						/*获取数据*/
 						_getData(callback) {
 							var _this = this
@@ -412,49 +385,11 @@
 							});
 
 						},
-						/*跳转地址管理*/
-						_address() {
-							mui.openWindow({
-								url: '../address/address.html',
-								id: "address",
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
-
-							this._modelToggle()
-						}
+						
 					}
 				})
 
 			});
-
-			function hasTime(date) {
-				//				alert(new Date(date) )
-				let time = new Date(date)
-				//				alert(date+time)
-				if(date) {
-					/*如果有回传选择的日期*/
-					//					alert(666)
-					APP._orderTime(time)
-				}
-				var self = plus.webview.currentWebview();
-				self.setStyle({
-					mask: 'none'
-				});
-			}
 		</script>
 	</body>
 

@@ -193,11 +193,11 @@
 				} else {
 					//					alert('过期')
 					/* 不存在则重新登陆 */
-//					var time = setInterval(function() {
-//						if(!auths.s_server) return;
-//						owner.reWxLogin(callback);
-//						clearInterval(time);
-//					}, 200)
+					//					var time = setInterval(function() {
+					//						if(!auths.s_server) return;
+					//						owner.reWxLogin(callback);
+					//						clearInterval(time);
+					//					}, 200)
 				}
 				break;
 			default:
@@ -344,16 +344,15 @@
 					/* 储存有效token */
 					plus.storage.setItem('token', result.Msg);
 
-
 					if(result.Data) {
 						/*验证码登陆,返回密码存储*/
 						plus.storage.setItem('userPass', result.Data.toString());
 					}
-//					if(result.DataExt) {
-//						/*储存token过期的时间*/
-//						plus.storage.setItem('tokenLife', result.DataExt);
-//						//						console.log(result.DataExt)
-//					}
+					//					if(result.DataExt) {
+					//						/*储存token过期的时间*/
+					//						plus.storage.setItem('tokenLife', result.DataExt);
+					//						//						console.log(result.DataExt)
+					//					}
 					owner.postDevice() //发送uid --个推
 
 					if(callback) callback(true, null)
@@ -399,11 +398,11 @@
 					plus.storage.setItem('token', result.Msg);
 					plus.storage.setItem('isLogin', '1');
 
-//					if(result.DataExt) {
-//						/*储存token过期的时间*/
-//						plus.storage.setItem('tokenLife', result.DataExt);
-//						//						console.log(result.DataExt)
-//					}
+					//					if(result.DataExt) {
+					//						/*储存token过期的时间*/
+					//						plus.storage.setItem('tokenLife', result.DataExt);
+					//						//						console.log(result.DataExt)
+					//					}
 					owner.postDevice() //发送uid --个推
 
 					/*返回用户的状态码*/
@@ -456,7 +455,7 @@
 				if(result.Success) {
 					plus.storage.setItem('IMtoken', result.Msg);
 					plus.storage.setItem('myId', result.Data)
-					
+
 					plus.webview.getWebviewById('orders').evalJS('refresh()')
 					plus.webview.getWebviewById('mine').evalJS('refresh()')
 				} else {
@@ -665,58 +664,7 @@
 			filename: '_doc/head.png';
 		});
 	}
-	/*图片上传*/
-	//	owner.uploadIMG = function(src, callback) {
-	//		//		压缩图片
-	//		plus.zip.compressImage({
-	//				src: src,
-	//				dst: src,
-	//				quality: 50,
-	//				width: "50%",
-	//				overwrite: true
-	//			},
-	//			function(event) {
-	//				dstSRC = event.target;
-	//
-	//				var img = new Image();
-	//				img.src = dstSRC;
-	//
-	//				plus.nativeUI.showWaiting();
-	//				var url = app.baseUrl + '/api/Upload/UploadImage';
-	//
-	//				var task = plus.uploader.createUpload(url, {
-	//						method: "POST"
-	//					},
-	//					function(t, status) { //上传完成
-	//						if(status == 200) {
-	//							//		            	console.log("上传成功："+t.responseText);
-	//
-	//							var res = JSON.parse(t.responseText)
-	//							//		            	console.log(res.Data)
-	//							if(callback) callback(res.Data);
-	//							mui.later(function() {
-	//								plus.nativeUI.closeWaiting();
-	//							}, 1500)
-	//
-	//						} else {
-	//							console.log("上传失败：" + status);
-	//						}
-	//					}
-	//				);
-	//				var foldName = plus.storage.getItem('userName')
-	//				//添加其他参数
-	//				task.addData("foldName", foldName);
-	//				task.addFile(src, {
-	//					key: src
-	//				});
-	//				task.start();
-	//			},
-	//			function(error) {
-	//				alert("压缩失败 error!");
-	//				//				console.log(JSON.stringify(error))
-	//			})
-	//
-	//	}
+
 	/*图片上传*/
 	owner.uploadIMG64 = function(src, callback) {
 		plus.nativeUI.showWaiting();
@@ -749,7 +697,7 @@
 						if(callback) callback(result.Data);
 						mui.later(function() {
 							plus.nativeUI.closeWaiting();
-						}, 1500)
+						}, 2500)
 					},
 					error: function(xhr, type, errorThrown) {
 						plus.nativeUI.closeWaiting();
@@ -849,7 +797,7 @@
 		} else if(type == 'abort') {
 			plus.webview.getLaunchWebview().evalJS('closeVersion()')
 			plus.nativeUI.toast('网络未连接');
-		
+
 		}
 	}
 	/*加密函数*/
@@ -866,6 +814,152 @@
 		});
 		return encrypted.ciphertext.toString();
 	}
+
+	owner._jump= function(str) {
+		var key = str.split('||')[0];
+		var code = str.split('||')[1];
+		if(!code) {
+			return
+		};
+		switch(key) {
+			case 'A':
+				//								活动								
+				mui.openWindow({
+					url: code,
+					id: 'activity' + new Date().getTime(),
+					styles: {
+						top: '0px', //新页面顶部位置
+						bottom: '0px', //新页面底部位置
+						scrollIndicator: "none",
+						plusrequire: 'ahead',
+						// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+						titleNView: { // 窗口的标题栏控件
+							autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+							titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+							titleSize: "14px", // 字体大小,默认17px
+							backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+							progress: { // 标题栏控件的进度条样式
+								color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+								height: "2px" // 进度条高度,默认值为"2px"         
+							},
+							splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+								height: "1px" // 分割线高度,默认值为"2px"
+							}
+						}
+					},
+					createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+					show: {
+						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					},
+					extras: {
+						//自定义扩展参数，可以用来处理页面间传值  
+						detail: data
+					},
+					waiting: {
+						autoShow: true, //自动显示等待框，默认为true
+						title: '正在加载...', //等待对话框上显示的提示内容
+					}
+				})
+
+				break;
+			case 'W':
+				//								外链
+				mui.openWindow({
+					url: code,
+					id: 'activity' + new Date().getTime(),
+					styles: {
+						top: '0px', //新页面顶部位置
+						bottom: '0px', //新页面底部位置
+						scrollIndicator: "none",
+						plusrequire: 'ahead',
+						// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+						titleNView: { // 窗口的标题栏控件
+							autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+							titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+							titleSize: "14px", // 字体大小,默认17px
+							backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+							progress: { // 标题栏控件的进度条样式
+								color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+								height: "2px" // 进度条高度,默认值为"2px"         
+							},
+							splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+								height: "1px" // 分割线高度,默认值为"2px"
+							}
+						}
+					},
+					createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+					show: {
+						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					},
+					extras: {
+						//自定义扩展参数，可以用来处理页面间传值  
+						detail: data
+					},
+					waiting: {
+						autoShow: true, //自动显示等待框，默认为true
+						title: '正在加载...', //等待对话框上显示的提示内容
+					}
+				})
+				break;
+			case 'B':
+				//								社区新闻
+				var data = {
+					infoCode: code
+				}
+				mui.openWindow({
+					url: './html/community_detail.html',
+					id: 'community_detail',
+					styles: {
+						top: '0px', //新页面顶部位置
+						bottom: '0px', //新页面底部位置
+						scrollIndicator: "none",
+						plusrequire: 'ahead',
+						// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+						titleNView: { // 窗口的标题栏控件
+							autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+							titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+							titleSize: "14px", // 字体大小,默认17px
+							backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+							progress: { // 标题栏控件的进度条样式
+								color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+								height: "2px" // 进度条高度,默认值为"2px"         
+							},
+							splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+								height: "1px" // 分割线高度,默认值为"2px"
+							}
+						}
+					},
+					createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+					show: {
+						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					},
+					extras: {
+						//自定义扩展参数，可以用来处理页面间传值  
+						detail: data
+					},
+					waiting: {
+						autoShow: false, //自动显示等待框，默认为true
+						title: '正在加载...', //等待对话框上显示的提示内容
+					}
+				})
+
+				break;
+			case 'P':
+				//项目
+				this._NWnavigateTo('./html/production/productBuy.html', 'productBuy', {
+					proKey: code
+				})
+				break;
+			default:
+				break;
+		}
+	}
 	/*日期转化*/
 	owner.dateFormate = function(date) {
 		var y = date.getFullYear();
@@ -881,6 +975,5 @@
 		second = second < 10 ? ('0' + second) : second;
 		return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
 	}
-	//	owner.
 
 }(window.app = {}));

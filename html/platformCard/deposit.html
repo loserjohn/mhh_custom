@@ -139,6 +139,12 @@
 					</div>
 				</div>
 				<div class="flex address container">
+					<i class="iconfont icon-phone cor_y payIcon"></i>
+					<div class="f1">
+						<input type="number" class="numBox t_r" v-model="phone" placeholder="请输入银行预留电话" />
+					</div>
+				</div>
+				<div class="flex address container">
 					<i class="iconfont icon-geren cor_y payIcon"></i>
 					<div class="f1">
 						<input type="text" class="numBox t_r" v-model="bankUser" placeholder="请输入户名" />
@@ -186,8 +192,9 @@
 						allMoney: '',
 						money: 0,
 						bankName: '',
-						bankUser:'',
-						cardEnables:false
+						bankUser: '',
+						cardEnables: false,
+						phone: ''
 					},
 					created: function() {
 
@@ -197,6 +204,7 @@
 
 						var self = plus.webview.currentWebview()
 						this.allMoney = self.amount;
+						this.phone = self.phone;
 						document.getElementById('loader').style.display = 'none'
 
 					},
@@ -204,18 +212,18 @@
 						//						检验卡号
 						_valideCard() {
 							var _this = this
-							mui.ajax('https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?_input_charset=utf-8&cardNo='+ _this.bankNum +'&cardBinCheck=true', {
+							mui.ajax('https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?_input_charset=utf-8&cardNo=' + _this.bankNum + '&cardBinCheck=true', {
 								type: 'get', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
 								success: function(result) {
-									console.log(JSON.stringify(result));
+									//									console.log(JSON.stringify(result));
 									var status = result.validated;
-									if(!status){
+									if(!status) {
 										plus.nativeUI.alert('无效卡号')
-									}else{
+									} else {
 										_this.cardEnables = true
 									}
 								},
@@ -229,53 +237,70 @@
 						/*提交取现*/
 						_submit() {
 							var _this = this
+							
+							if(!this.bankNum) {
+								plus.nativeUI.alert("请输入卡号", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.bankName) {
+								plus.nativeUI.alert("请输入开户行", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.bankUser) {
+								plus.nativeUI.alert("请输入开户名", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.phone) {
+								plus.nativeUI.alert("请输入银行预留号码", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!app.checkPhone(this.phone)) {
+								plus.nativeUI.alert("无效的手机号", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.cardEnables) {
+								plus.nativeUI.alert("请输入有效的卡号", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
 							if(!this.money) {
 								plus.nativeUI.alert("请输入金额", function() {}, "马嘿嘿提醒您", "ok");
 								return;
 							}
-							alert('升级中')
-//							plus.nativeUI.confirm('您将提现金额 ￥' + this.money + '元至选定银行卡', (event) => {
-//								if(event.index == 0) {
-//									mui('#submit').button('loading');
-//									//									
-//									//									console.log(JSON.stringify({
-//									//											BANK_CODE:_this.card.BANK_CODE,
-//									//											AMOUNT:parseInt(_this.money)
-//									//										}))
-//									app.ajax(app.baseUrl + '/api/BusiWithdraw/Withdraw', {
-//										// dataType:'json',//服务器返回json格式数据
-//										data: {
-//											BANK_CODE: _this.card.BANK_CODE,
-//											AMOUNT: parseInt(_this.money)
-//										},
-//										type: 'post', //HTTP请求类型
-//										success: function(result) {
-//											/*登陆成功*/
-//											mui.later(() => {
-//												if(result.Success) {
-//													mui('#submit').button('reset');
-//													plus.nativeUI.toast('提现成功');
-//													plus.webview.getWebviewById('manage').evalJS('initPage()')
-//													mui.later(() => {
-//														mui.back()
-//													}, 500)
-//
-//												} else {
-//													mui('#submit').button('reset');
-//													plus.nativeUI.toast(result.Msg)
-//												}
-//
-//											}, 1500)
-//										},
-//										error: function(xhr, type, errorThrown) {
-//											mui('#submit').button('reset');
-//										}
-//									});
-//
-//								}
-//							}, {
-//								title: '马嘿嘿提醒您'
-//							})
+							mui('#submit').button('loading');
+							mui.ajax(app.baseUrl + '/api/Withdraw/Withdraw', {
+								data: {
+									BANK_NAME: _this.bankName,
+									BANK_OPEN_NAME: _this.bankUser,
+									BANK_CARDNUM: _this.bankNum,
+									BANK_MOBILE: _this.phone,
+									AMOUNT: parseInt(_this.money)
+								},
+								headers :{
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									/*登陆成功*/
+										if(result.Success) {
+											mui('#submit').button('reset');
+											plus.nativeUI.toast('提现成功');
+											plus.webview.getWebviewById('mine').evalJS('refresh()')
+											plus.webview.getWebviewById('platformCard').evalJS('refresh()')
+											mui.later(() => {
+												mui.back()
+											}, 500)
+
+										} else {
+											mui('#submit').button('reset');
+											plus.nativeUI.toast(result.Msg)
+										}
+								},
+								error: function(xhr, type, errorThrown) {
+									mui('#submit').button('reset');
+									app.catchErr(xhr, type, errorThrown)
+								}
+							});
 
 						},
 						/*重置*/

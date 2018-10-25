@@ -64,7 +64,7 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
+			<!--<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
 				<div class=" f1  cor_w t_c page_title">
 					付款
@@ -72,7 +72,7 @@
 				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
 					须知				
 				</button>
-			</header>
+			</header>-->
 
 			<div id="content">
 				<!--剩余时间  -->
@@ -184,7 +184,6 @@
 						}
 					},
 					created: function() {
-						app.initHeader();
 						/*开始倒计时*/
 						var _this = this	
 						var time = setInterval(()=>{
@@ -208,10 +207,7 @@
 						/*初始化支付通道*/
 						this._initPay()
 						//初始化订单内容
-						this._iniOrder(()=>{
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						}) 
+						this._iniOrder(()=>{}) 
 						
 						var old_back = mui.back;
 						mui.back = function(){

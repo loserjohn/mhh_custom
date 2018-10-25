@@ -230,6 +230,7 @@
 						/*详情*/
 						show: false,
 						account: 0, //账户余额
+						phone:'' //电话号码
 					},
 					filters: {
 						getStatus(k) {
@@ -308,6 +309,7 @@
 								success: function(result) {
 									if(result.Success) {
 										_this.account = result.Data.MEMBER_ACOUNT
+										_this.phone = result.Data.MEMBER_MOBILE
 										if(callback) callback()
 									} else {
 										/*验证失败*/
@@ -428,7 +430,8 @@
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: {
-									amount: _this.account
+									amount: _this.account,
+									phone:_this.phone
 								},
 								waiting: {
 									autoShow: false, //自动显示等待框，默认为true
@@ -441,7 +444,6 @@
 			})
 
 			function refresh() {
-				//				alert(1)
 				APP._getData()
 			}
 		</script>

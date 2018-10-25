@@ -207,10 +207,10 @@
 										<div class="itemFoot flex cor_g">
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_toPay(item.ORDER_CODE)">去付款</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_navigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==3||item.ORDER_STATUS_TYPE==1" @tap="_navigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_NTnavigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==3||item.ORDER_STATUS_TYPE==1" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==3" @tap="_navigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==3" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[0].norest?'没有数据咯':''}}</li>
@@ -301,7 +301,7 @@
 											</div>
 										</div>
 										<div class="itemFoot flex cor_g">
-											<div class="f1 btns" @tap="_navigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[2].norest?'没有数据咯':''}}</li>
@@ -345,8 +345,8 @@
 											</div>
 										</div>
 										<div class="itemFoot flex cor_g">
-											<div class="f1 btns" @tap="_navigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
-											<div class="f1 btns" @tap="_navigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[3].norest?'没有数据咯':''}}</li>
@@ -391,8 +391,8 @@
 											</div>
 										</div>
 										<div class="itemFoot flex cor_g" >
-											<div class="f1 btns" @tap="_navigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
-											<div class="f1 btns" @tap="_navigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[4].norest?'没有数据咯':''}}</li>
@@ -607,11 +607,26 @@
 									top: '0px', //新页面顶部位置
 									bottom: '0px', //新页面底部位置
 									scrollIndicator: "none",
-									plusrequire: 'ahead'
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#ccaa42", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#fff", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
+										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#e6be65", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1" // 分割线高度,默认值为"2px"
+										}
+									}
 								},
 								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: {
@@ -730,8 +745,8 @@
 									return
 								}
 						},
-						/*跳转页面无等待*/
-						_navigateTo(dstUrl, dstId, extras) {
+//						跳转原生导航
+						_NTnavigateTo(dstUrl, dstId, extras) {
 							mui.openWindow({
 								url: dstUrl,
 								id: dstId,
@@ -739,11 +754,26 @@
 									top: '0px', //新页面顶部位置
 									bottom: '0px', //新页面底部位置
 									scrollIndicator: "none",
-									plusrequire: 'ahead'
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#ccaa42", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#fff", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
+										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#e6be65", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1" // 分割线高度,默认值为"2px"
+										}
+									}
 								},
 								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 								},
 								extras: extras,
@@ -753,7 +783,7 @@
 								}
 							})
 						},
-						/*跳转页面*/
+						/**跳转页面无等待*/
 						_NWnavigateTo(dstUrl, dstId, extras) {
 							mui.openWindow({
 								url: dstUrl,

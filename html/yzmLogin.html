@@ -22,7 +22,7 @@
 
 	<body style="background: #fff;">
 		<div id="app">
-			<header class="fixed  header flex" id="header">
+			<!--<header class="fixed  header flex" id="header">
 			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
 			<div class=" f1  cor_w t_c page_title">
 				验证码登陆
@@ -30,7 +30,7 @@
 			<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
 					须知				
 			</button>
-		</header>
+		</header>-->
 			
 			<div class="container " id = "content">
 				<div class="container">
@@ -72,6 +72,23 @@
 				swipeBack: true
 			})
 			mui.plusReady(function(){
+				var wv = plus.webview.currentWebview();
+						wv.setStyle({
+							titleNView: {
+								autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+								titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+								titleSize: "14px", // 字体大小,默认17px
+								backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+								progress: { // 标题栏控件的进度条样式
+									color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+									height: "2px" // 进度条高度,默认值为"2px"         
+								},
+								splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+									height: "1px" // 分割线高度,默认值为"2px"
+								}
+							}
+						});
 				var APP = new Vue({
 						el: '#app',
 						data: {						
@@ -86,7 +103,7 @@
 							}
 						},
 						created() {
-							app.initHeader();
+//							app.initHeader();
 						},
 						mounted(){					
 							this.opId = plus.storage.getItem('opId');

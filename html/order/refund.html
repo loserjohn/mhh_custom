@@ -42,7 +42,7 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
+			<!--<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
 				<div class=" f1  cor_w t_c page_title">
 					退款申请
@@ -50,7 +50,7 @@
 				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w" style="width: 66px;">
 									
 				</button>
-			</header>
+			</header>-->
 
 			<!--订单内容-->
 			<div   id="content">
@@ -154,7 +154,7 @@
 			var APP;
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
-				app.initHeader();
+//				app.initHeader();
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -188,13 +188,9 @@
 						var scroll = this.$refs.scroll
 						//						var wraper = this.$refs.wraper
 						//							初始化scroll的屏幕位置
-						this.appHeight = document.getElementById('header').offsetHeight;
+						this.appHeight = 0;
 						/*初始化数据*/
-						this._getData(() => {
-							//							alert(3)
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						})
+						this._getData(() => {})
 					},
 					methods: {
 //						获取问题图片

@@ -1102,3 +1102,13 @@ li {
   top: constant(safe-area-inset-top);
 }
 
+.mui-input-range input[type='range']::-webkit-slider-thumb
+{
+width: 18px;
+height: 18px;
+border-color: #ccaa42;
+border-radius: 50%;
+background-color: #ccaa42; /修改这里的颜色就可以了！/
+background-clip: padding-box;
+-webkit-appearance: none !important;
+}
