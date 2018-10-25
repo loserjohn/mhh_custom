@@ -443,10 +443,12 @@
 		</div>
 
 		<!--升级遮罩-->
-		<div id="version" class="cm_version " style="display: none;">
-			<img src="images/share.jpg" alt="" width="60" height="60" class="versionLoad" />
-			<div class="versionTxt" id="versionTxt">加载中...</div>
-		</div>
+		<!--<div id="version" class="cm_version flex" style="display: none;">
+			<div class="cm_version_block ">
+				<img src="images/share.jpg" alt="" width="60" height="60" class="versionLoad" />
+				<div class="versionTxt" id="versionTxt">加载中...</div>
+			</div>			
+		</div>-->
 
 		<script src="./js/mui.min.js"></script>
 		<script src="./js/util.js"></script>
@@ -644,7 +646,7 @@
 											img.onload = function() {
 												status += 1;
 												if(status == result.Data.ListInfo.length) {
-													document.getElementById('version').style.display = "none";
+//													document.getElementById('version').style.display = "none";
 													mui(slider).slider({
 														interval: 3000 //自动播放周期
 													});
