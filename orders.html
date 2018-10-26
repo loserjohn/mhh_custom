@@ -128,7 +128,7 @@
 						<li @tap="_changeTab(1)" class="cm_tabTitle " :class="{active:currtab==1?true:false}">待付款</li>
 						<li @tap="_changeTab(2)" class="cm_tabTitle " :class="{active:currtab==2?true:false}">待服务</li>
 						<li @tap="_changeTab(3)" class="cm_tabTitle " :class="{active:currtab==3?true:false}">服务中</li>
-						<li @tap="_changeTab(4)" class="cm_tabTitle " :class="{active:currtab==4?true:false}">待评价</li>
+						<li @tap="_changeTab(4)" class="cm_tabTitle " :class="{active:currtab==4?true:false}">已完成</li>
 						<li @tap="_changeTab(5)" class="cm_tabTitle " :class="{active:currtab==5?true:false}">退款</li>
 					</ul>
 				</div>
@@ -170,12 +170,8 @@
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
 												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
-											<div class=" t_r" v-if="item.ORDER_STATUS_TYPE==4">
+											<div class=" t_r" >
 												{{item.ORDER_STATUS | getStatus}}
-												<!--{{item.ORDER_STATUS_TYPE | getStatus}}-->
-											</div>
-											<div class=" t_r" v-else>
-												{{item.ORDER_STATUS_TYPE | getStatus}}
 											</div>
 										</div>
 										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
@@ -226,7 +222,7 @@
 												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
-												{{item.ORDER_STATUS_TYPE | getStatus}}
+												{{item.ORDER_STATUS | getStatus}}
 											</div>
 										</div>
 										<div class="itemBody flex " @tap="_jumpToDetail(item.ORDER_CODE)">
@@ -273,7 +269,7 @@
 												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
-												{{item.ORDER_STATUS_TYPE | getStatus}}
+												{{item.ORDER_STATUS | getStatus}}
 											</div>
 										</div>
 										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
@@ -317,7 +313,7 @@
 												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
-												{{item.ORDER_STATUS_TYPE | getStatus}}
+												{{item.ORDER_STATUS | getStatus}}
 											</div>
 										</div>
 										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
@@ -362,8 +358,7 @@
 												<div class="f1">技师：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
-												{{item.ORDER_STATUS_TYPE | getStatus}}
-												<!--{{item.ORDER_STATUS_TYPE}}-->
+												{{item.ORDER_STATUS | getStatus}}
 											</div>
 										</div>
 										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
@@ -391,7 +386,7 @@
 											</div>
 										</div>
 										<div class="itemFoot flex cor_g" >
-											<div class="f1 btns" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
+											<div class="f1 btns" v-show="item.ORDER_STATUS == 4" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
 											<div class="f1 btns" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 										</div>
 									</li>
@@ -518,7 +513,7 @@
 						//							console.log( app.mark + plus.storage.getItem('token'))
 					},
 					filters: {
-						getStatus(value) {
+						tabStatus(value){
 							switch(value) {
 								case '0':
 									return '待付款'
@@ -530,10 +525,35 @@
 									return '服务中'
 									break;
 								case '3':
-									return '待评价'
+									return '已完成'
 									break;
 								case '4':
-									return '退款中'
+									return '退款'
+									break;							
+								default:
+									break;
+							}
+						}
+						,
+						getStatus(value) {
+							switch(value) {
+								case '0':
+									return '待付款'
+									break;
+								case '1':
+									return '已支付'
+									break;
+								case '2':
+									return '待服务'
+									break;
+								case '3':
+									return '服务中'
+									break;
+								case '4':
+									return '待评价'
+									break;
+								case '5':
+									return '已完成'
 									break;
 								case '6':
 									return '退款中'
@@ -543,6 +563,9 @@
 									break;
 								case '8':
 									return '退款失败'
+									break;
+								case '9':
+									return '已取消'
 									break;
 								default:
 									break;

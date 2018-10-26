@@ -6,16 +6,17 @@
 	//	owner.mask = document.getElementById('version')
 	//		记录当前的版本信息
 	owner.versionMsg = '';
-	owner.LaunchWebview = plus.webview.getLaunchWebview()
-
+	owner.LaunchWebview = null;
+	owner.update = null;
 	//1是不需要更新
 	//2是整包更新
 	//3是差量包升级
-	owner.update = plus.webview.create('./updating.html', 'updating')
 
 	//***************** 系统更新   ***************************
 	//当前版本信息
 	owner.versionInit = function(callback) {
+		owner.LaunchWebview = plus.webview.getLaunchWebview()
+		owner.update = plus.webview.create('./updating.html', 'updating')
 		plus.runtime.getProperty(plus.runtime.appid, function(inf) {
 			owner.wgtVer = inf.version;
 			var checkUrl = owner.baseUrl + "/api/Update/Check";
@@ -60,7 +61,7 @@
 
 	//系统检测
 	owner.checkSystem = function(callback) {
-
+		
 		if(plus.os.name == 'Android') { // Android 用户    
 			　　　　　　
 			if(owner.versionMsg.Android == 1) {
@@ -113,6 +114,7 @@
 
 	//	下载差量升级包		
 	owner.downWgt = function(key) {
+		
 		// 下载wgt文件
 		var wgtUrl;
 		switch(key) {

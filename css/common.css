@@ -262,6 +262,7 @@ li {
 	/*background: red;*/
 	overflow: hidden;
 	height: 100%;
+	 padding-top: constant(safe-area-inset-top);
 }
 
 .scrollBox {

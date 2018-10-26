@@ -166,7 +166,7 @@
 				<!--服务地址-->
 				<div class="mainMsg container">
 					<div class=" cor_w lh36 fs18">
-						{{detail.ORDER_STATUS_TYPE | getStatus}}
+						{{detail.ORDER_STATUS | getStatus}}
 					</div>
 					<div class="address cor_w  flex">
 						<div>服务地点：</div>
@@ -323,7 +323,7 @@
 
 					},
 					filters: {
-						getStatus(value) {
+						tabStatus(value){
 							switch(value) {
 								case '0':
 									return '待付款'
@@ -335,10 +335,35 @@
 									return '服务中'
 									break;
 								case '3':
-									return '待评价'
+									return '已完成'
 									break;
 								case '4':
-									return '退款中'
+									return '退款'
+									break;							
+								default:
+									break;
+							}
+						}
+						,
+						getStatus(value) {
+							switch(value) {
+								case '0':
+									return '待付款'
+									break;
+								case '1':
+									return '已支付'
+									break;
+								case '2':
+									return '待服务'
+									break;
+								case '3':
+									return '服务中'
+									break;
+								case '4':
+									return '待评价'
+									break;
+								case '5':
+									return '已完成'
 									break;
 								case '6':
 									return '退款中'
@@ -349,10 +374,12 @@
 								case '8':
 									return '退款失败'
 									break;
+								case '9':
+									return '已取消'
+									break;
 								default:
 									break;
 							}
-
 						},
 						payWay(value) {
 							switch(value) {

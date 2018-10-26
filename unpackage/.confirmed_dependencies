@@ -11,7 +11,8 @@
       "html/address/where.html",
       "html/production/productList.html",
       "html/production/productBuy.html",
-      "html/production/search.html"
+      "html/production/search.html",
+      "updating.html"
     ]
   },
   "mine.html": {

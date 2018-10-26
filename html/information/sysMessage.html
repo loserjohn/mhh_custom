@@ -39,15 +39,6 @@
 
 	<body>
 		<div id="app">
-			<header class="fixed  header flex" id="header" style="background:#ccaa42">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-				<div class=" f1  cor_w t_c page_title">
-					系统消息
-				</div>
-				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-			</header>
 
 			<!--卡片-->
 			<div class="cards scrollBox " ref="scroll" :style="{top:scrollTop,bottom:0}" id="scroll">
@@ -105,9 +96,8 @@
 					mounted: function() {
 
 						var _this = this
-						app.initHeader();
 						var scroll = this.$refs.scroll;
-						this.scrollTop = document.getElementById('header').offsetHeight + 'px'
+						this.scrollTop = 0 + 'px'
 
 						this.$nextTick(function() {
 							//							初始化scrool
@@ -138,8 +128,7 @@
 						})
 						/*首次加载数据*/
 						this._getData(() => {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
+					
 						})
 
 					},
