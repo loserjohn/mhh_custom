@@ -192,7 +192,7 @@
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
-													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) ">{{list}}</div>
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
 												</div>
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
@@ -204,7 +204,7 @@
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_toPay(item.ORDER_CODE)">去付款</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_NTnavigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==3||item.ORDER_STATUS_TYPE==1" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==1" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==3" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
 										</div>
@@ -241,7 +241,7 @@
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
-													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) ">{{list}}</div>
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
 												</div>
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
@@ -288,7 +288,7 @@
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
-													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) ">{{list}}</div>
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
 												</div>
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
@@ -332,7 +332,7 @@
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
-													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) ">{{list}}</div>
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
 												</div>
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
@@ -377,7 +377,7 @@
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
-													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) ">{{list}}</div>
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
 												</div>
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
@@ -387,7 +387,7 @@
 										</div>
 										<div class="itemFoot flex cor_g" >
 											<div class="f1 btns" v-show="item.ORDER_STATUS == 4" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
-											<div class="f1 btns" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[4].norest?'没有数据咯':''}}</li>
@@ -422,7 +422,7 @@
 												</div>
 												
 												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
-													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) ">{{list}}</div>
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
 												</div>
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
@@ -448,7 +448,7 @@
 					<div class=" t_c noLoginTxt ">
 						<img src="images/noLogin.png" class="noLoginPic" />
 						<div>--您还没有登陆--</div>
-						<div class="toLogin" @tap="_navigateTo('./html/login.html','login')">前往登陆</div>
+						<!--<div class="toLogin" @tap="_NTnavigateTo('./html/login.html','login')">前往登陆</div>-->
 						<div class="toLogin" @tap="_refresh">刷新</div>
 					</div>
 				</div>
@@ -1000,9 +1000,7 @@
 			});
 
 			function refresh() {
-//				mui.later(function(){
-					APP._refreshData()
-//				},500)			
+				APP._refreshData()
 			}
 		</script>
 	</body>

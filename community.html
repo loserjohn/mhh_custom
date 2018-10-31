@@ -294,12 +294,13 @@
 			mui.init({
 				swipeBack: false,
 			});
+			var APP
 			mui.plusReady(function() {
 
 				var self = plus.webview.currentWebview()
 				//				app.WXinit(CryptoJS)
 				//自定义监听图标点击事件
-				var APP = new Vue({
+				APP = new Vue({
 					el: '#app',
 					data: {
 						appHeight: '',
@@ -362,19 +363,7 @@
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
 								//								console.log(1)
-								plus.nativeUI.showWaiting()
-								_this.index = 1
-								_this.newList = []
-								_this.more = '加载更多'
-								_this._initData((b) => {
-									if(b){
-										
-									}else{
-										_this.scroll.finishPullUp()
-									}
-								plus.nativeUI.closeWaiting();
-								_this.scroll.finishPullDown();
-								})
+								_this._refresh()
 							})
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
@@ -460,9 +449,23 @@
 						},
 						/*刷新当前页面*/
 						_refresh() {
-							let isLogin = plus.storage.getItem('isLogin');
-							this.islogin = true;
+							var _this = this
+							plus.nativeUI.showWaiting()
+								_this.index = 1
+								_this.newList = []
+								_this.more = '加载更多'
+								_this._initData((b) => {
+									if(b){
+										
+									}else{
+										_this.scroll.finishPullUp()
+									}
+								plus.nativeUI.closeWaiting();
+								_this.scroll.finishPullDown();
+								})
+														
 						},
+						
 						/*跳转至帖子的详情页*/
 						_toDetail(item) {
 							mui.openWindow({
@@ -505,12 +508,15 @@
 							})
 						},
 						/*回到顶部*/
-							_backTop(){
-								this.scroll.scrollTo(0,0,300)
-							}
+						_backTop(){
+							this.scroll.scrollTo(0,0,300)
+						}
 					}
 				})
 			});
+			function refresh(){
+				APP._refresh()
+			}
 		</script>
 	</body>
 

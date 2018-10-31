@@ -9,6 +9,8 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+		
 		<style>
 			/*购买项目*/
 			
@@ -168,6 +170,20 @@
 			</header>-->
 
 			<!--订单内容-->
+			<!--等待页面-->
+			<div class="loader" style="top:0" v-if="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 			<div ref='scroll' class="scrollBox" :style="{top:appHeight+'px'}">
 				<div class="clearfix scrollContent">
 					<!--信息-->
@@ -349,7 +365,7 @@
 						modalShow: false,
 						chooseType: 1,
 						addressShow: true,
-
+					loader:true,
 						masterCode: '',
 						/*手艺人code*/
 
@@ -460,6 +476,7 @@
 							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
 								type: 'get', //HTTP请求类型
 								success: function(result) {
+									_this.loader = false;
 									if(result.Success) {
 										_this.addressList = result.Data.ListInfo
 										

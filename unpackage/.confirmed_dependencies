@@ -32,13 +32,16 @@
   "html/login.html": {
     "refer": [
       "html/bound.html",
-      "html/registe.html"
+      "html/registe.html",
+      "html/forgetPass.html",
+      "html/yzmLogin.html"
     ]
   },
   "html/address/where.html": {
     "refer": [
       "html/address/location.html",
-      "html/address/address.html"
+      "html/address/address.html",
+      "html/address/addAddress.html"
     ]
   },
   "html/production/productList.html": {
@@ -61,7 +64,8 @@
   },
   "html/information/information.html": {
     "refer": [
-      "html/information/chat.html"
+      "html/information/chat.html",
+      "html/information/sysMessage.html"
     ]
   },
   "html/production/productBuy.html": {
@@ -92,7 +96,8 @@
     "refer": [
       "html/technician/technician.html",
       "html/order/orderDetail.html",
-      "html/order/refund.html"
+      "html/order/refund.html",
+      "html/login.html"
     ]
   },
   "html/cashPay.html": {

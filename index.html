@@ -706,13 +706,17 @@
 							 * 根据判断view控件点击位置判断切换的tab
 							 */
 							nview.addEventListener('click', function(e) {
+//								console.log(plus.webview.currentWebview().id)
 								var clientX = e.clientX;
 								if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
 									currIndex = 0;
+									
 								} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.5)) {
 									currIndex = 1;
+									plus.webview.getWebviewById('community').evalJS('refresh()')
 								} else if(clientX > parseInt(pageW * 0.5) && clientX <= parseInt(pageW * 0.75)) {
 									currIndex = 2;
+									plus.webview.getWebviewById('orders').evalJS('refresh()')
 								} else {
 									currIndex = 3;
 								}
@@ -894,7 +898,7 @@
 							}
 							
 							if(!plus.storage.getItem('pos')){
-								plus.storage.toast('位置获取失败,请刷新或者尝试手动获取')
+								plus.nativeUI.toast('位置获取失败,请刷新或者尝试手动获取')
 								return;
 							}
 							

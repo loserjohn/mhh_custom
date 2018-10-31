@@ -265,6 +265,8 @@
 			var scroll //聊天内容scroll  
 
 			var TargetChat = {}; //当前聊天的对象
+			
+			var connecting =  false
 
 			mui.plusReady(function() {
 
@@ -476,12 +478,15 @@
 						switch(status) {
 							case RongIMLib.ConnectionStatus.CONNECTED:
 								console.log('链接成功');
+								plus.nativeUI.closeWaiting();
+								connecting = true
 								break;
 							case RongIMLib.ConnectionStatus.CONNECTING:
 								console.log('正在链接');
 								break;
 							case RongIMLib.ConnectionStatus.DISCONNECTED:
 								console.log('断开连接');
+								connecting = false
 								reConnect()
 								break;
 							case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:
@@ -492,6 +497,7 @@
 								break;
 							case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:
 								console.log('网络不可用');
+								connecting = false
 								reConnect()
 								break;
 						}
@@ -568,18 +574,29 @@
 						}
 					}
 				});
-
+				
+				document.addEventListener("resume", function(){
+//					alert(1)
+					if(connecting){
+						return;
+					}else{
+						connectIM()
+					}
+				}, false);
 				//				断线重连
 				var reConnect = function() {
+					if(connecting){
+						return;
+					}
 					var callback = {
 						onSuccess: function(userId) {
-							console.log("Reconnect successfully." + userId);
+							plus.nativeUI.closeWaiting();
+							connecting = true
 						},
 						onTokenIncorrect: function() {
 							console.log('token无效');
 						},
 						onError: function(errorCode) {
-							console.log(errorcode);
 						}
 					};
 					var config = {
@@ -596,14 +613,18 @@
 				}
 				//		启用页面事件绑定
 				eventInit();
-				connectIM()
+				connectIM();
+//				reConnect()
 			}
 			//	链接服务器
 			function connectIM() {
+				plus.nativeUI.showWaiting('链接中')
 				friends = []
 				RongIMClient.connect(IMtoken, {
 					onSuccess: function(userId) {
+	
 						ImStaus = true
+						connecting = true
 						plus.nativeUI.closeWaiting();
 					},
 					onTokenIncorrect: function() {

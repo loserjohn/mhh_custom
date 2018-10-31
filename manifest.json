@@ -3,7 +3,7 @@
 	"id": "mhhCustom",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "马嘿嘿",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.1.9",/*应用版本名称*/
+		"name": "1.2.1",/*应用版本名称*/
 		"code": "83"
 	},
 	"description": "",/*应用描述信息*/
@@ -305,7 +305,9 @@
 				"resources": [],
 				"refer": [
 					"html/bound.html",
-					"html/registe.html"
+					"html/registe.html",
+					"html/forgetPass.html",
+					"html/yzmLogin.html"
 				],
 				"priority": 0
 			},
@@ -313,7 +315,8 @@
 				"resources": [],
 				"refer": [
 					"html/address/location.html",
-					"html/address/address.html"
+					"html/address/address.html",
+					"html/address/addAddress.html"
 				],
 				"priority": 0
 			},
@@ -344,7 +347,8 @@
 			"html/information/information.html": {
 				"resources": [],
 				"refer": [
-					"html/information/chat.html"
+					"html/information/chat.html",
+					"html/information/sysMessage.html"
 				],
 				"priority": 0
 			},
@@ -385,7 +389,8 @@
 				"refer": [
 					"html/technician/technician.html",
 					"html/order/orderDetail.html",
-					"html/order/refund.html"
+					"html/order/refund.html",
+					"html/login.html"
 				],
 				"priority": 0
 			},
@@ -436,7 +441,6 @@
 		},
 		"idle": {
 			"resources": [
-				"html/forgetPass.html",
 				"css/animate.css",
 				"images/community/community1.png",
 				"images/no1.png",
@@ -473,13 +477,11 @@
 				"css/im.css",
 				"images/faces/ee_33.png",
 				"images/faces/ee_22.png",
-				"html/address/addAddress.html",
 				"images/sh.png",
 				"images/faces/ee_15.png",
 				"images/hint.png",
 				"images/btn_bg.png",
 				"images/faces/ee_4.png",
-				"html/yzmLogin.html",
 				"images/btn_bg.jpg",
 				"images/no2.png",
 				"css/common.css",

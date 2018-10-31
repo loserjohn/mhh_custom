@@ -676,10 +676,10 @@
 
 			<!--底部菜单-->
 			<div class="cm_bottomBtn flex fixed">
-				<div class="f1" @tap="_phone">
+				<!--<div class="f1" @tap="_phone">
 					<i class="iconfont icon-phone fs20"></i>
 					<p>致电技师</p>
-				</div>
+				</div>-->
 				<div class="f1" @tap="_toChat">
 					<i class="iconfont icon-pinglun fs20"></i>
 					<p>联系她</p>
@@ -845,26 +845,7 @@
 							let isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
-								mui.openWindow({
-									url: '../login.html',
-									id: 'login',
-									styles: {
-										top: '0px', //新页面顶部位置
-										bottom: '0px', //新页面底部位置
-										scrollIndicator: "none",
-										plusrequire: 'ahead'
-									},
-									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-									show: {
-										autoShow: false, //页面loaded事件发生后自动显示，默认为true
-										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-									},
-									extras: {},
-									waiting: {
-										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
-									}
-								})
+								this._navigateTitle('../login.html', 'login') 
 								return
 							}
 							let fdId = this.shopMsg.RY_ID;
@@ -885,28 +866,11 @@
 							let isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
-								mui.openWindow({
-									url: '../login.html',
-									id: 'login',
-									styles: {
-										top: '0px', //新页面顶部位置
-										bottom: '0px', //新页面底部位置
-										scrollIndicator: "none",
-										plusrequire: 'ahead'
-									},
-									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-									show: {
-										autoShow: false, //页面loaded事件发生后自动显示，默认为true
-										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-									},
-									extras: {},
-									waiting: {
-										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
-									}
-								})
+								
+								this._navigateTitle('../login.html', 'login') 
+								
 								return
-							} 
+							}
 
 							/*创建项目订单*/
 							plus.nativeUI.showWaiting()
@@ -1046,25 +1010,7 @@
 								/*没有登陆状态*/
 								plus.nativeUI.confirm('请您先登陆', (event) => {
 									if(event.index != 0) return;
-									mui.openWindow({
-										url: '../login.html',
-										id: "login",
-										styles: {
-											top: '0px', //新页面顶部位置
-											bottom: '0px', //新页面底部位置
-											scrollIndicator: "none",
-											plusrequire: 'ahead'
-										},
-										createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-										show: {
-											autoShow: false, //页面loaded事件发生后自动显示，默认为true
-											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-										},
-										waiting: {
-											autoShow: true, //自动显示等待框，默认为true
-											title: '正在加载...', //等待对话框上显示的提示内容
-										}
-									})
+									this._navigateTitle('../login.html', 'login') 
 								}, {
 									title: '马嘿嘿提醒您'
 								}, ['去登陆', '取消'])

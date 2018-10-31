@@ -58,6 +58,20 @@
 	</head>
 
 	<body>
+		<!--等待页面-->
+			<div class="loader" style="top:0,display:block" id="loader" >
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>	
 		<div id="app">
 			<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span></button>
@@ -68,7 +82,7 @@
 					当前位置				
 				</button>
 			</header>
-
+			
 			<!--搜索地址-->
 			<div class="address panelPad " id="content">
 				<div class="addresSearch f1 flex">
@@ -116,7 +130,7 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			})
 			var APP
 			mui.plusReady(function() {
@@ -127,8 +141,10 @@
 						curPos:'',/*当前位置*/
 						loading:false,/*加载中*/
 						isLogin:false,
+						scrollTop:'',
 						/*常用地址列表*/
-						addressList:[]
+						addressList:[],
+						loader:true
 					},
 					created: function() {
 						//							alert(1)
@@ -138,7 +154,7 @@
 						
 						var _this = this
 						var scroll = this.$refs.scroll
-						this.scrollTop = document.getElementById('header').offsetHeight;
+						this.scrollTop = document.getElementById('header').offsetHeight + 'px';
 					
 						
 						/*首次加载获取当前位置*/
@@ -264,6 +280,7 @@
 							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
 								type: 'get', //HTTP请求类型
 								success: function(result) {
+									document.getElementById('loader').style.display = 'none'
 									if(result.Success) {
 										_this.addressList = result.Data.ListInfo
 										mui.later(() => {
