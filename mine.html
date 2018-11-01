@@ -165,7 +165,7 @@
 	<body>
 		<div id="app">
 			<!--头部-->
-			<header class="fixed container  header flex " id="header">
+			<header class="fixed container  header flex " :style="{background:'rgba(21,21,21,'+opacity+')'}"  id="header">
 				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w" style="width: 66px;"></button>
 				<div class=" f1  cor_w t_c page_title">
 					我的
@@ -313,25 +313,7 @@
 							</li>-->
 						</ul>
 					</div>
-					<!--历史订单-->
-					<div class="block4 panel ">
-						<div class="cm_title t_c">
-							-- 历史订单 --
-						</div>
-						<div class="activityBox" ref="wrapper">
-							<ul class="reset flex" :style="{width:110*(hisList.length)+'px'}">
-								<li class="activityItem" v-for="item in hisList" @tap="_toDetail('./html/production/productBuy.html','productBuy.html',{'proKey':item.PROJECT_CODE})">
-									<img :src="item.PROJECT_IMG1" alt="" class="contain" />
-									<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
-									<article class="flex">
-										<p class="prize  cor_r fs18 lh28">￥{{item.ORDER_PAY_AMOUNT}}</p>
-										<p class="delec_prize cor_g f1 t_r lh28">￥{{item.ORDER_TOTAL_AMOUNT}}</p>
-									</article>
-								</li>
-							</ul>
-							<p class="t_c" v-show="hisList.length==0">--您还没有完成过订单哦--</p>
-						</div>
-					</div>
+					
 					<!--豆腐块-->
 					<div v-for="item in blockData" class="reset " style="background: #fff;">
 						<div class=" flex " v-if="item.type==1">
@@ -384,7 +366,26 @@
 						</div>
 
 					</div>
-
+					
+					<!--历史订单-->
+					<div class="block4 panel ">
+						<div class="cm_title t_c">
+							-- 历史订单 --
+						</div>
+						<div class="activityBox" ref="wrapper">
+							<ul class="reset flex" :style="{width:110*(hisList.length)+'px'}">
+								<li class="activityItem" v-for="item in hisList" @tap="_toDetail('./html/production/productBuy.html','productBuy.html',{'proKey':item.PROJECT_CODE})">
+									<img :src="item.PROJECT_IMG1" alt="" class="contain" />
+									<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
+									<article class="flex">
+										<p class="prize  cor_r fs18 lh28">￥{{item.ORDER_PAY_AMOUNT}}</p>
+										<p class="delec_prize cor_g f1 t_r lh28">￥{{item.ORDER_TOTAL_AMOUNT}}</p>
+									</article>
+								</li>
+							</ul>
+							<p class="t_c" v-show="hisList.length==0">--您还没有完成过订单哦--</p>
+						</div>
+					</div>
 					<!--提示语-->
 					<div class="cm_hint flex">
 						<div class="f1"><img src="./images/hint.png" alt="" /></div>
@@ -456,9 +457,10 @@
 
 						/*初始化主页面的高度*/
 						this.appHeight = plus.display.resolutionHeight
-						this._initBlock() //初始化豆腐块
+						
 						/*初始化下拉scroll*/
 						this._initScroll()
+						this._initBlock() //初始化豆腐块
 
 					},
 					methods: {
@@ -480,10 +482,10 @@
 									plus.nativeUI.closeWaiting()
 									if(result.Success) {
 										_this.blockData = result.Data.ListInfo;
-										mui.later(() => {
+										mui.later(()=>{
 											_this.scroll.refresh()
-										}, 2000)
-
+										},1000)
+										
 									} else {
 										/*验证失败*/
 									}
@@ -519,22 +521,29 @@
 								};
 								/*下拉刷新*/
 								_this.scroll.on('pullingDown', function(e) {
-									//									if(!_this.islogin) return;
-
 									plus.nativeUI.showWaiting()
+//									alert(1)
 									_this._initData(() => {
-//										mui.later(() => {
-											plus.nativeUI.closeWaiting();
-											
-//										}, 2000)
+
+										plus.nativeUI.closeWaiting();
 										_this.scroll.finishPullDown();
-										mui.later(()=>{
-											_this.scroll.refresh()
-										},2000)
+										_this.scroll.refresh()
 
 									})
 								})
+								_this.scroll.on('scroll', (e) => {
+									let y = e.y;
+									if(y > 0) {
+										_this.opacity = 0;
+										//										
+									} else if(y < -200) {
+										_this.opacity = 1
+									} else {
+										let m = Math.abs(y) / 200
+										_this.opacity = m
+									}
 
+								})
 								/*推荐项目横向滑动*/
 								if(!_this.wrapper) {
 									//	初始化标题栏
@@ -807,7 +816,7 @@
 			function autoLogin() {
 				/*执行自动登陆状态判断*/
 				app.autoLogin((s) => {
-					plus.navigator.closeSplashscreen();
+					
 					if(s) {
 						plus.webview.getLaunchWebview().evalJS('closeVersion()');
 						APP._initData()

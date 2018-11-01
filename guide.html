@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>引导页</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./css/iconfont.css" />
+		<style>
+			#slider {
+				width: 100vw;
+				height: 100vh;
+				background: #fff;
+				overflow: hidden;
+			}
+			
+			.guideBanner {
+				width: 100vw;
+				height: 100vh;
+				position: relative;
+			}
+			.start{
+				border:1px solid #fff;
+				border-radius: 3px;
+				line-height: 44px;
+				text-align: center;
+				color: #fff;
+				position: absolute;
+				top: 30px;
+				margin: 0 auto;
+				width: 140px;
+				left: 50%;
+				margin-left: -70px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<div id="slider" class="mui-slider mui-fullscreen" style="">
+				<div class="mui-slider-group" class="guideBanner">
+					<!-- 第一张 -->
+					<div class="mui-slider-item" class="guideBanner">
+						<img src="images/guide/guide1.png" class="cover" />
+					</div>
+					<!-- 第二张 -->
+					<div class="mui-slider-item" class="guideBanner">
+						<img src="images/guide/guide2.png" class="cover" />
+					</div>
+					<!-- 第三张 -->
+					<div class="mui-slider-item" class="guideBanner">
+						<img src="images/guide/guide3.png" class="cover" />
+					</div>
+					<!-- 第四张 -->
+					<div class="mui-slider-item" class="guideBanner">
+						<img src="images/guide/guide4.png" class="cover" />
+						<div class="start">立即进入</div>
+					</div>
+				</div>
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
+		</div>
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/app.js"></script>
+		<script src="./js/vue.js"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false
+			});
+			
+			/*主屏高度*/
+			mui.plusReady(function() {
+				if(mui.os.ios) {
+					plus.navigator.setFullscreen(true);
+				}
+				plus.navigator.closeSplashscreen();
+				
+				mui('#slider').slider({
+					interval: 3000 //自动播放周期
+				});
+				
+				mui('#app').on('tap','#slider',function(){
+					plus.navigator.setFullscreen(false);
+					plus.storage.setItem('isFirst','1')
+					mui.back()
+				})
+				
+//				var APP = new Vue({
+//					el: '#app',
+//					data: {
+//
+//					},
+//					created: function() {},
+//					mounted: function() {
+//						//图片切换时，触发动画
+//						//						document.querySelector('.mui-slider').addEventListener('slide', function(event) {
+//						//						 	//注意slideNumber是从0开始的；
+//						//						 	var index = event.detail.slideNumber+1;
+//						//						 	if(index==2||index==3){
+//						//						 		var item = document.getElementById("tips-"+index);
+//						//						 		if(item.classList.contains("mui-hidden")){
+//						//						 			item.classList.remove("mui-hidden");
+//						//						 			item.classList.add("guide-show");
+//						//						 		}
+//						//						 	}
+//						//						});
+//					},
+//					methods: {
+//
+//					}
+//				})
+			});
+		</script>
+	</body>
+
+</html>

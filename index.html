@@ -68,7 +68,6 @@
 				width: 100%;
 				justify-content: space-around;
 				flex-wrap: wrap;
-				
 			}
 			
 			.menusItem {
@@ -84,12 +83,11 @@
 				width: 100%;
 				height: 100%;
 				display: block;
-
 			}
 			
 			.menusItem a p {
 				font-size: 12px;
-				color:#fff
+				color: #fff
 			}
 			/*红包*/
 			
@@ -117,13 +115,14 @@
 				background: #fff
 			}
 			/*活动*/
-			.block3{
+			
+			.block3 {
 				margin-top: 6px;
 			}
+			
 			.block3>img {
 				width: 100%;
 				height: auto;
-				
 			}
 			
 			.activityBox {
@@ -314,19 +313,19 @@
 
 						<!--分类按钮-->
 						<div class="menus " :style="{backgroundImage:menusBackgroundPic}">
-							<ul class="flex" >
+							<ul class="flex">
 								<li class="menusItem" v-for="item in menusList" @tap="_menuTo(item.type,item.text)">
 									<a href="####">
 										<img :src="item.backgroundPic" width="50" />
 										<p>{{item.text}}</p>
 									</a>
 								</li>
-								
+
 							</ul>
 						</div>
 
 						<!--导航栏豆腐块-->
-						<div v-for="item in blockData" class="block2" >
+						<div v-for="item in blockData" class="block2">
 							<div class=" flex " v-if="item.type==1">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
 									<img :src="item.listData[0].img" alt="" class="contain " />
@@ -392,12 +391,12 @@
 											<p class="delec_prize  fs12 cor_g f1 t_r lh28">￥{{list.PROJECT_PRICE}}</p>
 										</article>
 									</li>
-								
-									<li class="activityItem "  @tap="_menuTo('1',item.TYPE_NAME)">
+
+									<li class="activityItem " @tap="_menuTo('1',item.TYPE_NAME)">
 										<div class="more">
 											<span class="mui-icon mui-icon-plusempty lh36"></span>
 											<div class="cor_g fs12">查看<br>更多</div>
-										</div>										
+										</div>
 									</li>
 								</ul>
 							</div>
@@ -491,10 +490,10 @@
 						prevPic: '',
 						nextPic: '',
 
-						blockData: [],//豆腐块设计
-						
-						menusBackgroundPic:'',//menu整块的背景图片
-						menusList:[]
+						blockData: [], //豆腐块设计
+
+						menusBackgroundPic: '', //menu整块的背景图片
+						menusList: []
 					},
 					created: function() {
 						app.initHeader();
@@ -522,11 +521,34 @@
 						this._initMenus() /*初始化导航栏*/
 
 						systemOS.versionInit((t) => {
-							// alert(t)
 							if(t) {
+								let isFirst = plus.storage.getItem('isFirst')
+
+								if(!isFirst || isFirst == '0') {
+									//									第一次登陆  打开引导页
+									//									mui.openWindow({
+									//										id: 'guide',
+									//										url: './guide.html',
+									//										styles: {
+									//											popGesture: "none"
+									//										},
+									//										show: {
+									//											autoShow: true,
+									//											aniShow: 'none'
+									//										},
+									//										waiting: {
+									//											autoShow: false
+									//										}
+									//									});
+
+								} else {
+
+								}
+
 								//没有更新版本
 								mui.later(function() {
 									plus.webview.getWebviewById('mine').evalJS('autoLogin()')
+									plus.navigator.closeSplashscreen();
 								}, 500)
 
 							}
@@ -556,11 +578,11 @@
 									plus.nativeUI.closeWaiting()
 									if(result.Success) {
 										_this.blockData = result.Data.ListInfo
-										
-										_this.menusBackgroundPic  = 'url(' + result.Data.homeFast.menusBackgroundPic+')'
-										
-										_this.menusList  = result.Data.homeFast.menusList
-										
+
+										_this.menusBackgroundPic = 'url(' + result.Data.homeFast.menusBackgroundPic + ')'
+
+										_this.menusList = result.Data.homeFast.menusList
+
 									} else {
 										/*验证失败*/
 									}
@@ -646,7 +668,7 @@
 											img.onload = function() {
 												status += 1;
 												if(status == result.Data.ListInfo.length) {
-//													document.getElementById('version').style.display = "none";
+													//													document.getElementById('version').style.display = "none";
 													mui(slider).slider({
 														interval: 3000 //自动播放周期
 													});
@@ -706,11 +728,11 @@
 							 * 根据判断view控件点击位置判断切换的tab
 							 */
 							nview.addEventListener('click', function(e) {
-//								console.log(plus.webview.currentWebview().id)
+								//								console.log(plus.webview.currentWebview().id)
 								var clientX = e.clientX;
 								if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
 									currIndex = 0;
-									
+
 								} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.5)) {
 									currIndex = 1;
 									plus.webview.getWebviewById('community').evalJS('refresh()')
@@ -779,19 +801,19 @@
 								/*下拉刷新数据*/
 								_this.scroll.on('pullingDown', function(e) {
 									plus.nativeUI.showWaiting()
-//									_this._initRecommont(() => {
-////										mui.later(() => {
-//											plus.nativeUI.closeWaiting()
-////										}, 1000)
-//									});
+									//									_this._initRecommont(() => {
+									////										mui.later(() => {
+									//											plus.nativeUI.closeWaiting()
+									////										}, 1000)
+									//									});
 									_this._initPos(() => {
 										/*位置信息获取之后初始化最新上架*/
-										_this._initNew(()=>{
+										_this._initNew(() => {
 											plus.nativeUI.closeWaiting()
 											_this.scroll.finishPullDown()
 										})
 									})
-									
+
 								})
 
 							})
@@ -810,7 +832,7 @@
 									/*登陆成功*/
 									if(result.Success) {
 										_this.recommend = result.Data.ListInfo
-//										console.log(_this.recommend.length)
+										//										console.log(_this.recommend.length)
 										if(callback) callback()
 										/*推荐项目横向滑动*/
 										mui.later(() => {
@@ -872,10 +894,10 @@
 							})
 						},
 						/*菜单页面*/
-						_menuTo(type,extras) {
+						_menuTo(type, extras) {
 							var r = this._checkPermissionPos()
-//							跳转菜单页面必须要有定位信息
-							if(!r){
+							//							跳转菜单页面必须要有定位信息
+							if(!r) {
 								if(mui.os.android) {
 									var main = plus.android.runtimeMainActivity(); //获取activity
 									var Intent = plus.android.importClass('android.content.Intent');
@@ -893,16 +915,18 @@
 									plus.ios.deleteObject(setting);
 									plus.ios.deleteObject(application);
 								}
-								
+
 								return;
 							}
-							
-							if(!plus.storage.getItem('pos')){
+
+							if(!plus.storage.getItem('pos')) {
 								plus.nativeUI.toast('位置获取失败,请刷新或者尝试手动获取')
 								return;
 							}
-							
-							if(type!='1'){return;}
+
+							if(type != '1') {
+								return;
+							}
 							mui.openWindow({
 								url: './html/production/productList.html',
 								id: 'productList',
@@ -948,33 +972,33 @@
 								}
 							})
 						},
-//						带有导航栏的跳状
+						//						带有导航栏的跳状
 						_NTnavigateTo(dstUrl, dstId, extras) {
-								mui.openWindow({
-											url: dstUrl,
-											id: dstId,
-											styles: {
-												top: '0px', //新页面顶部位置
-												bottom: '0px', //新页面底部位置
-												scrollIndicator: "none",
-												plusrequire: 'ahead',
-												// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-												titleNView: { // 窗口的标题栏控件
-													autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-													titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-													titleSize: "14px", // 字体大小,默认17px
-													backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-													progress: { // 标题栏控件的进度条样式
-														color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-														height: "2px" // 进度条高度,默认值为"2px"         
-													},
-													splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-														color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-														height: "1px" // 分割线高度,默认值为"2px"
-													}
-												}
-											},
-											createNew: false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+							mui.openWindow({
+								url: dstUrl,
+								id: dstId,
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead',
+									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+									titleNView: { // 窗口的标题栏控件
+										autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+										titleSize: "14px", // 字体大小,默认17px
+										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+										progress: { // 标题栏控件的进度条样式
+											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+											height: "2px" // 进度条高度,默认值为"2px"         
+										},
+										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+											height: "1px" // 分割线高度,默认值为"2px"
+										}
+									}
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 								show: {
 									autoShow: true, //页面loaded事件发生后自动显示，默认为true
 									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
@@ -1063,7 +1087,7 @@
 			}
 			//			外链的回掉跳转 作品详情页
 			function _navigateToPro(code) {
-//				console.log(code)
+				//				console.log(code)
 				mui.openWindow({
 					url: './html/production/productBuy.html',
 					id: 'productBuy',
@@ -1079,7 +1103,7 @@
 						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 					},
 					extras: {
-						proKey:code
+						proKey: code
 					},
 					waiting: {
 						autoShow: true, //自动显示等待框，默认为true
