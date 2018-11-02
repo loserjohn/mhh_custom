@@ -741,6 +741,7 @@
 									plus.webview.getWebviewById('orders').evalJS('refresh()')
 								} else {
 									currIndex = 3;
+									plus.webview.getWebviewById('orders').evalJS('refresh(true)')
 								}
 								// 匹配对应tab窗口	
 								if(currIndex > 0) {
@@ -801,11 +802,6 @@
 								/*下拉刷新数据*/
 								_this.scroll.on('pullingDown', function(e) {
 									plus.nativeUI.showWaiting()
-									//									_this._initRecommont(() => {
-									////										mui.later(() => {
-									//											plus.nativeUI.closeWaiting()
-									////										}, 1000)
-									//									});
 									_this._initPos(() => {
 										/*位置信息获取之后初始化最新上架*/
 										_this._initNew(() => {
@@ -825,6 +821,9 @@
 							mui.ajax(app.baseUrl + '/api/Recommend/GetRecommendTypes', {
 								type: 'get', //HTTP请求类型
 								timeout: 5000, //超时时间设置为10秒；
+//								data:{
+//									pageSize:8
+//								},
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
@@ -837,7 +836,6 @@
 										/*推荐项目横向滑动*/
 										mui.later(() => {
 											_this.recommend.forEach((item, index) => {
-												//											console.log(1)
 												mui('#wrapper' + index).scroll({
 													scrollY: false, //是否竖向滚动
 													scrollX: true, //是否横向滚动
