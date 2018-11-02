@@ -392,7 +392,7 @@
 
 							switch(s) {
 								case 1:
-									plus.nativeUI.showWaiting('支付中。。。')
+									plus.nativeUI.showWaiting('支付中...')
 									/*余额支付*/
 									let data = {
 										ORDER_CODE: _this.orderCode,
@@ -422,7 +422,7 @@
 									break;
 								case 2:
 									if(!_this.buyCarCode) return;
-									plus.nativeUI.showWaiting('支付中。。。')
+									plus.nativeUI.showWaiting('支付中...')
 									/*充值卡支付*/
 									let data2 = {
 										ORDER_CODE: _this.orderCode,
@@ -486,7 +486,7 @@
 //							console.log(JSON.stringify(this.orderCode) )
 							var xhr = new XMLHttpRequest();
 							//							var amount = inputMoney.value;
-							plus.nativeUI.showWaiting('支付中。。。')
+							plus.nativeUI.showWaiting('支付中...')
 							xhr.onreadystatechange = function() {
 								switch(xhr.readyState) {
 									case 4:

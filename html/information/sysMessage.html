@@ -22,10 +22,6 @@
 				margin-right: 14px;
 			}
 			
-			/*.cards_ul{
-				padding: 15px;
-				background: #fff;
-			}*/
 			.panel2{
 				width: 100%;
 				background: #fff;
@@ -110,6 +106,10 @@
 									pullUpLoad: {
 										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
 									},
+									pullDownRefresh: {
+										threshold: 50,
+										stop: 0
+									}
 								})
 							} else {
 								_this.scroll.refresh();
@@ -124,6 +124,17 @@
 									}
 								})
 							})
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getData((b) => {
+									_this.scroll.finishPullDown()
+									if(b) {
+//										没有数据了
+									} else {
+										_this.scroll.finishPullUp()
+									}
+								})
+							});
 
 						})
 						/*首次加载数据*/

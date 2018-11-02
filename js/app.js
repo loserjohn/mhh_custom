@@ -974,9 +974,29 @@
 				break;
 			case 'P':
 				//项目
-				this._NWnavigateTo('./html/production/productBuy.html', 'productBuy', {
-					proKey: code
+				mui.openWindow({
+					url: './html/production/productBuy.html',
+					id: 'productBuy',
+					styles: {
+						top: '0px', //新页面顶部位置
+						bottom: '0px', //新页面底部位置
+						scrollIndicator: "none",
+						plusrequire: 'ahead'
+					},
+					createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+					show: {
+						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					},
+					extras: {
+						proKey: code
+					},
+					waiting: {
+						autoShow: true, //自动显示等待框，默认为true
+						title: '正在加载...', //等待对话框上显示的提示内容
+					}
 				})
+
 				break;
 			default:
 				break;

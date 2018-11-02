@@ -1014,26 +1014,26 @@
 							plus.geolocation.getCurrentPosition((position) => {
 								if(!position || !position.address || !position.address.city) return;
 								var obj = position.address
-
+								console.log(JSON.stringify(position))
 								_this.co = {
 									longitude: position.coords.longitude,
 									/*经度*/
 									latitude: position.coords.latitude,
 									/*纬度*/
-									address: obj.city + position.addresses
+									address: obj.city + position.address.street
 								}
-
+				
 								plus.storage.setItem('pos', JSON.stringify(_this.co))
 
 								if(callback) callback();
 
-								var add = obj.city + position.addresses
+								var add = obj.city + position.address.street
 								_this.curPos = add;
 							}, () => {
 								plus.nativeUI.toast('位置获取失败')
 								if(callback) callback();
 							}, {
-								enableHighAccuracy: true,
+								enableHighAccuracy: false,
 								timeout: () => {
 									plus.nativeUI.toast('信号不佳，位置获取失败')
 								}

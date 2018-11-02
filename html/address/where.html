@@ -176,13 +176,13 @@
 							var _this = this ;
 							plus.geolocation.getCurrentPosition((position)=>{
 								var obj = position.address
-								var add = obj.province +obj.city + position.addresses
+								var add = obj.province +obj.city + position.address.street
 								
 								/*储存重新定位的地址*/
 								var co = {
 									longitude:position.coords.longitude,   /*经度*/
 									latitude:position.coords.latitude, /*纬度*/
-									address: obj.city + position.addresses
+									address: obj.city + position.address.street
 								}
 								plus.storage.setItem('pos',JSON.stringify(co))
 								var s = plus.webview.getLaunchWebview()	
