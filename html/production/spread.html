@@ -123,7 +123,7 @@
 			
 			.numBtns {
 				/*color: #e1e1e1;*/
-				width:50px;
+				width: 50px;
 				line-height: 34px;
 			}
 			
@@ -143,7 +143,7 @@
 				margin-top: 5px;
 			}
 			
-			.numInput{
+			.numInput {
 				width: 100%;
 				text-align: center;
 				border: none!important;
@@ -191,7 +191,7 @@
 							<div class="flex nums">
 								<div class=" numBtns sub" @tap="_sub">-</div>
 								<div class="f1">
-									<input type="number" class="numInput" v-model.number="count" @change="_toNum"/>
+									<input type="number" class="numInput" v-model.number="count" @change="_toNum" />
 									<!--<p>{{countNum}}</p>-->
 								</div>
 								<div class=" numBtns add" @tap="_add">+</div>
@@ -231,7 +231,7 @@
 
 		<script type="text/javascript">
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			});
 			var APP;
 			mui.plusReady(function() {
@@ -247,7 +247,7 @@
 
 						chooseType: 1,
 						orderCode: '',
-						count:0,//份数
+						count: 0, //份数
 
 						totalAmount: 0, //合计金额
 						levels: 0,
@@ -278,24 +278,24 @@
 						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
 					},
 					methods: {
-						_toNum(){
-							if(!this.count){
+						_toNum() {
+							if(!this.count) {
 								this.count = 0
 								this.countNum = 0
-							}else{
+							} else {
 								this.totalAmount = (this.count * 0.01).toFixed(2)
 							}
-						},					
-						_sub(){
-							if(this.count ==0 )return;
+						},
+						_sub() {
+							if(this.count == 0) return;
 							this.count--;
 							this.totalAmount = (this.count * 0.01).toFixed(2)
 						},
-						_add(){
+						_add() {
 							this.count++;
 							this.totalAmount = (this.count * 0.01).toFixed(2)
 						},
-						
+
 						/*获取数据*/
 						_getData(callback) {
 							var _this = this
@@ -328,20 +328,20 @@
 						/*提交订单*/
 						_toSubmit() {
 							var _this = this
-							
+
 							/*订单信息判断*/
 							if(!this.count || this.count == 0) {
 								plus.nativeUI.alert("请选择差价金额", function() {}, '马嘿嘿提醒您');
 								return;
-							} 
-							
+							}
+
 							plus.nativeUI.showWaiting()
 							var data = {
 								ORDER_CODE: _this.orderCode,
 								count: _this.count
 							}
-//							console.log(_this.orderCode)
-//														console.log(JSON.stringify(data))
+							//							console.log(_this.orderCode)
+							//														console.log(JSON.stringify(data))
 							app.ajax(app.baseUrl + '/api/Order/CreateAdditionOrder', {
 								type: 'post', //HTTP请求类型
 								data: data,
@@ -350,8 +350,8 @@
 
 									if(result.Success) {
 										plus.nativeUI.toast('操作成功')
-										mui.later(()=>{
-											let payCode = result.Msg;//订单号
+										mui.later(() => {
+											let payCode = result.Msg; //订单号
 											mui.openWindow({
 												url: './toPay.html',
 												id: "toPay",
@@ -359,11 +359,26 @@
 													top: '0px', //新页面顶部位置
 													bottom: '0px', //新页面底部位置
 													scrollIndicator: "none",
-													plusrequire: 'ahead'
+													plusrequire: 'ahead',
+													// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+													titleNView: { // 窗口的标题栏控件
+														autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+														titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+														titleSize: "14px", // 字体大小,默认17px
+														backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+														progress: { // 标题栏控件的进度条样式
+															color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+															height: "2px" // 进度条高度,默认值为"2px"         
+														},
+														splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+															color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+															height: "1px" // 分割线高度,默认值为"2px"
+														}
+													}
 												},
-												createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+												createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 												show: {
-													autoShow: false, //页面loaded事件发生后自动显示，默认为true
+													autoShow: true, //页面loaded事件发生后自动显示，默认为true
 													duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
 												},
 												extras: {
@@ -374,7 +389,7 @@
 													title: '正在加载...', //等待对话框上显示的提示内容
 												}
 											})
-										},1000)
+										}, 1000)
 										/*成功跳转支付页面*/
 
 									} else {
@@ -385,7 +400,7 @@
 							});
 
 						},
-						
+
 					}
 				})
 
