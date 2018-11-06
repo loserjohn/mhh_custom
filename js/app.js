@@ -123,6 +123,7 @@
 
 					break;
 			}
+			if(!MSG.payload) {
 			mui.openWindow({
 				url: './html/information/sysMessage.html',
 				id: 'sysMessage',
@@ -156,7 +157,9 @@
 					autoShow: true, //自动显示等待框，默认为true
 					title: '正在加载...', //等待对话框上显示的提示内容
 				}
-			})
+			})}else{
+				owner._jump(MSG.payload)
+			}
 		}, false);　
 	}
 	//	创建本地消息
@@ -1002,6 +1005,47 @@
 				})
 
 				break;
+			case 'O':
+				//订单详情
+				mui.openWindow({
+					url: './html/order/orderDetail.html',
+					id: 'orderDetail',
+					styles: {
+						top: '0px', //新页面顶部位置
+						bottom: '0px', //新页面底部位置
+						scrollIndicator: "none",
+						plusrequire: 'ahead',
+						titleNView: {
+							autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+							titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+							titleSize: "14px", // 字体大小,默认17px
+							backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+							progress: { // 标题栏控件的进度条样式
+								color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"
+								height: "2px" // 进度条高度,默认值为"2px"         
+							},
+							splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+								color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+								height: "1px" // 分割线高度,默认值为"2px"
+							}
+						}
+					},
+					createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+					show: {
+						autoShow: true, //页面loaded事件发生后自动显示，默认为true
+						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					},
+					extras: {
+						//自定义扩展参数，可以用来处理页面间传值  
+						orderId: code
+					},
+					waiting: {
+						autoShow: true, //自动显示等待框，默认为true
+						title: '正在加载...', //等待对话框上显示的提示内容
+					}
+				})
+
+				break;	
 			default:
 				break;
 		}

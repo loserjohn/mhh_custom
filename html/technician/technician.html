@@ -352,9 +352,8 @@
 		<header class="mui-bar  mui-bar-transparent header" style="background: -webkit-linear-gradient(left top, #e2c773, #ccaa42);background: linear-gradient(left top, #e2c773, #ccaa42);" data-top='0' data-offset='100' data-duration='16' id="header">
 			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav cor_w"></span>返回</button>
 		</header>
-		<div id="app">
-			<!--等待页面-->
-			<div class="loader" style="top:0" v-if="loader">
+		<!--等待页面-->
+			<div class="loader" style="top:0" id="loader">
 				<ul>
 					<li id='a'></li>
 					<li id='b'></li>
@@ -367,6 +366,8 @@
 					<li id='i'></li>
 				</ul>
 			</div>
+		<div id="app">
+			
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 
@@ -1061,6 +1062,7 @@
 									/*登陆成功*/
 									mui.later(() => {
 										_this.loader = false;
+										document.getElementById('loader').style.display = 'none'
 										if(result.Success) {
 											/*店铺信息*/
 											_this.shopMsg = result.Data.Shop
@@ -1084,6 +1086,7 @@
 									//异常处理；
 									_this.loader = false;
 									app.catchErr(type)
+									document.getElementById('loader').style.display = 'none'
 								}
 							})
 							/*店铺全部项目*/

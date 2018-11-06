@@ -258,10 +258,8 @@
 	</head>
 
 	<body>
-
-		<div id="app">
-			<!--等待页面-->
-			<div class="loader" style="top:0" v-if="loader">
+		<!--等待页面-->
+			<div class="loader" style="top:0" id="loader">
 				<ul>
 					<li id='a'></li>
 					<li id='b'></li>
@@ -273,7 +271,9 @@
 					<li id='h'></li>
 					<li id='i'></li>
 				</ul>
-			</div>
+			</div>	
+		<div id="app">
+			
 
 			<header class="fixed   header flex mui-bar-transparent" style="background-color: rgba(21, 21, 21, .5)" data-top='0' data-offset='250' data-duration='16' id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav cor_w"></span>返回</button>
@@ -972,6 +972,8 @@
 								success: function(result) {
 									mui.later(() => {
 										_this.loader = false
+										
+										document.getElementById('loader').style.display = 'none'
 										if(result.Success) {
 											_this.product = result.Data.dataFormart
 											_this.enabledTime = result.Data.enabledTime
@@ -998,7 +1000,7 @@
 								error: function(xhr, type, errorThrown) {
 									//异常处理；
 									app.catchErr(type);
-
+									document.getElementById('loader').style.display = 'none'
 								}
 							})
 						},
