@@ -497,7 +497,10 @@
 								break;
 							case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:
 								console.log('网络不可用');
+								plus.nativeUI.closeWaiting();
 								connecting = false
+//								plus.nativeUI.alert('请检查网络');
+					
 								reConnect()
 								break;
 						}
@@ -597,6 +600,7 @@
 							console.log('token无效');
 						},
 						onError: function(errorCode) {
+							
 						}
 					};
 					var config = {
@@ -628,22 +632,30 @@
 						plus.nativeUI.closeWaiting();
 					},
 					onTokenIncorrect: function() {
-						console.log('token无效');
+//						console.log('token无效');
+						plus.nativeUI.closeWaiting();
+						plus.nativeUI.toast('token无效')
 					},
 					onError: function(errorCode) {
 						var info = '';
+						plus.nativeUI.closeWaiting();
+						
 						switch(errorCode) {
 							case RongIMLib.ErrorCode.TIMEOUT:
 								info = '超时';
+								plus.nativeUI.toast(info)
 								break;
 							case RongIMLib.ConnectionState.UNACCEPTABLE_PAROTOCOL_VERSION:
 								info = '不可接受的协议版本';
+								plus.nativeUI.toast(info)
 								break;
 							case RongIMLib.ConnectionState.IDENTIFIER_REJECTED:
 								info = 'appkey不正确';
+								plus.nativeUI.toast(info)
 								break;
 							case RongIMLib.ConnectionState.SERVER_UNAVAILABLE:
 								info = '服务器不可用';
+								plus.nativeUI.toast(info)
 								break;
 						}
 						console.log(errorCode);
@@ -1269,15 +1281,19 @@
 						switch(errorCode) {
 							case RongIMLib.ErrorCode.TIMEOUT:
 								info = '超时';
+								plus.nativeUI.toast('链接失败，请检查网络')
 								break;
 							case RongIMLib.ErrorCode.UNKNOWN_ERROR:
 								info = '未知错误';
+								plus.nativeUI.toast('链接失败，请检查网络')
 								break;
 							case RongIMLib.ErrorCode.REJECTED_BY_BLACKLIST:
 								info = '在黑名单中，无法向对方发送消息';
+								plus.nativeUI.toast('链接失败，请检查网络')
 								break;
 							case RongIMLib.ErrorCode.NOT_IN_DISCUSSION:
 								info = '不在讨论组中';
+								
 								break;
 							case RongIMLib.ErrorCode.NOT_IN_GROUP:
 								info = '不在群组中';

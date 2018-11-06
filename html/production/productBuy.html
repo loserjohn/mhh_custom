@@ -619,7 +619,7 @@
 					<i class="iconfont icon-pinglun fs20"></i>
 					<p>联系她</p>
 				</div>
-				<div class="" @tap="_navigateTo('../technician/technician.html','technician',{'shopCode':product.SHOP_CODE})">
+				<div class="" @tap="_toShop('../technician/technician.html','technician',{'shopCode':product.SHOP_CODE})">
 					<i class="iconfont icon-wxbmingxingdianpu fs20"></i>
 					<p>查看名片</p>
 				</div>
@@ -843,6 +843,13 @@
 							}
 							app.navigater(desturl, destid, exa, option)
 
+						},
+						_toShop(desturl, destid, extras){
+							let exa = extras
+							let option = {
+								autoShow: false,
+							}
+							app.navigater(desturl, destid, exa, option)
 						},
 						/*切换tab*/
 						_tabBar(k) {

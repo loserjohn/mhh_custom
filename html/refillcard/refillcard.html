@@ -258,29 +258,16 @@
 						},
 						/*去使用*/
 						_toUse(code) {
-							//							alert(1)
-							mui.openWindow({
-								url: '../technician/technician.html',
-								id: 'technician',
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {
-									shopCode: code
-								},
-								waiting: {
-									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let desturl = '../technician/technician.html'
+							let destid = 'technician'
+							let exa = {
+								shopCode: code
+							}
+							let option = {
+								autoWaiting: false
+							}
+							app.navigater(desturl, destid, exa, option)
+
 						},
 						/*添加新卡*/
 						_toAddNewCard(item) {
@@ -350,7 +337,7 @@
 						plusrequire: 'ahead',
 						// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
 						titleNView: { // 窗口的标题栏控件
-							titileText:'充值卡须知',
+							titileText: '充值卡须知',
 							autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
 							titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
 							titleSize: "14px", // 字体大小,默认17px
