@@ -135,7 +135,7 @@
 			}
 			
 			.currPosMark {
-				line-height: 44px;				
+				line-height: 44px;
 			}
 			
 			.starsBox {
@@ -184,7 +184,7 @@
 				margin: 0 10px;
 			}
 			
-			.list{
+			.list {
 				background: #fff;
 			}
 		</style>
@@ -192,7 +192,7 @@
 
 	<body>
 		<div id="app">
-			
+
 			<!--等待页面-->
 			<div class="loader" style="top:0" v-show="loader">
 				<ul>
@@ -214,8 +214,8 @@
 					<div class="f1 cm_search_input cor_g" @tap="_toSearch">马嘿嘿带你搜点啥？</div>
 				</div>
 			</header>
-			<div class="loactionBox container"  @tap="_navigateTo('../address/where.html','where')">
-						<!--<div class="flex">
+			<div class="loactionBox container" @tap="_navigateTo('../address/where.html','where')">
+				<!--<div class="flex">
 							<div class="f1 lh30">
 								服务地址
 							</div>
@@ -223,9 +223,9 @@
 								重新选择
 							</div>
 						</div>-->
-						<p class="currPosMark ellipsis"><span class="mui-icon mui-icon-location cor_y"></span>{{currPosMark}}</p>
+				<p class="currPosMark ellipsis"><span class="mui-icon mui-icon-location cor_y"></span>{{currPosMark}}</p>
 			</div>
-			
+
 			<!--筛选条件-->
 			<div class=" block1">
 				<ul class="flex filterBars ">
@@ -258,29 +258,29 @@
 								</div>
 								<div class="f1 cm_txt">
 									<h4 class="txt">{{item.SHOP_NAME}}</h4>
-									 <p class="fs12">	{{item.SHOP_CONCERN}}人关注</p>
+									<p class="fs12"> {{item.SHOP_CONCERN}}人关注</p>
 									<div class=" flex ">
 										<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in parseInt(item.SHOP_STAR) " />
 									</div>
-									
+
 									<p class="lh28">{{item.SHOP_BUSINESS_TYPE}}</p>
 									<aside class="cor_g ">
-										<div class=" flex" >
+										<div class=" flex">
 											<i class="mui-icon mui-icon-map cor_r fs16 " style="margin-right: 10px;"></i>
 											<p class=" f1 fs12 txt">{{item.SHOP_ADDRESS}}</p>
 										</div>
 										<div class=" flex">
-											<i class="mui-icon mui-icon-navigate cor_r fs16"  style="margin-right: 10px;"></i>
-											<p class=" f1 fs12 txt" >距离：{{item.DISTANCE}}km</p>
-										</div>										
+											<i class="mui-icon mui-icon-navigate cor_r fs16" style="margin-right: 10px;"></i>
+											<p class=" f1 fs12 txt">距离：{{item.DISTANCE}}km</p>
+										</div>
 									</aside>
 
 								</div>
 							</article>
-							
+
 						</li>
 					</ul>
-					<p class="lh44 t_c" >{{node}}</p>
+					<p class="lh44 t_c">{{node}}</p>
 
 				</div>
 			</div>
@@ -288,7 +288,7 @@
 			<!--模态框-->
 			<div class="cm_mask " v-show="modalShow" @tap.self="_modelToggle">
 				<div class="cm_modal  animated slideInRight">
-					
+
 					<aside class="starsBox container ">
 						<div class="cm_name">星级选择</div>
 						<ul class="stars flex">
@@ -356,7 +356,7 @@
 				APP = new Vue({
 					el: '#app',
 					data: {
-						loader:true,
+						loader: true,
 						scroll: '',
 						scrollTop: '',
 						modalShow: false,
@@ -462,7 +462,7 @@
 								_this.index = 1;
 								_this.node = '查看加载更多';
 								_this.result = [];
-								_this._getData((b) => {		
+								_this._getData((b) => {
 									plus.nativeUI.closeWaiting()
 									if(b) {
 
@@ -478,15 +478,15 @@
 					},
 					methods: {
 						//						默认头像
-						_default(e){
+						_default(e) {
 							var dom = e.target;
-//							console.log(dom)
-							dom.src="../../images/default_avatar.jpg"
+							//							console.log(dom)
+							dom.src = "../../images/default_avatar.jpg"
 						},
-						_getArr(str){
+						_getArr(str) {
 							var arr = str.split(',')
 							var res = []
-							arr.forEach((item)=>{
+							arr.forEach((item) => {
 								res.push(item)
 							})
 							return res
@@ -548,77 +548,47 @@
 						},
 						/*跳转页面*/
 						_NWnavigateTo(dstUrl, dstId, extras) {
-							mui.openWindow({
-								url: dstUrl,
-								id: dstId,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let exa = extras
+							let option = {
+
+							}
+							app.navigater(dstUrl, dstId, exa, option)
+
 						},
 						/*跳转页面*/
 						_navigateTo(dstUrl, dstId, extras) {
-							mui.openWindow({
-								url: dstUrl,
-								id: dstId,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let exa = extras
+							let option = {
+								autoShow: false
+							}
+							app.navigater(dstUrl, dstId, exa, option)
+
 						},
 						//						确认筛选
 						_submit() {
 							this.index = 1
 							this.result = []
 							plus.nativeUI.showWaiting()
-							this._getData(()=>{
+							this._getData(() => {
 								plus.nativeUI.closeWaiting()
 							})
 						},
 						/*获取数据*/
 						_getData(callback) {
-							
+
 							var _this = this
 							let pos = plus.storage.getItem('pos')
-							if(!pos){							
+							if(!pos) {
 								plus.nativeUI.closeWaiting();
 								plus.nativeUI.toast('无法获取您的定位，请你刷新')
 								plus.webview.currentWebview().close()
 								return;
 							}
-							
-						
+
 							pos = JSON.parse(pos)
-							
+
 							this.currPosMark = pos.address
-							
-							
+
 							var data = {
 								pageIndex: this.index,
 								pageSize: 6,
@@ -626,13 +596,13 @@
 								lat: (pos.latitude).toFixed(6),
 								SHOP_BUSINESS_TYPE: this.proType,
 								ORDER_TYPE: this.sort
-//								distance: 5000
+								//								distance: 5000
 							}
-														
+
 							if(this.min) data.lowest = this.min
 							if(this.max) data.highest = this.max
 							if(this.level != 0) data.SHOP_STAR = this.level
-//console.log(JSON.stringify(data))
+							//console.log(JSON.stringify(data))
 							mui.ajax(app.baseUrl + '/api/Shop/GetShops', {
 								data: data,
 								type: 'get', //HTTP请求类型
@@ -642,8 +612,8 @@
 								},
 								success: function(result) {
 									_this.loader = false
-									if(result.Success) {										
-										
+									if(result.Success) {
+
 										if(_this.result.length == result.Data.Total) {
 											_this.scroll.refresh()
 											_this.node = '没有数据了'
@@ -652,10 +622,10 @@
 										} else {
 											_this.result = _this.result.concat(result.Data.ListInfo);
 											_this.index += 1;
-											mui.later(()=>{
-												_this.scroll.refresh()											
+											mui.later(() => {
+												_this.scroll.refresh()
 												if(callback) callback(false)
-											},500)											
+											}, 500)
 										}
 									} else {
 										if(callback) callback()
@@ -686,26 +656,14 @@
 						},
 						//						跳转搜索页/**/
 						_toSearch() {
-							mui.openWindow({
-								url: './search.html',
-								id: 'search',
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {},
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let desturl = './search.html'
+							let destid = 'search'
+							let exa = {}
+							let option = {
+								autoShow: false
+							}
+							app.navigater(desturl, destid, exa, option)
+
 						},
 						/*切换类型*/
 						_switch(k) {
@@ -724,7 +682,7 @@
 
 			function setPos(a) {
 				APP.currPosMark = a
-				
+
 				APP._submit()
 			}
 		</script>

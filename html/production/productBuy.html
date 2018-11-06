@@ -259,21 +259,20 @@
 
 	<body>
 		<!--等待页面-->
-			<div class="loader" style="top:0" id="loader">
-				<ul>
-					<li id='a'></li>
-					<li id='b'></li>
-					<li id='c'></li>
-					<li id='d'></li>
-					<li id='e'></li>
-					<li id='f'></li>
-					<li id='g'></li>
-					<li id='h'></li>
-					<li id='i'></li>
-				</ul>
-			</div>	
+		<div class="loader" style="top:0" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
 		<div id="app">
-			
 
 			<header class="fixed   header flex mui-bar-transparent" style="background-color: rgba(21, 21, 21, .5)" data-top='0' data-offset='250' data-duration='16' id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav cor_w"></span>返回</button>
@@ -762,43 +761,18 @@
 							let isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
-								mui.openWindow({
-									url: '../login.html',
-									id: 'login',
-									styles: {
-										top: '0px', //新页面顶部位置
-										bottom: '0px', //新页面底部位置
-										scrollIndicator: "none",
-										plusrequire: 'ahead',
-										// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-										titleNView: { // 窗口的标题栏控件
-											autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-											titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-											titleSize: "14px", // 字体大小,默认17px
-											backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-											progress: { // 标题栏控件的进度条样式
-												color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-												height: "2px" // 进度条高度,默认值为"2px"         
-											},
-											splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-												color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-												height: "1px" // 分割线高度,默认值为"2px"
-											}
-										}
-									},
-									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-									show: {
-										autoShow: false, //页面loaded事件发生后自动显示，默认为true
-										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-									},
-									extras: {},
-									waiting: {
-										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
-									}
-								})
-								return
+								let desturl = '../login.html'
+								let destid = 'login'
+								let exa = {
+									product: item
+								}
+								let option = {
+									showTitle: true,
+									autoShow: false,
+								}
+								app.navigater(desturl, destid, exa, option)
 							}
+
 							let fdId = this.product.RY_ID;
 							let fdname = this.product.SHOP_NAME;
 							let fdAvatar = this.product.SHOP_LOGO;
@@ -815,46 +789,21 @@
 								/*没有登陆状态*/
 								plus.nativeUI.confirm('请您先登陆', (event) => {
 									if(event.index != 0) return;
-									mui.openWindow({
-										url: '../login.html',
-										id: "login",
-										styles: {
-											top: '0px', //新页面顶部位置
-											bottom: '0px', //新页面底部位置
-											scrollIndicator: "none",
-											plusrequire: 'ahead',
-											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-											titleNView: { // 窗口的标题栏控件
-												autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-												titleSize: "14px", // 字体大小,默认17px
-												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-												progress: { // 标题栏控件的进度条样式
-													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-													height: "2px" // 进度条高度,默认值为"2px"         
-												},
-												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-													height: "1px" // 分割线高度,默认值为"2px"
-												}
-											}
-										},
-										createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-										show: {
-											autoShow: false, //页面loaded事件发生后自动显示，默认为true
-											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-										},
-										waiting: {
-											autoShow: true, //自动显示等待框，默认为true
-											title: '正在加载...', //等待对话框上显示的提示内容
-										}
-									})
+									let desturl = '../login.html'
+									let destid = 'login'
+									let exa = {
+										product: item
+									}
+									let option = {
+										showTitle: true,
+										autoShow: false,
+									}
+									app.navigater(desturl, destid, exa, option)
 								}, {
 									title: '马嘿嘿提醒您'
 								}, ['去登陆', '取消'])
 								return false
 							}
-	
 
 							app.ajax(app.baseUrl + '/api/Order/CreateBusiRechargeOrder', {
 								data: {
@@ -865,44 +814,17 @@
 									let payCode = result.Msg; //订单号
 									if(result.Success) {
 										plus.nativeUI.toast('订单创建成功')
-										mui.openWindow({
-											url: '../cashPay.html',
-											id: 'cashPay',
-											styles: {
-												top: '0px', //新页面顶部位置
-												bottom: '0px', //新页面底部位置
-												scrollIndicator: "none",
-												plusrequire: 'ahead',
-												// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-												titleNView: { // 窗口的标题栏控件
-													autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-													titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-													titleSize: "14px", // 字体大小,默认17px
-													backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-													progress: { // 标题栏控件的进度条样式
-														color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-														height: "2px" // 进度条高度,默认值为"2px"         
-													},
-													splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-														color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-														height: "1px" // 分割线高度,默认值为"2px"
-													}
-												}
-											},
-											createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-											show: {
-												autoShow: true, //页面loaded事件发生后自动显示，默认为true
-												duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-											},
-											extras: {
-												type: 2, //1表示的是只能现金支付,2可以平台余额支付
-												payCode: payCode
-											},
-											waiting: {
-												autoShow: true, //自动显示等待框，默认为true
-												title: '正在加载...', //等待对话框上显示的提示内容
-											}
-										})
+										let desturl = '../cashPay.html'
+										let destid = 'cashPay'
+										let exa = {
+											type: 2, //1表示的是只能现金支付,2可以平台余额支付
+											payCode: payCode
+										}
+										let option = {
+											showTitle: true,
+											autoShow: false,
+										}
+										app.navigater(desturl, destid, exa, option)
 
 									} else {
 										plus.nativeUI.closeWaiting()
@@ -914,26 +836,13 @@
 						},
 						/*跳转页面*/
 						_navigateTo(desturl, destid, extras) {
-							mui.openWindow({
-								url: desturl,
-								id: destid,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let exa = extras
+							let option = {
+								showTitle: true,
+								autoShow: false,
+							}
+							app.navigater(desturl, destid, exa, option)
+
 						},
 						/*切换tab*/
 						_tabBar(k) {
@@ -972,8 +881,9 @@
 								success: function(result) {
 									mui.later(() => {
 										_this.loader = false
-										
+
 										document.getElementById('loader').style.display = 'none'
+
 										if(result.Success) {
 											_this.product = result.Data.dataFormart
 											_this.enabledTime = result.Data.enabledTime
@@ -1122,84 +1032,35 @@
 								/*没有登陆状态*/
 								plus.nativeUI.confirm('请您先登陆', (event) => {
 									if(event.index != 0) return;
-									mui.openWindow({
-										url: '../login.html',
-										id: "login",
-										styles: {
-											top: '0px', //新页面顶部位置
-											bottom: '0px', //新页面底部位置
-											scrollIndicator: "none",
-											plusrequire: 'ahead',
-											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-											titleNView: { // 窗口的标题栏控件
-												autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-												titleSize: "14px", // 字体大小,默认17px
-												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-												progress: { // 标题栏控件的进度条样式
-													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-													height: "2px" // 进度条高度,默认值为"2px"         
-												},
-												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-													height: "1px" // 分割线高度,默认值为"2px"
-												}
-											}
-										},
-										createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-										show: {
-											autoShow: false, //页面loaded事件发生后自动显示，默认为true
-											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-										},
-										waiting: {
-											autoShow: true, //自动显示等待框，默认为true
-											title: '正在加载...', //等待对话框上显示的提示内容
-										}
-									})
+									let desturl = '../login.html'
+									let destid = 'login'
+									let exa = {
+										type: 2, //1表示的是只能现金支付,2可以平台余额支付
+										payCode: payCode
+									}
+									let option = {
+										showTitle: true,
+										autoShow: false,
+									}
+									app.navigater(desturl, destid, exa, option)
+
 								}, {
 									title: '马嘿嘿提醒您'
 								}, ['去登陆', '取消'])
 							} else {
 								/*用户已登陆执行收藏操作*/
-								mui.openWindow({
-									url: './productOrder.html',
-									id: "productOrder",
-									styles: {
-										top: '0px', //新页面顶部位置
-										bottom: '0px', //新页面底部位置
-										scrollIndicator: "none",
-										plusrequire: 'ahead',
-										// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-										titleNView: { // 窗口的标题栏控件
-											autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-											titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-											titleSize: "14px", // 字体大小,默认17px
-											backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-											progress: { // 标题栏控件的进度条样式
-												color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-												height: "2px" // 进度条高度,默认值为"2px"         
-											},
-											splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-												color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-												height: "1px" // 分割线高度,默认值为"2px"
-											}
-										}
-									},
-									createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-									show: {
-										autoShow: true, //页面loaded事件发生后自动显示，默认为true
-										duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-									},
-									extras: {
-										product: _this.product,
-										/*传入项目信息*/
-										masterCode: _this.masterCode /*传入手艺人的code*/
-									},
-									waiting: {
-										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
-									}
-								})
+								let desturl = './productOrder.html'
+								let destid = 'productOrder'
+								let exa = {
+									product: _this.product,
+									/*传入项目信息*/
+									masterCode: _this.masterCode /*传入手艺人的code*/
+								}
+								let option = {
+									showTitle: true
+								}
+								app.navigater(desturl, destid, exa, option)
+
 							}
 
 						},
@@ -1215,40 +1076,17 @@
 								/*没有登陆状态*/
 								plus.nativeUI.confirm('请您先登陆', (event) => {
 									if(event.index != 0) return;
-									mui.openWindow({
-										url: '../login.html',
-										id: "login",
-										styles: {
-											top: '0px', //新页面顶部位置
-											bottom: '0px', //新页面底部位置
-											scrollIndicator: "none",
-											plusrequire: 'ahead',
-											// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-											titleNView: { // 窗口的标题栏控件
-												autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-												titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-												titleSize: "14px", // 字体大小,默认17px
-												backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-												progress: { // 标题栏控件的进度条样式
-													color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-													height: "2px" // 进度条高度,默认值为"2px"         
-												},
-												splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-													color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-													height: "1px" // 分割线高度,默认值为"2px"
-												}
-											}
-										},
-										createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-										show: {
-											autoShow: false, //页面loaded事件发生后自动显示，默认为true
-											duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-										},
-										waiting: {
-											autoShow: true, //自动显示等待框，默认为true
-											title: '正在加载...', //等待对话框上显示的提示内容
-										}
-									})
+									let desturl = '../login.html'
+									let destid = 'login'
+									let exa = {
+										type: 2, //1表示的是只能现金支付,2可以平台余额支付
+										payCode: payCode
+									}
+									let option = {
+										showTitle: true,
+										autoShow: false,
+									}
+									app.navigater(desturl, destid, exa, option)
 								}, {
 									title: '马嘿嘿提醒您'
 								}, ['去登陆', '取消'])

@@ -173,7 +173,7 @@
 						<div class="f1">{{detail.ORDER_ADDREASS}}</div>
 
 					</div>
-					<div class="orderTime flex cor_w " >
+					<div class="orderTime flex cor_w ">
 						<div class="f1">
 							预约时间： {{detail.BOOK_DATE?(detail.BOOK_DATE).replace('00:00:00',detail.BOOK_PERIOD):'尚未预约时间' }}
 						</div>
@@ -323,7 +323,7 @@
 
 					},
 					filters: {
-						tabStatus(value){
+						tabStatus(value) {
 							switch(value) {
 								case '0':
 									return '待付款'
@@ -339,12 +339,11 @@
 									break;
 								case '4':
 									return '退款'
-									break;							
+									break;
 								default:
 									break;
 							}
-						}
-						,
+						},
 						getStatus(value) {
 							switch(value) {
 								case '0':
@@ -401,113 +400,57 @@
 					methods: {
 						/*未付款订单 直接付款*/
 						_toPay(payCode) {
-							mui.openWindow({
-								url: '../production/toPay.html',
-								id: "toPay",
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead',
-									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-									titleNView: { // 窗口的标题栏控件
-										autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-										titleSize: "14px", // 字体大小,默认17px
-										backgroundColor: "#ccaa42", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-										progress: { // 标题栏控件的进度条样式
-											color: "#fff", // 进度条颜色,默认值为"#00FF00"  
-											height: "2px" // 进度条高度,默认值为"2px"         
-										},
-										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-											color: "#e6be65", // 分割线颜色,默认值为"#CCCCCC"  
-											height: "1" // 分割线高度,默认值为"2px"
-										}
-									}
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {
-									payCode: payCode
-								},
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let desturl = '../production/toPay.html'
+							let destid = 'toPay'
+							let exa = {
+								payCode: payCode
+							}
+							let option = {
+								showTitle: true
+							}
+							app.navigater(desturl, destid, exa, option)
+						},
+						//						去评价
+						_toComment(item) {
+							let desturl = '../production/editComment.html'
+							let destid = 'editComment'
+							let exa = {
+								product: item
+							}
+							let option = {
+								showTitle: true
+							}
+							app.navigater(desturl, destid, exa, option)
 
 						},
-//						去评价
-						_toComment(item){
-							mui.openWindow({
-								url: '../production/editComment.html',
-								id: 'editComment',
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead',
-									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-									titleNView: { // 窗口的标题栏控件
-										autoBackButton: true,// 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-										titleSize: "14px", // 字体大小,默认17px
-										backgroundColor: "#ccaa42", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-										progress: { // 标题栏控件的进度条样式
-											color: "#fff", // 进度条颜色,默认值为"#00FF00"  
-											height: "2px" // 进度条高度,默认值为"2px"         
-										},
-										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-											color: "#e6be65", // 分割线颜色,默认值为"#CCCCCC"  
-											height: "1" // 分割线高度,默认值为"2px"
-										}
-									}
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: false, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {
-									product:item
-								},
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
-						},
-//						回传时间
-						_orderTime(date){
-							if(date&&date!="-"){
-								var _this= this
+						//						回传时间
+						_orderTime(date) {
+							if(date && date != "-") {
+								var _this = this
 								var time = app.dateFormate(date)
-//								console.log(time)
+								//								console.log(time)
 								plus.nativeUI.showWaiting()
 								var self = plus.webview.currentWebview();
 
 								app.ajax(app.baseUrl + '/api/OrderService/SetOrderServiceTime', {
-										data: {
-											orderCode: self.orderId,
-											date:time.split(' ')[0],
-											point:time.split(' ')[1]
-										},
-										type: 'post', //HTTP请求类型
-										success: function(result) {
-											if(result.Success) {
-												plus.nativeUI.closeWaiting()
-												plus.nativeUI.toast('修改成功')
-												
-												_this._initData()
-											} else {
-												plus.nativeUI.toast(result.Msg)
-												plus.nativeUI.closeWaiting()
-											}
+									data: {
+										orderCode: self.orderId,
+										date: time.split(' ')[0],
+										point: time.split(' ')[1]
+									},
+									type: 'post', //HTTP请求类型
+									success: function(result) {
+										if(result.Success) {
+											plus.nativeUI.closeWaiting()
+											plus.nativeUI.toast('修改成功')
+
+											_this._initData()
+										} else {
+											plus.nativeUI.toast(result.Msg)
+											plus.nativeUI.closeWaiting()
 										}
-									});
+									}
+								});
 							}
 						},
 						//						去预约时间
@@ -524,10 +467,10 @@
 								account: this.detail.ACCOUNT_CODE,
 								pId: 'orderDetail'
 							});
-							mui.later(()=>{
+							mui.later(() => {
 								plus.nativeUI.closeWaiting()
 								w.show('slide-in-bottom', 300, function() {}, {})
-							},1000)
+							}, 1000)
 						},
 						//						取消预约时间
 						cancelOrder() {
@@ -535,7 +478,7 @@
 								var _this = this
 								var self = plus.webview.currentWebview();
 								var index = event.index;
-								
+
 								if(index == 0) {
 									plus.nativeUI.showWaiting()
 									app.ajax(app.baseUrl + '/api/OrderService/CancelOrderServiceTime', {
@@ -548,10 +491,14 @@
 											if(result.Success) {
 												plus.nativeUI.toast('取消成功')
 												plus.nativeUI.closeWaiting()
+												var self = plus.webview.currentWebview();
+												self.setStyle({
+													mask: 'none'
+												});
 												_this._initData()
 											} else {
-													plus.nativeUI.toast(result.Msg)
-													plus.nativeUI.closeWaiting()
+												plus.nativeUI.toast(result.Msg)
+												plus.nativeUI.closeWaiting()
 											}
 										}
 									});
@@ -641,26 +588,9 @@
 						},
 						/*跳转页面*/
 						_navigateTo(dstUrl, dstId, extras) {
-							mui.openWindow({
-								url: dstUrl,
-								id: dstId,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let exa = extras
+							let option = {}
+							app.navigater(dstUrl, dstId, exa, option)
 						},
 						/*开始服务*/
 						_beginServer(b) {
@@ -679,15 +609,16 @@
 				})
 
 			});
+
 			function hasTime(date) {
-				if(date=="-"){
-					APP._orderTime('-')					
-				}else if(date) {
+				if(date == "-") {
+					APP._orderTime('-')
+				} else if(date) {
 					/*如果有回传选择的日期*/
 					let time = new Date(date)
-					APP._orderTime(time)					
+					APP._orderTime(time)
 				}
-					
+
 				var self = plus.webview.currentWebview();
 				self.setStyle({
 					mask: 'none'

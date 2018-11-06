@@ -447,19 +447,7 @@
 								},
 								success: function(result) {
 									if(result.Success) {
-										//										var b = false;
-										//										var arr = _this.commentList[tabType].infoList
-										//										_this.commentList[tabType].infoList = arr.concat(result.Data.ListInfo);
-										//										var l = _this.commentList[tabType].infoList.length;
-										//										if(result.Data.Total == l) {
-										//											
-										//											b = true
-										//										}
-										//										_this.commentList[tabType].index += 1
-										//										mui.later(() => {
-										//											_this.scroll.refresh()													
-										//											if(callback) callback(b);
-										//										}, 300)
+		
 										var l = _this.commentList[tabType].infoList.length;
 
 										_this.commentList[tabType].infoList = _this.commentList[tabType].infoList.concat(result.Data.ListInfo);

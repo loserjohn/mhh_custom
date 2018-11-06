@@ -211,7 +211,7 @@
 
 						var _this = this
 						var scroll = this.$refs.scroll
-						this.scrollTop = 44
+						this.scrollTop = 40
 
 						var self = plus.webview.currentWebview();
 						if(self.type) {
@@ -549,27 +549,12 @@
 								default:
 									break;
 							}
-
-							mui.openWindow({
-								url: url,
-								id: id,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+							let desturl = url
+							let destid = id
+							let exa = extras
+							let option = {}
+							app.navigater(desturl, destid, exa, option)			
+							
 						}
 					}
 				})

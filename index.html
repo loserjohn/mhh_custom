@@ -821,9 +821,9 @@
 							mui.ajax(app.baseUrl + '/api/Recommend/GetRecommendTypes', {
 								type: 'get', //HTTP请求类型
 								timeout: 5000, //超时时间设置为10秒；
-//								data:{
-//									pageSize:8
-//								},
+								//								data:{
+								//									pageSize:8
+								//								},
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
@@ -925,88 +925,34 @@
 							if(type != '1') {
 								return;
 							}
-							mui.openWindow({
-								url: './html/production/productList.html',
-								id: 'productList',
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: {
-									proType: extras
-								},
-								waiting: {
-									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+
+							let desturl = './html/production/productList.html'
+							let destid = 'productList'
+							let exa = {
+								proType: extras
+							}
+							let option = {
+								autoWaiting: false
+							}
+							app.navigater(desturl, destid, exa, option)
+
 						},
-						_NWnavigateTo(dstUrl, dstId, extras) {
-							mui.openWindow({
-								url: dstUrl,
-								id: dstId,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead'
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+						_NWnavigateTo(desturl, destid, extras) {
+
+							let exa = extras
+							let option = {}
+							app.navigater(desturl, destid, exa, option)
+
 						},
 						//						带有导航栏的跳状
-						_NTnavigateTo(dstUrl, dstId, extras) {
-							mui.openWindow({
-								url: dstUrl,
-								id: dstId,
-								styles: {
-									top: '0px', //新页面顶部位置
-									bottom: '0px', //新页面底部位置
-									scrollIndicator: "none",
-									plusrequire: 'ahead',
-									// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-									titleNView: { // 窗口的标题栏控件
-										autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-										titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-										titleSize: "14px", // 字体大小,默认17px
-										backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-										progress: { // 标题栏控件的进度条样式
-											color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-											height: "2px" // 进度条高度,默认值为"2px"         
-										},
-										splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-											color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-											height: "1px" // 分割线高度,默认值为"2px"
-										}
-									}
-								},
-								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-								show: {
-									autoShow: true, //页面loaded事件发生后自动显示，默认为true
-									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-								},
-								extras: extras,
-								waiting: {
-									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
-								}
-							})
+						_NTnavigateTo(desturl, dstId, extras) {
+							let exa = extras
+							let option = {
+								showTitle: true,
+								autoWaiting: false,
+							}
+							app.navigater(desturl, destid, exa, option)
+
 						},
 						/*初始化位置*/
 						_initPos(callback) {
@@ -1014,7 +960,7 @@
 							plus.geolocation.getCurrentPosition((position) => {
 								if(!position || !position.address || !position.address.city) return;
 								var obj = position.address
-								console.log(JSON.stringify(position))
+								//								console.log(JSON.stringify(position))
 								_this.co = {
 									longitude: position.coords.longitude,
 									/*经度*/
@@ -1022,7 +968,7 @@
 									/*纬度*/
 									address: obj.city + position.address.street
 								}
-				
+
 								plus.storage.setItem('pos', JSON.stringify(_this.co))
 
 								if(callback) callback();
@@ -1085,29 +1031,16 @@
 			}
 			//			外链的回掉跳转 作品详情页
 			function _navigateToPro(code) {
-				//				console.log(code)
-				mui.openWindow({
-					url: './html/production/productBuy.html',
-					id: 'productBuy',
-					styles: {
-						top: '0px', //新页面顶部位置
-						bottom: '0px', //新页面底部位置
-						scrollIndicator: "none",
-						plusrequire: 'ahead'
-					},
-					createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
-					show: {
-						autoShow: true, //页面loaded事件发生后自动显示，默认为true
-						duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-					},
-					extras: {
-						proKey: code
-					},
-					waiting: {
-						autoShow: true, //自动显示等待框，默认为true
-						title: '正在加载...', //等待对话框上显示的提示内容
-					}
-				})
+				let desturl = './html/production/productBuy.html'
+				let destid = 'productBuy'
+				let exa = {
+					proKey: code
+				}
+				let option = {
+					showTitle: false,
+				}
+				app.navigater(desturl, destid, exa, option)
+
 			}
 		</script>
 	</body>
