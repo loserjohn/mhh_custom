@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>艾草社区</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./css/iconfont.css" />
+		<style>
+			.mainBox {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				top: 0;
+				/*background: red;*/
+			}
+			.bg {
+				width: 100%;
+				height: 244px;
+				background: url(images/community/community1.jpg) 0 0/cover no-repeat;
+			}
+			
+			.invitationsBox {
+				box-sizing: border-box;
+				/*background: green;*/
+				margin-top: -140px;
+				padding: 0 10px;
+			}
+			
+			.invitation_title {
+				padding-bottom: 10px;
+				border-bottom: 1px dashed #d3d3d3;
+			}
+			
+			.invitation_content h3 {
+				margin: 10px auto;
+			}
+			
+			.invitationAvator {
+				width: 40px;
+				height: 40px;
+				border-radius: 4px;
+				margin-right: 15px;
+			}
+			.invitation_footer{
+				margin-top: 5px;
+			}
+			.invitation_footer>p {
+				line-height: 22px;
+			}
+			
+			.labels {
+				margin-left: 10px;
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 24px;
+				color: #c4c4c4;
+				vertical-align: middle;
+			}
+			.labels i{
+				font-size: 14px;
+				color: #c4c4c4;
+				
+			}
+			
+			.invitation_footer .labels.active,
+			.invitation_footer .labels.active i {
+				color: #ccaa42;
+			}
+			
+			.tags {
+				margin-right: 10px;
+			}
+			/*帖子 视频*/
+			
+			.videoBox {
+				padding: 0;
+				width: 100%;
+				min-height: 100px;
+				/*background: #eee;*/
+				box-sizing: border-box;
+				border: 1px dotted #d3d3d3;
+			}
+			/*图片帖子*/
+			
+			.picBox {
+				/*background: red;*/
+				/*justify-content: space-between;*/
+			}
+			
+			.picBox .pics {
+				box-sizing: border-box;
+				padding: 5px;
+				height: 100px;
+				overflow: hidden;
+				/*background: red;*/
+			}
+			
+			.picBox .pics img {
+				width: 100%;
+			}
+			/*文字帖子*/
+			
+			.textBox {
+				margin-top: 10px;
+				/*background: red;*/
+			}
+			
+			.textPre {
+				
+				width: 100px;
+				height: 100px;
+				margin-right: 10px;
+				overflow: hidden;
+				
+			}
+			
+			.textPre>img {
+				width: 100%;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="fixed   header flex " :style="{background:'rgba(21,21,21,'+opacity+')'}" id="header">
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w" style="width: 66px;"></button>
+				<div class=" f1  cor_w t_c page_title">
+					小草社区
+				</div>
+				<a class=" mui-pull-right cor_y fs16 t_r" style="line-height: 45px;padding-right: 10px;width: 66px" @tap = "_backTop">
+					<span class="mui-icon mui-icon-arrowup"></span>
+				</a>
+			</header>
+			<div ref='scroll' :style="{height:appHeight+'px'}">
+				<div class="clearfix scrollContent ">
+
+					<!--刷新提示框-->
+					<div class="refresh flex">
+						<div class="flex " style="bottom:110px ;">
+							<p class="f1 t_r "></p>
+							<!--<i class="iconfont icon-hua cor_y"></i>-->
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:80px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<!--<i class="iconfont icon-dianzan1 cor_y"></i>-->
+							<p class="f1 t_l"></p>
+						</div>
+						<div class="flex " style="bottom:50px ;">
+							<p class="f1 t_r"></p>
+							<!--<i class="iconfont icon-zuanshi cor_y"></i>-->
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:20px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<!--<i class="iconfont icon-jiangbei cor_y"></i>-->
+							<p class="f1 t_l"></p>
+						</div>
+						<img src="./images/community/refresh3.png" class="refreshImg3" />
+					</div>
+					<!--内容部分-->
+					<div class="relative">
+						<div class="bg"></div>
+						<ul class="invitationsBox ">
+							<!--文字贴-->
+							<li class="panelPad invitation" v-for="item in newList">
+								<!--单图-->
+								<div v-if="item.type==0" @tap="_toDetail(item)">
+									<div class="flex invitation_title">
+										<img src="./images/mhh_avator.png" class="invitationAvator" alt="" />
+										<div class="f1">
+											<h3 class="panel2_title">马嘿嘿官方助手
+											<div class="fr labels" @tap.stop="_report()" >
+												<i class="iconfont icon-xinxi cor_g "></i> 举报 
+											</div></h3>
+											<p class="time">{{item.time}}</p>
+										</div>
+									</div>
+									<div class="invitation_content">										
+										<div class="textBox flex">
+											<div class="textPre">
+												<img :src="item.lstUrl[0]" alt="" />
+											</div>
+											<div class="f1">
+											<h3 >{{item.title}}</h3>
+												<ul class="clearfix ">
+													<li class="fl cor_g   tags " v-for="labels in item.infoLable">
+														<i class="iconfont icon-shengqian"></i> {{labels}}
+													</li>
+												</ul>
+											</div>
+										</div>
+										
+									</div>
+									<div class="invitation_footer flex">
+										<p class="f1">12已看</p>
+										<div class="f1">
+											<div class="fr labels">
+												<i class="iconfont icon-zan cor_g"></i> 点赞{{item.goods}}
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--图片贴-->
+								<div v-else-if="item.type==1" @tap="_toDetail(item)">
+									<div class="flex invitation_title">
+										<img src="./images/mhh_avator.png" class="invitationAvator" alt="" />
+										<div class="f1">
+											<h3 class="panel2_title">马嘿嘿官方助手<div class="fr labels" @tap.stop="_report()" >
+												<i class="iconfont icon-xinxi cor_g "></i> 举报 
+											</div></h3>
+											<p class="time">{{item.time}}</p>
+										</div>
+									</div>
+									<div class="invitation_content">
+										<h3 class="ellipsis">{{item.title}}</h3>
+										<div class="picBox flex">
+											<div class="f1 pics">
+												<img :src="item.lstUrl[0]" alt="" />
+											</div>
+											<div class="f1 pics">
+												<img :src="item.lstUrl[1]" alt="" />
+											</div>
+											<div class="f1 pics">
+												<img :src="item.lstUrl[2]" alt="" />
+											</div>
+										</div>
+										<ul class="clearfix ">
+											<li class="fl cor_g   tags " v-for="labels in item.infoLable">
+												<i class="iconfont icon-shengqian"></i> {{labels}}
+											</li>
+										</ul>
+									</div>
+									<div class="invitation_footer flex">
+										<p class="f1">{{item.views}}已看</p>
+										<div class="f1">
+											<div class="fr labels" :class="{active:item.isGood}">
+												<i class="iconfont icon-zan cor_g"></i> 点赞{{item.goods}}
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--视频-->
+								<div v-else>
+									<div class="flex invitation_title" @tap="_toDetail(item)">
+										<img src="./images/mhh_avator.png" class="invitationAvator" alt="" />
+										<div class="f1">
+											<h3 class="panel2_title">马嘿嘿官方助手<div class="fr labels" @tap.stop="_report()" >
+												<i class="iconfont icon-xinxi cor_g "></i> 举报 
+											</div></h3>
+											<p class="time">{{item.time}}</p>
+										</div>
+									</div>
+									<div class="invitation_content">
+										<h3 class="ellipsis">{{item.title}}</h3>
+										<div class="videoBox">
+											<video :src="item.lstUrl[0]" controls="controls" style="width: 100%;height: 100%;" poster="./images/videoDefault.png"></video>
+										</div>
+										<ul class="clearfix ">
+											<li class="fl cor_g   tags " v-for="labels in item.infoLable">
+												<i class="iconfont icon-shengqian"></i> {{labels}}
+											</li>
+										</ul>
+									</div>
+									<div class="invitation_footer flex">
+										<p class="f1">{{item.views}}已看</p>
+										<div class="f1">
+											<div class="fr labels" :class="{active:item.isGood}">
+												<!--<i class="iconfont icon-zan cor_g"></i>-->
+												{{item.goods}}人点赞
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="t_c ">--{{more }}--</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/app.js"></script>
+		<script src="./js/vue.js"></script>
+		<script src="js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false,
+			});
+			var APP
+			mui.plusReady(function() {
+
+				var self = plus.webview.currentWebview()
+				//自定义监听图标点击事件
+				APP = new Vue({
+					el: '#app',
+					data: {
+						appHeight: '',
+						scroll: '',
+						newList: [],
+						islogin: false,
+						more: '加载更多',
+						index: 1,
+						opacity: 0,
+						/*头部的透明控制*/
+					},
+					created: function() {
+						app.initHeader();
+					},
+					mounted: function() {
+						var _this = this
+						/*初始化主页面的高度*/
+						this.appHeight = plus.display.resolutionHeight
+
+						/*首次加载数据*/
+						this._initData(() => {
+							plus.nativeUI.closeWaiting();
+						})
+						/*初始化下拉scroll*/
+						this.$nextTick(function() {
+							var scroll = this.$refs.scroll
+							/*竖向下拉刷新*/
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									scrollX: false,
+									bounceTime: 200,
+									pullDownRefresh: {
+										threshold: 50,
+										stop: 0
+									},
+									pullUpLoad: {
+										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									}
+								})
+							} else {
+								_this.scroll.refresh();
+							}
+							_this.scroll.on('scroll', (e) => {
+									let y = e.y;
+//									console.log(y)
+									if(y > 0) {
+										_this.opacity = 0;
+										//										
+									} else if(y < -200) {
+										_this.opacity = 1
+									} else {
+										let m = Math.abs(y) / 200
+										_this.opacity = m
+									}
+
+								})
+							/*下拉刷新*/
+							_this.scroll.on('pullingDown', function(e) {
+								//								console.log(1)
+								_this._refresh()
+							})
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._initData((b) => {
+									if(!b){
+										_this.scroll.finishPullUp()
+									}									
+								})
+							})
+						});
+					},
+					methods: {
+						//						举报
+						_report(){
+							plus.nativeUI.confirm('由于该资讯涉及非法内容,您将向马嘿嘿平台举报该条资讯',(e)=>{
+								if(e.index==0){
+									plus.nativeUI.showWaiting();
+									mui.ajax(app.baseUrl + '/api/Recommend/GetRecommendTypes', {
+										type: 'get', //HTTP请求类型
+										timeout: 10000, //超时时间设置为10秒；
+										headers: {
+											'Content-Type': 'application/x-www-form-urlencoded'
+										},
+										success: function(result) {
+											mui.later(()=>{
+												plus.nativeUI.closeWaiting()
+												if(result.Success) {
+													plus.nativeUI.toast('您的检举信息已经提交')
+												} else {
+													/*验证失败*/
+												}
+											},1000)
+											
+										},
+										error: function(xhr, type, errorThrown) {
+								
+										}
+									})
+								}
+							},'马嘿嘿提醒您')
+						},
+						
+						/*加载社区数据*/
+						_initData(callback) {
+							//							alert(1)
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Info/GetMemberMhhCmsList', {
+								data: {
+									pageIndex: _this.index,
+									pageSize:4
+								},
+								type: 'post', //HTTP请求类型
+								timeout:10000,
+								headers:{
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									if(result.Success) {
+										let l = _this.newList.length;
+										_this.newList = _this.newList.concat(result.Data.ListInfo)
+										
+										if(l == _this.newList.length) {
+											_this.more = '没有数据了'										
+											if(callback) callback(true)
+											return;
+										}								
+										_this.index += 1;
+										mui.later(()=>{
+												_this.scroll.refresh();												
+												if(callback)callback(false);
+											},300)		
+									} else {
+										/*验证失败*/
+										plus.nativeUI.closeWaiting();
+										if(callback) callback(false)
+//										plus.nativeUI.toast(result.Msg)
+									}
+								},
+								error:function(xhr, type, errorThrown){									
+									app.catchErr(type)
+								}
+							});
+						},
+						/*刷新当前页面*/
+						_refresh() {
+							var _this = this
+							plus.nativeUI.showWaiting()
+								_this.index = 1
+								_this.newList = []
+								_this.more = '加载更多'
+								_this._initData((b) => {
+									if(b){
+										
+									}else{
+										_this.scroll.finishPullUp()
+									}
+								plus.nativeUI.closeWaiting();
+								_this.scroll.finishPullDown();
+								})
+														
+						},
+						
+						/*跳转至帖子的详情页*/
+						_toDetail(item) {
+							let desturl = './html/community_detail.html'
+							let destid = 'community_detail'
+							let exa = {
+								detail: item
+							}
+							let option = {
+								showTitle:true,
+								autoWaiting: false,
+								createNew: true
+							}
+							app.navigater(desturl, destid, exa, option)
+							
+							
+						},
+						/*回到顶部*/
+						_backTop(){
+							this.scroll.scrollTo(0,0,300)
+						}
+					}
+				})
+			});
+			function refresh(){
+				APP._refresh()
+			}
+		</script>
+	</body>
+
+</html>

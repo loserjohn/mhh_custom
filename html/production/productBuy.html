@@ -1006,7 +1006,7 @@
 								timeout: 10000, //超时时间设置为10秒；
 								data: {
 									PROJECT_CODE: _this.proKey,
-									REVIEW_TYPE: 1,
+									// REVIEW_TYPE: 1,
 									pageIndex: 1,
 									pageSize: 4,
 								},
@@ -1018,7 +1018,7 @@
 									if(result.Success) {
 										_this.comment = result.Data.ListInfo;
 										_this.total = result.Data.Total;
-										//										alert(result.Data.Total)
+
 									} else {
 										/*验证失败*/
 									}

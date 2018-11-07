@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单管理</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./css/iconfont.css" />
+		<link rel="stylesheet" href="./css/animate.css" />
+		<style>
+			/*列表项样式*/
+			
+			.tabsItems {
+				line-height: 2;
+				margin-bottom: 10px;
+				/*padding: 10px;*/
+			}
+			
+			.tabsItemsRow {
+				/* height: 18px; */
+				line-height: 18px;
+				margin-bottom: 4px;
+				font-size: 14px;
+				/*background: red;*/
+			}
+			
+			.cm_tabsContent {
+				bottom: 0;
+			}
+			
+			.itemHeader {
+				line-height: 36px;
+				/*background: red;*/
+				border-bottom: 1px dashed #d3d3d3;
+				padding: 10px;
+			}
+			
+			.itemBody {
+				padding: 10px;
+				/*background: pink;*/
+			}
+			
+			.itemPic {
+				width: 70px;
+				height: 70px;
+				margin-right: 10px;
+				overflow: hidden;
+				/*background: red;*/
+			}
+			
+			.itemFoot {
+				border-top: 1px dashed #d3d3d3;
+				line-height: 2;
+				padding: 5px;
+			}
+			
+			.btns {
+				text-align: center;
+				color: #404040;
+				font-size: 16px;
+			}
+			
+			.lh24 {
+				line-height: 24px;
+			}
+			
+			.cm_tabsT {
+				width: 100%;
+				/*overflow: hidden;*/
+			}
+			
+			.cm_tabTitle {
+				/*width: 80px!important;*/
+				flex: 1;
+			}
+			
+			.ticketBox {
+				height: 24px;
+				overflow: hidden;
+				width: 100%;
+				margin-bottom: 4px;
+			}
+			
+			.ticketBox .ticketItems {
+				line-height: 24px;
+				background: url(./images/quan_bg.png) 0 0/100% 100% no-repeat;
+				box-sizing: border-box;
+				text-align: center;
+				color: #fff;
+				padding: 0 10px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			
+			.label_tool {
+				height: 18px;
+				line-height: 18px;
+				background: #ff004d;
+				border-radius: 0 8px 8px 0;
+				font-size: 10px;
+				padding: 0 10px;
+				color: #fff;
+				margin-bottom: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="app">
+			<header class="fixed   header flex "  id="header">
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w" style="width: 66px;"></button>
+				<div class=" f1  cor_w t_c page_title">
+					订单管理
+				</div>
+				<a class=" mui-pull-right cor_y fs16 t_r" style="line-height: 45px;padding-right: 10px;width: 66px" @tap="_backTop">
+					<span class="mui-icon mui-icon-arrowup"></span>
+				</a>
+			</header>
+			<!--分类作品-->
+			<div class="cm_tabBars " id="content" ref="content">
+				<div class="cm_tabsT" ref="wraper">
+					<ul class="flex reset cm_ul">
+						<li @tap="_changeTab(0)" class="cm_tabTitle " :class="{active:currtab==0?true:false}">全部</li>
+						<li @tap="_changeTab(1)" class="cm_tabTitle " :class="{active:currtab==1?true:false}">待付款</li>
+						<li @tap="_changeTab(2)" class="cm_tabTitle " :class="{active:currtab==2?true:false}">待服务</li>
+						<li @tap="_changeTab(3)" class="cm_tabTitle " :class="{active:currtab==3?true:false}">服务中</li>
+						<li @tap="_changeTab(4)" class="cm_tabTitle " :class="{active:currtab==4?true:false}">已完成</li>
+						<li @tap="_changeTab(5)" class="cm_tabTitle " :class="{active:currtab==5?true:false}">退款</li>
+					</ul>
+				</div>
+
+				<div ref="scroll" class="cm_tabsContent" :style="{top:tabContenTop}" id="scroll">
+					<div class=" clearfix" style="min-height: 101%;">
+						<!--刷新提示框-->
+						<div class="refresh flex">
+							<div class="flex " style="bottom:110px ;">
+								<p class="f1 t_r "></p>
+								<!--<i class="iconfont icon-hua cor_y"></i>-->
+								<p class="f1 t_l">有种你放开我</p>
+							</div>
+							<div class="flex " style="bottom:80px ;">
+								<p class="f1 t_r">有种你放开我</p>
+								<!--<i class="iconfont icon-dianzan1 cor_y"></i>-->
+								<p class="f1 t_l"></p>
+							</div>
+							<div class="flex " style="bottom:50px ;">
+								<p class="f1 t_r"></p>
+								<!--<i class="iconfont icon-zuanshi cor_y"></i>-->
+								<p class="f1 t_l">有种你放开我</p>
+							</div>
+							<div class="flex " style="bottom:20px ;">
+								<p class="f1 t_r">有种你放开我</p>
+								<!--<i class="iconfont icon-jiangbei cor_y"></i>-->
+								<p class="f1 t_l"></p>
+							</div>
+							<img src="./images/refresh4.png" class="refreshImg2" />
+						</div>
+						<!--登陆状态显示-->
+						<div class="" v-show="true" style="padding-bottom: 50px;">
+							<!--全部-->
+							<div class=" animated fadeInDownBig" v-show="currtab==0?true:false">
+								<ul class="reset">
+									<li class="tabsItems panel" v-for="item in orderList[0].infoList">
+										<div class="itemHeader container flex">
+											<aside class="f1 flex">
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+											</aside>
+											<div class=" t_r" >
+												{{item.ORDER_STATUS | getStatus}}
+											</div>
+										</div>
+										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
+											<div class="itemPic">
+												<img :src="item.PROJECT_IMG1" alt="" class="cover" />
+
+											</div>
+											<div class="f1">
+												<div class="flex tabsItemsRow">
+													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
+													<div class="  t_r">×1</div>
+												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
+												<div class="flex ">
+													<div class=" t_l f1">
+													{{item.ORDER_STATUS_TYPE == '0'?'需支付':'已支付'}}
+													</div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
+												</div>
+												
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
+												</div> -->
+												<div class="flex ">
+													<p class=" t_l f1">下单时间:</p>
+													<p>{{item.CREATE_TIME}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="itemFoot flex cor_g">
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_toPay(item.ORDER_CODE)">去付款</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_NTnavigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==1" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==3" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[0].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+							<!--待付款-->
+							<div class="animated fadeInDownBig" v-show="currtab==1?true:false">
+								<ul class="reset">
+									<li class="tabsItems panel" v-for="item in orderList[1].infoList">
+										<div class="itemHeader container flex">
+											<aside class="f1 flex">
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'"  @error="_default" alt="" class="avatar" />
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+											</aside>
+											<div class=" t_r">
+												{{item.ORDER_STATUS | getStatus}}
+											</div>
+										</div>
+										<div class="itemBody flex " @tap="_jumpToDetail(item.ORDER_CODE)">
+											<div class="itemPic">
+												<img :src="item.PROJECT_IMG1" alt="" class="cover" />
+
+											</div>
+											<div class="f1">
+												<div class="flex tabsItemsRow">
+													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
+													<div class="  t_r">×1</div>
+												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
+												<div class="flex ">
+													<div class=" t_l f1" >  需支付:</div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
+												</div>
+												
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
+												</div> -->
+												<div class="flex ">
+													<p class=" t_l f1">下单时间:</p>
+													<p>{{item.CREATE_TIME}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="itemFoot flex cor_g ">
+											<div class="f1 btns" @tap="_toPay(item.ORDER_CODE)">去付款</div>
+											<div class="f1 btns" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
+										</div>
+
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[1].norest?'没有数据咯':''}}</li>
+								</ul>
+
+							</div>
+							<!--待服务-->
+							<div class="animated fadeInDownBig" v-show="currtab==2?true:false">
+								<ul class="reset">
+									<li class="tabsItems panel" v-for="item in orderList[2].infoList">
+										<div class="itemHeader container flex">
+											<aside class="f1 flex">
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+											</aside>
+											<div class=" t_r">
+												{{item.ORDER_STATUS | getStatus}}
+											</div>
+										</div>
+										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
+											<div class="itemPic">
+												<img :src="item.PROJECT_IMG1" alt="" class="cover" />
+
+											</div>
+											<div class="f1">
+												<div class="flex tabsItemsRow">
+													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
+													<div class="  t_r">×1</div>
+												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
+												<div class="flex ">
+													<div class=" t_l f1">已支付:</div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
+												</div>
+												
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
+												</div> -->
+												<div class="flex ">
+													<p class=" t_l f1">下单时间:</p>
+													<p>{{item.CREATE_TIME}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="itemFoot flex cor_g">
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[2].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+							<!--服务中-->
+							<div class="animated fadeInDownBig" v-show="currtab==3?true:false">
+								<ul class="reset">
+									<li class="tabsItems panel" v-for="item in orderList[3].infoList">
+										<div class="itemHeader container flex">
+											<aside class="f1 flex">
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+											</aside>
+											<div class=" t_r">
+												{{item.ORDER_STATUS | getStatus}}
+											</div>
+										</div>
+										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
+											<div class="itemPic">
+												<img :src="item.PROJECT_IMG1" alt="" class="cover" />
+
+											</div>
+											<div class="f1">
+												<div class="flex tabsItemsRow">
+													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
+													<div class="  t_r">×1</div>
+												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
+												<div class="flex ">
+													<div class=" t_l f1">已支付:</div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
+												</div>
+												
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
+												</div> -->
+												<div class="flex ">
+													<p class=" t_l f1">下单时间:</p>
+													<p>{{item.CREATE_TIME}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="itemFoot flex cor_g">
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
+											<div class="f1 btns" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[3].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+							<!--已完成 待评价-->
+							<div class="animated fadeInDownBig" v-show="currtab==4?true:false">
+								<ul class="reset">
+									<li class="tabsItems panel" v-for="item in orderList[4].infoList">
+										<div class="itemHeader container flex">
+											<aside class="f1 flex">
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+											</aside>
+											<div class=" t_r">
+												{{item.ORDER_STATUS | getStatus}}
+											</div>
+										</div>
+										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
+											<div class="itemPic">
+												<img :src="item.PROJECT_IMG1" alt="" class="cover" />
+
+											</div>
+											<div class="f1">
+												<div class="flex tabsItemsRow">
+													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
+													<div class="  t_r">×1</div>
+												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
+												<div class="flex ">
+													<div class=" t_l f1">已支付:</div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
+												</div>
+												
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
+												</div> -->
+												<div class="flex ">
+													<p class=" t_l f1">下单时间:</p>
+													<p>{{item.CREATE_TIME}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="itemFoot flex cor_g" >
+											<div class="f1 btns" v-show="item.ORDER_STATUS == 4" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
+											<div class="f1 btns" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[4].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+							<!--退款-->
+							<div class="animated fadeInDownBig" v-show="currtab==5?true:false">
+								<ul class="reset">
+									<li class="tabsItems panel" v-for="item in orderList[5].infoList">
+										<div class="itemHeader container flex">
+											<aside class="f1 flex">
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
+												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+											</aside>
+											<div class=" t_r">
+												{{item.ORDER_STATUS | getStatus}}
+											</div>
+										</div>
+										<div class="itemBody flex" @tap="_jumpToDetail(item.ORDER_CODE)">
+											<div class="itemPic">
+												<img :src="item.PROJECT_IMG1" alt="" class="cover" />
+
+											</div>
+											<div class="f1">
+												<div class="flex tabsItemsRow">
+													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
+													<div class="  t_r">×1</div>
+												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
+												<div class="flex ">
+													<div class=" t_l f1">退款金额:</div>
+													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
+												</div>
+												
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
+												</div> -->
+												<div class="flex ">
+													<p class=" t_l f1">下单时间:</p>
+													<p>{{item.CREATE_TIME}}</p>
+												</div>
+											</div>
+										</div>
+										<div class="itemFoot flex cor_g">
+											<div class="f1 btns" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[5].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<!--没登陆状态显示-->
+				<div class="cm_noLogin" v-show="!islogin">
+					<div class=" t_c noLoginTxt ">
+						<img src="images/noLogin.png" class="noLoginPic" />
+						<div>--您还没有登陆--</div>
+						<!--<div class="toLogin" @tap="_NTnavigateTo('./html/login.html','login')">前往登陆</div>-->
+						<div class="toLogin" @tap="_refresh">刷新</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/app.js"></script>
+		<script src="./js/vue.js"></script>
+		<script src="./js/bscroll.min.js"></script>
+		<script src="./js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false,
+			});
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						tabContenTop: '',
+						wraper: '',
+						isLoading: false,
+						currtab: 0,
+						note: '加载更多',
+						orderList: [{ //全部
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //待付款
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //待服务
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //服务中
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //已完成
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //退款
+								index: 1,
+								infoList: [],
+								norest: false
+							}
+						],
+						islogin: false, //判断登陆状态
+						scroll:''
+					},
+					created: function() {
+						app.initHeader();
+						//							console.log( app.mark + plus.storage.getItem('token'))
+					},
+					filters: {
+						tabStatus(value){
+							switch(value) {
+								case '0':
+									return '待付款'
+									break;
+								case '1':
+									return '待服务'
+									break;
+								case '2':
+									return '服务中'
+									break;
+								case '3':
+									return '已完成'
+									break;
+								case '4':
+									return '退款'
+									break;							
+								default:
+									break;
+							}
+						}
+						,
+						getStatus(value) {
+							switch(value) {
+								case '0':
+									return '待付款'
+									break;
+								case '1':
+									return '已支付'
+									break;
+								case '2':
+									return '待服务'
+									break;
+								case '3':
+									return '服务中'
+									break;
+								case '4':
+									return '待评价'
+									break;
+								case '5':
+									return '已完成'
+									break;
+								case '6':
+									return '退款中'
+									break;
+								case '7':
+									return '退款成功'
+									break;
+								case '8':
+									return '退款失败'
+									break;
+								case '9':
+									return '已取消'
+									break;
+								default:
+									break;
+							}
+						},
+
+					},
+					mounted: function() {
+						//							console.log(app.mark + plus.storage.getItem('token'))
+
+						//							初始化scroll的屏幕位置
+						this.tabContenTop = document.getElementById('header').offsetHeight + 40 + 'px';
+						/*判断登陆状态*/
+						this._whetherLogin()
+						
+						this._initScroll()
+						
+						
+					},
+					methods: {
+//						删除订单
+						_delectOrder(code){
+							plus.nativeUI.confirm('确定删除该订单？', (event) => {
+								var k = event.index
+								//								alert(k)
+								if(k == 0) {
+									var _this = this 
+									plus.nativeUI.showWaiting()
+									app.ajax(app.baseUrl + '/api/Order/CancelOrder', {
+										data: {ORDER_CODE:code},
+										type: 'post', //HTTP请求类型
+										success: function(result) {
+											plus.nativeUI.closeWaiting()
+											if(result.Success) {
+												plus.nativeUI.toast('删除订单成功')
+												_this._refreshData()
+											} else {
+												/*验证失败*/
+												plus.nativeUI.toast(result.Msg)
+		
+											}
+										}
+									});
+								} else {
+									return false
+								}
+
+							})							
+						},
+//						头像丢失处理
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="./images/default_avatar.jpg"
+						},
+						/*未付款订单 直接付款*/
+						_toPay(payCode) {
+							let desturl = './html/production/toPay.html'
+							let destid = 'toPay'
+							let exa = {
+								payCode: payCode
+							}
+							let option = {
+								showTitle: true
+							}
+							app.navigater(desturl, destid, exa, option)
+						
+						},
+						/*活动标签*/
+						activityLabel(value) {
+							if(!value || value == null) {
+								return []
+							} else {
+								return value
+							}
+						},
+						/*判断是否登陆*/
+						_whetherLogin() {
+							let i = plus.storage.getItem('isLogin');
+							if(i == '1') {
+								this.islogin = true
+								return true
+							} else {
+								this.islogin = false
+								return false
+							}
+						},
+						/*初始化下拉框*/
+						_initScroll() {
+							var _this = this;
+							var scroll = this.$refs.scroll
+							var wraper = this.$refs.wraper
+							/*初始化横向scroll*/
+							this.$nextTick(function() {
+								//							初始化scrool
+								if(!_this.wraper) {
+									//							初始化标题栏
+									_this.wraper = new BScroll(wraper, {
+										click: true,
+										probeType: 3,
+										bounceTime: 200,
+										scrollX: true,
+										scrollY: false
+									})
+								} else {
+									_this.wraper.refresh();
+								};
+								/*竖向下拉刷新*/
+								if(!_this.scroll) {
+									//							初始化标题栏
+									_this.scroll = new BScroll(scroll, {
+										click: true,
+										probeType: 3,
+										bounceTime: 200,
+										pullUpLoad: {
+											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+										},
+										pullDownRefresh: {
+											threshold: 50,
+											stop: 0
+										}
+									})
+								} else {
+									_this.scroll.refresh();
+								};
+								/*上拉加载*/
+								_this.scroll.on('pullingUp', function(e) {
+									_this._getData((b) => {
+										if(b) {
+
+										} else {
+											_this.scroll.finishPullUp()
+
+										}
+									})
+								})
+								/*下拉刷新*/
+								_this.scroll.on('pullingDown', function(e) {
+									_this._refreshData()
+								})
+								
+								_this._getData((b) => {
+								if(b) {
+	
+								} else {
+									this.scroll.finishPullUp()
+	
+								}
+							})
+							})
+						},
+						/*切换分类*/
+						_changeTab: function(key) {
+							//								alert(key)
+							this.currtab = parseInt(key)
+							if(this.orderList[this.currtab].index == 1) {
+									this._getData((b) => {
+										if(b){
+//											this.note = "没有数据了"
+										}else{
+											this.scroll.finishPullUp()
+//											this.note = "加载更多"
+										}
+									})
+								} else {
+									if(!this.orderList[this.currtab].norest){
+//										该分类还有数据
+										this.scroll.finishPullUp()
+										this.scroll.refresh();
+									}
+									this.scroll.refresh();
+									return
+								}
+						},
+//						跳转原生导航
+						_NTnavigateTo(dstUrl, dstId, extras) {
+						
+							let exa = extras
+							let option = {
+								showTitle: true
+							}
+							app.navigater(dstUrl, dstId, exa, option)
+						
+						},
+						/**跳转页面无等待*/
+						_NWnavigateTo(dstUrl, dstId, extras) {
+							let exa = extras
+							let option = {
+								showTitle: false,
+								autoWaiting: false
+							}
+							app.navigater(dstUrl, dstId, exa, option)
+							
+						},
+						//		跳转订单详情页面
+						_jumpToDetail(key) {
+							let desturl = './html/order/orderDetail.html'
+							let destid = 'orderDetail'
+							let exa = {
+								orderId: key
+							}
+							let option = {
+								showTitle: true,
+								createNew: true,
+								title_bacground:'#ccaa42',
+								title_color:'#fff',
+								progress_color:'#fff',
+								splitLine_color:'#e6be65'
+							}
+							app.navigater(desturl, destid, exa, option)
+
+						},
+						/*获取数据*/
+						_getData(callback) {
+
+							if(!this._whetherLogin()) {
+								if(callback) callback();
+								return
+							}
+
+							var tabType = this.currtab;
+							var index = this.orderList[tabType].index;
+							var proType = parseInt(tabType) - 1
+
+							var _this = this
+							var data = {
+								pageIndex: index,
+								pageSize: 5,
+								ORDER_TYPE: 1
+							}
+							if(proType >= 0) {
+								data.ORDER_STATUS_TYPE = proType
+							}
+							//							console.log(JSON.stringify(data))
+							mui.ajax(app.baseUrl + '/api/OrderService/GetOrderList', {
+								data: data,
+								type: 'post', //HTTP请求类型
+								headers :{
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								success: function(result) {
+									//plus.nativeUI.closeWaiting()
+									if(result.Success) {
+
+										var l = _this.orderList[tabType].infoList.length;
+
+										_this.orderList[tabType].infoList = _this.orderList[tabType].infoList.concat(result.Data.ListInfo);
+
+										if(_this.orderList[tabType].infoList.length == l) {
+											_this.orderList[tabType].norest = true;
+											if(callback) callback(true);
+											return;
+										}
+										_this.orderList[tabType].index += 1
+										mui.later(() => {
+											_this.scroll.refresh();
+											if(callback) callback(false);
+										}, 300)
+
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								},
+								error:function(xhr, type, errorThrown){
+									_this.scroll.finishPullDown()
+
+									app.catchErr(xhr, type, errorThrown)
+								}
+							});
+						},
+						/*刷新*/
+						_refreshData() {
+							this._whetherLogin();	
+							var _this = this
+							plus.nativeUI.showWaiting()
+
+							this.orderList = [{ //全部
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //待付款
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //待服务
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //服务中
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //已完成
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //退款
+									index: 1,
+									infoList: [],
+									norest: false
+								}
+							]
+							this._getData((b) => {
+								if(b) {
+
+								} else {
+									_this.scroll.finishPullUp()
+
+								}
+								_this.scroll.finishPullDown()
+								plus.nativeUI.closeWaiting()
+							})
+						},
+						/*回到顶部*/
+						_backTop() {
+							this.scroll.scrollTo(0, 0, 300)
+						},
+						_refresh() {
+							plus.nativeUI.showWaiting()
+							mui.later(() => {
+								this._whetherLogin();
+								this._getData(() => {
+									plus.nativeUI.closeWaiting()
+									
+								})
+							}, 1500)
+
+						}
+
+					}
+				});
+			});
+
+			function refresh() {
+				APP._refreshData()
+			}
+		</script>
+	</body>
+
+</html>

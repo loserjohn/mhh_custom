@@ -140,7 +140,7 @@
 							</aside>-->
 						</li>					
 					</ul>
-					<p class="t_c lh28" style="width: 100%;">没有数据咯</p>
+					<p class="t_c lh28" style="width: 100%;" >{{norest?'没有数据了':'上拉加载更多'}}</p>
 				</div>
 			</div>
 						
@@ -166,7 +166,8 @@
 						keyWord:'',
 						hisList:[],//历史记录,
 						index:1,//结果页的索引
-						resultList:[]
+						resultList:[],
+						norest:false
 					},
 					created: function() {
 						app.initHeader();
@@ -238,6 +239,7 @@
 						_search(){
 							this.index = 1;
 							this.resultList = [];
+							this.norest = false;
 							plus.nativeUI.showWaiting()
 							this._getData(()=>{
 								plus.nativeUI.closeWaiting()
@@ -293,7 +295,7 @@
 								SEARCH_KEY:this.keyWord,
 								distance: 5000
 							}
-//							console.log(JSON.stringify(data))
+
 							mui.ajax(app.baseUrl + '/api/Project/GetProjects', {
 								data: data,
 								timeout: 10000, //超时时间设置为10秒；
@@ -309,14 +311,19 @@
 										var l = _this.resultList.length;
 										if(result.Data.Total == l) {
 											plus.nativeUI.toast('没有数据了')
+											_this.norest = true
+											
 											if(callback) callback();
 											return;
 										}else{
 											_this.resultList = _this.resultList.concat(result.Data.ListInfo);
 										}
 										_this.index += 1
-										_this.scroll.finishPullUp()
-										_this.scroll.refresh();
+										mui.later(function(){
+											_this.scroll.finishPullUp()
+											_this.scroll.refresh();
+										},300)
+										
 //										储存记录
 										_this._save()
 										if(callback) callback();

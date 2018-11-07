@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>项目评价</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			/*列表项样式*/
+			
+			.tabsItems {
+				line-height: 2;
+				margin-bottom: 10px;
+				/*padding: 10px;*/
+			}
+			
+			.tabsItemsRow {
+				height: 18px;
+				line-height: 18px;
+				margin-bottom: 4px;
+				/*background: red;*/
+			}
+			
+			.cm_tabsContent {
+				bottom: 0;
+			}
+			
+			.itemHeader {
+				line-height: 36px;
+				/*background: red;*/
+				border-bottom: 1px dashed #d3d3d3;
+				padding: 10px;
+			}
+			
+			.itemBody {
+				padding: 10px;
+				border-bottom: 1px dashed #d3d3d3;
+				/*background: pink;*/
+			}
+			
+			.itemPic {
+				width: 80px;
+				height: 80px;
+				margin-right: 10px;
+				overflow: hidden;
+			}
+			
+			.itemFoot {
+				line-height: 2;
+				padding: 5px;
+			}
+			
+			.btns {
+				text-align: center;
+				color: #404040;
+				font-size: 16px;
+			}
+			
+			.lh24 {
+				line-height: 24px;
+			}
+			
+			.cm_tabsT {
+				width: 100%;
+				/*overflow: hidden;*/
+			}
+			
+			.cm_tabTitle {
+				/*width: 80px!important;*/
+			}
+			
+			.ticketBox {
+				height: 24px;
+				overflow: hidden;
+				width: 100%;
+				margin-bottom: 4px;
+			}
+			
+			.ticketBox .ticketItems {
+				line-height: 24px;
+				background: url(./images/quan_bg.png) 0 0/100% 100% no-repeat;
+				box-sizing: border-box;
+				text-align: center;
+				color: #fff;
+				padding: 0 10px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			
+			.label_tool {
+				height: 18px;
+				line-height: 18px;
+				background: #ff004d;
+				border-radius: 0 8px 8px 0;
+				font-size: 10px;
+				padding: 0 10px;
+				color: #fff;
+				margin-bottom: 5px;
+			}
+			
+			.commontItem {
+				border-bottom: 1px dotted #d3d3d3;
+				padding: 10px 15px;
+				background: #fff;
+			}
+			
+			.commontPicBox {
+				justify-content: space-between;
+				margin: 10px 0;
+			}
+			
+			.commontPic {
+				width: 32%;
+				height: 80px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="fixed  header flex" id="header">
+			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+			<div class=" f1  cor_w t_c page_title">
+				项目评价
+			</div>
+			<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+		</header>
+		<div id="app">
+			<!--分类作品-->
+			<div class="cm_tabBars " id="content" ref="content">
+				<div class="cm_tabsT" ref="wraper">
+					<ul class="flex reset cm_ul container">
+						<li @tap="_changeTab(0)" class="cm_tabTitle f1" :class="{active:currtab==0?true:false}">非常非常嘿皮</li>
+						<li @tap="_changeTab(1)" class="cm_tabTitle f1" :class="{active:currtab==1?true:false}">很嘿皮</li>
+						<li @tap="_changeTab(2)" class="cm_tabTitle f1" :class="{active:currtab==2?true:false}">嘿皮</li>
+						<li @tap="_changeTab(3)" class="cm_tabTitle f1" :class="{active:currtab==3?true:false}">不嘿皮</li>
+					</ul>
+				</div>
+
+				<div ref="scroll" class="cm_tabsContent" :style="{top:tabContenTop}" id="scroll">
+					<div class=" clearfix" style="min-height: 101%;">
+						<!--刷新提示框-->
+						<div class="refresh flex">
+							<div class="flex " style="bottom:110px ;">
+								<p class="f1 t_r "></p>
+								<!--<i class="iconfont icon-hua cor_y"></i>-->
+								<p class="f1 t_l">有种你放开我</p>
+							</div>
+							<div class="flex " style="bottom:80px ;">
+								<p class="f1 t_r">有种你放开我</p>
+								<!--<i class="iconfont icon-dianzan1 cor_y"></i>-->
+								<p class="f1 t_l"></p>
+							</div>
+							<div class="flex " style="bottom:50px ;">
+								<p class="f1 t_r"></p>
+								<!--<i class="iconfont icon-zuanshi cor_y"></i>-->
+								<p class="f1 t_l">有种你放开我</p>
+							</div>
+							<div class="flex " style="bottom:20px ;">
+								<p class="f1 t_r">有种你放开我</p>
+								<!--<i class="iconfont icon-jiangbei cor_y"></i>-->
+								<p class="f1 t_l"></p>
+							</div>
+							<img src="../../images/refresh4.png" class="refreshImg2" />
+						</div>
+						<div style="padding-bottom: 40px;">
+							<!--非常非常嘿皮-->
+							<div class=" animated fadeInDownBig" v-show="currtab==0?true:false">
+								<ul class="reset ">
+									<li class="flex commontItem  " v-for="item in commentList[0].infoList">
+										<img :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../../images/default_avatar.jpg'" alt="" class="avatar" />
+										<div class="f1">
+											<div class="">{{item.MEMBER_NIKENAME}}</div>
+											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
+
+											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
+												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
+												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
+												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+											</div>
+											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
+											<div class="reply cor_g" v-html="item.REPLY_CONTENT"></div>
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{commentList[0].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+							<!--很嘿皮-->
+							<div class="animated fadeInDownBig" v-show="currtab==1?true:false" style>
+								<ul class="reset">
+									<li class="flex commontItem  " v-for="item in commentList[1].infoList">
+										<img :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../../images/default_avatar.jpg'" alt="" class="avatar" />
+										<div class="f1">
+											<div class="">{{item.MEMBER_NIKENAME}}</div>
+											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
+
+											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
+												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
+												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
+												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+											</div>
+											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{commentList[1].norest?'没有数据咯':''}}</li>
+								</ul>
+
+							</div>
+							<!--嘿皮-->
+							<div class="animated fadeInDownBig" v-show="currtab==2?true:false">
+								<ul class="reset">
+									<li class="flex commontItem  " v-for="item in commentList[2].infoList">
+										<img :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../../images/default_avatar.jpg'" alt="" class="avatar" />
+										<div class="f1">
+											<div class="">{{item.MEMBER_NIKENAME}}</div>
+											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
+
+											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
+												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
+												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
+												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+											</div>
+											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{commentList[2].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+							<!--不嘿皮-->
+							<div class="animated fadeInDownBig" v-show="currtab==3?true:false">
+								<ul class="reset">
+									<li class="flex commontItem  " v-for="item in commentList[3].infoList">
+										<img :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../../images/default_avatar.jpg'" alt="" class="avatar" />
+										<div class="f1">
+											<div class="">{{item.MEMBER_NIKENAME}}</div>
+											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
+
+											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
+												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
+												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
+												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+											</div>
+											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
+										</div>
+									</li>
+									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{commentList[3].norest?'没有数据咯':''}}</li>
+								</ul>
+							</div>
+						</div>
+						<!--<p class="t_c" style="margin-bottom: 10px;line-height: 40px;">{{note}}</p>-->
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						tabContenTop: '',
+						wraper: '',
+						isLoading: false,
+						currtab: 0,
+						note: '加载更多',
+						commentList: [{ //非常非常嘿皮
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //很嘿皮
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //嘿皮
+								index: 1,
+								infoList: [],
+								norest: false
+							},
+							{ //不嘿皮
+								index: 1,
+								infoList: [],
+								norest: false
+							}
+						],
+						proCode: ''
+					},
+					created: function() {
+						app.initHeader();
+						//							console.log( app.mark + plus.storage.getItem('token'))
+					},
+					filters: {
+						commentTxt(value) {
+							switch(value) {
+								case '1':
+									return '非常非常嘿皮'
+									break;
+								case '2':
+									return '很嘿皮'
+									break;
+								case '3':
+									return '嘿皮'
+									break;
+								case '4':
+									return '不嘿皮'
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					mounted: function() {
+						//							console.log(app.mark + plus.storage.getItem('token'))
+						var _this = this;
+
+						var scroll = this.$refs.scroll
+						var wraper = this.$refs.wraper
+						//							初始化scroll的屏幕位置
+						this.tabContenTop = document.getElementById('header').offsetHeight + 40 + 'px';
+
+						var self = plus.webview.currentWebview();
+						this.proCode = self.proCode
+						//						alert(self.proCode)
+						/*初始化横向scroll*/
+						this.$nextTick(function() {
+							//							初始化scrool
+							if(!_this.wraper) {
+								//							初始化标题栏
+								_this.wraper = new BScroll(wraper, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									scrollX: true,
+									scrollY: false
+								})
+							} else {
+								_this.wraper.refresh();
+							};
+							/*竖向下拉刷新*/
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									pullUpLoad: {
+										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									},
+									pullDownRefresh: {
+										threshold: 50,
+										stop: 0
+									}
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getData((b) => {
+									if(b) {
+
+									} else {
+										_this.scroll.finishPullUp()
+
+									}
+								})
+							})
+							/*下拉刷新*/
+							_this.scroll.on('pullingDown', function(e) {
+								_this._refreshData()
+							})
+						})
+
+						this._getData((b) => {
+							plus.nativeUI.closeWaiting()
+							mui.currentWebview.show('pop-in', 300, function() {}, {});
+							if(b) {
+
+							} else {
+								this.scroll.finishPullUp()
+
+							}
+						})
+
+					},
+					methods: {
+						//							tab切换
+						_changeTab: function(key) {
+							//								alert(key)
+							this.currtab = parseInt(key)
+							this.scroll.refresh()
+							if(this.commentList[this.currtab].index == 1) {
+								this._getData((b) => {
+									if(b) {
+										//											this.note = "没有数据了"
+									} else {
+										this.scroll.finishPullUp()
+										//											this.note = "加载更多"
+									}
+								})
+							} else {
+								if(!this.commentList[this.currtab].norest) {
+									//										该分类还有数据
+									this.scroll.finishPullUp()
+									this.scroll.refresh();
+								}
+								this.scroll.refresh();
+								return
+							}
+						},
+						/*获取数据*/
+						_getData(callback) {
+							var tabType = this.currtab;
+
+							var proType = parseInt(tabType) + 1
+							var index = this.commentList[tabType].index;
+							var _this = this
+							var data = {
+								pageIndex: index,
+								pageSize: 5,
+								PROJECT_CODE: _this.proCode,
+								REVIEW_TYPE: proType
+							}
+							//							console.log(JSON.stringify(data))
+							mui.ajax(app.baseUrl + '/api/OrderReview/GetReviewList', {
+								data: data,
+								type: 'get', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									if(result.Success) {
+		
+										var l = _this.commentList[tabType].infoList.length;
+
+										_this.commentList[tabType].infoList = _this.commentList[tabType].infoList.concat(result.Data.ListInfo);
+
+										if(_this.commentList[tabType].infoList.length == l) {
+											_this.commentList[tabType].norest = true;
+											if(callback) callback(true);
+											return;
+										}
+										_this.commentList[tabType].index += 1
+										mui.later(() => {
+											_this.scroll.refresh();
+											if(callback) callback(false);
+										}, 300)
+
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									app.catchErr(type)
+								}
+							});
+						},
+						/*刷新*/
+						_refreshData() {
+							var _this = this
+							plus.nativeUI.showWaiting()
+							this.commentList = [{ //非常非常嘿皮
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //很嘿皮
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //嘿皮
+									index: 1,
+									infoList: [],
+									norest: false
+								},
+								{ //不嘿皮
+									index: 1,
+									infoList: [],
+									norest: false
+								}
+							]
+							this._getData((b) => {
+								if(b) {
+
+								} else {
+									_this.scroll.finishPullUp()
+
+								}
+								_this.scroll.finishPullDown()
+								plus.nativeUI.closeWaiting()
+							})
+						},
+						/*回到顶部*/
+						_backTop() {
+							this.scroll.scrollTo(0, 0, 300)
+						}
+					}
+				})
+
+			});
+		</script>
+	</body>
+
+</html>

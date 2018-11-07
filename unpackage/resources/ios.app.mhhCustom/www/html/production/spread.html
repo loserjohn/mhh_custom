@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>差价</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			/*购买项目*/
+			
+			.block2 {
+				/*padding: 10px;*/
+			}
+			
+			.block2 .proPic {
+				width: 80px;
+				height: 80px;
+				overflow: hidden;
+				margin-right: 15px;
+			}
+			/*优惠券*/
+			
+			.block3 {
+				border-top: 1px dotted #d3d3d3;
+				margin-top: 10px;
+			}
+			
+			.couponsBox {
+				width: 80%;
+				margin: 0 auto;
+				overflow: hidden;
+				padding: 15px 0;
+			}
+			
+			.couponsBox .couponsItem {
+				width: 100%;
+				height: 80px;
+				margin-bottom: 10px;
+				/*background: #ccaa42;*/
+				background: url(../../images/card_bg3.png) 0 0/100% 100% no-repeat;
+				/*padding:0 15px;*/
+			}
+			
+			.couponsBox .couponsItem div {
+				text-align: center;
+			}
+			/*充值卡*/
+			
+			.refillcardBox {
+				/*background: red;*/
+				width: 100%;
+				padding: 15px 0;
+			}
+			
+			.refillcardBox .refillcardItem {
+				width: 200px;
+				height: 100px;
+				margin: 0 auto;
+				background: url(../../images/card_bg2.png) center/100% 100% no-repeat;
+				padding: 25px 15px;
+				margin-bottom: 10px;
+			}
+			/*地址选择*/
+			
+			.addressBox {
+				padding: 15px;
+			}
+			
+			.addressBox .addressItem {
+				border-bottom: 1px dashed #d3d3d3;
+				padding: 15px 0;
+			}
+			/*模态框局部样式*/
+			
+			.cm_modal_content {
+				bottom: 50px;
+				overflow: hidden;
+				background: #eee;
+			}
+			
+			.title {
+				margin-top: 30px;
+			}
+			
+			.btnBox {
+				position: absolute;
+				width: 100%;
+				height: 50px;
+				line-height: 50px;
+				bottom: 0;
+			}
+			
+			.btnBox>p {
+				font-size: 16px;
+				background: #212121;
+				color: #fff;
+				line-height: 50px;
+				text-align: center;
+			}
+			
+			.numBox {
+				border-top: 1px solid #d3d3d3;
+				margin-top: 10px;
+			}
+			
+			.nums {
+				width: 200px;
+				height: 40px;
+				/*background: red;*/
+				text-align: center;
+				line-height: 34px;
+				font-size: 24px;
+				border: 1px solid #ddd;
+				border-radius: 3px;
+				overflow: hidden;
+				padding: 0;
+				margin-top: 5px;
+			}
+			
+			.numBtns {
+				/*color: #e1e1e1;*/
+				width: 50px;
+				line-height: 34px;
+			}
+			
+			.numBtns.sub {
+				border-right: 1px solid #ddd;
+			}
+			
+			.numBtns.add {
+				border-left: 1px solid #ddd;
+			}
+			
+			.amount {
+				line-height: 40px;
+				font-size: 22px;
+				/*background: red;*/
+				height: 40px;
+				margin-top: 5px;
+			}
+			
+			.numInput {
+				width: 100%;
+				text-align: center;
+				border: none!important;
+				outline: none;
+				padding: 0;
+				margin: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<!--<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					差价补足
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>-->
+
+			<!--订单内容-->
+			<div ref='scroll' class="scrollBox" :style="{top:appHeight+'px'}">
+				<div class="clearfix scrollContent">
+
+					<!--项目-->
+					<div class="panelPad block2">
+						<div class="pro flex">
+							<div class="proPic">
+								<img :src="order.PROJECT_IMG1" alt="" class="cover" />
+							</div>
+							<div class="f1">
+								<div class="fs16">{{order.PROJECT_NAME}} <span class="cor_r fr">￥0.01</span> </div>
+								<p>技师：{{order.SHOP_NAME}} </p>
+								<p class="flex">嘿皮值:
+									<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item in  levels " />
+								</p>
+								<p>(请选择购买份数)</p>
+							</div>
+						</div>
+						<div class=" numBox flex">
+							<div class="lh28 cor_r f1 fs18 amount">￥{{totalAmount}}</div>
+							<!--{{count}}-->
+							<div class="flex nums">
+								<div class=" numBtns sub" @tap="_sub">-</div>
+								<div class="f1">
+									<input type="number" class="numInput" v-model.number="count" @change="_toNum" />
+									<!--<p>{{countNum}}</p>-->
+								</div>
+								<div class=" numBtns add" @tap="_add">+</div>
+							</div>
+						</div>
+					</div>
+
+					<!--备注-->
+					<div class="panel  block3">
+						<div class="mui-table-view">
+							<div class="mui-table-view-cell">
+								<textarea class="cellInputArea" v-model="remark" placeholder="备注"></textarea>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!--模态框1-->
+
+			<!--底部菜单-->
+			<div class="cm_bottomBtn flex">
+				<div class="f1" style="line-height: 50px;">
+					合计：<span class="cor_r fs20">￥{{totalAmount}}</span>
+				</div>
+
+				<div class="f1 yesBtn" @tap="_toSubmit">
+					确认提交
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			var APP;
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						tabContenTop: '',
+						scroll: '',
+						isLoading: false,
+
+						appHeight: '',
+
+						chooseType: 1,
+						orderCode: '',
+						count: 0, //份数
+
+						totalAmount: 0, //合计金额
+						levels: 0,
+						/*表单需要提交*/
+						product: '',
+						/*订单详情*/
+						order: '',
+						remark: '', //备注
+					},
+					created: function() {
+						var self = plus.webview.currentWebview();
+						this.orderCode = self.orderCode
+
+					},
+					mounted: function() {
+						var _this = this;
+
+						var scroll = this.$refs.scroll
+						//						var wraper = this.$refs.wraper
+						//							初始化scroll的屏幕位置
+						this.appHeight = 0;
+
+						/*初始化横向scroll*/
+						//						this._initScroll()
+						/*初始化数据*/
+						this._getData(() => {})
+						//						plus.nativeUI.closeWaiting()
+						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
+					},
+					methods: {
+						_toNum() {
+							if(!this.count) {
+								this.count = 0
+								this.countNum = 0
+							} else {
+								this.totalAmount = (this.count * 0.01).toFixed(2)
+							}
+						},
+						_sub() {
+							if(this.count == 0) return;
+							this.count--;
+							this.totalAmount = (this.count * 0.01).toFixed(2)
+						},
+						_add() {
+							this.count++;
+							this.totalAmount = (this.count * 0.01).toFixed(2)
+						},
+
+						/*获取数据*/
+						_getData(callback) {
+							var _this = this
+							//							alert(1)
+							/*获取订单详情*/
+							app.ajax(app.baseUrl + '/api/OrderService/GetOrder', {
+								type: 'get', //HTTP请求类型
+								data: {
+									ORDER_CODE: _this.orderCode
+								},
+								success: function(result) {
+									if(result.Success) {
+										_this.order = result.Data.data;
+										_this.levels = parseInt(result.Data.data.SHOP_STAR)
+										if(callback) callback()
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+										if(callback) callback()
+									}
+								}
+							});
+
+						},
+
+						/*回到顶部*/
+						_backTop() {
+							this.scroll.scrollTo(0, 0, 300)
+						},
+						/*提交订单*/
+						_toSubmit() {
+							var _this = this
+
+							/*订单信息判断*/
+							if(!this.count || this.count == 0) {
+								plus.nativeUI.alert("请选择差价金额", function() {}, '马嘿嘿提醒您');
+								return;
+							}
+
+							plus.nativeUI.showWaiting()
+							var data = {
+								ORDER_CODE: _this.orderCode,
+								count: _this.count
+							}
+							//							console.log(_this.orderCode)
+							//														console.log(JSON.stringify(data))
+							app.ajax(app.baseUrl + '/api/Order/CreateAdditionOrder', {
+								type: 'post', //HTTP请求类型
+								data: data,
+								success: function(result) {
+									plus.nativeUI.closeWaiting()
+
+									if(result.Success) {
+										plus.nativeUI.toast('操作成功')
+										mui.later(() => {
+											let payCode = result.Msg; //订单号
+											let desturl = './toPay.html'
+											let destid = 'toPay'
+											let exa = {
+												payCode: payCode
+											}
+											let option = {
+												showTitle: true
+											}
+											app.navigater(desturl, destid, exa, option)
+											
+										
+										}, 1000)
+										/*成功跳转支付页面*/
+
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+
+						},
+
+					}
+				})
+
+			});
+		</script>
+	</body>
+
+</html>

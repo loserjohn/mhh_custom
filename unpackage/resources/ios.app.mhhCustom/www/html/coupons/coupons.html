@@ -1,0 +1,457 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>优惠券管理</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+		<style>
+			/*充值卡管理*/
+			
+			.cards {
+				bottom: 50px;
+			}
+			
+			.cardList {
+				background: #fff;
+				position: relative;
+				width: 100%;
+				/*margin-bottom: 15px;*/
+			}
+			
+			.cardList .status {
+				position: absolute;
+				width: 100px;
+				top: 0;
+				right: 0;
+			}
+			
+			.cardPic {
+				width: 30%;
+				box-sizing: border-box;
+				background: url(../../images/yhq_bg.png) 0 0/100% 100% no-repeat;
+				/*background: #ccaa42;*/
+				text-align: center;
+			}
+			
+			.cardPic.over {
+				background: url(../../images/yhq_bg2.png) 0 0/100% 100% no-repeat;
+			}
+			
+			.cardList i {
+				font-size: 18px;
+				margin-right: 10px;
+				line-height: 2;
+				/*color: #d3d3d3;*/
+			}
+			
+			.cards .mui-table-view-cell {
+				border-bottom: 1px solid #e3e3e3;
+			}
+			
+			.cards .mui-table-view-cell:after {
+				background: none;
+			}
+			
+			.cardPic>img {
+				width: 80px;
+				display: block;
+				margin: 12px auto;
+			}
+			
+			.cardPic .curMoney {
+				font-size: 22px;
+				/*line-height: 1.5;*/
+				color: #fff;
+			}
+			
+			.cardList .cardMsg {
+				box-sizing: border-box;
+				padding: 0 10px 5px 10px;
+				width: 70%;
+				/*border-left: 1px dotted #d3d3d3;*/
+			}
+			
+			.cardList .cardMsgTitle {
+				/*background: red;*/
+				height: 60px;
+				overflow: hidden;
+				line-height: 60px;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				width: 100%;
+			}
+			/*底部的按钮*/
+			
+			.bottomMenus {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				height: 50px;
+				right: 0;
+				background: rgba(21, 21, 21, 1);
+			}
+			
+			.menusTxt {
+				font-weight: 400;
+				line-height: 50px;
+			}
+			
+			.note {
+				padding-bottom: 20px;
+			}
+			
+			.lh26 {
+				line-height: 28px;
+			}
+			
+			.status {
+				line-height: 50px;
+				height: 50px;
+				background: #ebd79c;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="loader" style="top:0;" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app">
+
+			<!--卡片-->
+			<div class="cards scrollBox " style="top:0" ref="scroll">
+				<div class="reset" style="min-height: 101%;">
+					<!--刷新提示框-->
+					<div class="refresh flex">
+						<div class="flex " style="bottom:95px ;">
+							<p class="f1 t_r "></p>
+							<i class="iconfont icon-hua cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:65px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-dianzan1 cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+						<div class="flex " style="bottom:35px ;">
+							<p class="f1 t_r"></p>
+							<i class="iconfont icon-zuanshi cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:5px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-jiangbei cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+					</div>
+					<ul class="reset cm_ul ">
+						<li class="mui-table-view-cell reset" v-for="item in couponsList" v-show="type==1?item.ENTRY_STATUS=='1':item.ENTRY_STATUS!='1'">
+							<div class="cardList flex " @tap="_checkDetail(item)">
+								<div class="cardPic" :class="{over:item.ENTRY_STATUS!='1'}">
+									<p class=" t_c cor_w fs16 lh36">满￥{{item.DISCOUNT_LIMIT}}</p>
+									<div class="prize curMoney lh36">减￥{{item.DISCOUNT_AMOUNT}}</div>
+								</div>
+								<div class="cardMsg ">
+									<div class="cardMsgTitle">{{item.DISCOUNT_NAME}}</div>
+									<p class="time">过期时间：{{item.OVER_DATE}}</p>
+								</div>
+							</div>
+						</li>
+						<li class="t_c cor_g lh36" v-show="couponsList.length!=0">{{more}}</li>
+					</ul>
+					<!--无数据提示-->
+					<div v-if="couponsList.length==0" class="t_c cm_noItem">
+						<div class="cm_noItem_box flex">
+							<img src="../../images/no3.png" alt="" clas/>
+							<div class="t_c ">您还没有优惠券</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--底部菜单-->
+			<div class=" bottomMenus flex">
+				<h3 class="cor_y t_c menusTxt f1 " @tap="_toSwitch">
+					<i  class="iconfont icon-qiaquan  " style="font-size: 20px;" ></i> 
+						{{switchTxt}}
+				</h3>
+			</div>
+
+			<!--模态框显示优惠券信息信息-->
+			<div class="cm_mask_bot" v-if="show" @tap.self="_checkDetail()">
+				<div class="cm_modal_bot  animated slideInUp">
+					<h3 class="cm_title t_c ">优惠券详情</h3>
+					<div class=" container cor_w status">
+						当前状态：<span class="fs20 cor_w">{{detailPre.ENTRY_STATUS | getStatus}}</span>
+					</div>
+					<div class="container">
+
+						<h3 class="cm_name">{{detailPre.DISCOUNT_NAME}} </h3>
+						<h3 class="cm_name">所属店铺 /平台:{{detailPre.SHOP_CODE}}</h3>
+						<div> {{detailPre.DISCOUNT_LIMIT}}元可用</div>
+						<div class="prize">满 ￥{{detailPre.DISCOUNT_LIMIT}} 减 ￥{{detailPre.DISCOUNT_AMOUNT}}</div>
+						<p class="lh26">过期时间：{{detailPre.OVER_DATE}}</p>
+						<div> 优惠券说明：</div>
+						<div class="cm_modal_note">{{detailPre.DISCOUNT_DETAILS}}</div>
+						<div class="cm_btn" @tap="_toUse(detailPre.SHOP_CODE)" v-show="detailPre.SHOP_CODE!='mhh'">
+							{{btn}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			})
+			var APP
+			var wv = plus.webview.currentWebview();
+			wv.setStyle({
+				titleNView: {
+					buttons: [{
+						text: '须知',
+						fontSize: '14px',
+						onclick: toRule
+					}]
+				}
+			});
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						loader: true,
+						scrollTop: '',
+						scroll: '',
+						show: false,
+						couponsList: [],
+						detailPre: {},
+						index: 1,
+						/*当前页码*/
+						type: 1,
+						/*查看类型1是可用券  2是过期全啊*/
+						btn: '',
+						switchTxt: '查看失效优惠券',
+						more: '加载更多'
+					},
+					created: function() {
+						//						app.initHeader();
+					},
+					mounted: function() {
+
+						var _this = this
+						var scroll = this.$refs.scroll
+						this.scrollTop = 0 + 'px'
+						/*首次加载数据*/
+						this._getData()
+						this.$nextTick(function() {
+							//							初始化scrool
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									pullDownRefresh: {
+										threshold: 50,
+										stop: 0
+									},
+									pullUpLoad: {
+										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									},
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+							/*下拉刷新*/
+							_this.scroll.on('pullingDown', function(e) {
+								//								plus.nativeUI.showWaiting()
+								_this.index = 1
+								_this.couponsList = []
+								_this.more = '加载更多'
+								_this._getData((b) => {
+									//									plus.nativeUI.closeWaiting()
+									if(b) {
+
+									} else {
+										_this.scroll.finishPullUp()
+
+									}
+									_this.scroll.finishPullDown()
+									plus.nativeUI.closeWaiting()
+								})
+							})
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getData((b) => {
+									if(b) {
+
+									} else {
+										_this.scroll.finishPullUp()
+
+									}
+								})
+							})
+						})
+					},
+					filters: {
+						getStatus(k) {
+							//							优惠券状态0-未启用，1-启用中,2-审核中
+							switch(k) {
+								case '0':
+									return '不可用'
+									break;
+								case '1':
+									return '可用'
+									break;
+								case '2':
+									return '已使用'
+									break;
+								case '3':
+									return '过期'
+									break;
+								case '4':
+									return '作废'
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					methods: {
+						/*查看详情*/
+						_checkDetail(item) {
+							if(item) {
+								this.detailPre = item
+								if(item.ENTRY_STATUS == '1') {
+									this.btn = '立即使用'
+								} else {
+									this.btn = '查看店铺'
+								}
+							}
+
+							this.show = !this.show;
+							if(this.show) {
+								//								this.scroll.disable();
+							} else {
+								//								this.scroll.enable()
+							}
+						},
+						/*获取数据*/
+						_getData(callback) {
+
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Discount/GetDiscountList', {
+								data: {
+									pageIndex: _this.index,
+									pageSize: 10
+								},
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+
+									mui.later(() => {
+										document.getElementById('loader').style.display = "none"
+										if(result.Success) {
+											var l = _this.couponsList.length
+											if(l == result.Data.Total) {
+												_this.more = '没有数据了'
+												_this.scroll.refresh()
+												if(callback) callback(true);
+												return
+											}
+											_this.couponsList = _this.couponsList.concat(result.Data.ListInfo)
+											_this.index += 1
+											_this.scroll.refresh();
+											if(callback) callback(false);
+
+										} else {
+											/*验证失败*/
+											_this.loader = false
+											_this.scroll.refresh();
+										}
+									}, 500)
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									app.catchErr(xhr, type, errorThrown)
+								}
+							});
+						},
+						/*跳转过期券*/
+						_toSwitch() {
+							if(this.type == 1) {
+								this.type = 2
+								this.switchTxt = '查看可用优惠券'
+							} else {
+								this.type = 1
+								this.switchTxt = '查看失效优惠券'
+							}
+						},
+						/*去使用*/
+						_toUse(code) {
+							this._checkDetail();
+							let desturl = '../technician/technician.html'
+							let destid = 'technician'
+							let exa = {
+								shopCode: code
+							}
+							let option = {
+								createNew: true,
+								autoWaiting: false
+							}
+							app.navigater(desturl, destid, exa, option)
+
+						}
+					}
+				})
+			})
+
+			function refresh() {
+				APP._getData()
+			}
+
+			function toRule() {
+
+				let desturl = '../rules.html'
+				let destid = 'rules'
+				let exa = {
+					type: 2
+				}
+				let option = {
+					showTitle: true,
+					autoWaiting: false,
+					createNew: true
+				}
+				app.navigater(desturl, destid, exa, option)
+
+			}
+		</script>
+	</body>
+
+</html>

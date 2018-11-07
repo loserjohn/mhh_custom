@@ -1,0 +1,761 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/common.css" />
+		<link rel="stylesheet" href="./css/iconfont.css" />
+		<style>
+			.mineBox {
+				width: 100%;
+				height: 80px;
+				background: rgba(21, 21, 21, 1);
+				box-sizing: border-box;
+				padding: 0 15px;
+				margin: 0;
+			}
+			
+			.mineBox .mineAvatar {
+				width: 70px;
+				height: 70px;
+				border: 2px solid #ddd;
+				box-sizing: border-box;
+				border-radius: 10px;
+				overflow: hidden;
+				margin-right: 15px;
+			}
+			
+			.mineBox .level {
+				background: url(./images/level.png) 0 -4px /contain no-repeat;
+				margin-left: 15px;
+				text-indent: 45px;
+				text-decoration: underline;
+				font-style: italic;
+			}
+			/*快捷信息*/
+			
+			.block1 {
+				margin-top: 0;
+				height: 82px;
+			}
+			
+			.fastItem p {
+				font-size: 24px;
+				line-height: 2;
+				color: #ccaa42;
+			}
+			
+			.fastItem div {
+				color: #404040;
+				font-size: 12px;
+			}
+			/*红包活动*/
+			
+			.block2 {
+				height: 152px;
+				width: 100%;
+				background: url(./images/mines/mine1.png) 0 0 /cover no-repeat;
+			}
+			/*菜单*/
+			
+			.block3 ul {
+				flex-wrap: wrap;
+				width: 100%;
+			}
+			
+			.menusItem {
+				width: 25%;
+				text-align: center;
+				margin: 10px 0;
+			}
+			
+			.menusItem i {
+				font-size: 28px;
+				line-height: 1.5;
+				color: #d3d3d3;
+			}
+			
+			.menusItem p {
+				font-size: 12px;
+			}
+			/*历史记录*/
+			
+			.block4 {
+				box-sizing: border-box;
+				padding: 10px;
+				width: 100%;
+				/*overflow: hidden;*/
+				position: relative;
+			}
+			
+			.block4 .cm_title {
+				border-bottom: 1px dotted #d3d3d3;
+				line-height: 40px;
+			}
+			
+			.activityBox {
+				margin-top: 10px;
+			}
+			
+			.block4 .activityItem {
+				width: 100px;
+				box-sizing: border-box;
+				/*padding: 5px;*/
+				overflow: hidden;
+				margin: 0 5px;
+				/*background: red;*/
+			}
+			
+			.block4 .activityItem>img {
+				width: 100%;
+				height: 100px;
+			}
+			
+			.block4 .more {
+				border: 1px solid #d3d3d3;
+				box-sizing: border-box;
+				/*line-height: 184px;*/
+				text-align: center;
+			}
+			
+			.block4 .more span {
+				margin-top: 40px;
+				font-size: 50px;
+				color: #d3d3d3;
+			}
+			/*立即登陆*/
+			
+			.toLogin {
+				text-decoration: underline;
+				font-style: italic;
+				color: #ccaa42;
+			}
+			
+			.new {
+				position: relative;
+			}
+			
+			.new::before {
+				content: '';
+				position: absolute;
+				right: 10px;
+				top: 0px;
+				width: 10px;
+				height: 10px;
+				background: red;
+				border-radius: 50%;
+			}
+			
+			.mainBox {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				top: 0;
+				overflow: hidden;
+			}
+			
+			.level {
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<!--头部-->
+			<header class="fixed container  header flex " :style="{background:'rgba(21,21,21,'+opacity+')'}" id="header">
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w" style="width: 66px;"></button>
+				<div class=" f1  cor_w t_c page_title">
+					我的
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w" @tap="_navigateTo('./html/set.html','set',{menber:userMsg})">
+					设置	
+				</button>
+			</header>
+
+			<div ref='scroll' :style="{height:appHeight+'px'}">
+				<div class="clearfix scrollContent " style="min-height: 101%;">
+
+					<!--刷新提示框-->
+					<div class="refresh flex">
+						<div class="flex " style="bottom:110px ;">
+							<p class="f1 t_r "></p>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:80px ;">
+							<p class="f1 t_r">有种你放开我</p>
+
+							<p class="f1 t_l"></p>
+						</div>
+						<div class="flex " style="bottom:50px ;">
+							<p class="f1 t_r"></p>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:20px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<p class="f1 t_l"></p>
+						</div>
+						<img src="./images/mines/refresh2.png" class="refreshImg2" />
+					</div>
+
+					<!--主页面信息-->
+					<div class="relative " id="content" style="background: rgba(21,21,21,1);">
+
+						<!--个人信息-->
+						<div class="mineBox flex ">
+							<aside class="mineAvatar">
+								<img :src="(userMsg.MEMBER_HEAD&&islogin)?userMsg.MEMBER_HEAD:'./images/default_avatar.jpg'" alt="" class="cover" />
+							</aside>
+							<article class="f1">
+								<div v-show="islogin">
+									<div class="flex">
+										<div class="cm_name cor_w">{{userMsg.MEMBER_NIKENAME}}</div>
+										<div class="level cor_y cm_name fs10">{{userMsg.POINTS_LEVEL_NAME?userMsg.POINTS_LEVEL_NAME+'会员':'未登陆'}}</div>
+									</div>
+									<p>{{userMsg.MEMBER_INTEGRAL?'积分：'+userMsg.MEMBER_INTEGRAL:''}}</p>
+									<p>{{userMsg.MEMBER_MOBILE}}</p>
+								</div>
+
+								<div v-show="!islogin" @tap="_toLoginPage()">
+									<div class="cm_name cor_w">未登录</div>
+									<div class="cm_name cor_w toLogin">立即登陆</div>
+								</div>
+							</article>
+						</div>
+
+						<!--快捷提示-->
+						<div class="block1 panel">
+							<ul class="flex">
+								<li class="f1 fastItem">
+									<a @tap="_navigateTo('./html/platformCard/platformCard.html','platformCard')">
+										<p class="t_c ">{{account | wan}} <span v-if="parseInt(account)>10000 " class="fs14">万</span></p>
+										<div class="t_c">账户余额 </div>
+									</a>
+								</li>
+								<li class="f1 fastItem">
+									<a @tap="_navigateTo('./html/refillcard/refillcard.html','refillcard')">
+										<p class="t_c fs20">{{store}}</p>
+										<div class="t_c"> 店铺充值卡 </div>
+									</a>
+								</li>
+								<li class="f1 fastItem">
+									<a @tap="_navigateTo('./html/coupons/coupons.html','coupons')">
+										<p class="t_c fs20">{{coupon}}</p>
+										<div class="t_c">优惠券 </div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<!--菜单-->
+					<div class="block3 panel menus">
+						<ul class="flex">
+							<li class="menusItem" @tap="_navigateTo('./html/address/address.html','address')">
+								<!--<a href="./html/address/address.html" hid="address">-->
+								<i class="iconfont icon-wei- "></i>
+								<p>地址管理</p>
+								<!--</a>-->
+							</li>
+							<li class="menusItem" @tap="_navigateTo('./html/coupons/coupons.html','coupons')">
+								<!--<a href="">-->
+								<i class="iconfont icon-qiaquan1 "></i>
+								<p>优惠券管理</p>
+								<!--</a>-->
+							</li>
+							<li class="menusItem" @tap="_navigateTo('./html/refillcard/refillcard.html','refillcard')">
+								<!--<a href="">-->
+								<i class="iconfont icon-huiyuanqia "></i>
+								<p>商铺充值卡</p>
+								<!--</a>-->
+							</li>
+							<!--<li class="menusItem">-->
+							<!--<li class="menusItem" @tap="_navigateTo('./html/platformCard/platformCard.html','platformCard')">
+								<i class="iconfont icon-xinyongqia "></i>
+								<p>平台充值卡</p>
+							</li>-->
+							<li class="menusItem" @tap="_navigateTo('./html/collection/collection.html','collection',{'type':1})">
+								<!--<a href="">-->
+								<i class="iconfont icon-shoucangxihuan "></i>
+								<p>项目收藏</p>
+								<!--</a>-->
+							</li>
+							<li class="menusItem" @tap="_navigateTo('./html/collection/collection.html','collection',{'type':2})">
+								<!--<a href="">-->
+								<i class="iconfont icon-shoucang1 "></i>
+								<p>技师关注</p>
+								<!--</a>-->
+							</li>
+							<!--<li class="menusItem">-->
+							<li class="menusItem" @tap="_navigateTo('./html/kefu.html','kefu')">
+								<!--<a href="">-->
+								<i class="iconfont icon-service "></i>
+								<p>联系客服</p>
+								<!--</a>-->
+							</li>
+							<li class="menusItem" @tap="_navigateTo('./html/share.html','share',{'num':num})">
+								<!--<a href="">-->
+								<i class="iconfont icon-shangquangoucheng "></i>
+								<p>分享</p>
+								<!--</a>-->
+							</li>
+							<li class="menusItem" @tap="_toChat" :class="{new:hasNew}">
+								<!--<a href="">-->
+								<i class="iconfont icon-comments1  cor_w"></i>
+								<p>消息</p>
+								<!--</a>-->
+							</li>
+							<!--<li class="menusItem">
+								<i class="iconfont icon-more "></i>
+								<p>正在努力中</p>
+							</li>-->
+						</ul>
+					</div>
+
+					<!--豆腐块-->
+					<div v-for="item in blockData" class="reset " style="background: #fff;">
+						<div class=" flex " v-if="item.type==1">
+							<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+								<img :src="item.listData[0].img" alt="" class="contain " />
+							</div>
+						</div>
+						<div class=" flex " v-else-if="item.type==2">
+							<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+								<img :src="item.listData[0].img" alt="" class="contain " />
+							</div>
+							<div class="f1 t_c" @tap="_jump(item.listData[1].keyCode)">
+								<img :src="item.listData[1].img" alt="" class="contain" />
+							</div>
+						</div>
+
+						<div class="flex " v-else-if="item.type==3">
+							<div class=" f2">
+								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+									<img :src="item.listData[0].img" alt="" class="contain" />
+								</div>
+
+							</div>
+							<div class="f3 ">
+								<div class=" t_c" @tap="_jump(item.listData[1].keyCode)">
+									<img :src="item.listData[1].img" alt="" class="contain" />
+								</div>
+								<div class=" t_c" @tap="_jump(item.listData[2].keyCode)">
+									<img :src="item.listData[2].img" alt="" class="contain" />
+								</div>
+							</div>
+						</div>
+						<div class=" flex " v-else-if="item.type==4">
+							<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
+								<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />
+							</div>
+							<div class="f1 t_c">
+								<div class="" @tap="_jump(item.listData[1].keyCode)">
+									<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain" />
+								</div>
+								<div class="flex">
+									<div class="f1 t_c" @tap="_jump(item.listData[2].keyCode)">
+										<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain " />
+									</div>
+									<div class="f1 t_c" @tap="_jump(item.listData[3].keyCode)">
+										<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<!--历史订单-->
+					<div class="block4 panel ">
+						<div class="cm_title t_c">
+							-- 历史订单 --
+						</div>
+						<div class="activityBox" ref="wrapper">
+							<ul class="reset flex" :style="{width:110*(hisList.length)+'px'}">
+								<li class="activityItem" v-for="item in hisList" @tap="_toDetail('./html/production/productBuy.html','productBuy.html',{'proKey':item.PROJECT_CODE})">
+									<img :src="item.PROJECT_IMG1" alt="" class="contain" />
+									<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
+									<article class="flex">
+										<p class="prize  cor_r fs18 lh28">￥{{item.ORDER_PAY_AMOUNT}}</p>
+										<p class="delec_prize cor_g f1 t_r lh28">￥{{item.ORDER_TOTAL_AMOUNT}}</p>
+									</article>
+								</li>
+							</ul>
+							<p class="t_c" v-show="hisList.length==0">--您还没有完成过订单哦--</p>
+						</div>
+					</div>
+					<!--提示语-->
+					<div class="cm_hint flex">
+						<div class="f1"><img src="./images/hint.png" alt="" /></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/app.js"></script>
+		<script src="./js/vue.js"></script>
+		<script src="./js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false
+			});
+			var APP
+			var mainPage
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview()
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						appHeight: '',
+						/*主屏高度*/
+						scroll: '',
+						/*主页面下拉框*/
+						wrapper: '',
+						/*横向滑动*/
+						account: 0,
+						/*账户余额*/
+						store: 0,
+						/*商铺平台*/
+						coupon: 0,
+						/*0优惠券*/
+						opacity: 0,
+
+						islogin: false,
+						/*登陆状态*/
+						num: '',
+						hisList: [],
+						/*历史订单列表*/
+						userMsg: '',
+						/*个人数据*/
+						hasNew: false,
+						blockData: []
+					},
+					filters: {
+						wan(value) {
+							let num = parseInt(value);
+							if(num >= 10000) {
+								let a = (num / 10000).toFixed(2)
+								return a
+							} else {
+								return num
+							}
+
+						}
+					},
+					created: function() {
+						app.initHeader();
+						//						alert(plus.storage.getItem('isLogin'))
+					},
+					mounted: function() {
+						//						plus.storage.clear();
+						var _this = this
+						this.islogin = plus.storage.getItem('isLogin') == '1' ? true : false
+
+						/*初始化主页面的高度*/
+						this.appHeight = plus.display.resolutionHeight
+
+						/*初始化下拉scroll*/
+						this._initScroll()
+						this._initBlock() //初始化豆腐块
+
+					},
+					methods: {
+						_jump(str) {
+							app._jump(str)
+						},
+						//						初始化豆腐块
+						_initBlock() {
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Carousel/GetMinePannelList', {
+								type: 'get', //HTTP请求类型
+								timeout: 5000, //超时时间设置为10秒；
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+
+									/*登陆成功*/
+									plus.nativeUI.closeWaiting()
+									if(result.Success) {
+										_this.blockData = result.Data.ListInfo;
+										_this.scroll.refresh()
+
+									} else {
+										/*验证失败*/
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+
+								}
+							})
+						},
+						/*初始化滑动模块*/
+						_initScroll() {
+							var _this = this
+							/*初始化下拉scroll*/
+							this.$nextTick(function() {
+								var scroll = this.$refs.scroll
+								var wrapper = this.$refs.wrapper
+
+								/*页面竖向下拉刷新*/
+								if(!_this.scroll) {
+									//							初始化标题栏
+									_this.scroll = new BScroll(scroll, {
+										click: true,
+										probeType: 3,
+										scrollX: false,
+										bounceTime: 200,
+										pullDownRefresh: {
+											threshold: 40,
+											stop: 0
+										}
+									})
+								} else {
+									_this.scroll.refresh();
+								};
+								/*下拉刷新*/
+								_this.scroll.on('pullingDown', function(e) {
+									plus.nativeUI.showWaiting()
+									//									alert(1)
+									_this._initData(() => {
+
+										plus.nativeUI.closeWaiting();
+										//										_this.scroll.finishPullDown();
+										//										_this.scroll.refresh()
+
+									})
+								})
+								_this.scroll.on('scroll', (e) => {
+									let y = e.y;
+									if(y > 0) {
+										_this.opacity = 0;
+										//										
+									} else if(y < -200) {
+										_this.opacity = 1
+									} else {
+										let m = Math.abs(y) / 200
+										_this.opacity = m
+									}
+
+								})
+								/*推荐项目横向滑动*/
+								if(!_this.wrapper) {
+									//	初始化标题栏
+									_this.wrapper = new BScroll(wrapper, {
+										click: true,
+										probeType: 3,
+										bounceTime: 200,
+										scrollX: true,
+										scrollY: false
+									})
+								} else {
+									_this.wrapper.refresh();
+								};
+
+							})
+						},
+						/*初始化mine页面数据*/
+						_initData(callback) {
+							var _this = this
+							let isLogin = plus.storage.getItem('isLogin');
+
+							if(isLogin != '1') {
+
+								if(callback) callback()
+
+								return
+							}; //没有登陆状态则不获取数据
+							this.islogin = true;
+
+							/*登陆状态则获取客户数据*/
+							/*获取用户总账户余额*/
+							app.ajax(app.baseUrl + '/api/MemberInfo/GetMemberInfo', {
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										_this.userMsg = result.Data
+										_this.account = result.Data.MEMBER_ACOUNT
+										_this.store = result.Data.BUYCARD_COUNT
+										_this.coupon = result.Data.DISCOUNTENTRY_COUNT
+										_this.num = result.Data.MEMBER_MOBILE
+
+										plus.storage.setItem('userNickName', result.Data.MEMBER_NIKENAME)
+										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD)
+										plus.storage.setItem('myId', result.Data.MEMBER_MOBILE)
+										plus.storage.setItem('realIdCard', result.Data.CARD_NUM)
+										plus.storage.setItem('realName', result.Data.MEMBER_REALNAME)
+
+										//										记录认证状态
+										plus.storage.setItem('realStatus', result.Data.MEMBER_STATUS)
+
+										if(callback) callback()
+										_this.scroll.finishPullDown();
+										_this.$nextTick(function() {
+											_this.scroll.refresh()
+										})
+										//										mui.later(function(){
+										//											_this.scroll.refresh()
+										//										},500)
+
+									} else {
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+							/*获取去历史订单*/
+							app.ajax(app.baseUrl + '/api/OrderService/GetOrderList', {
+								type: 'post', //HTTP请求类型
+								data: {
+									pageIndex: 1,
+									pageSize: 8,
+									ORDER_TYPE: 1
+								},
+								success: function(result) {
+									if(result.Success) {
+										_this.hisList = result.Data.ListInfo
+
+									} else {
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+
+						},
+
+						_toChat() {
+							let isLogin = plus.storage.getItem('isLogin');
+							this.hasNew = false;
+							if(isLogin != '1') {
+								plus.nativeUI.toast('请您先登陆');
+								let desturl = './html/login.html'
+								let destid = 'login'
+								let exa = {}
+								let option = {
+									showTitle: true,
+									autoShow: false
+								}
+								app.navigater(desturl, destid, exa, option)
+								return
+							}
+							mainPage = plus.webview.getWebviewById('information')
+							if(mainPage) {
+								mainPage.show('pop-in', 300, function() {}, {})
+							}
+
+						},
+						_toLoginPage() {
+							let desturl = './html/login.html'
+								let destid = 'login'
+								let exa = {}
+								let option = {
+									showTitle: true,
+									autoShow: false
+								}
+								app.navigater(desturl, destid, exa, option)
+							
+					
+						},
+						/*跳转页面*/
+						_navigateTo(desturl, destid, extras) {
+							let isLogin = plus.storage.getItem('isLogin');
+							if(isLogin != '1') {
+								plus.nativeUI.toast('请您先登陆');
+								this._toLoginPage()
+								return
+							};
+
+								let exa = extras
+								let option = {
+									showTitle: true,
+									autoShow: false
+								}
+								app.navigater(desturl, destid, exa, option)
+						},
+						_toDetail(dstUrl, dstId, extras) {
+								let exa = extras
+								let option = {
+									autoShow: false
+								}
+								app.navigater(dstUrl, dstId, exa, option)			
+						},
+						_initUser() {
+							let isLogin = plus.storage.getItem('isLogin');
+							if(isLogin == '1') {
+								/*登陆状态*/
+								this.islogin = true;
+
+							} else {
+								this.islogin = false;
+								this.account = 0
+								/*账户余额*/
+								this.store = 0
+								/*商铺平台*/
+								this.coupon = 0
+							}
+
+							this._initData()
+						}
+					}
+				})
+
+			});
+			/*获取用户身份之后刷新页面*/
+			function refresh(type) {
+				//				if(mainPage){mainPage.evalJS('getList()')}
+				APP._initUser();
+
+				if(!type && plus.storage.getItem('isLogin') == '1') {
+					//					若是登陆,就刷新融云链接
+					initIM()
+				}
+			}
+			//			重新链接im
+			function initIM() {
+
+				mainPage = plus.webview.getWebviewById('information')
+
+				if(!mainPage) {
+					//					alert(666)
+					mainPage = mui.preload({
+						"id": 'information',
+						"url": './html/information/information.html',
+						'styles': {}
+					});
+				} else {
+					//					alert(111)
+					mainPage.evalJS('connectIM()')
+				}
+
+			}
+
+			function autoLogin() {
+				/*执行自动登陆状态判断*/
+				app.autoLogin((s) => {
+
+					if(s) {
+						plus.webview.getLaunchWebview().evalJS('closeVersion()');
+						APP._initData()
+					} else {
+						plus.webview.getLaunchWebview().evalJS('closeVersion()')
+					}
+				})
+			}
+
+			function hasNew() {
+				APP.hasNew = true
+			}
+
+			function noNew() {
+				APP.hasNew = false
+			}
+		</script>
+	</body>
+
+</html>

@@ -19,7 +19,7 @@
 			}
 			
 			.tabsItemsRow {
-				height: 18px;
+				/* height: 18px; */
 				line-height: 18px;
 				margin-bottom: 4px;
 				font-size: 14px;
@@ -184,6 +184,7 @@
 													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
 													<div class="  t_r">×1</div>
 												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
 												<div class="flex ">
 													<div class=" t_l f1">
 													{{item.ORDER_STATUS_TYPE == '0'?'需支付':'已支付'}}
@@ -191,9 +192,9 @@
 													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
-												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
 													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
-												</div>
+												</div> -->
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
 													<p>{{item.CREATE_TIME}}</p>
@@ -235,14 +236,15 @@
 													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
 													<div class="  t_r">×1</div>
 												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
 												<div class="flex ">
 													<div class=" t_l f1" >  需支付:</div>
 													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
-												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
 													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
-												</div>
+												</div> -->
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
 													<p>{{item.CREATE_TIME}}</p>
@@ -282,14 +284,15 @@
 													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
 													<div class="  t_r">×1</div>
 												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
 												<div class="flex ">
 													<div class=" t_l f1">已支付:</div>
 													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
-												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
 													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
-												</div>
+												</div> -->
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
 													<p>{{item.CREATE_TIME}}</p>
@@ -326,14 +329,15 @@
 													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
 													<div class="  t_r">×1</div>
 												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
 												<div class="flex ">
 													<div class=" t_l f1">已支付:</div>
 													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
-												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
 													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
-												</div>
+												</div> -->
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
 													<p>{{item.CREATE_TIME}}</p>
@@ -371,14 +375,15 @@
 													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
 													<div class="  t_r">×1</div>
 												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
 												<div class="flex ">
 													<div class=" t_l f1">已支付:</div>
 													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
-												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
 													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
-												</div>
+												</div> -->
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
 													<p>{{item.CREATE_TIME}}</p>
@@ -416,14 +421,15 @@
 													<div class=" t_l f1 fs16">{{item.PROJECT_NAME }}</div>
 													<div class="  t_r">×1</div>
 												</div>
+												<div class="lh1">订单编号: <span class="fr">{{item.ORDER_CODE}}</span></div>
 												<div class="flex ">
 													<div class=" t_l f1">退款金额:</div>
 													<div class="  t_r cor_r fs16" style="font-weight: 600;">￥{{item.ORDER_PAY_AMOUNT}} <span class="  t_r cor_g delec_prize fs12">￥{{item.PROJECT_PRICE}}</span></div>
 												</div>
 												
-												<div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
+												<!-- <div class="flex " v-if="activityLabel(item.PROJECT_TITLES).length!=0">
 													<div class="label_tool" v-for="list in  activityLabel(item.PROJECT_TITLES) " v-show="list">{{list}}</div>
-												</div>
+												</div> -->
 												<div class="flex ">
 													<p class=" t_l f1">下单时间:</p>
 													<p>{{item.CREATE_TIME}}</p>

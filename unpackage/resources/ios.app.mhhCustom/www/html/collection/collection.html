@@ -1,0 +1,570 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>项目收藏</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/loading.css" />
+		<style>
+			.block {
+				padding: 5px;
+			}
+			
+			.block .avatar {
+				width: 60px;
+				height: 60px;
+			}
+			
+			.label_tool {
+				height: 18px;
+				line-height: 18px;
+				background: #ff004d;
+				border-radius: 0 8px 8px 0;
+				font-size: 10px;
+				padding: 0 10px;
+				color: #fff;
+				margin-bottom: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+
+			<div id="content" class="cm_tabBars">
+				<div class="cm_tabsT">
+					<ul class="flex reset cm_ul">
+						<li class="cm_tabTitle f1 " @tap="_switch(1)" :class="{active:type==1}">收藏项目</li>
+						<li class="cm_tabTitle f1" @tap="_switch(2)" :class="{active:type==2}">关注技师</li>
+					</ul>
+				</div>
+			</div>
+			<!--等待页面-->
+			<div class="loader" style="top:44px" v-show="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
+			<!--地址-->
+			<div class="cards scrollBox " :style="{top:scrollTop+ 'px',bottom:0}" ref="scroll">
+				<div class="reset relative" style="min-height: 101%;">
+					<!--刷新提示框-->
+					<div class="refresh flex">
+						<div class="flex " style="bottom:95px ;">
+							<p class="f1 t_r "></p>
+							<i class="iconfont icon-hua cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:65px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-dianzan1 cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+						<div class="flex " style="bottom:35px ;">
+							<p class="f1 t_r"></p>
+							<i class="iconfont icon-zuanshi cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:5px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-jiangbei cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+					</div>
+					<div style="padding-bottom: 40px;">
+
+						<!--项目-->
+						<ul class="reset cm_ul animated slideInRight" v-show="type==1">
+							<li class="mui-table-view-cell mui-transitioning reset" v-for="item in proList">
+								<div class="mui-slider-right mui-disabled">
+									<a class="mui-btn " style="transform: translate(-180px, 0px);background: #212121;" @tap="_delect(item.PROJECT_CODE)">取消收藏</a>
+								</div>
+								<div class="mui-slider-handle cm_proItems" style="transform: translate(0px, 0px);" @tap="_toDetail(item.PROJECT_CODE)">
+									<article class="flex relative">
+										<ul class="cm_label_tool">
+											<li>{{item.PROJECT_CLASS}}</li>
+											<!--<li>新客满减</li>-->
+										</ul>
+										<div class="cm_itemPic">
+											<img :src="item.PROJECT_IMG1" class="cover" />
+										</div>
+										<div class="f1 cm_txt">
+											<h4 class="">{{item.PROJECT_NAME}}</h4>
+											<div class="cm_technician flex">
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'"  @error="_default" class="avatar" />
+												<div class="f1">
+													<p class="lh18">{{item.SHOP_NAME}}</p>
+													<p class="flex">嘿皮值:
+														<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in parseInt(item.SHOP_STAR) " />
+													</p>
+												</div>
+											</div>
+											<div class="flex">
+												<div class="f1 flex">
+													<div class="prize fs18 cor_r">￥{{item.PROJECT_DISCOUNT}}</div>
+													<div class="delec_prize ">￥{{item.PROJECT_PRICE}}</div>
+												</div>
+												<div class="cor_g">{{item.PROJECT_LOVE}}人喜欢</div>
+											</div>
+										</div>
+									</article>
+								</div>
+							</li>
+							<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;" v-if="proList.length!=0">{{norest1?'没有数据咯':''}}</li>
+						</ul>
+						<!--手艺人-->
+						<ul class="reset cm_ul animated slideInRight " v-show="type==2">
+							<li class="mui-table-view-cell mui-transitioning  reset" v-for="item in matList">
+								<div class="mui-slider-right mui-disabled">
+									<a class="mui-btn " style="transform: translate(-180px, 0px);background: #212121;" @tap="_delect(item.SHOP_CODE)">取消关注</a>
+								</div>
+								<div class="mui-slider-handle cm_proItems container" style="transform: translate(0px, 0px);" @tap="_toDetail(item.SHOP_CODE)">
+									<div class="block flex">
+										<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" class="avatar">
+										<div class="f1">
+											<div class="lh18 cm_name">{{item.SHOP_NAME}}</div>
+
+											<p class="flex">嘿皮值:
+												<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in _level(item.SHOP_STAR) " />
+											</p>
+											<p>{{item.SHOP_BUSINESS_TYPE}}</p>
+											<p>{{item.SHOP_CONCERN}}人收藏</p>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;" v-if="matList.length!=0">{{norest2?'没有数据咯':''}}</li>
+						</ul>
+					</div>
+					<!--无数据提示-->
+					<div v-if="proList.length==0 && type==1" class="t_c cm_noItem">
+						<div class="cm_noItem_box flex">
+							<img src="../../images/no5.png" alt="" clas/>
+							<div class="t_c ">您还没有收藏项目</div>
+						</div>
+					</div>
+					<div v-if="matList.length==0 && type==2" class="t_c cm_noItem">
+						<div class="cm_noItem_box flex">
+							<img src="../../images/no5.png" alt="" clas/>
+							<div class="t_c ">您还没有收藏技师</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			})
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				//				app.initHeader();
+				APP = new Vue({
+					el: '#app',
+					data: {
+						loader: true,
+						scrollTop: '',
+						scroll: '',
+						show: false,
+
+						type: 1,
+						/*收藏类型 1为项目  2为手艺人*/
+
+						index1: 1,
+						index2: 1,
+
+						norest1: false,
+						norest2: false,
+
+						proList: [],
+						/*项目列表*/
+						matList: [],
+						/*手艺人列表*/
+
+						more: '加载更多'
+					},
+					created: function() {
+						//							alert(1)
+
+					},
+					mounted: function() {
+
+						var _this = this
+						var scroll = this.$refs.scroll
+						this.scrollTop = 40
+
+						var self = plus.webview.currentWebview();
+						if(self.type) {
+							this.type = self.type
+						}
+
+						this.$nextTick(function() {
+							//							初始化scrool
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									pullDownRefresh: {
+										threshold: 50,
+										stop: 0
+									},
+									pullUpLoad: {
+										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									},
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+							/*下拉刷新*/
+							_this.scroll.on('pullingDown', function(e) {
+								plus.nativeUI.showWaiting();
+								let t = _this.type
+								switch(t) {
+									case 1:
+										/*项目*/
+										_this.index1 = 1;
+										_this.proList = [];
+										_this.norest1 = false
+										break;
+									case 2:
+										/*手艺人*/
+										_this.index2 = 1;
+										_this.matList = [];
+										_this.norest2 = false
+										break;
+									default:
+										break;
+								}
+								_this.more = '加载更多'
+								_this._getData((b) => {
+									if(b) {
+
+									} else {
+										_this.scroll.finishPullUp()
+
+									}
+									_this.scroll.finishPullDown()
+									plus.nativeUI.closeWaiting()
+								})
+
+							})
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getData((b) => {
+									if(b) {
+
+									} else {
+										_this.scroll.finishPullUp()
+
+									}
+								})
+							})
+						})
+						/*首次加载数据*/
+						this._getData(() => {
+							//							plus.nativeUI.closeWaiting()
+							//							mui.currentWebview.show('pop-in', 300, function() {}, {});
+						})
+					},
+					filters: {
+						getStatus(k) {
+							//							优惠券状态0-未启用，1-启用中,2-审核中
+							switch(k) {
+								case '0':
+									return '未启用'
+									break;
+								case '1':
+									return '启用中'
+									break;
+								case '2':
+									return '审核中...'
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					methods: {
+						//						默认头像
+						_default(e){
+							var dom = e.target;
+//							console.log(dom)
+							dom.src="../../images/default_avatar.jpg"
+						},
+						_level(n) {
+							//							alert(parseInt(n))
+							if(!n) {
+								return 1
+							} else {
+								return parseInt(n)
+							}
+
+						},
+						/*切换*/
+						_switch(t) {
+							this.type = t
+							//							alert(t)
+							switch(t) {
+								case 1:
+									/*项目*/
+									if(this.index1 == 1) {
+										this._getData((b) => {
+											if(b) {
+												//											this.note = "没有数据了"
+											} else {
+												this.scroll.finishPullUp()
+												//											this.note = "加载更多"
+											}
+										})
+									}
+									break;
+								case 2:
+									/*手艺人*/
+									if(this.index2 == 1) {
+										this._getData((b) => {
+											if(b) {
+												//											this.note = "没有数据了"
+											} else {
+												this.scroll.finishPullUp()
+												//											this.note = "加载更多"
+											}
+										})
+									}
+									break;
+								default:
+									break;
+							}
+						},
+						/*取消搜藏*/
+						_delect(code) {
+							var _this = this
+							let t = this.type
+							let data;
+							switch(t) {
+								case 1:
+									/*项目*/
+									url = '/api/Project/RevokeLoveProject'
+									data = {
+										PROJECT_CODE: code
+									}
+									break;
+								case 2:
+									/*手艺人*/
+									url = '/api/Shop/DisAttention'
+									data = {
+										SHOP_CODE: code
+									}
+									break;
+								default:
+									break;
+							}
+							app.ajax(app.baseUrl + url, {
+								data: data,
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										plus.nativeUI.toast('取消成功')
+										plus.nativeUI.showWaiting();
+										switch(t) {
+											case 1:
+												/*项目*/
+												_this.index1 = 1;
+												_this.proList = [];
+												_this.norest1 = false
+												break;
+											case 2:
+												/*手艺人*/
+												_this.index2 = 1;
+												_this.matList = [];
+												_this.norest2 = false
+												break;
+											default:
+												break;
+										}
+										_this.more = '加载更多'
+										_this._getData(() => {
+											_this.scroll.finishPullDown();
+											_this.scroll.finishPullUp()
+											mui.later(() => {
+												plus.nativeUI.closeWaiting();
+											}, 1000)
+										})
+
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								}
+							});
+
+						},
+						/*查看详情*/
+						_preDetail(item) {
+							if(item) {
+								this.detailPre = item
+							}
+							this.show = !this.show;
+						},
+						/*获取收藏数据*/
+						_getData(callback) {
+//							this.loader = true
+							var _this = this
+							var url = ''
+							var index;
+							let t = this.type
+							let ajaxWay;
+							switch(t) {
+								case 1:
+									/*项目*/
+									url = '/api/Project/GetLoveProjects'
+									index = this.index1
+									ajaxWay = 'get'
+									break;
+								case 2:
+									/*手艺人*/
+									url = '/api/Shop/GetAttentionShopList'
+									index = this.index2
+									ajaxWay = 'post'
+									break;
+								default:
+									break;
+							}
+							let data = {
+								pageIndex: index,
+								pageSize: 8
+							}
+							mui.ajax(app.baseUrl + url, {
+								data: data,
+								type: ajaxWay, //HTTP请求类型
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								success: function(result) {
+									
+									mui.later(() => {
+										_this.loader = false
+										if(result.Success) {
+											switch(t) {
+												case 1:
+													/*项目*/
+													let l1 = _this.proList.length;
+													if(l1 == result.Data.Total) {
+														if(callback) callback();
+														_this.norest1 = true
+														//													plus.nativeUI.closeWaiting();
+														if(callback) callback(true)
+														return;
+													}
+
+													_this.proList = _this.proList.concat(result.Data.ListInfo)
+													_this.index1 += 1
+
+													_this.scroll.refresh();
+													if(callback) callback(false);
+
+													break;
+												case 2:
+													/*手艺人*/
+													let l2 = _this.matList.length;
+													//												console.log(2,l2,result.Data.Total)
+													if(l2 == result.Data.Total) {
+														if(callback) callback();
+														_this.norest2 = true
+														if(callback) callback(true)
+														return;
+													}
+
+													_this.matList = _this.matList.concat(result.Data.ListInfo)
+													_this.index2 += 1
+				
+														_this.scroll.refresh();
+														if(callback) callback(false);
+									
+													break;
+												default:
+													break;
+											}
+
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast(result.Msg)
+
+										}
+									},300)
+								},
+								error: function(xhr, type, errorThrown) {
+									_this.loader = false
+									_this.scroll.refresh();
+									app.catchErr(xhr, type, errorThrown)
+								}
+							});
+						},
+						/*转转预览*/
+						_toDetail(code) {
+							let t = this.type
+							let id;
+							let url;
+							let extras = {}
+							switch(t) {
+								case 1:
+									/*项目*/
+									url = '../production/productBuy.html'
+									id = 'productBuy'
+									extras = {
+										proKey: code
+									}
+									break;
+								case 2:
+									/*手艺人*/
+									url = '../technician/technician.html'
+									id = 'technician'
+									extras = {
+										shopCode: code
+									}
+									break;
+								default:
+									break;
+							}
+							let desturl = url
+							let destid = id
+							let exa = extras
+							let option = {}
+							app.navigater(desturl, destid, exa, option)			
+							
+						}
+					}
+				})
+			})
+
+			function refresh() {
+
+				APP._getData()
+			}
+		</script>
+	</body>
+
+</html>

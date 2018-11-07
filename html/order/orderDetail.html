@@ -248,7 +248,7 @@
 			<!--发布新作品-->
 			<div class=" bottomMenus flex">
 				<h3 class="cor_y t_c cm_btnTxt f1" @tap="_callPhone">致电商家</h3>
-				<h3 class="cor_y t_c cm_btnTxt f1" v-if="detail.ORDER_STATUS_TYPE==3" @tap="_toComment(detail)">去评价</h3>
+				<h3 class="cor_y t_c cm_btnTxt f1" v-if="detail.ORDER_STATUS==4" @tap="_toComment(detail)">去评价</h3>
 				<h3 class="cor_w t_c cm_btnTxt f1 bg_y" v-if="detail.ORDER_STATUS_TYPE==0" @tap="_toPay(detail.ORDER_CODE)">去付款</h3>
 				<h3 class="cor_w t_c cm_btnTxt f1 bg_y" v-if="serverNum" @tap="_beginServer(true)">查看服务码</h3>
 			</div>

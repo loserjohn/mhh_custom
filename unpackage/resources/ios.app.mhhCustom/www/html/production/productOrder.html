@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>提交订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+
+		<style>
+			/*购买项目*/
+			
+			.block2 {
+				/*padding: 10px;*/
+			}
+			
+			.block2 .proPic {
+				width: 80px;
+				height: 80px;
+				overflow: hidden;
+				margin-right: 15px;
+			}
+			/*优惠券*/
+			
+			.block3 {
+				border-top: 1px dotted #d3d3d3;
+				margin-top: 10px;
+			}
+			
+			.couponsBox {
+				width: 80%;
+				margin: 0 auto;
+				overflow: hidden;
+				padding: 15px 0;
+			}
+			
+			.couponsBox .couponsItem {
+				width: 100%;
+				height: 80px;
+				margin-bottom: 10px;
+				/*background: #ccaa42;*/
+				background: url(../../images/card_bg3.png) 0 0/100% 100% no-repeat;
+				/*padding:0 15px;*/
+			}
+			
+			.couponsBox .couponsItem div {
+				text-align: center;
+			}
+			/*充值卡*/
+			
+			.refillcardBox {
+				/*background: red;*/
+				width: 100%;
+				padding: 15px 0;
+			}
+			
+			.refillcardBox .refillcardItem {
+				width: 200px;
+				height: 100px;
+				margin: 0 auto;
+				background: url(../../images/card_bg2.png) center/100% 100% no-repeat;
+				padding: 25px 15px;
+				margin-bottom: 10px;
+			}
+			/*地址选择*/
+			
+			.addressBox {
+				padding: 15px;
+			}
+			
+			.addressBox .addressItem {
+				border-bottom: 1px dashed #d3d3d3;
+				padding: 15px 0;
+			}
+			/*模态框局部样式*/
+			
+			.cm_modal_content {
+				bottom: 50px;
+				overflow: hidden;
+				background: #eee;
+			}
+			
+			.title {
+				margin-top: 30px;
+			}
+			
+			.btnBox {
+				position: absolute;
+				width: 100%;
+				height: 50px;
+				line-height: 50px;
+				bottom: 0;
+			}
+			
+			.btnBox>p {
+				font-size: 16px;
+				background: #212121;
+				color: #fff;
+				line-height: 50px;
+				text-align: center;
+			}
+			
+			.numBox {
+				border-top: 1px solid #d3d3d3;
+				margin-top: 10px;
+			}
+			
+			.nums {
+				width: 150px;
+				height: 40px;
+				/*background: red;*/
+				text-align: center;
+				line-height: 34px;
+				font-size: 24px;
+				border: 1px solid #ddd;
+				border-radius: 3px;
+				overflow: hidden;
+				padding: 0;
+				margin-top: 5px;
+			}
+			
+			.numBtns {
+				color: #e1e1e1;
+				line-height: 34px;
+			}
+			
+			.numBtns.sub {
+				border-right: 1px solid #ddd;
+			}
+			
+			.numBtns.add {
+				border-left: 1px solid #ddd;
+			}
+			
+			.amount {
+				line-height: 40px;
+				font-size: 22px;
+				/*background: red;*/
+				height: 40px;
+				margin-top: 5px;
+			}
+			
+			.cellInputArea {
+				/*background: red;*/
+				border: none;
+				font-size: 14px;
+			}
+			
+			.inputs {
+				color: #404040;
+				font-size: 12px;
+				border: 1px solid #f1f1f1!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<!--<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					提交订单
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>-->
+
+			<!--订单内容-->
+			<!--等待页面-->
+			<div class="loader" style="top:0" v-if="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
+			<div ref='scroll' class="scrollBox" :style="{top:appHeight+'px'}">
+				<div class="clearfix scrollContent">
+					<!--信息-->
+					<div class="panel block1">
+						<!--联系人-->
+						<div class=" mui-table-view">
+							<div class="mui-table-view-cell flex" @tap="_modelToggle(3)">
+								<div class="f1 cellName ">服务服务地址：</div>
+								<div class="f1 cellName t_r cor_g">{{address?'':'选择联系人'}}</div>
+								<i class="iconfont icon-xiayibu "></i>
+							</div>
+							<div class="mui-table-view-cell flex" v-show="address?true:false">
+								<div class="f1 cellName cor_g">{{address}}</div>
+							</div>
+						</div>
+						<!--服务时间-->
+						<div class=" mui-table-view">
+							<div class="mui-table-view-cell flex" @tap="_chooseTime">
+								<div class="f1 cellName ">服务时间：</div>
+								<div class="f1 cellName t_r cor_g">{{orderTime?orderTime:'暂不选择'}}</div>
+								<i class="iconfont icon-xiayibu "></i>
+							</div>
+						</div>
+					</div>
+					<!--项目-->
+					<div class="panelPad block2">
+						<div class="pro flex">
+							<div class="proPic">
+								<img :src="product.PROJECT_IMG1" alt="" class="cover" />
+							</div>
+							<div class="f1">
+								<div class="fs16">{{product.PROJECT_NAME}}</div>
+								<p>技师：{{product.SHOP_NAME}} </p>
+								<p class="flex">嘿皮值:
+									<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item in parseInt(product.SHOP_STAR) " />
+								</p>
+								<p>(仅限购一份)</p>
+							</div>
+						</div>
+						<div class=" numBox flex">
+							<div class="lh28 cor_r f1 fs18 amount">￥{{product.PROJECT_DISCOUNT}}</div>
+							<!--<div class="lh28 f1 t_r ">	-->
+							<div class="flex nums">
+								<div class="f1 numBtns sub">-</div>
+								<div class="f1"><span class="lh24 fs16">×1</span></div>
+								<div class="f1 numBtns add">+</div>
+							</div>
+							<!--</div>-->
+						</div>
+					</div>
+
+					<!--充值卡支付-->
+					<div class="panel  block3">
+						<!--优惠券-->
+						<div class=" mui-table-view" @tap="_modelToggle(1)">
+							<div class="mui-table-view-cell flex">
+								<div class="f1 cellName ">优惠券:</div>
+								<div class="f1 cellName t_r cor_y">选择优惠券</div>
+								<i class="iconfont icon-xiayibu cor_y"></i>
+							</div>
+						</div>
+						<div class=" mui-table-view" v-show="curCoupon?true:false">
+							<div class="mui-table-view-cell flex">
+								<div class="f1">{{curCoupon.DISCOUNT_NAME}} </div>
+								<div class="f1 t_r">-￥{{curCoupon.DISCOUNT_AMOUNT}}</div>
+							</div>
+						</div>
+					</div>
+
+					<!--购买保险-->
+					<div class="panel  block3">
+						<!--优惠券-->
+						<div class=" mui-table-view">
+							<div class="mui-table-view-cell ">
+								<!--<div class=" mui-input-group">-->
+								<div class=" mui-checkbox ">
+									<label :for="inssure">意外险:保障人身及财产安全</label>
+									<input id="inssure" @change="_toInsure" name="checkbox" value="yes" type="checkbox" class="checks" style="margin-top: -7px;margin-right: -10px;" v-model="inssure">
+								</div>
+								<!--</div>-->
+							</div>
+						</div>
+						<div class=" mui-table-view" v-show="showInsure">
+							<div class="mui-table-view-cell ">
+								<div class="">
+									<input type="text" v-model="realName" placeholder="投保人姓名" class="inputs" />
+								</div>
+								<div class="">
+									<input type="text" v-model="realIdCard" placeholder="投保人身份证号码" class="inputs" />
+								</div>
+								<p class="fs12">本保险保费由马嘿嘿承担，选择即为默认同意<span class="cor_y">《投保须知》</span><span class="cor_y">&</span><span class="cor_y">《保险同款》</span></p>
+							</div>
+						</div>
+					</div>
+
+					<!--备注-->
+					<div class="panel  block3">
+						<div class="mui-table-view">
+							<div class="mui-table-view-cell">
+								<textarea class="cellInputArea" v-model="remark" placeholder="备注"></textarea>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!--模态框1-->
+			<div class="cm_mask " v-show="modalShow" @tap.self="_modelToggle">
+				<div class="cm_modal  animated slideInRight relative">
+					<aside class="t_c title">请选择</aside>
+					<div class="cm_modal_content red" ref="wrapper" :style="{top:appHeight+'px'}">
+						<div class="reset " style="min-height: 101%;">
+							<!--优惠券-->
+							<ul class="couponsBox" v-show="chooseType==1">
+								<li class="couponsItem " v-for="item in couponsList" @tap="_chooseCoupons(item)">
+									<div class="cor_w fs16">{{item.DISCOUNT_NAME}}</div>
+									<div class="cor_w fs16">满 ￥{{item.DISCOUNT_LIMIT}}</div>
+									<div class="cor_w fs20">减 ￥{{item.DISCOUNT_AMOUNT}}</div>
+								</li>
+								<li v-show="couponsList.length==0" class="t_c">--你还没有领取优惠券--</li>
+							</ul>
+							<!--充值卡-->
+							<!--<ul class="refillcardBox" v-show="chooseType==2">
+								<li class="refillcardItem">
+									<div class="cor_w fs16">买 ￥2000</div>
+									<h3  class="cor_w fs20" >送 ￥2000</h3>
+								</li>
+							</ul>-->
+							<!--地址选择-->
+							<ul class="addressBox" v-show="chooseType==3">
+								<li class="addressItem" v-for="item in addressList" @tap="_chooseAddress(item.REMARK)">
+									<div class=" fs16">{{item.REMARK}} </div>
+								</li>
+								<li v-show="addressList.length==0" class="t_c">--你还没有添加任何地址--</li>
+							</ul>
+						</div>
+					</div>
+					<footer class="btnBox">
+						<p v-show="chooseType==1" @tap="_noUse"> <i class="iconfont icon-close cor_w"></i> 不使用优惠券</p>
+						<p v-show="chooseType==3" @tap="_address"> <i class="iconfont icon-bianji cor_w"></i> 地址管理</p>
+					</footer>
+				</div>
+			</div>
+
+			<!--底部菜单-->
+			<div class="cm_bottomBtn flex">
+				<div class="f1" style="line-height: 50px;">
+					合计：<span class="cor_r fs20">￥{{totalAmount}}</span>
+				</div>
+
+				<div class="f1 yesBtn" @tap="_toSubmit">
+					提交订单
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			var APP;
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						tabContenTop: '',
+						wraper: '',
+						isLoading: false,
+						currtab: 0,
+						note: '加载更多',
+						appHeight: '',
+						modalShow: false,
+						chooseType: 1,
+						addressShow: true,
+						loader: true,
+						masterCode: '',
+						/*手艺人code*/
+
+						/*表单信息部分*/
+						addressList: [],
+						/*联系人地址数组*/
+
+						couponsList: [],
+						/*优惠券列表*/
+
+						totalAmount: 0, //合计金额
+
+						/*表单需要提交*/
+						product: '',
+						/*项目详情*/
+						address: '', //联系人地址
+						curCoupon: '',
+						remark: '', //备注
+						/*当前使用的优惠券*/
+						orderTime: '',
+						/*预约时间*/
+
+						inssure: ['yes'], //保险
+						showInsure: true,
+
+						realName: '', // 投保人真实姓名
+						realIdCard: '' //投保人真实身份证号码
+					},
+					created: function() {
+						//						app.initHeader();
+						var self = plus.webview.currentWebview();
+						this.product = self.product
+						this.masterCode = self.masterCode
+						this.totalAmount = self.product.PROJECT_DISCOUNT;
+
+						this.realName = plus.storage.getItem('realName') ? plus.storage.getItem('realName') : ''
+						this.realIdCard = plus.storage.getItem('realIdCard') ? plus.storage.getItem('realIdCard') : ''
+
+					},
+					mounted: function() {
+						var _this = this;
+
+						var scroll = this.$refs.scroll
+						var wraper = this.$refs.wraper
+						//							初始化scroll的屏幕位置
+						this.appHeight = 0;
+
+						/*初始化横向scroll*/
+						this._initScroll()
+						/*初始化数据*/
+						this._getData(() => {})
+						//						plus.nativeUI.closeWaiting()
+						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
+					},
+					methods: {
+						//						投保
+						_toInsure() {
+							//							alert(1)
+							//							console.log(JSON.stringify(this.inssure) );
+							if(this.inssure.length == 0) {
+								this.showInsure = false
+							} else {
+								this.showInsure = true
+							}
+
+						},
+						/*初始化下拉框*/
+						_initScroll() {
+							var _this = this
+							/*初始化下拉scroll*/
+							this.$nextTick(function() {
+								var scroll = this.$refs.scroll
+								var wrapper = this.$refs.wrapper
+								/*竖向下拉刷新*/
+								if(!_this.scroll) {
+									//							初始化标题栏
+									_this.scroll = new BScroll(scroll, {
+										click: true,
+										probeType: 3,
+										scrollX: false,
+										bounceTime: 200,
+										//										pullUpLoad: {
+										//											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+										//										}
+									})
+								} else {
+									_this.scroll.refresh();
+								};
+								/*横向滑动*/
+								if(!_this.wrapper) {
+									//	初始化充值卡
+									_this.wrapper = new BScroll(wrapper, {
+										click: true,
+										probeType: 3,
+										bounceTime: 200,
+										//										scrollX: true,
+										//										scrollY: false
+									})
+								} else {
+									_this.wrapper.refresh();
+								};
+							})
+						},
+						/*获取数据*/
+						_getData(callback) {
+							var _this = this
+							/*获取手艺人地址信息*/
+							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									_this.loader = false;
+									if(result.Success) {
+										_this.addressList = result.Data.ListInfo
+
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+
+							/*获取本项目可用优惠券*/
+							app.ajax(app.baseUrl + '/api/Discount/GetDiscountList', {
+								type: 'post', //HTTP请求类型
+								data: {
+									PROJECT_CODE: _this.product.PROJECT_CODE,
+								},
+								success: function(result) {
+									//									console.log(JSON.stringify(result.Data) )
+									if(result.Success) {
+										_this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
+										//										alert(result.Data.ListInfo.length)
+										if(callback) callback()
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+						},
+
+						/*回到顶部*/
+						_backTop() {
+							this.scroll.scrollTo(0, 0, 300)
+						},
+						/*提交订单*/
+						_toSubmit() {
+							var _this = this
+
+							/*订单信息判断*/
+							if(!this.address) {
+								plus.nativeUI.alert("请选择服务人地址", function() {}, '马嘿嘿提醒您');
+								return;
+							}
+							if(this.showInsure) {
+								if(!this.realName) {
+									plus.nativeUI.alert("请输入投保人真实名称", function() {}, '马嘿嘿提醒您');
+									return;
+								}
+								if(!this.realIdCard) {
+									plus.nativeUI.alert("请输入投保人身份证号码", function() {}, '马嘿嘿提醒您');
+									return;
+								}
+							}
+
+							plus.nativeUI.showWaiting('订单生成中')
+							var data = {
+								PROJECT_CODE: _this.product.PROJECT_CODE,
+								ADDRESS: _this.address,
+								date: _this.orderTime.split(' ')[0],
+								point: _this.orderTime.split(' ')[1],
+								REMARK: _this.remark
+							}
+							if(this.showInsure) {
+								data.INSURER = this.realName;
+								data.INSURER_IDCARD = this.realIdCard
+							}
+
+							if(this.curCoupon) {
+								data.ENTRY_CODE = this.curCoupon.ENTRY_CODE
+							}
+
+							app.ajax(app.baseUrl + '/api/Order/CreateOrder', {
+								type: 'post', //HTTP请求类型
+								data: data,
+								success: function(result) {
+									plus.nativeUI.closeWaiting()
+
+									if(result.Success) {
+										plus.nativeUI.toast('订单创建成功')
+										mui.later(() => {
+											let payCode = result.Msg; //订单号
+
+											let desturl = './toPay.html'
+											let destid = 'toPay'
+											let exa = {
+												payCode: payCode
+											}
+											let option = {
+												showTitle: true,
+												autoShow: false
+											}
+											app.navigater(desturl, destid, exa, option)
+
+										}, 1000) /*成功跳转支付页面*/
+
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+
+						},
+						/*模态框显示控制*/
+						_modelToggle(t) {
+							if(t) {
+								this.chooseType = t
+							}
+							this.modalShow = !this.modalShow
+						},
+						/*选择地址*/
+						_modelToggle2() {
+							this.addressShow = !this.addressShow
+						},
+						/*选择服务时间*/
+						_chooseTime() {
+							var self = plus.webview.currentWebview();
+							self.setStyle({
+								mask: 'rgba(0,0,0,.7)'
+							});
+							plus.nativeUI.showWaiting()
+							var w = plus.webview.create('./timePicker.html', 'timePicker', {
+								top: '200px',
+								bottom: '0'
+							}, {
+								account: this.product.ACCOUNT_CODE,
+								pId: 'productOrder'
+							});
+							mui.later(() => {
+								plus.nativeUI.closeWaiting()
+								w.show('slide-in-bottom', 300, function() {}, {})
+							}, 1000)
+
+						},
+						/*回传接受预约时间*/
+						_orderTime(date) {
+							if(date == "-") {
+								this.orderTime = ''
+							} else {
+								this.orderTime = app.dateFormate(date)
+							}
+
+						},
+						/*选择呢使用优惠券*/
+						_chooseCoupons(item) {
+							let limit = item.DISCOUNT_LIMIT;
+							let amount = item.DISCOUNT_AMOUNT;
+							/*没有达到门槛金额*/
+							if(this.totalAmount < limit) {
+								plus.nativeUI.alert('尚未达到最低使用金额，不能使用该优惠券', () => {})
+								return;
+							}
+
+							this.curCoupon = item;
+							if(this.product.PROJECT_DISCOUNT <= amount) {
+								this.totalAmount = 0
+							} else {
+								this.totalAmount = this.product.PROJECT_DISCOUNT - amount;
+							}
+							this._modelToggle()
+						},
+						/*选择地址*/
+						_chooseAddress(str) {
+							this.address = str
+							this._modelToggle()
+						},
+						/*不使用优惠券*/
+						_noUse() {
+							this.curCoupon = '';
+							this.totalAmount = this.product.PROJECT_DISCOUNT;
+							this._modelToggle()
+						},
+						/*跳转地址管理*/
+						_address() {
+							let payCode = result.Msg; //订单号
+
+							let desturl = '../address/address.html'
+							let destid = 'address'
+							let exa = {}
+							let option = {
+								showTitle: true,
+								autoShow: false
+							}
+							app.navigater(desturl, destid, exa, option)
+
+							this._modelToggle()
+						}
+					}
+				})
+
+			});
+
+			function hasTime(date) {
+				if(date == "-") {
+					APP._orderTime('-')
+
+				} else if(date) {
+					/*如果有回传选择的日期*/
+					let time = new Date(date)
+					APP._orderTime(time)
+				}
+
+				//				alert(date+time)
+
+				var self = plus.webview.currentWebview();
+				self.setStyle({
+					mask: 'none'
+				});
+			}
+
+			function refresh() {
+				APP._getData()
+			}
+		</script>
+	</body>
+
+</html>

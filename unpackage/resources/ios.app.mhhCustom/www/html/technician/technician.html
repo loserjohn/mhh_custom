@@ -1,0 +1,1104 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>技师详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+
+		<style>
+			.box {
+				background: #fff;
+			}
+			/*--技师基本信息--*/
+			
+			.personMsg {
+				background: #ccaa42;
+				padding: 10px;
+				background: -webkit-linear-gradient(left top, #e2c773, #ccaa42);
+				/* Safari 5.1 - 6.0 */
+				background: linear-gradient(left top, #e2c773, #ccaa42);
+				/* 标准的语法 */
+			}
+			
+			.personMsg .personMsgPic {
+				width: 70px;
+				height: 70px;
+				border-radius: 50%;
+				margin-right: 10px;
+			}
+			
+			.personMsg .personMsgPic>img {
+				border-radius: 50%;
+			}
+			
+			.personMsg .personMsgPic .collecBox {
+				position: absolute;
+				width: 60px;
+				height: 24px;
+				line-height: 24px;
+				background: #f3eee3;
+				bottom: -10px;
+				left: 50%;
+				text-align: center;
+				margin-left: -30px;
+				border-radius: 3px;
+				border: 1px solid #d49b35;
+				color: #dda56f;
+			}
+			
+			.scoreBox {
+				border-radius: 12px;
+				background: #c09e39;
+			}
+			/*头部选项卡*/
+			
+			.tabBarItem {
+				line-height: 44px;
+				text-align: center;
+				position: relative;
+				border-bottom: 1px solid #eee;
+			}
+			
+			.tabBarItem.active {
+				color: #ccaa42;
+			}
+			
+			.tabBarItem.active::before {
+				content: "";
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				height: 4px;
+				background: #ccaa42;
+				z-index: 10;
+				left: 0;
+			}
+			/*<!--选项卡内容-->*/
+			
+			.tabBarContent {
+				width: 100%;
+				/*background: pink;*/
+				overflow: hidden;
+				/*padding-bottom: 50px;*/
+			}
+			
+			.tabBarScrollBox {
+				height: 100%;
+			}
+			
+			.scrollBox {
+				top: 0;
+			}
+			/*项目信息*/
+			
+			.gonggao {
+				font-size: 12px;
+				padding: 0 5px;
+				/*line-height: 24px!important;*/
+				/*height: 24px;*/
+				margin-right: 10px;
+			}
+			/*充值卡*/
+			
+			.block2 {
+				border-top: 1px dotted #d3d3d3;
+				padding-top: 10px;
+			}
+			
+			.block1 .cardsBox {
+				height: 100px;
+				margin-left: 10px;
+				width: 80%;
+				overflow: hidden;
+			}
+			
+			.block1 .cardsBox .cardItems {
+				width: 130px;
+				height: 80px;
+				overflow: hidden;
+				background: url(../../images/card.png) 0 0/contain no-repeat;
+				box-sizing: border-box;
+				padding: 5px;
+				margin-right: 10px;
+			}
+			/*优惠券*/
+			
+			.block3 {
+				border-bottom: 1px dotted #d3d3d3;
+			}
+			
+			.ticketBox {
+				height: 36px;
+				margin-left: 10px;
+				overflow: hidden;
+			}
+			
+			.ticketBox .ticketItems {
+				margin-right: 10px;
+				line-height: 24px;
+				background: url(../../images/quan_bg.png) 0 0/100% 100% no-repeat;
+				box-sizing: border-box;
+				padding: 0 10px;
+				text-align: center;
+				color: #fff;
+				width: 120px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+			/*可约时间*/
+			
+			.block5>aside {
+				margin-top: 10px;
+			}
+			
+			.block5>article {
+				margin-top: 20px;
+			}
+			
+			.rulerUl {
+				/*background:red url(../../images/no.png) 0 0 /contain repeat-x;*/
+				height: 16px;
+				margin-left: 15px;
+				margin-top: 5px;
+				border-bottom: 1px solid #212121;
+			}
+			
+			.rulers {
+				height: 15px;
+				/*background: red;*/
+				box-sizing: border-box;
+				position: relative;
+			}
+			
+			.rulerUl>.rulers:last-child {
+				border-right: 1px solid #444;
+			}
+			
+			.rulers>p {
+				position: absolute;
+				top: -20px;
+				color: #404040;
+				font-size: 10px;
+				left: -30%;
+			}
+			
+			.rulerUl>.rulers:last-child>p {
+				position: absolute;
+				top: -25px;
+				color: #404040;
+				font-size: 10px;
+				left: 10px;
+			}
+			
+			.rulerUl>.rulers:nth-of-type(odd) {
+				/*background: #212121;*/
+				border-left: 1px solid #212121;
+			}
+			
+			.rulerUl>.rulers:nth-of-type(even) {
+				/*background: #212121;*/
+				border-left: 1px solid #444;
+				padding-top: 5px;
+				height: 10px;
+				margin-top: 5px;
+			}
+			
+			.timeBox .timeList {
+				margin-left: 15px;
+				height: 12px;
+				background: #eee;
+				margin-top: 5px;
+			}
+			
+			.timeBox .timeList .itemMark {
+				height: 12px;
+				background: url(../../images/no.png) 0 0 /contain repeat;
+			}
+			
+			.timeBox .itemMark.active {
+				background: #cadcf9!important;
+			}
+			/*商圈*/
+			
+			.block4 {
+				margin-top: 10px;
+				border-top: 1px dotted #d3d3d3;
+				padding: 10px 0;
+			}
+			/*店长推荐*/
+			
+			.block7 .cm_title {
+				border-bottom: 1px dotted #d3d3d3;
+				line-height: 40px;
+			}
+			
+			.block7 .newContent>ul {
+				width: 100%;
+				flex-wrap: wrap;
+			}
+			
+			.block7 .newItem {
+				width: 50%;
+				box-sizing: border-box;
+				padding: 5px;
+				margin-top: 5px;
+				border-radius: 5px;
+				position: relative;
+				/*overflow: hidden;*/
+			}
+			
+			.block7 .newItem .activityTool {
+				position: absolute;
+				left: 0;
+				top: 20px;
+				height: 18px;
+				border: 1px solid #bc890c;
+				padding: 0 10px;
+				font-size: 10px;
+				line-height: 16px;
+				background: #f1ca5d;
+				border-radius: 3px;
+				color: #ab5a0b;
+			}
+			
+			.block7 .newItem img {
+				width: 100%;
+				height: 150px;
+			}
+			/*用户评价*/
+			
+			.block6 .commontItem {
+				border-bottom: 1px dotted #d3d3d3;
+				padding: 10px 0;
+			}
+			
+			.block6 .commontPicBox {
+				justify-content: space-between;
+				margin: 10px 0;
+			}
+			
+			.block6 .commontPic {
+				width: 32%;
+				height: 80px;
+			}
+			
+			.more {
+				width: 120px;
+				line-height: 40px;
+				border: 1px solid #212121;
+				text-align: center;
+				margin: 0 auto;
+				border-radius: 5px;
+				margin-top: 10px;
+			}
+			
+			.timeDemo1 {
+				width: 14px;
+				height: 14px;
+				display: inline-block;
+				background: #cadcf9!important;
+				margin-right: 10px;
+			}
+			
+			.timeDemo2 {
+				width: 14px;
+				height: 14px;
+				display: inline-block;
+				background: url(../../images/no.png) 0 0 /contain repeat;
+				margin-right: 10px;
+			}
+			
+			.modal_timeBox {
+				width: 100%;
+				height: 400px;
+				overflow: hidden!important;
+				/*background: red;*/
+			}
+			
+			.mui-slider-item {
+				height: 300px!important;
+				overflow: hidden;
+			}
+			
+			.mui-slider-item>img {
+				width: 100%;
+			}
+			/*底部菜单*/
+			
+			.cm_bottomBtn {
+				z-index: 10;
+			}
+			
+			.hasCollec {
+				background: #fff;
+				color: #f50f60;
+			}
+			
+			.hasCollec p,
+			.hasCollec i {
+				color: #f50f60;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header class="mui-bar  mui-bar-transparent header" style="background: -webkit-linear-gradient(left top, #e2c773, #ccaa42);background: linear-gradient(left top, #e2c773, #ccaa42);" data-top='0' data-offset='100' data-duration='16' id="header">
+			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav cor_w"></span>返回</button>
+		</header>
+		<!--等待页面-->
+		<div class="loader" style="top:0" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app">
+
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+
+					<!--技师基本信息-->
+					<div class="personMsg  " id="content">
+						<div class="flex">
+							<aside class="personMsgPic relative">
+								<img :src="shopMsg.SHOP_LOGO?shopMsg.SHOP_LOGO:'../../images/default_avatar.jpg'" alt="" @error="_default" class="cover" />
+							</aside>
+							<article class="f1">
+								<div class="flex ">
+									<div class="cor_w fs16 lh28">{{shopMsg.SHOP_NAME}}</div>
+									<p class="lh28  cor_w f1 t_r">{{shopMsg.SHOP_CONCERN}}人关注</p>
+								</div>
+
+								<div class="flex lh28">
+									<aside class="cor_w flex">嘿皮值:
+										<img src="../../images/levelicon2.png" alt="" style="margin-top: 6px;" class="cm_level" v-for="item in levels" />
+									</aside>
+									<article></article>
+								</div>
+								<div class="flex cor_w scoreBox">
+									<div class="f1 t_c">守时：{{shopMsg.PUNCTUAL_POINT}}分</div>
+									<div class="f1 t_c">服务：{{shopMsg.SEVICE_POINT}}分</div>
+									<div class="f1 t_c">技术：{{shopMsg.SKILL_POINT}}分</div>
+								</div>
+							</article>
+						</div>
+						<!--品牌承诺：-->
+						<div class="container  flex" style="margin-top: 5px;">
+							<div class="f1 lh24 t_c cor_w">
+								<i class="iconfont icon-hua cor_w"></i>不满意重做
+							</div>
+							<div class="f1 lh24 t_c cor_w">
+								<i class="iconfont icon-hua cor_w"></i>迟到半价
+							</div>
+							<div class="f1 lh24 t_c cor_w">
+								<i class="iconfont icon-hua cor_w"></i>爽约3倍赔偿
+							</div>
+						</div>
+					</div>
+
+					<!--选项卡切换-->
+					<div class="tabBar box">
+						<ul class=" flex">
+							<li class="f1  tabBarItem" @tap="_switch(1)" :class="{active:curTabType==1}">手艺人信息</li>
+							<li class="f1  tabBarItem" @tap="_switch(2)" :class="{active:curTabType==2}">全部项目</li>
+							<!--<li class="f1  tabBarItem" @tap="_switch(3)" :class="{active:curTabType==3}">客户评价</li>-->
+						</ul>
+					</div>
+					<!--选项卡内容-->
+					<div class="clearfix tabBarContent relative " :style="{height:scrollHeight}">
+						<div class="scrollBox" ref='scroll'>
+							<div class="reset" style="min-height:101% ;">
+								<!--主页面信息-->
+								<div class="reset " v-show="curTabType==1">
+									<!--项目信息-->
+									<div class="block1 panelPad container">
+										<!--最近活动公告-->
+										<div class="gonggao lh44">
+											<span class="cm_label  gonggao">公告：</span>{{shopMsg.SHOP_NOTICE}}
+										</div>
+
+										<!--充值卡-->
+										<div class="flex block2" v-show="refillcard.length!=0">
+											<div class="f1">充值卡:</div>
+											<div class="cardsBox " ref="wrapper">
+												<ul class="reset flex" :style="{width: 140*refillcard.length+'px'}">
+													<li class="cardItems" v-for="(item,index) in refillcard" @tap="_recharge(item.RECHARGE_CODE)">
+														<p class="cor_w ">充：￥{{item.RECHARGE_AMOUNT}}</p>
+														<div class="cor_w fs18 lh28"> 送：￥{{item.RECHARGE_GRANT}}</div>
+														<p class="t_r cor_w">立即充值》</p>
+													</li>
+												</ul>
+											</div>
+										</div>
+
+										<!--优惠券-->
+										<div class="flex block3" v-if="coupons.length!=0">
+											<div class="f1">优惠券:</div>
+											<div class="ticketBox" @tap="_navigateTitle('../coupons/proCoupons.html','proCoupons',{'shopCoupons':coupons})">
+												<ul class="reset flex">
+													<li class="ticketItems" v-for="(item,index) in coupons" v-if="index==1||index==0">
+														{{item.DISCOUNT_NAME}}
+													</li>
+												</ul>
+											</div>
+											<i class=" iconfont icon-arrowright"></i>
+										</div>
+
+										<!--可约时间-->
+										<div class=" block5">
+											<aside class="flex lh28">
+												<div>可约时间：</div>
+												<div class="f1 t_c">
+													<span class="timeDemo1"></span>可约
+												</div>
+												<div class="f1 ">
+													<span class="timeDemo2"></span>不可约
+												</div>
+												<p class="lh28" @tap.self="_switchModal">查看全部<span class="mui-icon mui-icon-arrowright fs16"></span></p>
+											</aside>
+
+											<article class="container">
+												<div class="flex rulerBox">
+													<div class="lh24">时段</div>
+													<ul class="f1 flex rulerUl">
+														<li class="rulers f1">
+															<p>8</p>
+														</li>
+														<li class="rulers f1"></li>
+														<li class="rulers f1">
+															<p>10</p>
+														</li>
+														<li class="rulers f1"></li>
+														<li class="rulers f1">
+															<p>12</p>
+														</li>
+														<li class="rulers f1"></li>
+														<li class="rulers f1">
+															<p>14</p>
+														</li>
+														<li class="rulers f1"></li>
+														<li class="rulers f1">
+															<p>16</p>
+														</li>
+														<li class="rulers f1"></li>
+														<li class="rulers f1">
+															<p>18</p>
+														</li>
+														<li class="rulers f1"></li>
+														<li class="rulers f1">
+															<p>20</p>
+														</li>
+														<li class="rulers f1"></li>
+														<li class="rulers f1">
+															<p>22</p>
+														</li>
+														<li class="rulers f1">
+															<p>24</p>
+														</li>
+													</ul>
+												</div>
+												<ul class="timeBox">
+													<li class=" flex ">
+														<div class="lh24">今天</div>
+														<ul class="f1 timeList flex">
+															<li v-for="item in enabledTime[0]" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+														</ul>
+													</li>
+													<li class=" flex ">
+														<div class="lh24">明天</div>
+														<ul class="f1 timeList flex">
+															<li v-for="item in enabledTime[1]" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+														</ul>
+													</li>
+													<li class=" flex ">
+														<div class="lh24">后天</div>
+														<ul class="f1 timeList flex">
+															<li v-for="item in enabledTime[2]" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+														</ul>
+													</li>
+												</ul>
+											</article>
+										</div>
+
+										<!--商圈-->
+										<div class=" block4">
+											<aside>商圈：</aside>
+											{{shopMsg.SHOP_AREA}}
+										</div>
+
+									</div>
+								</div>
+
+								<!--全部项目-->
+								<div v-show="curTabType==2">
+									<div class="block7 panel container">
+										<div class="cm_title t_c">
+											-- 全部项目 --
+										</div>
+										<div class="newContent" style="padding-bottom: 10px;">
+											<ul class="reset flex">
+												<li class="newItem" v-for="item in  allProduct" @tap="_navigateTo('../production/productBuy.html','productBuy',{proKey:item.PROJECT_CODE})">
+													<img :src="item.PROJECT_IMG1" alt="" />
+													<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
+													<article class="flex">
+														<p class="prize  cor_r fs18 lh28">￥{{item.PROJECT_DISCOUNT}}</p>
+														<p class="delec_prize cor_g f1 t_r lh28">￥{{item.PROJECT_PRICE}}</p>
+													</article>
+													<div class="activityTool">{{item.PROJECT_CLASS}}</div>
+												</li>
+												<li class="t_c lh26" style="width: 100%;text-align: center;" v-show="allProduct.length==0">-手艺人还未发布项目-</li>
+											</ul>
+											<footer>
+												<div class="more" @tap="_initAllPro">查看更多</div>
+											</footer>
+										</div>
+									</div>
+								</div>
+								<!--用户评价-->
+								<!--<div v-show="curTabType==3">
+									<div class=" block6 container panelPad" ref='anchor3'>
+										<aside class="flex cm_name">
+											<div>用户评价：</div>
+										</aside>
+										<article class="container">
+											<ul class="reset">
+												<li class="flex commontItem" v-for="item in comment">
+													<img :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../../images/default_avatar.jpg'" alt="" class="avatar" />
+													<div class="f1">
+														<div class="">{{item.MEMBER_NIKENAME}}</div>
+														<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
+
+														<div class="flex commontPicBox" v-show="item.HAS_PICTURE==1?true:false">
+															<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
+															<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
+															<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+														</div>
+														<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
+													</div>
+												</li>
+												<li class="t_c lh26" style="width: 100%;text-align: center;" v-show="comment.length==0">-没有评价-</li>
+											</ul>
+										</article>
+										<footer>
+											<div class="more" @tap="_navigateTo('../production/proComment.html','proComment',{'shopCode':shopCode.shopMsg})">查看全部({{total}})</div>
+										</footer>
+									</div>
+								</div>-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--模态框-->
+			<div class="cm_mask_bot" v-show="modalShow" @tap.self="_switchModal">
+				<div class="cm_modal_bot  animated slideInUp ">
+					<div class="block5">
+						<aside class="flex lh28 container">
+							<div>可约时间：</div>
+							<div class="f1 t_c">
+								<span class="timeDemo1"></span>可约
+							</div>
+							<div class="f1 ">
+								<span class="timeDemo2"></span>不可约
+							</div>
+						</aside>
+
+						<article class="container">
+							<div class="flex rulerBox">
+								<div class="lh24" style="width: 60px;">时段</div>
+								<ul class="f1 flex rulerUl">
+									<li class="rulers f1">
+										<p>8</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>10</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>12</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>14</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>16</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>18</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>20</p>
+									</li>
+									<li class="rulers f1"></li>
+									<li class="rulers f1">
+										<p>22</p>
+									</li>
+									<li class="rulers f1">
+										<p>24</p>
+									</li>
+								</ul>
+							</div>
+							<div class=" modal_timeBox ">
+								<div id="wrapper" style="width: 100%;height: 100%;">
+									<ul class="timeBox ">
+										<li class=" flex " v-for="(list,index) in enabledTime">
+											<div class="lh24 t_c " style="width: 60px;">{{index | dataTxt}}</div>
+											<ul class="f1 timeList flex">
+												<li v-for="item in list" class="itemMark f1" :class="{active:item==1?true:false}"></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+
+			<!--底部菜单-->
+			<div class="cm_bottomBtn flex fixed">
+				<!--<div class="f1" @tap="_phone">
+					<i class="iconfont icon-phone fs20"></i>
+					<p>致电技师</p>
+				</div>-->
+				<div class="f1" @tap="_toChat">
+					<i class="iconfont icon-pinglun fs20"></i>
+					<p>联系她</p>
+				</div>
+				<div class="f1 bg_y cor_w" @tap="_collect" v-if="islogin" :class="{hasCollec:hasCollec}">
+					<i class="iconfont icon-shoucang1 fs20 "></i>
+					<p class="cor_w">{{hasCollec?'已关注':'关注技师'}} </p>
+				</div>
+
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview()
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						islogin: false,
+						hasCollec: false,
+						loader: true,
+						/*当前页面的手艺人code*/
+						shopCode: '',
+
+						curTabType: 1,
+						/*主屏高度*/
+						scroll: '',
+						levels: '', //等级
+						/*主页面下拉框*/
+						wrapper: '',
+						/*横向滑动*/
+
+						modalShow: false,
+
+						shopMsg: '', //手艺人详情
+						enabledTime: [] /*可约时间*/ ,
+						scrollHeight: '', //页面高度
+						comment: '',
+						total: 0,
+						/*评论条数*/
+						/*评价列表*/
+						refillcard: '', //充值卡
+						coupons: '', //优惠券
+
+						allProduct: [],
+						index: 1 //当前页码
+					},
+					filters: {
+						dataTxt(value) {
+							if(value == 0) return '今天';
+							if(value == 1) return '明天';
+							if(value == 2) return '后天';
+							let today = new Date();
+							let dd = new Date();
+							dd.setDate(dd.getDate() + value);
+
+							let str = (dd.getMonth() + 1) + '月' + dd.getDate() + '日'
+							return str
+						},
+						commentTxt(value) {
+							switch(value) {
+								case '1':
+									return '非常非常嘿皮'
+									break;
+								case '2':
+									return '很嘿皮'
+									break;
+								case '3':
+									return '嘿皮'
+									break;
+								case '4':
+									return '不嘿皮'
+									break;
+								default:
+									break;
+							}
+						},
+						filterNull(value) {
+							if(value == null || value == 'undefined') {
+								return ''
+							}
+							return value
+						}
+					},
+					created: function() {
+						app.initHeader();
+
+						var self = plus.webview.currentWebview();
+						this.shopCode = self.shopCode
+						var isLogin = plus.storage.getItem('isLogin');
+
+						if(isLogin == '1') {
+							this.islogin = true;
+						}; //没有登陆状态则不获取数据
+
+					},
+					mounted: function() {
+						var _this = this
+						mui('.mui-scroll-wrapper').scroll({
+							bounce: false //是: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+						});
+						this.scrollHeight = plus.screen.resolutionHeight - document.getElementById('header').offsetHeight - 44 + 'px';
+
+						/*初始化手艺人数据*/
+						this._initData()
+
+						/*初始化下拉scroll*/
+						this.$nextTick(function() {
+							var scroll = this.$refs.scroll
+							var wrapper = this.$refs.wrapper
+							/*竖向下拉刷新*/
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									//									pullUpLoad: {
+									//										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									//									},
+								})
+							} else {
+								_this.scroll.refresh();
+							};
+							/*横向滑动*/
+							if(!_this.wrapper) {
+								//							初始化标题栏
+								_this.wrapper = new BScroll(wrapper, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									scrollX: true,
+									scrollY: false
+								})
+							} else {
+								_this.wrapper.refresh();
+							};
+							mui('#wrapper').scroll({
+								deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+								bounce: true, //是否启用回弹
+								indicators: false
+							});
+						})
+					},
+					methods: {
+						//						默认头像
+						_default(e) {
+							var dom = e.target;
+							console.log(dom)
+							dom.src = "../../images/default_avatar.jpg"
+						},
+
+						//						与商家对话
+						_toChat() {
+							let isLogin = plus.storage.getItem('isLogin');
+							if(isLogin != '1') {
+								plus.nativeUI.toast('请您先登陆');
+								this._navigateTitle('../login.html', 'login')
+								return
+							}
+							let fdId = this.shopMsg.RY_ID;
+							let fdname = this.shopMsg.SHOP_NAME;
+							let fdAvatar = this.shopMsg.SHOP_LOGO;
+
+							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
+							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {})
+						},
+						_phone() {
+							plus.nativeUI.toast('致电中，请稍等')
+							plus.device.dial(this.shopMsg.SHOP_MOBILE, false);
+						},
+						//						商铺充值卡购买
+						_recharge(code) {
+							if(!code) return;
+							let real = plus.storage.getItem('realStatus')
+							let isLogin = plus.storage.getItem('isLogin');
+							if(isLogin != '1') {
+								plus.nativeUI.toast('请您先登陆');
+
+								this._navigateTitle('../login.html', 'login')
+
+								return
+							}
+
+							/*创建项目订单*/
+							plus.nativeUI.showWaiting()
+							app.ajax(app.baseUrl + '/api/Order/CreateBusiRechargeOrder', {
+								data: {
+									RECHARGE_CODE: code
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									let payCode = result.Msg; //订单号
+									plus.nativeUI.closeWaiting()
+									if(result.Success) {
+										plus.nativeUI.toast('订单创建成功')
+										let desturl = '../cashPay.html'
+										let destid = 'cashPay'
+										let exa = {
+											type: 2, //1表示的是只能现金支付,2可以平台余额支付
+											payCode: payCode
+										}
+										let option = {
+											showTitle: true
+										}
+										app.navigater(desturl, destid, exa, option)
+
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									console.log(111 + type);
+								}
+							});
+
+						},
+						_navigateTitle(desturl, destid, extras) {
+							let exa = extras
+							let option = {
+								showTitle: true,
+							}
+							app.navigater(desturl, destid, exa, option)
+
+						},
+						/*跳转页面*/
+						_navigateTo(desturl, destid, extras) {
+
+							let exa = extras
+							let option = {}
+							app.navigater(desturl, destid, exa, option)
+
+						},
+						/*收藏手艺人*/
+						_collect() {
+							if(this.hasCollec) {
+								return;
+							}
+							var _this = this
+							/*判断登陆状态*/
+							let status = plus.storage.getItem('isLogin')
+							if(status != '1') {
+								/*没有登陆状态*/
+								plus.nativeUI.confirm('请您先登陆', (event) => {
+									if(event.index != 0) return;
+									this._navigateTitle('../login.html', 'login')
+								}, {
+									title: '马嘿嘿提醒您'
+								}, ['去登陆', '取消'])
+							} else {
+								/*用户已登陆执行收藏操作*/
+								plus.nativeUI.showWaiting()
+								app.ajax(app.baseUrl + '/api/Shop/Attention', {
+									type: 'post', //HTTP请求类型
+									data: {
+										SHOP_CODE: _this.shopCode,
+									},
+									success: function(result) {
+										/*登陆成功*/
+										plus.nativeUI.closeWaiting()
+										if(result.Success) {
+											plus.nativeUI.toast('收藏成功')
+											_this.hasCollec = true
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast('收藏失败')
+										}
+									}
+								})
+							}
+						},
+						/*切换*/
+						_switch(k) {
+							this.curTabType = k;
+							this.scroll.refresh();
+						},
+						/*模态框显示*/
+						_switchModal() {
+							this.modalShow = !this.modalShow
+						},
+						/*初始化数据*/
+						_initData(callback) {
+							this.loader = true
+							var _this = this
+							/*初始化店铺信息*/
+							app.ajax(app.baseUrl + '/api/Shop/ViewShop', {
+								type: 'post', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								data: {
+									SHOP_CODE: _this.shopCode
+								},
+
+								success: function(result) {
+									/*登陆成功*/
+									mui.later(() => {
+										_this.loader = false;
+										document.getElementById('loader').style.display = 'none'
+										if(result.Success) {
+											/*店铺信息*/
+											_this.shopMsg = result.Data.Shop
+											_this.levels = parseInt(result.Data.Shop.SHOP_STAR)
+											/*充值卡*/
+											_this.refillcard = result.Data.Recharge
+											/*优惠券*/
+											_this.coupons = result.Data.Discount
+											_this.hasCollec = result.Data.Shop.IS_ATTENTION
+											//											alert(_this.hasCollec)
+											_this._initComment()
+
+											_this.enabledTime = result.Data.enabledTime
+											if(callback) callback()
+										} else {
+											/*验证失败*/
+										}
+									}, 500)
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									_this.loader = false;
+									app.catchErr(type)
+									document.getElementById('loader').style.display = 'none'
+								}
+							})
+							/*店铺全部项目*/
+							this._initAllPro()
+
+						},
+						_scanMore() {
+
+						},
+						_initAllPro() {
+							/*店铺全部项目*/
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/Project/GetShopProjects', {
+								type: 'get', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								data: {
+									SHOP_CODE: _this.shopCode,
+									ORDER_TYPE: 1,
+									pageIndex: _this.index,
+									pageSize: 8
+								},
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									/*登陆成功*/
+									if(result.Success) {
+										/*列表*/
+										//										_this.shopMsg = result.Data.Shop	
+										_this.allProduct = _this.allProduct.concat(result.Data.ListInfo)
+										if(_this.allProduct.length == result.Data.Total && _this.index != 1) {
+											plus.nativeUI.toast('没有更多数据')
+											return;
+										}
+										_this.index += 1
+										//										if(callback) callback()
+									} else {
+										/*验证失败*/
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									app.catchErr(type)
+								}
+							})
+						},
+						/*获取评价数据*/
+						_initComment() {
+							var _this = this
+							//							alert(_this.proKey)
+							mui.ajax(app.baseUrl + '/api/OrderReview/GetReviewList', {
+								type: 'get', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								data: {
+									//									PROJECT_CODE: _this.proKey,
+									REVIEW_TYPE: 1,
+									pageIndex: 1,
+									pageSize: 4,
+								},
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									/*登陆成功*/
+									if(result.Success) {
+										_this.comment = result.Data.ListInfo;
+										_this.total = result.Data.Total;
+									} else {
+										/*验证失败*/
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									app.catchErr(type)
+								}
+							})
+						},
+					}
+				})
+
+			});
+			/*获取用户身份之后刷新页面*/
+			function initPage() {
+
+			}
+		</script>
+	</body>
+
+</html>

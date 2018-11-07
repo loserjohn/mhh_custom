@@ -1,0 +1,177 @@
+
+   .loader{
+	   	 position: fixed;
+		   left: 0;
+		   right: 0;
+
+		   bottom: 0;
+		   background: #fff;
+		   z-index: 100;
+	   }
+	   .loader>ul {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: rotate(45deg) translate(-50%, -50%);
+			}
+
+			.loader>ul>li {
+				list-style-type: none;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				width: 6px;
+				height: 6px;
+				background: #d3d3d3;
+				border-radius: 50%;
+			}
+
+			#a {
+				animation: a 1s ease-in-out infinite;
+				top: -10px;
+				left: -10px;
+			}
+
+			#b {
+				animation: b 1s ease-in-out infinite;
+				top: -10px;
+				left: 0px;
+			}
+
+			#c {
+				animation: c 1s ease-in-out infinite;
+				top: -10px;
+				left: 10px;
+			}
+
+			#d {
+				animation: d 1s ease-in-out infinite;
+				top: 0px;
+				left: -10px;
+			}
+
+			#e {
+				animation: e 1s ease-in-out infinite;
+				top: 0px;
+				left: 0px;
+			}
+
+			#f {
+				animation: f 1s ease-in-out infinite;
+				top: 0px;
+				left: 10px;
+			}
+
+			#g {
+				animation: g 1s ease-in-out infinite;
+				top: 10px;
+				left: -10px;
+			}
+
+			#h {
+				animation: h 1s ease-in-out infinite;
+				top: 10px;
+				left: 0px;
+			}
+
+			#i {
+				animation: i 1s ease-in-out infinite;
+				top: 10px;
+				left: 10px;
+			}
+
+			@keyframes a {
+				50% {
+					top: 0px;
+					left: -10px;
+				}
+
+				100% {
+					top: 0px;
+					left: -10px;
+				}
+			}
+
+			@keyframes b {
+				50% {
+					top: -10px;
+					left: -10px;
+				}
+
+				100% {
+					top: -10px;
+					left: -10px;
+				}
+			}
+
+			@keyframes c {
+				50% {
+					top: -10px;
+					left: 0px;
+				}
+
+				100% {
+					top: -10px;
+					left: 0px;
+				}
+			}
+
+			@keyframes d {
+				50% {
+					top: 10px;
+					left: -10px;
+				}
+
+				100% {
+					top: 10px;
+					left: -10px;
+				}
+			}
+
+			@keyframes f {
+				50% {
+					top: -10px;
+					left: 10px;
+				}
+
+				100% {
+					top: -10px;
+					left: 10px;
+				}
+			}
+
+			@keyframes g {
+				50% {
+					top: 10px;
+					left: 0px;
+				}
+
+				100% {
+					top: 10px;
+					left: 0px;
+				}
+			}
+
+			@keyframes h {
+				50% {
+					top: 10px;
+					left: 10px;
+				}
+
+				100% {
+					top: 10px;
+					left: 10px;
+				}
+			}
+
+			@keyframes i {
+				50% {
+					top: 0px;
+					left: 10px;
+				}
+
+				100% {
+					top: 0px;
+					left: 10px;
+				}
+			}

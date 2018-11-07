@@ -1,0 +1,325 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>账户提现</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+
+		<style>
+			/*提现至*/
+			
+			.card {
+				width: 100%;
+				background: #fff;
+			}
+			
+			.card .address {
+				height: 52px;
+				border-bottom: 1px solid #d3d3d3;
+				position: relative;
+			}
+			
+			.card .address i {
+				margin-top: 15px;
+			}
+			
+			.card .address .payIcon {
+				font-size: 30px;
+			}
+			
+			.account {
+				height: 52px;
+				line-height: 52px;
+			}
+			/*金额*/
+			
+			.momney {
+				line-height: 60px;
+				margin: 15px 0;
+				border-bottom: 1px solid #d3d3d3;
+			}
+			
+			.momney .valueBox {
+				height: 60px;
+				line-height: 60px;
+				outline: none;
+				font-size: 24px;
+				border: none;
+				margin: 0 15px 0 5px;
+			}
+			
+			.momney .resetBtn {
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: #d3d3d3;
+				text-align: center;
+				line-height: 20px;
+				display: inline-block;
+			}
+			
+			.lh6 {
+				line-height: 60px;
+			}
+			
+			.moneyIcon {
+				font-size: 30px;
+			}
+			
+			.btns {
+				margin-top: 40px;
+			}
+			
+			#submit {
+				width: 100%;
+				height: 44px;
+				line-height: 44px;
+				padding: 0;
+				border: none;
+			}
+			/*银行卡号*/
+			
+			.address .numBox {
+				border: none;
+				/*background: red;*/
+				outline: none;
+				height: 100%;
+				margin-left: 15px;
+			}
+			/*开户行名字*/
+			
+			.bankName {
+				line-height: 3;
+				border-bottom: 1px solid #d3d3d3;
+				background: #f7f7f7;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--等待页面-->
+		<div class="loader" style="top:0" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app">
+
+			<!--提现操作-->
+			<div id="content" class="card ">
+				<div class="flex  address container">
+					<i class="iconfont icon-jinnang cor_y payIcon"></i>
+					<div class="f1 account  t_r">
+						{{allMoney}}
+					</div>
+				</div>
+				<div class="flex address container">
+					<i class="iconfont icon-bangdingyinhangqia cor_y payIcon"></i>
+					<div class="f1">
+						<input type="number" class="numBox t_r" v-model="bankNum" placeholder="请输入银行卡号" @change="_valideCard" />
+					</div>
+				</div>
+				<div class="flex address container">
+					<i class="iconfont icon-wxbzhanghu cor_y payIcon"></i>
+					<div class="f1">
+						<input type="text" class="numBox t_r" v-model="bankName" placeholder="请输入开户行" />
+					</div>
+				</div>
+				<div class="flex address container">
+					<i class="iconfont icon-phone cor_y payIcon"></i>
+					<div class="f1">
+						<input type="number" class="numBox t_r" v-model="phone" placeholder="请输入银行预留电话" />
+					</div>
+				</div>
+				<div class="flex address container">
+					<i class="iconfont icon-geren cor_y payIcon"></i>
+					<div class="f1">
+						<input type="text" class="numBox t_r" v-model="bankUser" placeholder="请输入户名" />
+					</div>
+				</div>
+				<!--金额-->
+				<div class="amount container">
+					<p class="cm_name">提现金额</p>
+					<div class="momney flex">
+						<h3 class="lh6 moneyIcon">￥</h3>
+						<input type="number" class="valueBox f1" placeholder="" v-model="money" @input="_validNum">
+						<div class="lh6">
+							<div class="resetBtn" @tap="_reset">
+								<i class="iconfont icon-close cor_w"></i>
+							</div>
+						</div>
+
+					</div>
+					<div class="flex">
+						<div class="f1 cor_y" @tap="_allIn">全部提现</div>
+						<div class="f1 t_r cor_b">提现说明?</div>
+					</div>
+				</div>
+
+				<div class="btns container">
+					<button type="button" id="submit" data-loading-icon="mui-spinner mui-spinner-custom" class="mui-btn cm_btn" @tap="_submit">立即提现</button>
+				</div>
+			</div>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			})
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						bankNum: '',
+						allMoney: '',
+						money: 0,
+						bankName: '',
+						bankUser: '',
+						cardEnables: false,
+						phone: ''
+					},
+					created: function() {
+
+					},
+					mounted: function() {
+						var _this = this
+
+						var self = plus.webview.currentWebview()
+						this.allMoney = self.amount;
+						this.phone = self.phone;
+						document.getElementById('loader').style.display = 'none'
+
+					},
+					methods: {
+						//						检验卡号
+						_valideCard() {
+							var _this = this
+							mui.ajax('https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?_input_charset=utf-8&cardNo=' + _this.bankNum + '&cardBinCheck=true', {
+								type: 'get', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									//									console.log(JSON.stringify(result));
+									var status = result.validated;
+									if(!status) {
+										plus.nativeUI.alert('无效卡号')
+									} else {
+										_this.cardEnables = true
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+
+									owner.catchErr(type)
+								}
+							});
+						},
+						/*提交取现*/
+						_submit() {
+							var _this = this
+							
+							if(!this.bankNum) {
+								plus.nativeUI.alert("请输入卡号", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.bankName) {
+								plus.nativeUI.alert("请输入开户行", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.bankUser) {
+								plus.nativeUI.alert("请输入开户名", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.phone) {
+								plus.nativeUI.alert("请输入银行预留号码", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!app.checkPhone(this.phone)) {
+								plus.nativeUI.alert("无效的手机号", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.cardEnables) {
+								plus.nativeUI.alert("请输入有效的卡号", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							if(!this.money) {
+								plus.nativeUI.alert("请输入金额", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							mui('#submit').button('loading');
+							mui.ajax(app.baseUrl + '/api/Withdraw/Withdraw', {
+								data: {
+									BANK_NAME: _this.bankName,
+									BANK_OPEN_NAME: _this.bankUser,
+									BANK_CARDNUM: _this.bankNum,
+									BANK_MOBILE: _this.phone,
+									AMOUNT: parseInt(_this.money)
+								},
+								headers :{
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									/*登陆成功*/
+										if(result.Success) {
+											mui('#submit').button('reset');
+											plus.nativeUI.toast('提现成功');
+											plus.webview.getWebviewById('mine').evalJS('refresh()')
+											plus.webview.getWebviewById('platformCard').evalJS('refresh()')
+											mui.later(() => {
+												mui.back()
+											}, 500)
+
+										} else {
+											mui('#submit').button('reset');
+											plus.nativeUI.toast(result.Msg)
+										}
+								},
+								error: function(xhr, type, errorThrown) {
+									mui('#submit').button('reset');
+									app.catchErr(xhr, type, errorThrown)
+								}
+							});
+
+						},
+						/*重置*/
+						_reset() {
+							this.money = ''
+						},
+						/*矫正数字*/
+						_validNum() {
+							this.money = parseInt(this.money)
+						},
+						/*全部去除*/
+						_allIn() {
+							this.money = this.allMoney
+						}
+
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

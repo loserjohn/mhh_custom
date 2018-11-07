@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>平台客服</title>
+
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/cs.min.css">
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/loading.css" />
+
+		<!-- 可以将 SDK 下载到本地 配置 gruntfile 与 cs.js 合并压缩成一个 js 文件 -->
+		<style>
+			#btn {
+				margin-top: 200px
+			}
+			
+			.resetBtn {
+				display: block;
+				width: 195px;
+				background: #fff;
+				border: 1px solid #212121;
+				padding: 0;
+				color: #ccaa42;
+				font-family: 'Microsoft Yahei';
+				font-size: 16px;
+				cursor: pointer;
+				margin: 400px auto 0 auto;
+				height: 50px;
+				line-height: 50px;
+				border-radius: 3px;
+				text-align: center;
+			}
+			
+			.demo {
+				left: 0;
+				top: 0;
+				width: 100vw;
+				height: 100vh;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--等待页面-->
+		<!--<div class="loader" style="top:0" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>-->
+		<!--<header class="mui-bar mui-bar-nav " id="header">
+			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+			<h1 class="mui-title">
+					平台客服
+				</h1>
+			<a class=" mui-pull-right cor_y fs16 " style="width: 66px;">
+
+			</a>
+		</header>-->
+		<!--<div id="content">
+			<div id="rcs-app"></div>
+		</div>-->
+		<!--<div class="resetBtn" id="resetBtn">返回</div>-->
+		<!--<iframe class="demo" src="https://www.sobot.com/chat/h5/index.html?sysNum=053184bbe2174048b2dbc1df8f498c23?face uname partnerId" width="100%" height=""></iframe>-->
+		<script src="../js/mui.min.js"></script>
+		<!--<script src="../js/RongIMLib-cs.min.js"></script>-->
+		<script src="../js/app.js"></script>
+		<!--<script src="https://cdn.ronghub.com/RongIMVoice-2.2.4.min.js"></script>-->
+		<!--<script src="../js/cs.min.js"></script>-->
+		<!--<script src="https://www.sobot.com/chat/frame/js/entrance.js?sysNum=053184bbe2174048b2dbc1df8f498c23" class="zhiCustomBtn" id="zhichiScript"></script>-->
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				swipeBack: true
+			});
+			//			app.initHeader()
+			mui.plusReady(function() {
+
+				var wv = plus.webview.currentWebview();
+				wv.setStyle({
+					titleNView: {
+						autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+						titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+						titleSize: "14px", // 字体大小,默认17px
+						backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+						progress: { // 标题栏控件的进度条样式
+							color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"
+							height: "2px" // 进度条高度,默认值为"2px"         
+						},
+						splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+							color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+							height: "1px" // 分割线高度,默认值为"2px"
+						}
+					}
+				});
+
+				var iframe = document.createElement('iframe');
+				var face = plus.storage.getItem('pic_head')
+				var uname = plus.storage.getItem('userName')
+				//				var uname = 'xhasdfadsf '
+				var partnerId = plus.storage.getItem('IMtoken')
+				iframe.src = 'https://www.sobot.com/chat/h5/index.html?sysNum=053184bbe2174048b2dbc1df8f498c23&face=' + face + '&uname=' + uname + '&partnerId=' + partnerId;
+//				console.log(iframe.src)
+				iframe.className = 'demo'
+				document.body.appendChild(iframe)
+
+				//				var zhiManager = (getzhiSDKInstance());
+				//				//再调用load方法
+				//				zhiManager.on("load", function() {
+				//					alert(1)
+				//					zhiManager.initBtnDOM();
+				//					document.getElementById('loader').style.display = 'none'
+				//				});
+
+				//				RCS.init({
+				//					appKey: "n19jmcy5n8ke9", // 应用 appkey
+				//					token: plus.storage.getItem('IMtoken'), // 当前游客或登录用户 token
+				//					upload: {
+				//						fileServer: "http://upload.qiniu.com", // 文件服务器地址
+				//						isPrivate: false // 是否是私有云
+				//					}, //非必填
+				//					target: document.getElementById("rcs-app"), // 要插入到的页面节点
+				//					customerServiceId: "KEFU153716961156756", // 融云开发者后台开启智齿客服后获取“客服 ID”
+				//					userIcon: 'http://7xo1cb.com1.z0.glb.clouddn.com/rongcloudkefu2.png', //用户默认头像，在用户没有头像的时候显示
+				//					csIcon: 'http://fsprodrcx.cn.ronghub.com/UQRxDVEHcD6_gHENUQRxDUs9XOZRBH25PGECfjBjFA/base64.png', //客服默认头像，在客服没有头像的时候显示，建议线上地址
+				//					showButton: true,
+				//					//是否需要按钮主动发起，设为false的时候，init()方法直接唤起聊天窗口,需客户自己编写按钮，点击之后调用init(),templates中的button模板不可用;设为true的时候，init()首先唤起客服咨询按钮，点击之后才连接客服，唤起聊天窗口，在进入页面之后就需调用init()方法。此参数是为了方便客户在点击客服按钮后自行获取token，在获取到token之后，执行init()即可。
+				//					connectingCallback: function() {
+				////						console.log('1111,连接中');
+				//						mui.later(function() {
+				//							document.getElementById('loader').style.display='none'
+				//						}, 2000)
+				//					
+				//
+				//					}, //连接中的执行的方法，例如显示加载页面,可不传
+				//					connectedCallback: function() {
+				//						console.log('success');
+				//						
+				//					}, //连接成功之后的方法，例如关闭加载页面,可不传
+				//					disconnectedCallback: function() {
+				//						plus.nativeUI.toast('客服连接断开');
+				//					}
+				//				});
+			})
+			//			document.getElementById('resetBtn').onclick = function() {
+			//				mui.back()
+			//			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>付款</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/animate.css" />
+		<style>
+			.leftPic {
+				/*width: 30px;*/
+				height: 30px;
+				margin-right: 10px;
+				margin-top: 10px;
+			}
+			
+			.block1 {
+				line-height: 50px;
+				background: #fff;
+				margin-bottom: 10px;
+			}
+			
+			.block1>div {
+				line-height: 50px;
+			}
+			/*支付方式*/
+			
+			.block2 {
+				background: #fff;
+				margin-bottom: 10px;
+			}
+			
+			.block2>div {
+				/*padding: 10px;*/
+				height: 50px;
+				line-height: 50px;
+			}
+			
+			.payWay {
+				border-bottom: 1px solid #d3d3d3;
+			}
+			
+			.cardsItem {
+				/*background: red;*/
+				line-height: 44px;
+				height: 44px;				
+				color: #d3d3d3;
+			}
+			/*.cardsItem span{
+				color:#d3d3d3;
+			}*/
+			.cardsItem.enabled{
+				color: #212121!important;
+			}
+			.cardsItem>i {
+				margin-right: 10px;
+				font-size: 28px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<!--<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					付款
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
+					须知				
+				</button>
+			</header>-->
+
+			<div id="content">
+				<!--剩余时间  -->
+				<p class="t_c lh44 cor_r">
+					<i class="iconfont icon-shijian fs10"></i> {{time | minute}}
+				</p>
+				<!--金额-->
+				<div class="block1 container">
+					订单金额：￥{{order.ORDER_PAY_AMOUNT}}
+				</div>
+				<!--我的余额-->
+				<div class=" flex block1 container" v-if="type==2"  @tap="_payWay(1)">
+					<div class="flex f1">
+						<img src="../images/ye.png" alt="" class="leftPic" />
+						<div style="line-height: 50px;">我的余额：￥{{account}}</div>
+					</div>
+					<div class="t_r  cor_y">
+						<span class="iconfont icon-gou3" v-show="curWay==1"></span>
+					</div>
+				</div>			
+
+				<!--支付方式-->
+				<p class="container lh30">其他付款方式</p>
+				<div class=" block2">
+					<div class="flex payWay container " @tap="_payWay(3)">
+						<div class="f1 ">
+							<img src="../images/zfb_zf.png" alt="" class="leftPic" />
+						</div>
+						<div class="t_r  cor_y ">
+							<span class="iconfont icon-gou3" v-show="curWay==3"></span>
+						</div>
+					</div>
+					<div class="flex container " @tap="_payWay(4)">
+						<div class="f1 ">
+							<img src="../images/wx_zf.png" alt="" class="leftPic" />
+						</div>
+						<div class="t_r  cor_y " >
+							<span class="iconfont icon-gou3" v-show="curWay==4"></span>
+						</div>
+					</div>
+				</div>
+
+				<!--实际需付金额-->
+				<div class="block1 container flex">
+					<div class="f1">付款金额：</div>
+					<div class="f1 cor_r t_r fs18">￥{{amount}}</div>
+				</div>
+
+				<!--支付按钮-->
+				<div class="container">
+					<div class="cm_btn " :class="{cm_disable:!disable}" @tap="_paySubmit">确认支付</div>
+				</div>
+				<!--支付问题-->
+				<p class="container">
+					<span class="mui-icon mui-icon-help fs16"></span>支付遇到问题
+				</p>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/bscroll.min.js"></script>
+		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true		
+			});
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				var APP = new Vue({
+					el: '#app',
+					data: {
+						orderCode: '',
+						/*订单code*/
+						type:1,//支付页面的展示方式 1表示的是只能现金支付,2可以平台余额支付
+						
+						tabContenTop: '',
+
+						/*充值卡*/
+						account: 0,
+						/*账户余额*/
+						order: '',
+						/*订单详情*/
+						amount: 0,
+						/*最后需付金额*/
+
+						curWay: 0,
+						/*当前的支付方式*/
+						disable: true, //是否禁用
+
+						wxChannel: null, // 微信支付 
+						aliChannel: null, // 支付宝支付 
+						channel: null, //支付通道
+						
+						time:720,
+						timeEnabled :true
+					},
+					filters:{
+						minute(value){
+							if(value==0){
+								return '订单超时,支付通道关闭'
+							}
+							let m = Math.floor(value/60) 
+							let s = value%60;
+							m = (m>=10)?m:'0'+m;
+							s = ( s>=10)? s:'0'+ s;
+							return '剩余时间:'+m+':'+s
+						}
+					},
+					created: function() {
+						/*开始倒计时*/
+						var _this = this	
+						var time = setInterval(()=>{
+							_this.time -=1;
+							if(_this.time<=0){
+								_this.time = 0;
+								_this.timeEnabled = false
+								clearInterval(time)
+							}
+						},1000)
+					},
+					mounted: function() {
+//						console.log(app.mark + plus.storage.getItem('token'))
+						var _this = this;
+
+						var self = plus.webview.currentWebview();
+						this.type = self.type
+						this.orderCode = self.payCode
+						
+//						alert(this.orderCode)
+						/*初始化支付通道*/
+						this._initPay()
+						//初始化订单内容
+						this._iniOrder(()=>{}) 
+						
+						var old_back = mui.back;
+						mui.back = function(){
+						  var btn = ["确定","取消"];
+						  mui.confirm('您的订单尚未完成，确定放弃支付？','马嘿嘿提醒您',btn,function(e){
+						    if(e.index==0){
+						    	//执行mui封装好的窗口关闭逻辑；
+						    	old_back();
+						    }
+						  });
+						}
+				
+					},
+					methods: {
+						/*初始化支付通道*/
+						_initPay() {
+							var _this = this
+							plus.payment.getChannels(function(channels) {
+								for(var i in channels) {
+									if(channels[i].id == "alipay") {
+										_this.aliChannel = channels[i];
+									}
+									if(channels[i].id == "wxpay") {
+										_this.wxChannel = channels[i];
+									}
+								}
+							}, function(e) {
+								alert(" 获取支付通道失败： " + e.message);
+							});
+						},
+						//初始化订单内容
+						_iniOrder(callback) {
+							var _this = this;
+//							console.log(_this.orderCode)
+							/*获取订单详情*/
+							app.ajax(app.baseUrl + '/api/OrderService/GetOrder', {
+								type: 'get', //HTTP请求类型
+								data: {
+									ORDER_CODE: _this.orderCode
+								},
+								success: function(result) {
+									if(result.Success) {
+										_this.order = result.Data.data
+										_this.amount = result.Data.data.ORDER_PAY_AMOUNT
+										
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});
+							/*获取用户总账户余额*/
+							app.ajax(app.baseUrl + '/api/MemberInfo/GetMemberInfo', {
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										_this.account = result.Data.MEMBER_ACOUNT
+										if(_this.order.ORDER_PAY_AMOUNT > _this.account) {
+											
+												_this.disable = false
+										}
+										if(callback)callback()
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg)
+									}
+								}
+							});							
+						},
+						/*选择支付方式*/
+						_payWay(t,item) {
+						/*	item是当选择都是店铺充值卡支付的时候,接收到的充值卡对象*/
+							var _this = this
+							switch(t) {
+								case 1:
+									/*余额支付*/
+									if(this.order.ORDER_PAY_AMOUNT > this.account) {
+										this.disable = false
+									}
+									this.buyCarCode = ''
+									break;
+								case 2:
+									/*充值卡支付*/
+									if(!item )return;
+									/*BUYCARD_RESIDUE是剩余总面额*/
+//									if(item.BUYCARD_RESIDUE<_this.order.ORDER_PAY_AMOUNT){
+//										plus.nativeUI.toast('余额不足，无法完成支付');return;
+//									}
+//									this.buyCarCode = item.BUYCARD_CODE
+									
+									break;
+								case 3:
+									/*支付宝支付*/
+									this.disable = true
+									this.buyCarCode = ''
+									break;
+								case 4:
+									/*微信支付*/
+									this.disable = true
+									this.buyCarCode = ''
+									break;
+								default:
+									break;
+							}
+							this.curWay = t
+						},
+						/*支付方式判断*/
+						_paySubmit(){
+							if(!this.timeEnabled ){
+								plus.nativeUI.alert('订单超时，请重新创建订单',()=>{})
+								return
+							}
+							
+							let s = this.curWay;
+							if(!this.disable)return;
+//							alert(this.disable)
+							var _this = this
+							
+							switch (s){
+								case 1:
+									plus.nativeUI.showWaiting('支付中。。。')	
+									/*余额支付*/
+									let data={
+										ORDER_CODE:_this.orderCode,
+										ORDER_PAY_TYPE:2
+									}
+//									console.log(JSON.stringify(data))
+									app.ajax(app.baseUrl + '/api/Order/PayOrder', {
+										// dataType:'json',//服务器返回json格式数据
+										data: data,
+										type: 'post', //HTTP请求类型
+										success: function(result) {
+											if(result.Success) {	
+												mui.later(()=>{
+													plus.nativeUI.closeWaiting()	
+													plus.nativeUI.toast('支付成功')
+													_this.success()
+												},1500)
+												
+												/*还原数据*/
+											} else {
+												plus.nativeUI.closeWaiting()
+												plus.nativeUI.toast(result.Msg)
+												console.log(result.Msg)
+											}
+		
+										}
+									});	
+									break;
+								case 2:
+									if(!_this.buyCarCode)return;
+//									plus.nativeUI.showWaiting('支付中。。。')	
+//									/*充值卡支付*/
+//									let data2={
+//										ORDER_CODE:_this.orderCode,
+//										ORDER_PAY_TYPE:3,
+//										BUYCARD_CODE:_this.buyCarCode
+//									}
+//									console.log(JSON.stringify(data2))
+//									app.ajax(app.baseUrl + '/api/Order/PayOrder', {
+//										// dataType:'json',//服务器返回json格式数据
+//										data: data2,
+//										type: 'post', //HTTP请求类型
+//										success: function(result) {
+//											if(result.Success) {										
+//												mui.later(()=>{
+//													plus.nativeUI.closeWaiting()	
+//													plus.nativeUI.toast('支付成功')
+//													_this.success()
+//												},1500)
+//												/*还原数据*/
+//											} else {
+//												plus.nativeUI.closeWaiting()
+//												plus.nativeUI.toast(result.Msg)
+//												console.log(result.Msg)
+//											}	
+//										}
+//									});	
+									break;
+								case 3:
+									/*支付宝支付*/
+									this._pay('alipay')
+									break;
+								case 4:
+									/*微信支付*/
+									this._pay('wxpay')
+									break;
+								default:
+									plus.nativeUI.toast('情选择支付方式')
+									break;
+							}
+						},
+						/*支付操作*/
+						_pay(id) {
+							var _this = this
+							var ALIPAYSERVER = app.baseUrl + '/api/Order/PayOrder?ORDER_PAY_TYPE=1&PAY_WAY=1&ORDER_CODE=' + this.orderCode;
+							var WXPAYSERVER = app.baseUrl + '/api/Order/PayOrder?ORDER_PAY_TYPE=1&PAY_WAY=2&ORDER_CODE=' + this.orderCode;
+
+							var PAYSERVER = '';
+							
+							if(id == 'alipay') {
+								//								alert(1)
+								PAYSERVER = ALIPAYSERVER;
+								_this.channel = _this.aliChannel;
+							} else if(id == 'wxpay') {
+								PAYSERVER = WXPAYSERVER;
+								_this.channel = _this.wxChannel;
+							} else {
+								plus.nativeUI.alert(' 不支持此支付通道！ ', null, ' 充值 ');
+								return;
+							}
+//							console.log(JSON.stringify(this.orderCode) )
+							var xhr = new XMLHttpRequest();
+							//							var amount = inputMoney.value;
+							plus.nativeUI.showWaiting('支付中。。。')
+							xhr.onreadystatechange = function() {
+								switch(xhr.readyState) {
+									case 4:
+										if(xhr.status == 200) {
+//											alert(result)
+											plus.nativeUI.closeWaiting()
+											plus.payment.request(_this.channel, JSON.parse(xhr.responseText).Data, function(result) {
+												//												alert(result)
+//												plus.nativeUI.alert(" 支付成功！ ", function() {
+												plus.nativeUI.toast('支付成功')
+													_this.success()
+//												});
+											}, function(error) {
+												plus.nativeUI.alert(" 支付失败");
+											});
+										} else {
+											plus.nativeUI.closeWaiting()
+											alert(" 获取订单信息失败！ ");
+										}
+										break;
+									default:
+										break;
+								}
+							};							
+							xhr.open('POST', PAYSERVER);
+							xhr.setRequestHeader("Authorization", app.mark + plus.storage.getItem('token'));
+							xhr.send();
+						},
+						/*支付成功跳转支付成功页面*/
+						success(){
+//							alert(1)
+							if(this.curWay==1){
+								plus.webview.currentWebview().close()
+								plus.webview.getWebviewById('orders').evalJS('refresh()')
+								if(plus.webview.getWebviewById('toPay')){
+									plus.webview.getWebviewById('toPay').close();
+								}
+								
+								if(plus.webview.getWebviewById('productOrder')){
+									plus.webview.getWebviewById('productOrder').close();
+								}
+								if(plus.webview.getWebviewById('productBuy')){
+									plus.webview.getWebviewById('productBuy').close();
+								}
+								if(plus.webview.getWebviewById('productList')){
+									plus.webview.getWebviewById('productList').close();
+								}
+								
+								if(plus.webview.getWebviewById('platformCard')){
+									plus.webview.getWebviewById('platformCard').close();
+								}
+								if(plus.webview.getWebviewById('spread')){
+									plus.webview.getWebviewById('spread').close();
+								}
+								plus.webview.getLaunchWebview().show();
+							plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
+										
+								return;
+							}
+//							alert(2)
+							mui.openWindow({
+								url: './success.html',
+								id: 'success',
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: true, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: false, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						}
+					}
+
+				});
+			});
+		</script>
+	</body>
+
+</html>

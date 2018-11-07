@@ -1,0 +1,595 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>添加新地址</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<style>
+			.btns {
+				margin-top: 15px;
+			}
+			
+			.btns .cm_btn {
+				height: auto;
+			}
+			
+			.msgBox {
+				/*background: red;*/
+				width: 100%;
+			}
+			
+			.msgBox .avatar {
+				width: 56px;
+				height: 56px;
+				border-radius: 0;
+				margin-right: 10px;
+			}
+			
+			.msgBox .mui-table-view-cell {
+				/*height: 78px;*/
+			}
+			
+			.msgBox .iconfont,
+			.msgBox .cellName {
+				/*line-height: 50px;*/
+				font-size: 16px;
+				margin-right: 10px;
+			}
+			
+			.msgBox .cellInputTxt {
+				width: 50%;
+				border: none;
+				outline: none;
+				/*line-height: 56px;*/
+				margin: 0;
+				padding: 0;
+				text-align: right;
+				height: auto;
+			}
+			
+			.msgBox .seletBox {
+				width: 50%;
+				border: none;
+				outline: none;
+				/*line-height: 56px;*/
+				margin: 0;
+				padding: 0;
+				text-align: right;
+				height: auto;
+				position: absolute;
+				top: 0;
+				right: 0;
+				height: 100%;
+				opacity: 0;
+			}
+			
+			.msgBox .cellInputArea {
+				border: none;
+				outline: none;
+				padding: 0;
+				min-height: 60px;
+			}
+			
+			.msgBox .cellInputTxt select {
+				background: green;
+				text-align: right;
+			}
+			
+			.msgBox .checkitem {
+				padding: 15px 20px;
+			}
+			
+			.msgBox .mui-input-group .checks {
+				top: 11px;
+			}
+			
+			.msgBox .mui-input-group {
+				margin: 0;
+			}
+			
+			.msgBox .picPreBox {
+				justify-content: space-around;
+				box-sizing: border-box;
+				padding: 10px;
+			}
+			
+			.msgBox .picPreBox .picPre {
+				box-sizing: border-box;
+				/*padding: 10px;*/
+				width: 46%;
+				overflow: hidden;
+			}
+			
+			.tabView {
+				min-height: 85%;
+				/*background: red;*/
+			}
+			
+			.mui-checkbox.mui-left label,
+			.mui-radio.mui-left label {
+				padding-right: 15px;
+				padding-left: 40px;
+			}
+			
+			.mui-checkbox.mui-left input[type=checkbox],
+			.mui-radio.mui-left input[type=radio] {
+				left: 0;
+			}
+			
+			.eletBox {
+				width: 50%;
+				border: none;
+				outline: none;
+				/*line-height: 56px;*/
+				margin: 0;
+				padding: 0;
+				text-align: right;
+				height: auto;
+				position: absolute;
+				top: 0;
+				right: 0;
+				height: 100%;
+				opacity: 0;
+			}
+			
+			.addressItem {
+				line-height: 44px;
+				border-top: 1px solid #d3d3d3;
+			}
+			
+			.addresSearch {
+				border: 1px solid #d3d3d3;
+				border-radius: 20px;
+				box-sizing: border-box;
+				height: 36px;
+				line-height: 34px;
+				background: #fff!important;
+				box-sizing: border-box;
+				padding: 0 10px;
+				margin: 0 10px;
+			}
+			
+			.cm_search_input {
+				border: 1px solid #d3d3d3;
+				border-radius: 15px;
+			}
+			
+			.cm_loading span {
+				font-size: 26px;
+			}
+			
+			.cellArea {
+				border: none;
+				outline: none;
+				padding: 0;
+				min-height: 40px;
+				width: 100%;
+				text-indent: 24px;
+				margin: 0;
+				margin-top: 10px;
+				/*background: red;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<!--<header class="fixed  header flex" id="header">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+				<div class=" f1  cor_w t_c page_title">
+					{{title}}
+				</div>
+				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w" @tap="_initPos">
+					<span class="mui-icon mui-icon-location "></span>定位				
+				</button>
+			</header>-->
+
+			<!--新地址信息-->
+			<div class="newCardMsg" id="content">
+				<div class="msgBox">
+					<ul class="mui-table-view">
+						<!--<li class="address panelPad">
+							<div class="addresSearch f1 flex">
+								<i class="iconfont icon-search cor_g"></i>		
+								<div class="f1 cm_search_input " @tap="_toLocation()">搜索你的服务地址？</div>
+							</div>
+						</li>-->
+						<li class="mui-table-view-cell flex">
+							<div class="f1 cellName ">省份</div>
+							<div class="f1 cellName t_r">{{province?province:'请选择'}}</div>
+							<select v-model="province" class="f1 t_r  reset eletBox" style="opacity: 0;" @change="_updatedTown(1)">
+								<option disabled value="">请选择</option>
+								<option v-for="item in provinceList" :value="item.Text" :key="item.Value">{{item.Text}}</option>
+							</select>
+							<i class="iconfont icon-xiayibu "></i>
+						</li>
+						<li class="mui-table-view-cell flex">
+							<div class="f1 cellName ">所在市</div>
+							<div class="f1 cellName t_r">{{town?town:'请选择'}}</div>
+							<select v-model="town" class="f1 t_r  reset eletBox" style="opacity: 0;" @change="_updatedTown(2)">
+								<option disabled value="">请选择</option>
+								<option v-for="item in townList" :value="item.Text" :key="item.Value">{{item.Text}}</option>
+							</select>
+							<i class="iconfont icon-xiayibu "></i>
+						</li>
+						<li class="mui-table-view-cell flex">
+							<div class="f1 cellName ">所在区/县</div>
+							<div class="f1 cellName t_r">{{area?area:'请选择'}}</div>
+							<select v-model="area" class="f1 t_r  reset eletBox" style="opacity: 0;" @change="_updatedTown(3)">
+								<option disabled value="">请选择</option>
+								<option v-for="item in areaList" :value="item.Text" :key="item.Value">{{item.Text}}</option>
+							</select>
+							<i class="iconfont icon-xiayibu "></i>
+						</li>
+
+						<li class="mui-table-view-cell" @tap="_toLocation()">
+							<div class="flex ">
+								<div class=" cellName">街道：</div>
+								<div class="f1 ellipsis  relative  t_r">
+									{{street?'':'请选择'}}
+								</div>
+								<i class="iconfont icon-xiayibu "></i>
+							</div>
+							<div class=" relative ">
+								{{street}}
+							</div>
+						</li>
+						<li class="mui-table-view-cell ">
+							<!--<div class=" cellName ">详细地址</div>-->
+							<textarea name="" rows="" cols="" v-model="address" class="cellInputArea" placeholder="具体门牌号"></textarea>
+						</li>
+						<li class="mui-table-view-cell flex">
+							<div class="f1 cellName">是否设为默认</div>
+							<div class="mui-switch" :class="{'mui-active': isDefault}" @tap="_switch">
+								<div class="mui-switch-handle"></div>
+							</div>
+						</li>
+					</ul>
+
+				</div>
+			</div>
+
+			<div class="btns container flex">
+				<div class="f1">
+					<div class="cm_btn" @tap="_submit()" v-show="type=='add'">
+						确认添加
+					</div>
+					<div class="cm_btn" @tap="_submit()" v-show="type=='edit'">
+						提交修改
+					</div>
+				</div>
+
+			</div>
+
+			<div class="cm_loading flex " v-show="loading">
+				<span class="mui-icon mui-icon-spinner-cycle mui-spin "></span>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			})
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						/*当前的地址*/
+						addressMsg: '',
+						title: '',
+						type: '',
+
+						provinceList: [], //省
+						province: '', //当前位置 省
+						townList: [], //市
+						town: '', //当前位置市
+						areaList: [], //区
+						area: '', //当前位置区
+
+						loading: false,
+						street: '', //当前位置 街道
+						address: '', //具体地址
+						latitude: '',
+						/*当前地址纬度*/
+						longitude: '',
+						/*当前地址经度*/
+						isDefault: false
+					},
+					created: function() {
+
+					},
+					mounted: function() {
+						var _this = this
+
+						/*添加新卡操作则初始化定位*/
+						var self = plus.webview.currentWebview();
+						this.addressMsg = self.addressItem;
+
+						if(this.addressMsg) {
+							/*编辑操作*/
+							this.title = '编辑地址';
+							this.type = "edit";
+							this._initAddress()
+						} else {
+							/*添加新地址操作*/
+							this.title = '添加新地址';
+							this.type = "add";
+							this._initPos();
+						}
+					},
+					methods: {
+						/*初始化信息 编辑操作的话*/
+						_initAddress() {
+
+							this.province = this.addressMsg.ADDRESS_SHENG
+							this.town = this.addressMsg.ADDRESS_SHI
+							this.area = this.addressMsg.ADDRESS_QU
+							this.street = this.addressMsg.ADDRESS_JIE
+							this.address = this.addressMsg.ADDRESS_MEN
+
+							/*初始化选择选项*/
+							this._updatedTown(0, () => {
+								this._updatedTown(1, () => {
+									this._updatedTown(2, () => {
+										this.loading = false
+									})
+								})
+							})
+						},
+						/*切换开关*/
+						_switch() {
+							this.isDefault = !this.isDefault
+						},
+						/*初始化位置*/
+						_initPos() {
+//							alert(1)
+							this.loading = true;
+							var _this = this;
+							plus.geolocation.getCurrentPosition((position) => {
+								var obj = position.address
+								//								console.log(JSON.stringify(position))
+
+								_this.province = position.address.province
+								_this.town = position.address.city
+								_this.area = position.address.district
+								_this.street = position.address.street
+								//								_this.house = position.address.street
+
+								_this.longitude = (position.coords.longitude).toFixed(6)
+								_this.latitude = (position.coords.latitude).toFixed(6)
+
+								//								var add = obj.province + obj.city + position.addresses
+								var add = obj.street
+
+								/*初始化选择选项*/
+								_this._updatedTown(0, () => {
+									_this._updatedTown(1, () => {
+										_this._updatedTown(2, () => {
+											_this.loading = false
+										})
+									})
+								})
+
+							}, () => {
+								plus.nativeUI.toast('位置获取失败，请手动选择地址')
+							}, {
+								enableHighAccuracy: true,
+								timeout: () => {
+									plus.nativeUI.toast('信号不佳，位置获取失败')
+								}
+							});
+						},
+						//	更新城市选项
+						_updatedTown(t, callback) {
+
+							var _this = this
+							switch(t) {
+								case 0:
+
+									/*首次进入加载省份信息*/
+									mui.ajax(app.baseUrl + '/api/Area/GetListProvince', {
+										// dataType:'json',//服务器返回json格式数据
+										type: 'get', //HTTP请求类型
+										timeout: 10000, //超时时间设置为10秒；
+										headers: {
+											'Content-Type': 'application/x-www-form-urlencoded'
+										},
+										success: function(result) {
+											/*登陆成功*/
+											// 储存本地 记录登陆时间		
+											_this.provinceList = result
+
+										},
+										error: function(xhr, type, errorThrown) {
+											//异常处理；
+											console.log(type);
+										}
+									});
+									break;
+								case 1:
+									/*更新市信息*/
+									mui.ajax(app.baseUrl + '/api/Area/GetListCity', {
+										// dataType:'json',//服务器返回json格式数据
+										data: {
+											province: _this.province
+										},
+										type: 'get', //HTTP请求类型
+										timeout: 10000, //超时时间设置为10秒；
+										headers: {
+											'Content-Type': 'application/x-www-form-urlencoded'
+										},
+										success: function(result) {
+											/*登陆成功*/
+
+											_this.townList = result
+										},
+										error: function(xhr, type, errorThrown) {
+											//异常处理；
+											console.log(type);
+										}
+									});
+									break;
+								case 2:
+									/*更新区信息*/
+									mui.ajax(app.baseUrl + '/api/Area/GetListArea', {
+										// dataType:'json',//服务器返回json格式数据
+										data: {
+											city: _this.town
+										},
+										type: 'get', //HTTP请求类型
+										timeout: 10000, //超时时间设置为10秒；
+										headers: {
+											'Content-Type': 'application/x-www-form-urlencoded'
+										},
+										success: function(result) {
+											/*登陆成功*/
+											_this.areaList = result
+										},
+										error: function(xhr, type, errorThrown) {
+											//异常处理；
+											console.log(type);
+										}
+									});
+									break;
+								case 3:
+									/*更新区信息*/
+									_this.street = ''
+									break;
+
+								default:
+									break;
+							}
+							if(callback) callback()
+
+						},
+						/*提交添加*/
+						_submit() {
+							if(!this.province || !this.town || !this.area) {
+								plus.nativeUI.alert("请选择省市县", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+
+							} else if(!this.street) {
+								plus.nativeUI.alert("请填写街道", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							} else if(!this.address) {
+								plus.nativeUI.alert("请填写详细地址", function() {}, "马嘿嘿提醒您", "ok");
+								return;
+							}
+							var _this = this;
+							var data = {
+								ADDRESS_SHENG: this.province,
+								ADDRESS_SHI: this.town,
+								ADDRESS_QU: this.area,
+								ADDRESS_JIE: this.street,
+								ADDRESS_MEN: this.address,
+								LON: this.longitude,
+								LAT: this.latitude,
+								ISDEFAULT: this.isDefault ? '1' : '0'
+							}
+							//							console.log()
+							var msg;
+//							alert(this.type)
+							switch(this.type) {
+								case 'add':
+									msg = "添加成功";
+									break;
+								case 'edit':
+									data.ADDRESS_CODE = this.addressMsg.ADDRESS_CODE;
+									msg = "修改成功"
+									break;
+								default:
+									break;
+							}
+//							console.log(JSON.stringify(data))
+							plus.nativeUI.showWaiting('提交中...')
+							app.ajax(app.baseUrl + '/api/Address/AddAddress', {
+								// dataType:'json',//服务器返回json格式数据
+								data: data,
+								type: 'post', //HTTP请求类型
+								success: function(result) {
+									if(result.Success) {
+										mui.later(() => {
+											plus.nativeUI.closeWaiting()
+											if(plus.webview.getWebviewById('address')) {
+												plus.webview.getWebviewById('address').evalJS('refresh()')
+											}
+
+											if(plus.webview.getWebviewById('productOrder')) {
+												plus.webview.getWebviewById('productOrder').evalJS('refresh()')
+											}
+											plus.nativeUI.alert(msg, function() {
+												mui.back()
+											}, "马嘿嘿提醒您", "ok");
+										}, 1000)
+
+										/*还原数据*/
+									} else {
+										plus.nativeUI.closeWaiting()
+										plus.nativeUI.toast(result.Msg)
+										console.log(result.Msg)
+									}
+
+								}
+							});
+
+						},
+						/*地图选址*/
+						_toLocation() {
+							mui.openWindow({
+								url: './location.html',
+								id: 'location',
+								styles: {
+									top: '0px', //新页面顶部位置
+									bottom: '0px', //新页面底部位置
+									scrollIndicator: "none",
+									plusrequire: 'ahead'
+								},
+								createNew: false, //是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+								show: {
+									autoShow: true, //页面loaded事件发生后自动显示，默认为true
+									duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+								},
+								extras: {
+									prevWebview: 'addAddress'
+								},
+								waiting: {
+									autoShow: true, //自动显示等待框，默认为true
+									title: '正在加载...', //等待对话框上显示的提示内容
+								}
+							})
+						},
+						/*从地图选址*/
+						_setPos(pos) {
+//							console.log(JSON.stringify(pos))
+//alert(this.street 	)
+							this.longitude = pos.longitude;
+							this.latitude = pos.latitude;
+							this.street = pos.street;
+							this.address = pos.address
+						}
+
+					}
+				})
+			})
+			function _initPosition(){
+//				alert(2)
+				APP._initPos()
+			}
+			function setPos(pos) {
+//								alert( pos)
+				APP._setPos(pos)
+			}
+		</script>
+	</body>
+
+	</html

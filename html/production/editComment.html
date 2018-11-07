@@ -185,22 +185,22 @@
 				<div>
 					<p class="container cm_name ">总体评价</p>
 					<ul class="mui-table-view mui-table-view-radio">
-						<li class="mui-table-view-cell " :class="{'mui-selected':type==1}" @tap="this.type=1">
+						<li class="mui-table-view-cell " :class="{'mui-selected':type==1}" @tap="this._switchType(1)">
 							<a class="mui-navigate-right">
-								非常嘿皮
+								非常非常嘿皮
 							</a>
 						</li>
-						<li class="mui-table-view-cell" :class="{'mui-selected':type==2}" @tap="this.type=2">
+						<li class="mui-table-view-cell" :class="{'mui-selected':type==2}" @tap="_switchType(2)">
 							<a class="mui-navigate-right">
 								很嗨皮
 							</a>
 						</li>
-						<li class="mui-table-view-cell" :class="{'mui-selected':type==3}" @tap="this.type=3">
+						<li class="mui-table-view-cell" :class="{'mui-selected':type==3}" @tap="_switchType(3)">
 							<a class="mui-navigate-right">
 								嘿皮
 							</a>
 						</li>
-						<li class="mui-table-view-cell" :class="{'mui-selected':type==4}" @tap="this.type=4">
+						<li class="mui-table-view-cell" :class="{'mui-selected':type==4}" @tap="_switchType(4)">
 							<a class="mui-navigate-right">
 								不嘿皮
 							</a>
@@ -221,7 +221,7 @@
 					</li>
 				</ul>
 
-				<p class="container cm_name ">评级内容</p>
+				<p class="container cm_name ">评论内容</p>
 				<textarea name="" rows="" cols="" v-model="content" class="cellInputArea" placeholder="说点什么"></textarea>
 
 				<div class="cm_btn" @tap="_submit">提交评论</div>
@@ -289,6 +289,9 @@
 
 					},
 					methods: {
+						_switchType(k){
+							this.type=k
+						},
 						//						评分
 						_score(s) {
 							this.starLevel = s + 1
@@ -371,8 +374,11 @@
 									plus.nativeUI.closeWaiting();
 									if(result.Success) {
 										plus.nativeUI.toast('评论成功')
-
-										mui.back()
+										plus.webview.getWebviewById('orders').evalJS('refresh()')	
+										mui.later(function(){
+											mui.back()
+										},500)
+										
 									} else {
 										/*验证失败*/
 										plus.nativeUI.toast(result.Msg)
