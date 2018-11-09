@@ -1,0 +1,24 @@
+[2018-11-09 16:43:43 CST] <Thread-10>  INFO: Logging to file: F:\work\马嘿嘿\客户端\mhh_custom\unpackage\release\发布包\H5CA05305_1109163256.ipa_1811091643.log
+[2018-11-09 16:43:43 CST] <Thread-10>  INFO: Logging configured successfully.
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: iTMSTransporter : iTunes Store Transporter [1.9.8]
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: OS identifier: Windows 10 10.0 (amd64); jvm=25.171-b11; jre=1.8.0_171-b11
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Memory: [JVM] 91M free, 135M total, 1755M max [System] (Physical) 2856M free, 7891M total (Swap) 1828M free, 9811M total
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Upload mode selected.
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Examining the package at: C:\Users\12924\AppData\Local\Temp\au\itmsp\1441625058.itmsp
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Ensuring that package has well formed metadata file...
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Gathering the list of valid files from the package ...
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Finished gathering the list of valid files from the package.
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Verify progress: Analyzing metadata (Step 0/?)
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Performing authentication of package 1441625058.itmsp ...
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: Verify progress: Analyzing metadata (Step 1/2)
+[2018-11-09 16:43:44 CST] <Thread-10>  INFO: id = 20181109164344-078
+[2018-11-09 16:43:45 CST] <Thread-10> ERROR: Please sign in with an app-specific password. You can create one at appleid.apple.com. (-22910)
+[2018-11-09 16:43:45 CST] <Thread-10>  INFO: Verify progress: Operation failed (Step 2/2)
+
+
+
+Package Summary:
+ 
+1 package(s) were not uploaded because they had problems:
+	C:\Users\12924\AppData\Local\Temp\au\itmsp\1441625058.itmsp - Error Messages:
+		Please sign in with an app-specific password. You can create one at appleid.apple.com. (-22910)

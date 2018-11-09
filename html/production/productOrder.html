@@ -225,7 +225,7 @@
 							</div>
 						</div>
 						<div class=" numBox flex">
-							<div class="lh28 cor_r f1 fs18 amount">￥{{product.PROJECT_DISCOUNT}}</div>
+							<div class="lh28 cor_r f1 fs18 amount">￥{{ product.IS_ACTIVITY==1?product.ACTIVITY_PRICE:product.PROJECT_DISCOUNT}}</div>
 							<!--<div class="lh28 f1 t_r ">	-->
 							<div class="flex nums">
 								<div class="f1 numBtns sub">-</div>
@@ -399,7 +399,7 @@
 						var self = plus.webview.currentWebview();
 						this.product = self.product
 						this.masterCode = self.masterCode
-						this.totalAmount = self.product.PROJECT_DISCOUNT;
+						this.totalAmount =   self.product.IS_ACTIVITY==1?self.product.ACTIVITY_PRICE:self.product.PROJECT_DISCOUNT ;
 
 						this.realName = plus.storage.getItem('realName') ? plus.storage.getItem('realName') : ''
 						this.realIdCard = plus.storage.getItem('realIdCard') ? plus.storage.getItem('realIdCard') : ''
@@ -486,7 +486,7 @@
 									}
 								}
 							});
-
+							// alert( _this.product.PROJECT_CODE)
 							/*获取本项目可用优惠券*/
 							app.ajax(app.baseUrl + '/api/Discount/GetDiscountList', {
 								type: 'post', //HTTP请求类型
@@ -494,10 +494,14 @@
 									PROJECT_CODE: _this.product.PROJECT_CODE,
 								},
 								success: function(result) {
-									//									console.log(JSON.stringify(result.Data) )
+		
 									if(result.Success) {
-										_this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
-										//										alert(result.Data.ListInfo.length)
+										if(result.Data.ListInfo == null){
+											_this.couponsList = []
+										}else{
+											_this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
+										}	
+							// _this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
 										if(callback) callback()
 									} else {
 										/*验证失败*/

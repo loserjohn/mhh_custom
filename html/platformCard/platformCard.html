@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>平台充值卡</title>
+		<title>账户</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
@@ -142,7 +142,7 @@
 			<div class="cards scrollBox " ref="scroll" :style="{top:scrollTop,bottom:'50px'}" id="scroll">
 				<div class="cm_ul reset" style="min-height: 101%;">
 					<!--刷新提示框-->
-					<div class="refresh flex">
+					<!-- <div class="refresh flex">
 						<div class="flex " style="bottom:95px ;">
 							<p class="f1 t_r "></p>
 							<i class="iconfont icon-hua cor_y"></i>
@@ -176,14 +176,14 @@
 								立即充值
 							</aside>
 						</li>
-					</ul>
+					</ul> -->
 					<!--无数据提示-->
-					<div v-if="cardsList.length == 0" class="t_c cm_noItem">
+					<!-- <div v-if="cardsList.length == 0" class="t_c cm_noItem">
 						<div class="cm_noItem_box flex">
 							<img src="../../images/no1.png" alt="" clas/>
 							<div class="t_c ">马嘿嘿还未发布充值卡</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 
@@ -257,33 +257,33 @@
 						var scroll = this.$refs.scroll;
 						this.scrollTop = 44 + 'px'
 
-						this.$nextTick(function() {
-							//							初始化scrool
-							if(!_this.scroll) {
-								//							初始化标题栏
-								_this.scroll = new BScroll(scroll, {
-									click: true,
-									probeType: 3,
-									bounceTime: 200,
-									pullDownRefresh: {
-										threshold: 50,
-										stop: 0
-									}
-								})
-							} else {
-								_this.scroll.refresh();
-							};
-							/*下拉刷新*/
-							_this.scroll.on('pullingDown', function(e) {
-
-								//								plus.nativeUI.showWaiting()
-								_this._getData(() => {
-									//									plus.nativeUI.closeWaiting();
-									_this.scroll.finishPullDown()
-								})
-
-							})
-						})
+// 						this.$nextTick(function() {
+// 							//							初始化scrool
+// 							if(!_this.scroll) {
+// 								//							初始化标题栏
+// 								_this.scroll = new BScroll(scroll, {
+// 									click: true,
+// 									probeType: 3,
+// 									bounceTime: 200,
+// 									pullDownRefresh: {
+// 										threshold: 50,
+// 										stop: 0
+// 									}
+// 								})
+// 							} else {
+// 								_this.scroll.refresh();
+// 							};
+// 							/*下拉刷新*/
+// 							_this.scroll.on('pullingDown', function(e) {
+// 
+// 								//								plus.nativeUI.showWaiting()
+// 								_this._getData(() => {
+// 									//									plus.nativeUI.closeWaiting();
+// 									_this.scroll.finishPullDown()
+// 								})
+// 
+// 							})
+// 						})
 						/*首次加载数据*/
 						this._getData()
 

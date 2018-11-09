@@ -124,7 +124,7 @@
 									</div>
 									<div class="flex">
 										<div class="f1 flex">
-											<div class="prize fs18 cor_r">￥{{item.PROJECT_DISCOUNT}}</div>
+											<div class="prize fs18 cor_r">￥{{item.IS_ACTIVITY==1?item.ACTIVITY_PRICE:item.PROJECT_DISCOUNT}}</div>
 											<div class="delec_prize ">￥{{item.PROJECT_PRICE}}</div>
 										</div>
 										<div class="cor_g">{{item.PROJECT_LOVE}}人喜欢</div>

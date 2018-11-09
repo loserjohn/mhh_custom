@@ -338,7 +338,7 @@
 						<!--项目信息-->
 						<div class="block1 panelPad container">
 							<!--手艺人信息-->
-							<div class="flex masterBox" @tap="_navigateTo('../technician/technician.html','technician',{'shopCode':product.SHOP_CODE})">
+							<div class="flex masterBox" @tap="_toShop('../technician/technician.html','technician',{'shopCode':product.SHOP_CODE})">
 								<img :src="product.SHOP_LOGO?product.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" class="avatar">
 								<div class="f1 ">
 									<div class="lh24 fs16 ">{{product.SHOP_NAME}}</div>
@@ -352,8 +352,9 @@
 							<!--基本信息-->
 							<aside class="mainMsg">
 								<h3 class="cm_name">{{product.PROJECT_NAME}}</h3>
+								<div class="cor_y">{{product.PROJECT_TYPE}}</div>
 								<div class="fs20  lh36">
-									<span class="cm_label">活动价</span><span class="cor_r">￥{{product.PROJECT_DISCOUNT}}</span>
+									<span class="cm_label" v-if="product.IS_ACTIVITY==1">活动价</span><span class="cor_r">￥{{   product.IS_ACTIVITY==1?product.ACTIVITY_PRICE:product.PROJECT_DISCOUNT}}</span>
 								</div>
 								<div class="flex">
 									<p class="delec_prize f1 ">原价: ￥{{product.PROJECT_PRICE}}</p>

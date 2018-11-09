@@ -114,7 +114,7 @@
 		}, false);
 		//		点击消息监听
 		plus.push.addEventListener("click", function(msg) {
-
+		
 			switch(msg.payload) {
 				case "LocalMSG":
 					/*本地消息*/

@@ -387,7 +387,7 @@
 										<img :src="list.PROJECT_IMG1" alt="" class="contain" />
 										<aside class="cm_name">{{list.PROJECT_NAME}}</aside>
 										<article class="flex">
-											<p class="prize  cor_r fs14 lh28">￥{{list.PROJECT_DISCOUNT}}</p>
+											<p class="prize  cor_r fs14 lh28">￥{{list.IS_ACTIVITY==1?list.ACTIVITY_PRICE:list.PROJECT_DISCOUNT}}</p>
 											<p class="delec_prize  fs12 cor_g f1 t_r lh28">￥{{list.PROJECT_PRICE}}</p>
 										</article>
 									</li>
@@ -413,7 +413,7 @@
 										<img :src="item.PROJECT_IMG1" alt="" />
 										<aside class="cm_name">{{item.PROJECT_NAME}}</aside>
 										<article class="flex">
-											<p class="prize  cor_r fs18 lh28" style="margin-right: 10px;">￥{{item.PROJECT_DISCOUNT}}</p>
+											<p class="prize  cor_r fs18 lh28" style="margin-right: 10px;">￥{{item.IS_ACTIVITY==1?item.ACTIVITY_PRICE:item.PROJECT_DISCOUNT}}</p>
 											<p class="delec_prize cor_g f1  lh28">￥{{item.PROJECT_PRICE}}</p>
 										</article>
 										<div class="flex">
@@ -540,7 +540,6 @@
 									//											autoShow: false
 									//										}
 									//									});
-
 								} else {
 
 								}
@@ -831,7 +830,7 @@
 									/*登陆成功*/
 									if(result.Success) {
 										_this.recommend = result.Data.ListInfo
-										//										console.log(_this.recommend.length)
+																				// console.log(_this.recommend.length)
 										if(callback) callback()
 										/*推荐项目横向滑动*/
 										mui.later(() => {
