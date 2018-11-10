@@ -89,25 +89,15 @@
 		plus.push.addEventListener("receive", function(msg) {
 			//			新消息红点提示
 			if(plus.os.name == "iOS") {
-				switch(msg.payload) {
-					case "LocalMSG":
-						/*本地消息*/
-
-						if(plus.webview.getWebviewById('information')) {
-							plus.webview.getWebviewById('information').evalJS('redSet(' + JSON.stringify(msg.content) + ')')
-						}
-
-						break;
-					default:
-						/*收到离线推送消息，则创建本地消息*/
-						owner.createLocalPushMsg(msg);
-						break;
+				if(msg.payload.indexOf('LocalMSG')>=0){
+	//				收到的是本地消息
+					alert('本地消息'+msg.payload)
+					return 
+				}else{
+					owner.createLocalPushMsg(msg);
 				}
 			} else {
-				plus.nativeUI.alert(msg.content);
-				if(plus.webview.getWebviewById('information')) {
-					plus.webview.getWebviewById('information').evalJS('redSet(' + JSON.stringify(msg.content) + ')')
-				}
+
 			}
 
 			//				plus.nativeUI.alert(msg.content);
@@ -115,15 +105,29 @@
 		//		点击消息监听
 		plus.push.addEventListener("click", function(msg) {
 		
-			switch(msg.payload) {
-				case "LocalMSG":
-					/*本地消息*/
-					break;
-				default:
+		
+			var MSG;
+			
+//			直接进入消息中心的消息
+			if ( typeof(msg.payload)=="string" ) {
+					if(msg.payload.indexOf('LocalMSG')>=0){
+//				收到的是本地消息
+//				alert('本地消息'+msg.payload)
+				var pl = msg.payload.split('@')[1];
+				mui.later(function(){
+					owner._jump(pl)
+				},1000)
 
-					break;
+				return 
 			}
-			if(!MSG.payload) {
+				MSG =JSON.parse(msg.payload) 
+			}else{
+//				alert(2)
+				MSG = msg.payload
+			}
+			 MSG = MSG.payload
+//			alert(MSG)
+			if(!MSG) {
 			mui.openWindow({
 				url: './html/information/sysMessage.html',
 				id: 'sysMessage',
@@ -158,21 +162,16 @@
 					title: '正在加载...', //等待对话框上显示的提示内容
 				}
 			})}else{
-				owner._jump(MSG.payload)
+				owner._jump(MSG)
 			}
 		}, false);　
 	}
 	//	创建本地消息
 	owner.createLocalPushMsg = function(msg) {
-		//		alert('本地信息')
 		var options = {
 			cover: false
 		};
-		plus.push.createMessage(msg.content, "LocalMSG", options);
-
-		//		if(plus.os.name == "iOS") {
-		//			alert('*如果无法创建消息，请到"设置"->"通知"中配置应用在通知中心显示!');
-		//		}
+		plus.push.createMessage(msg.content, "LocalMSG@"+msg.payload, options);
 	}
 
 	/**
@@ -843,6 +842,9 @@
 	owner._jump = function(str) {
 //		A 沉浸式导航栏  W 有导航栏  B 新闻详情  P项目  O是订单详情
 		console.log(str)
+		if(!str) {
+			return
+		};
 		var key = str.split('||')[0];
 		var code = str.split('||')[1];
 		if(!code) {
@@ -973,7 +975,7 @@
 						detail: data
 					},
 					waiting: {
-						autoShow: false, //自动显示等待框，默认为true
+						autoShow: true, //自动显示等待框，默认为true
 						title: '正在加载...', //等待对话框上显示的提示内容
 					}
 				})
