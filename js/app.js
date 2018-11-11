@@ -97,7 +97,7 @@
 					owner.createLocalPushMsg(msg);
 				}
 			} else {
-
+				alert(JSON.stringify(msg))	
 			}
 
 			//				plus.nativeUI.alert(msg.content);

@@ -365,9 +365,9 @@
                 "android" : {
                     "mdpi" : "", /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "", /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "F:/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a480.png", /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "F:/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a720.png", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "F:/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a1080.png"
+                    "hdpi" : "F:/MyDownloads/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a480.png", /*高分屏启动图片，分辨率：480x762*/
+                    "xhdpi" : "F:/MyDownloads/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a720.png", /*720P高分屏启动图片，分辨率：720x1242*/
+                    "xxhdpi" : "F:/MyDownloads/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a1080.png"
                 }
             },
             "debug" : false
