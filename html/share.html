@@ -151,7 +151,7 @@
 				};
 				var self = plus.webview.currentWebview();
 				var num = self.num
-				msg.href = 'https://www.mhh999.com/custom.html?num='+num;
+				msg.href = 'https://www.mhh999.com/share/custom.html?num='+num;
 				msg.title = "马嘿嘿";
 				msg.thumbs = ['https://manage.mhh999.com/upload/image/mhh_avator.png']; 
 				// 发送分享
@@ -161,7 +161,7 @@
 				} else {
 //					alert('---未授权---');
 					sb.s.authorize(function() {
-						alert('授权')
+//						alert('授权')
 						shareMessage(msg, sb.s);
 					}, function(e) {
 						alert('认证授权失败：' + e.code + ' - ' + e.message);

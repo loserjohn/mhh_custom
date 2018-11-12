@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>首页</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no, viewport-fit=contain" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no, viewport-fit=cover" />
 		<link href="./css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="./css/common.css" />
 		<link rel="stylesheet" href="./css/iconfont.css" />
@@ -293,16 +293,16 @@
 							<div id="slider" class="mui-slider" ref='slider'>
 								<div class="mui-slider-group " style="min-height: 150px;">
 									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
-									<div class="mui-slider-item mui-slider-item-duplicate">
-										<img :src="prevPic">
+									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(prevPic.LINK_URL)">
+										<img :src="prevPic.LINK_IMAGE">
 									</div>
 									<!-- 第一张 -->
 									<div class="mui-slider-item" v-for="item in activityPics" @tap="_jump(item.LINK_URL)">
 										<img :src="item.LINK_IMAGE">
 									</div>
 									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
-									<div class="mui-slider-item mui-slider-item-duplicate">
-										<img :src="nextPic">
+									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(nextPic.LINK_URL)">
+										<img :src="nextPic.LINK_IMAGE">
 									</div>
 								</div>
 								<div class="mui-slider-indicator">
@@ -525,21 +525,21 @@
 								let isFirst = plus.storage.getItem('isFirst')
 
 								if(!isFirst || isFirst == '0') {
-									//									第一次登陆  打开引导页
-									//									mui.openWindow({
-									//										id: 'guide',
-									//										url: './guide.html',
-									//										styles: {
-									//											popGesture: "none"
-									//										},
-									//										show: {
-									//											autoShow: true,
-									//											aniShow: 'none'
-									//										},
-									//										waiting: {
-									//											autoShow: false
-									//										}
-									//									});
+									//																		第一次登陆  打开引导页
+									mui.openWindow({
+										id: 'guide',
+										url: './guide.html',
+										styles: {
+											popGesture: "none"
+										},
+										show: {
+											autoShow: true,
+											aniShow: 'none'
+										},
+										waiting: {
+											autoShow: false
+										}
+									});
 								} else {
 
 								}
@@ -637,8 +637,8 @@
 									LINK_URL: '-1||'
 								}
 							]
-							_this.prevPic = _this.activityPics[_this.activityPics.length - 1].LINK_IMAGE
-							_this.nextPic = _this.activityPics[0].LINK_IMAGE;
+							_this.prevPic = _this.activityPics[_this.activityPics.length - 1]
+							_this.nextPic = _this.activityPics[0];
 							var slider = _this.$refs.slider;
 							//							mui(slider).slider({
 							//								interval: 3000 //自动播放周期
@@ -656,8 +656,8 @@
 									if(result.Success) {
 										_this.activityPics = result.Data.ListInfo
 										if(result.Data.ListInfo.length >= 1) {
-											_this.prevPic = _this.activityPics[_this.activityPics.length - 1].LINK_IMAGE
-											_this.nextPic = _this.activityPics[0].LINK_IMAGE;
+											_this.prevPic = _this.activityPics[_this.activityPics.length - 1]
+											_this.nextPic = _this.activityPics[0];
 										}
 										var status = 0;
 										_this.activityPics.forEach((item, index) => {
@@ -830,7 +830,7 @@
 									/*登陆成功*/
 									if(result.Success) {
 										_this.recommend = result.Data.ListInfo
-																				// console.log(_this.recommend.length)
+										// console.log(_this.recommend.length)
 										if(callback) callback()
 										/*推荐项目横向滑动*/
 										mui.later(() => {
@@ -977,6 +977,7 @@
 							}, () => {
 								plus.nativeUI.toast('位置获取失败')
 								if(callback) callback();
+								plus.nativeUI.closeWaiting()
 							}, {
 								enableHighAccuracy: false,
 								timeout: () => {
@@ -1041,6 +1042,31 @@
 				app.navigater(desturl, destid, exa, option)
 
 			}
+
+			//			监听网络变化
+			//			document.addEventListener("netchange", onNetChange, false);
+			//
+			//			function onNetChange() {　　 //获取当前网络类型
+			//				　　
+			//				var nt = plus.networkinfo.getCurrentType();　　
+			//				switch(nt) {　　　　
+			//					case plus.networkinfo.CONNECTION_ETHERNET:
+			//						　　　　
+			//					case plus.networkinfo.CONNECTION_WIFI:
+			//						　　　　　　mui.toast("当前网络为WiFi");　　　　　　
+			//						break;　　　　
+			//					case plus.networkinfo.CONNECTION_CELL2G:
+			//						　　　　
+			//					case plus.networkinfo.CONNECTION_CELL3G:
+			//						　　　　
+			//					case plus.networkinfo.CONNECTION_CELL4G:
+			//						　　　　　　mui.toast("当前网络非WiFi");　　　　　　
+			//						break;　　　　
+			//					default:
+			//						　　　　　　mui.toast("当前没有网络");　　　　　　
+			//						break;　　
+			//				}
+			//			}
 		</script>
 	</body>
 

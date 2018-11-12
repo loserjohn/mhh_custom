@@ -3,7 +3,7 @@
     "id" : "H5CA05305", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "马嘿嘿", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.0.0", /*应用版本名称*/
+        "name" : "1.0.1", /*应用版本名称*/
         "code" : "83"
     },
     "description" : "", /*应用描述信息*/
@@ -199,9 +199,9 @@
             "plugins" : {
                 "push" : {
                     "igexin" : {
-                        "appid" : "LT9b4ZJCis8gykZVU7B2j",
-                        "appkey" : "3ImCcxE21TAtxYKvTtnmo7",
-                        "appsecret" : "VvpjLMJASp86l8VcGDhcf1"
+                        "appid" : "xjlRHyLOOB7sOnw9EUBqg2",
+                        "appkey" : "Rc6Dr3t7Ip9SBajQ5luas5",
+                        "appsecret" : "RjRNY3fp7K8Q9dkM5JG5f2"
                     }
                 },
                 "maps" : {
@@ -365,9 +365,9 @@
                 "android" : {
                     "mdpi" : "", /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "", /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "F:/MyDownloads/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a480.png", /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "F:/MyDownloads/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a720.png", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "F:/MyDownloads/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a1080.png"
+                    "hdpi" : "C:/Users/12924/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a480.png", /*高分屏启动图片，分辨率：480x762*/
+                    "xhdpi" : "C:/Users/12924/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a720.png", /*720P高分屏启动图片，分辨率：720x1242*/
+                    "xxhdpi" : "C:/Users/12924/OneDrive/马嘿嘿/马嘿嘿启动页/启动页/a1080.png"
                 }
             },
             "debug" : false
