@@ -244,10 +244,11 @@
 							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
 								type: 'get', //HTTP请求类型
 								success: function(result) {
-									document.getElementById('loader').style.display = 'none'
+									
 									if(result.Success) {
 										_this.addressList = result.Data.ListInfo
 										mui.later(() => {
+											document.getElementById('loader').style.display = 'none'
 											if(callback) callback();
 										}, 300)
 									} else {

@@ -975,7 +975,7 @@
 								var add = obj.city + position.address.street
 								_this.curPos = add;
 							}, () => {
-								plus.nativeUI.toast('位置获取失败')
+								plus.nativeUI.toast('位置获取失败,请手动获取')
 								if(callback) callback();
 								plus.nativeUI.closeWaiting()
 							}, {
