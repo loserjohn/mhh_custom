@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>技师详情</title>
+		<title>美匠人详情</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
@@ -14,7 +14,7 @@
 			.box {
 				background: #fff;
 			}
-			/*--技师基本信息--*/
+			/*--美匠人基本信息--*/
 			
 			.personMsg {
 				background: #ccaa42;
@@ -371,7 +371,7 @@
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 
-					<!--技师基本信息-->
+					<!--美匠人基本信息-->
 					<div class="personMsg  " id="content">
 						<div class="flex">
 							<aside class="personMsgPic relative">
@@ -679,7 +679,7 @@
 			<div class="cm_bottomBtn flex fixed">
 				<!--<div class="f1" @tap="_phone">
 					<i class="iconfont icon-phone fs20"></i>
-					<p>致电技师</p>
+					<p>致电美匠人</p>
 				</div>-->
 				<div class="f1" @tap="_toChat">
 					<i class="iconfont icon-pinglun fs20"></i>
@@ -687,7 +687,7 @@
 				</div>
 				<div class="f1 bg_y cor_w" @tap="_collect" v-if="islogin" :class="{hasCollec:hasCollec}">
 					<i class="iconfont icon-shoucang1 fs20 "></i>
-					<p class="cor_w">{{hasCollec?'已关注':'关注技师'}} </p>
+					<p class="cor_w">{{hasCollec?'已关注':'关注美匠人'}} </p>
 				</div>
 
 			</div>

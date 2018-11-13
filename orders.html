@@ -168,7 +168,7 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">美匠人：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r" >
 												{{item.ORDER_STATUS | getStatus}}
@@ -205,9 +205,10 @@
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_toPay(item.ORDER_CODE)">去付款</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_NTnavigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==1" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==1||item.ORDER_STATUS_TYPE==8" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>	
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==3" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==8" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">发起退款</div>	
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[0].norest?'没有数据咯':''}}</li>
@@ -220,7 +221,7 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'"  @error="_default" alt="" class="avatar" />
-												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">美匠人：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
 												{{item.ORDER_STATUS | getStatus}}
@@ -255,7 +256,6 @@
 											<div class="f1 btns" @tap="_toPay(item.ORDER_CODE)">去付款</div>
 											<div class="f1 btns" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
 										</div>
-
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[1].norest?'没有数据咯':''}}</li>
 								</ul>
@@ -268,7 +268,7 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">美匠人：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
 												{{item.ORDER_STATUS | getStatus}}
@@ -313,7 +313,7 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">美匠人：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
 												{{item.ORDER_STATUS | getStatus}}
@@ -359,7 +359,7 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">美匠人：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
 												{{item.ORDER_STATUS | getStatus}}
@@ -405,7 +405,7 @@
 										<div class="itemHeader container flex">
 											<aside class="f1 flex">
 												<img :src="item.SHOP_LOGO?item.SHOP_LOGO: './images/default_avatar.jpg'" @error="_default" alt="" class="avatar" />
-												<div class="f1">技师：{{item.SHOP_NAME}}</div>
+												<div class="f1">美匠人：{{item.SHOP_NAME}}</div>
 											</aside>
 											<div class=" t_r">
 												{{item.ORDER_STATUS | getStatus}}
@@ -438,6 +438,7 @@
 										</div>
 										<div class="itemFoot flex cor_g">
 											<div class="f1 btns" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" >查看手艺人</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS==8" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">发起退款</div>	
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[5].norest?'没有数据咯':''}}</li>

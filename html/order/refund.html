@@ -63,7 +63,7 @@
 							</div>
 							<div class="f1">
 								<div class="fs16">{{order.PROJECT_NAME}} </div>
-								<p>技师：{{order.SHOP_NAME}} </p>
+								<p>美匠人：{{order.SHOP_NAME}} </p>
 								<p class="flex">嘿皮值:
 									<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item in  levels " />
 								</p>
@@ -107,8 +107,8 @@
 								<li class="mui-table-view-cell" @tap="_reason('临时有事')">
 									<a class="mui-navigate-right">临时有事</a>
 								</li>
-								<li class="mui-table-view-cell" @tap="_reason('联系不上技师')">
-									<a class="mui-navigate-right">联系不上技师</a>
+								<li class="mui-table-view-cell" @tap="_reason('联系不上美匠人')">
+									<a class="mui-navigate-right">联系不上美匠人</a>
 								</li>
 								<li class="mui-table-view-cell " @tap="_reason('服务态度极差')">
 									<a class="mui-navigate-right">服务态度极差</a>
@@ -201,7 +201,15 @@
 							}
 							var _this = this
 							app.getIMG('上传图片',function(src){
-								_this.picList.push(src)
+								plus.nativeUI.showWaiting()
+								let img = new Image();
+								img.src =src
+								img.onload = function(){
+									plus.nativeUI.closeWaiting();
+//									alert(1)
+									_this.picList.push(src)
+								}
+								
 							})
 						},
 						/*选择原因*/
