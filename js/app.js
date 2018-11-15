@@ -87,82 +87,88 @@
 		var info = plus.push.getClientInfo();
 		//		透传消息监听
 		plus.push.addEventListener("receive", function(msg) {
-			//			新消息红点提示
 			if(plus.os.name == "iOS") {
-				if(msg.payload.indexOf('LocalMSG')>=0){
-	//				收到的是本地消息
-					alert('本地消息'+msg.payload)
-					return 
-				}else{
+				if(msg.payload.indexOf('LocalMSG') >= 0) {
+					//				收到的是本地消息
+					//					alert('本地消息'+msg.payload)
+					return
+				} else {
 					owner.createLocalPushMsg(msg);
 				}
 			} else {
-				alert(JSON.stringify(msg))	
+				//				alert(JSON.stringify(msg))	
+
 			}
 
 			//				plus.nativeUI.alert(msg.content);
 		}, false);
 		//		点击消息监听
 		plus.push.addEventListener("click", function(msg) {
-		
-		
-			var MSG;
-			
-//			直接进入消息中心的消息
-			if ( typeof(msg.payload)=="string" ) {
-					if(msg.payload.indexOf('LocalMSG')>=0){
-//				收到的是本地消息
-//				alert('本地消息'+msg.payload)
-				var pl = msg.payload.split('@')[1];
-				mui.later(function(){
-					owner._jump(pl)
-				},1000)
 
-				return 
-			}
-				MSG =JSON.parse(msg.payload) 
-			}else{
-//				alert(2)
-				MSG = msg.payload
-			}
-			 MSG = MSG.payload
-//			alert(MSG)
-			if(!MSG) {
-			mui.openWindow({
-				url: './html/information/sysMessage.html',
-				id: 'sysMessage',
-				styles: {
-					top: '0px', //新页面顶部位置
-					bottom: '0px', //新页面底部位置
-					scrollIndicator: "none",
-					plusrequire: 'ahead',
-					// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
-					titleNView: { // 窗口的标题栏控件
-						autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-						titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-						titleSize: "14px", // 字体大小,默认17px
-						backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-						progress: { // 标题栏控件的进度条样式
-							color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-							height: "2px" // 进度条高度,默认值为"2px"         
-						},
-						splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-							color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-							height: "1px" // 分割线高度,默认值为"2px"
-						}
+			var MSG;
+			if(plus.os.name == "iOS") {
+				//			直接进入消息中心的消息
+				if(typeof(msg.payload) == "string") {
+					if(msg.payload.indexOf('LocalMSG') >= 0) {
+						//				收到的是本地消息
+						//				alert('本地消息'+msg.payload)
+						var pl = msg.payload.split('@')[1];
+						mui.later(function() {
+							owner._jump(pl)
+						}, 1000)
+
+						return
 					}
-				},
-				show: {
-					autoShow: true, //页面loaded事件发生后自动显示，默认为true
-					duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
-				},
-				extras: {},
-				waiting: {
-					autoShow: true, //自动显示等待框，默认为true
-					title: '正在加载...', //等待对话框上显示的提示内容
+					MSG = JSON.parse(msg.payload)
+				} else {
+					//				alert(2)
+					MSG = msg.payload
 				}
-			})}else{
-				owner._jump(MSG)
+				MSG = MSG.payload
+				//			alert(MSG)
+				if(!MSG) {
+					mui.openWindow({
+						url: './html/information/sysMessage.html',
+						id: 'sysMessage',
+						styles: {
+							top: '0px', //新页面顶部位置
+							bottom: '0px', //新页面底部位置
+							scrollIndicator: "none",
+							plusrequire: 'ahead',
+							// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+							titleNView: { // 窗口的标题栏控件
+								autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+								titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+								titleSize: "14px", // 字体大小,默认17px
+								backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+								progress: { // 标题栏控件的进度条样式
+									color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+									height: "2px" // 进度条高度,默认值为"2px"         
+								},
+								splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+									color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+									height: "1px" // 分割线高度,默认值为"2px"
+								}
+							}
+						},
+						show: {
+							autoShow: true, //页面loaded事件发生后自动显示，默认为true
+							duration: 300 //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+						},
+						extras: {},
+						waiting: {
+							autoShow: true, //自动显示等待框，默认为true
+							title: '正在加载...', //等待对话框上显示的提示内容
+						}
+					})
+				} else {
+					owner._jump(MSG)
+				}
+			} else {
+				//				alert(msg.payload)
+				mui.later(function() {
+					owner._jump(msg.payload)
+				}, 1000)
 			}
 		}, false);　
 	}
@@ -171,7 +177,7 @@
 		var options = {
 			cover: false
 		};
-		plus.push.createMessage(msg.content, "LocalMSG@"+msg.payload, options);
+		plus.push.createMessage(msg.content, "LocalMSG@" + msg.payload, options);
 	}
 
 	/**
@@ -840,7 +846,7 @@
 	}
 
 	owner._jump = function(str) {
-//		A 沉浸式导航栏  W 有导航栏  B 新闻详情  P项目  O是订单详情
+		//		A 沉浸式导航栏  W 有导航栏  B 新闻详情  P项目  O是订单详情
 		console.log(str)
 		if(!str) {
 			return
@@ -861,18 +867,18 @@
 						bottom: '0px', //新页面底部位置
 						scrollIndicator: "none",
 						plusrequire: 'ahead',
-						
+
 						// 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
 						titleNView: { // 窗口的标题栏控件
-							type:'transparent',
+							type: 'transparent',
 							autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
 							titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
 							titleSize: "14px", // 字体大小,默认17px
 							backgroundColor: "#ccaa42", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-//							progress: { // 标题栏控件的进度条样式
-//								color: "#fff", // 进度条颜色,默认值为"#00FF00"  
-//								height: "2px" // 进度条高度,默认值为"2px"         
-//							},
+							//							progress: { // 标题栏控件的进度条样式
+							//								color: "#fff", // 进度条颜色,默认值为"#00FF00"  
+							//								height: "2px" // 进度条高度,默认值为"2px"         
+							//							},
 							splitLine: { // 标题栏控件的底部分割线，类似borderBottom
 								color: "#fff", // 分割线颜色,默认值为"#CCCCCC"  
 								height: "1px" // 分割线高度,默认值为"2px"
@@ -1047,7 +1053,7 @@
 					}
 				})
 
-				break;	
+				break;
 			default:
 				break;
 		}
@@ -1067,32 +1073,30 @@
 		second = second < 10 ? ('0' + second) : second;
 		return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
 	}
-	
+
 	owner.navigater = function(dstUrl, dstId, extras, option) {
 		extras = extras || {};
 		//		跳转参数
 		var def = {
-			showTitle: option.showTitle?option.showTitle:false, //是否显示先生的导航栏
-			autoShow: option.autoShow?option.autoShow:true, //是否自动显示
-			autoWaiting: option.autoWaiting?option.autoWaiting:true, //是否显示菊花
-			createNew:option.createNew?option.createNew:false,
-			title_bacground: option.title_bacground?option.title_bacground:'#151515', //默认的导航背景色
-			title_color: option.title_color?option.title_color:"#fff",
-			progress_color:option.progress_color?option.progress_color:"#ccaa42",
-			splitLine_color:option.splitLine_color?option.splitLine_color:"#404040"
+			showTitle: option.showTitle ? option.showTitle : false, //是否显示先生的导航栏
+			autoShow: option.autoShow ? option.autoShow : true, //是否自动显示
+			autoWaiting: option.autoWaiting ? option.autoWaiting : true, //是否显示菊花
+			createNew: option.createNew ? option.createNew : false,
+			title_bacground: option.title_bacground ? option.title_bacground : '#151515', //默认的导航背景色
+			title_color: option.title_color ? option.title_color : "#fff",
+			progress_color: option.progress_color ? option.progress_color : "#ccaa42",
+			splitLine_color: option.splitLine_color ? option.splitLine_color : "#404040"
 		}
-		
-		
-		
-		var style ={
+
+		var style = {
 			top: '0px', //新页面顶部位置
 			bottom: '0px', //新页面底部位置
 			scrollIndicator: "none",
 			plusrequire: 'ahead',
 		}
-		
-		if(def.showTitle){
-//			设置显示原生导航栏
+
+		if(def.showTitle) {
+			//			设置显示原生导航栏
 			style = {
 				top: '0px', //新页面顶部位置
 				bottom: '0px', //新页面底部位置
@@ -1115,7 +1119,7 @@
 				}
 			}
 		}
-//		console.log(JSON.stringify(style))
+		//		console.log(JSON.stringify(style))
 		mui.openWindow({
 			url: dstUrl,
 			id: dstId,

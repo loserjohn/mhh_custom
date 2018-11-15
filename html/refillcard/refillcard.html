@@ -72,9 +72,8 @@
 	</head>
 
 	<body>
-		<div id="app">
-			<!--等待页面-->
-			<div class="loader" style="top:0" v-show="loader">
+		<!--等待页面-->
+			<div class="loader" style="top:0;"  id="loader">
 				<ul>
 					<li id='a'></li>
 					<li id='b'></li>
@@ -87,6 +86,8 @@
 					<li id='i'></li>
 				</ul>
 			</div>
+		<div id="app">
+			
 			<!--卡片-->
 			<div class="cards scrollBox " ref="scroll" :style="{top:scrollTop,bottom:0}" id="scroll">
 				<div class="cm_ul reset" style="min-height: 101%;">
@@ -289,7 +290,7 @@
 								type: 'get', //HTTP请求类型
 								success: function(result) {
 									mui.later(() => {
-										_this.loader = false
+										document.getElementById('loader').style.display = 'none'
 										if(result.Success) {
 											//										alert( result.Data.ListInfo.length)
 											var l = _this.cardsList.length

@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>积分记录</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<link rel="stylesheet" href="../css/loading.css" />
+		<link rel="stylesheet" href="../css/animate.css" />
+		<style>
+			.scoreBox {
+				background: #fff;
+				border-bottom: 1px solid #d3d3d3;
+				padding: 15px 0;
+			}
+			
+			.score {
+				font-size: 24px;
+				color: #e68507;
+			}
+			
+			.secontBox {
+				position: fixed;
+				width: 100vw;
+				height: 100vh;
+				background: #fff;
+				z-index: 1000;
+			}
+			.cor_g{
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--等待页面-->
+			<div class="loader" style="top:0;display: block;" id="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
+		<div id="app">
+			
+			<!--二级-->
+			<div class="secontBox animated slideInRight" v-if="show">
+				<div class="flex scoreBox">
+					<div class="f1 t_c">
+						<div class="score">{{secondScore.MEMBER_INTEGRAL0}}</div>
+						<div class="cor_g">自身积分</div>
+					</div>
+					<div class="f1 t_c">
+						<div class="score">{{secondScore.MEMBER_INTEGRAL1}}</div>
+						<div class="cor_g">子级总积分</div>
+					</div>
+				</div>
+				<ul class="mui-table-view  personMsgList">
+					<li class="mui-table-view-cell mui-media" v-for="item in secontList">
+						<!--<a class="mui-navigate-right" href="javascript:;">-->
+						<img class="mui-media-object mui-pull-left" :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../images/default_avatar.jpg'" alt="">
+						<div class="mui-media-body">
+							{{item.MEMBER_NIKENAME}}(二级子用户)
+							<p class="mui-ellipsis">获得积分：{{item.MEMBER_INTEGRAL0  }}</p>
+						</div>
+					</li>
+				</ul>
+				<p class="cm_noItem t_c" v-if="secontList.length==0">没有积分数据</p>
+			</div>
+
+			<div class="flex scoreBox">
+				<div class="f1 t_c">
+					<div class="score">{{score.total}}</div>
+					<div class="cor_g">总分</div>
+				</div>
+				<div class="f1 t_c">
+					<div class="score">{{score.first}}</div>
+					<div class="cor_g">一级总积分</div>
+				</div>
+				<div class="f1 t_c">
+					<div class="score">{{score.secont}}</div>
+					<div class="cor_g">二级总积分</div>
+				</div>
+			</div>
+			<!--卡片-->
+			<div class="cards ">
+				<ul class="mui-table-view  personMsgList">
+					<li class="mui-table-view-cell mui-media" v-for="item in scoreList" @tap="_getSecont(item)">
+						<a class="mui-navigate-right" href="javascript:;">
+							<img class="mui-media-object mui-pull-left" :src="item.MEMBER_HEAD?item.MEMBER_HEAD:'../images/default_avatar.jpg'" alt="">
+							<div class="mui-media-body">
+								{{item.MEMBER_NIKENAME}}
+								<p class="mui-ellipsis">获得总积分：{{item.MEMBER_INTEGRAL0 + item.MEMBER_INTEGRAL1 }} </p>
+							</div>
+						</a>
+					</li>
+				
+					</ui>
+					<!--无数据提示-->
+					<div v-if="scoreList.length==0" class="t_c cm_noItem">
+						<div class="cm_noItem_box flex">
+							<img src="../images/no1.png" alt="" clas/>
+							<div class="t_c ">您还没有积分记录呢</div>
+						</div>
+					</div>
+
+			</div>
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/app.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/bscroll.min.js"></script>
+		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			})
+			var APP
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS)
+				APP = new Vue({
+					el: '#app',
+					data: {
+						scroll: '',
+						score: {},
+						secondScore:{},
+						scoreList: [],
+						secontList: [],
+						loader: true,
+						show: false
+					},
+					filters: {
+						getStatus(k) {
+							switch(k) {
+								case '0':
+									return '未启用'
+									break;
+								case '1':
+									return '启用中'
+									break;
+								case '2':
+									return '审核中'
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					created: function() {
+
+					},
+					mounted: function() {
+
+						var _this = this
+
+						var old_back = mui.back;
+						mui.back = function(event) {
+							if(_this.show) {
+								_this.show =false
+								return;
+							}
+							old_back()
+							return false;
+						};
+
+						/*首次加载数据*/
+						this._getData()
+					},
+					methods: {
+						/*读取一级列表*/
+						_getData(callback) {
+							this.loader = true
+							var _this = this
+							mui.ajax(app.baseUrl + '/api/PartMember/Frist', {
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									mui.later(() => {
+//										_this.loader = false
+										document.getElementById('loader').style.display = 'none'
+										if(result.Success) {
+											_this.score = {
+												total: result.Data.totalPartCount,
+												first: result.Data.partCount1,
+												secont: result.Data.partCount2,
+											}
+											_this.scoreList = result.Data.ListInfo
+											if(callback) callback();
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast(result.Msg)
+											if(callback) callback();
+										}
+									}, 500)
+
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									_this.loader = false
+									app.catchErr(xhr, type, errorThrown)
+								}
+							});
+						},
+						//						显示二级列表
+						_getSecont(item, callback) {
+//							console.log(code)
+							var _this = this
+
+							this.secondScore = {
+								code:item.MEMBER_CODE,
+								MEMBER_INTEGRAL0:item.MEMBER_INTEGRAL0,
+								MEMBER_INTEGRAL1:item.MEMBER_INTEGRAL1
+							}
+							mui.ajax(app.baseUrl + '/api/PartMember/Second', {
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
+								},
+								data: {
+									MEMBER_CODE: this.secondScore.code
+								},
+								type: 'get', //HTTP请求类型
+								success: function(result) {
+									mui.later(() => {
+										if(result.Success) {
+											//																						alert(2)
+											_this.secontList = result.Data.ListInfo
+											_this.show = true
+										} else {
+											/*验证失败*/
+											plus.nativeUI.toast(result.Msg)
+											if(callback) callback();
+										}
+
+									}, 500)
+
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									_this.loader = false
+									app.catchErr(xhr, type, errorThrown)
+								}
+							});
+
+						}
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>
