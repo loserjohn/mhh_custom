@@ -1079,8 +1079,8 @@
 		//		跳转参数
 		var def = {
 			showTitle: option.showTitle ? option.showTitle : false, //是否显示先生的导航栏
-			autoShow: option.autoShow ? option.autoShow : true, //是否自动显示
-			autoWaiting: option.autoWaiting ? option.autoWaiting : true, //是否显示菊花
+			autoShow: option.autoShow===false? option.autoShow : true, //是否自动显示
+			autoWaiting: option.autoWaiting ===false? option.autoWaiting : true, //是否显示菊花
 			createNew: option.createNew ? option.createNew : false,
 			title_bacground: option.title_bacground ? option.title_bacground : '#151515', //默认的导航背景色
 			title_color: option.title_color ? option.title_color : "#fff",
@@ -1119,7 +1119,7 @@
 				}
 			}
 		}
-		//		console.log(JSON.stringify(style))
+				
 		mui.openWindow({
 			url: dstUrl,
 			id: dstId,

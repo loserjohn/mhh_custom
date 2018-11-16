@@ -8,6 +8,7 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<style>
 			.btns {
 				margin-top: 15px;
@@ -177,6 +178,20 @@
 	</head>
 
 	<body>
+		<!--等待页面-->
+		<div class="loader" style="top:0" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
 		<div id="app">
 			<!--<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
@@ -341,7 +356,8 @@
 							this._updatedTown(0, () => {
 								this._updatedTown(1, () => {
 									this._updatedTown(2, () => {
-										this.loading = false
+										this.loading = false;
+										document.getElementById('loader').style.display = 'none'
 									})
 								})
 							})
@@ -352,8 +368,9 @@
 						},
 						/*初始化位置*/
 						_initPos() {
-//							alert(1)
+							//							alert(1)
 							this.loading = true;
+							document.getElementById('loader').style.display = 'none'
 							var _this = this;
 							plus.geolocation.getCurrentPosition((position) => {
 								var obj = position.address
@@ -498,7 +515,7 @@
 							}
 							//							console.log()
 							var msg;
-//							alert(this.type)
+							//							alert(this.type)
 							switch(this.type) {
 								case 'add':
 									msg = "添加成功";
@@ -510,7 +527,7 @@
 								default:
 									break;
 							}
-//							console.log(JSON.stringify(data))
+							//							console.log(JSON.stringify(data))
 							plus.nativeUI.showWaiting('提交中...')
 							app.ajax(app.baseUrl + '/api/Address/AddAddress', {
 								// dataType:'json',//服务器返回json格式数据
@@ -570,8 +587,8 @@
 						},
 						/*从地图选址*/
 						_setPos(pos) {
-//							console.log(JSON.stringify(pos))
-//alert(this.street 	)
+							//							console.log(JSON.stringify(pos))
+							//alert(this.street 	)
 							this.longitude = pos.longitude;
 							this.latitude = pos.latitude;
 							this.street = pos.street;
@@ -581,12 +598,14 @@
 					}
 				})
 			})
-			function _initPosition(){
-//				alert(2)
+
+			function _initPosition() {
+				//				alert(2)
 				APP._initPos()
 			}
+
 			function setPos(pos) {
-//								alert( pos)
+				//								alert( pos)
 				APP._setPos(pos)
 			}
 		</script>

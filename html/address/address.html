@@ -57,21 +57,22 @@
 	</head>
 
 	<body>	
+		<!--等待页面-->
+<div class="loader" style="top:0;bottom:50px" id="loader">
+	<ul>
+		<li id='a'></li>
+		<li id='b'></li>
+		<li id='c'></li>
+		<li id='d'></li>
+		<li id='e'></li>
+		<li id='f'></li>
+		<li id='g'></li>
+		<li id='h'></li>
+		<li id='i'></li>
+	</ul>
+</div>
 		<div id="app">		
-			<!--等待页面-->
-			<div class="loader" style="top:0;bottom:50px" v-show="loader">
-				<ul >
-					<li id='a'></li>
-					<li id='b'></li>
-					<li id='c'></li>
-					<li id='d'></li>
-					<li id='e'></li>
-					<li id='f'></li>
-					<li id='g'></li>
-					<li id='h'></li>
-					<li id='i'></li>
-				</ul>
-			</div>
+			
 			<!--地址-->
 			<div class="cards scrollBox " :style="{top:scrollTop+ 'px'}" ref="scroll">
 				<div class="reset relative" style="min-height: 101%;padding: 10px 0;">
@@ -313,7 +314,8 @@
 								},
 								success: function(result) {
 									mui.later(() => {
-										_this.loader = false
+										_this.loader = false;
+										document.getElementById('loader').style.display = 'none'
 										if(result.Success) {
 											_this.addressList = result.Data.ListInfo											
 										} else {

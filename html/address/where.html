@@ -62,7 +62,7 @@
 
 	<body>
 		<!--等待页面-->
-		<div class="loader" style="top:0,display:block" id="loader">
+		<div class="loader" style="top:0" id="loader">
 			<ul>
 				<li id='a'></li>
 				<li id='b'></li>
@@ -76,7 +76,7 @@
 			</ul>
 		</div>
 		<div id="app">
-			<header class="fixed  header flex" id="header">
+			<!--<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span></button>
 				<div class=" f1  cor_w t_c page_title">
 					约去哪儿
@@ -84,7 +84,7 @@
 				<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w" v-show="isLogin" @tap="_NWnavigateTo('./addAddress.html','addAddress')">
 					添加位置				
 				</button>
-			</header>
+			</header>-->
 
 			<!--搜索地址-->
 			<div class="address panelPad " id="content">
@@ -135,6 +135,19 @@
 			var APP
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
+				
+				var self = plus.webview.currentWebview();
+				self.setStyle({
+					titleNView:{
+						buttons:[
+						{
+							text:'添加',
+							onclick:addNewAddress,
+							fontSize:'12px'
+						}
+						]
+					}
+				})
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -150,13 +163,13 @@
 					},
 					created: function() {
 						//							alert(1)
-						app.initHeader();
+//						app.initHeader();
 					},
 					mounted: function() {
 
 						var _this = this
 						var scroll = this.$refs.scroll
-						this.scrollTop = document.getElementById('header').offsetHeight + 'px';
+						this.scrollTop = 0 + 'px';
 
 						/*首次加载获取当前位置*/
 						var co = JSON.parse(plus.storage.getItem('pos'))
@@ -165,10 +178,7 @@
 						}
 
 						/*首次加载数据*/
-						this._getData(() => {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						})
+						this._getData(() => {})
 					},
 					methods: {
 						/*初始化位置*/
@@ -209,8 +219,7 @@
 							});
 						},
 						_navigateTo(dstUrl, dstId, extras) {
-							let desturl = './html/login.html'
-							let destid = 'login'
+
 							let exa = extras
 							let option = {
 								autoShow: false
@@ -287,6 +296,10 @@
 
 			function refresh() {
 				APP._getData()
+			}
+			
+			function addNewAddress(){
+				APP._NWnavigateTo('./addAddress.html','addAddress')
 			}
 		</script>
 	</body>

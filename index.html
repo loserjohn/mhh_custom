@@ -249,7 +249,7 @@
 		<div id="app">
 			<!--头部-->
 			<header class="fixed container header flex " :style="{background:'rgba(21,21,21,'+opacity+')'}" id="header">
-				<div class="curPos flex" @tap="_NWnavigateTo('./html/address/where.html','where')">
+				<div class="curPos flex" @tap="_NTnavigateTo('./html/address/where.html','where')">
 					<i class="iconfont icon-wei- cor_y fs16"></i>
 					<div class="cor_w f1">{{curPos}}</div>
 					<i class="iconfont icon-xiayibu cor_w"></i>
@@ -944,7 +944,7 @@
 
 						},
 						//						带有导航栏的跳状
-						_NTnavigateTo(desturl, dstId, extras) {
+						_NTnavigateTo(desturl, destid, extras) {
 							let exa = extras
 							let option = {
 								showTitle: true,

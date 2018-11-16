@@ -224,12 +224,14 @@
 			mui.plusReady(function() {
 				app.initHeader();
 				plus.nativeUI.closeWaiting()
-				mui.currentWebview.show('pop-in', 300, function() {}, {});
+				
 //				alert(document.getElementById('header').offsetHeight+'px')
 				document.getElementById('suggestBox').style.top= '64px'
 				
-				
-				
+//				mui.later(function(){
+//					mui.currentWebview.show('pop-in', 300, function() {}, {});
+//				},2000)
+					mui.currentWebview.show('pop-in', 300, function() {}, {});
 				var lon = '';
 				var lan = '';
 				var address = '';

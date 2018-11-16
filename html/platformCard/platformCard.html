@@ -111,9 +111,8 @@
 	</head>
 
 	<body>
-		<div id="app">
-			<!--等待页面-->
-			<div class="loader" style="top:44px" v-if="loader">
+		<!--等待页面-->
+			<div class="loader" style="top:0;z-index: 10000;" id="loader">
 				<ul>
 					<li id='a'></li>
 					<li id='b'></li>
@@ -126,6 +125,8 @@
 					<li id='i'></li>
 				</ul>
 			</div>
+		<div id="app">
+			
 			<!--我的余额-->
 			<div id="content">
 				<div class=" flex block1 container">
@@ -328,9 +329,10 @@
 								success: function(result) {
 									mui.later(() => {
 										_this.loader = false
+										document.getElementById('loader').style.display = 'none'
 										if(result.Success) {
 											_this.cardsList = result.Data.ListInfo
-											_this.scroll.refresh();
+//											_this.scroll.refresh();
 											if(callback) callback();
 
 										} else {

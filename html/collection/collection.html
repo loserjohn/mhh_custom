@@ -34,18 +34,8 @@
 	</head>
 
 	<body>
-		<div id="app">
-
-			<div id="content" class="cm_tabBars">
-				<div class="cm_tabsT">
-					<ul class="flex reset cm_ul">
-						<li class="cm_tabTitle f1 " @tap="_switch(1)" :class="{active:type==1}">收藏项目</li>
-						<li class="cm_tabTitle f1" @tap="_switch(2)" :class="{active:type==2}">关注美匠人</li>
-					</ul>
-				</div>
-			</div>
-			<!--等待页面-->
-			<div class="loader" style="top:44px" v-show="loader">
+		<!--等待页面-->
+			<div class="loader" style="top:44px" id="loader">
 				<ul>
 					<li id='a'></li>
 					<li id='b'></li>
@@ -58,6 +48,17 @@
 					<li id='i'></li>
 				</ul>
 			</div>
+		<div id="app">
+
+			<div id="content" class="cm_tabBars">
+				<div class="cm_tabsT">
+					<ul class="flex reset cm_ul">
+						<li class="cm_tabTitle f1 " @tap="_switch(1)" :class="{active:type==1}">收藏项目</li>
+						<li class="cm_tabTitle f1" @tap="_switch(2)" :class="{active:type==2}">关注美匠人</li>
+					</ul>
+				</div>
+			</div>
+			
 			<!--地址-->
 			<div class="cards scrollBox " :style="{top:scrollTop+ 'px',bottom:0}" ref="scroll">
 				<div class="reset relative" style="min-height: 101%;">
@@ -467,6 +468,7 @@
 									
 									mui.later(() => {
 										_this.loader = false
+										document.getElementById('loader').style.display = 'none'
 										if(result.Success) {
 											switch(t) {
 												case 1:

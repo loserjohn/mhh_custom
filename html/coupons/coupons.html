@@ -227,17 +227,18 @@
 				swipeBack: true
 			})
 			var APP
-			var wv = plus.webview.currentWebview();
-			wv.setStyle({
-				titleNView: {
-					buttons: [{
-						text: '须知',
-						fontSize: '14px',
-						onclick: toRule
-					}]
-				}
-			});
+		
 			mui.plusReady(function() {
+				var wv = plus.webview.currentWebview();
+				wv.setStyle({
+					titleNView: {
+						buttons: [{
+							text: '须知',
+							fontSize: '14px',
+							onclick: toRule
+						}]
+					}
+				});
 				app.WXinit(CryptoJS)
 				APP = new Vue({
 					el: '#app',
