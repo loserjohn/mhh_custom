@@ -68,7 +68,7 @@
 									<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item in  levels " />
 								</p>
 								<div>
-									交易金额：<span class="cor_r fs16 lh30">￥{{order.ORDER_TOTAL_AMOUNT}} </span> 
+									交易金额：<span class="cor_r fs16 lh30">￥{{order.ORDER_PAY_AMOUNT}} </span> 
 								</div>
 							</div>
 							
@@ -133,7 +133,7 @@
 			<!--底部菜单-->
 			<div class="cm_bottomBtn flex">
 				<div class="f1" style="line-height: 50px;">
-					退款金额：<span class="cor_r fs20">￥{{order.ORDER_TOTAL_AMOUNT}}</span>
+					退款金额：<span class="cor_r fs20">￥{{order.ORDER_PAY_AMOUNT}}</span>
 				</div>
 
 				<div class="f1 yesBtn" @tap="_toSubmit">
