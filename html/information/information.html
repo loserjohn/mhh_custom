@@ -465,7 +465,7 @@
 			function initIM() {
 
 				r = plus.audio.getRecorder(); //储存mui录音对象、
-				myAvatar = plus.storage.getItem('pic_head')
+				myAvatar = plus.storage.getItem('pic_head')? plus.storage.getItem('pic_head'):'../../images/default_avatar.jpg'
 				myNickName = plus.storage.getItem('userNickName')
 				myId = plus.storage.getItem('myId')
 
@@ -623,6 +623,7 @@
 			//	链接服务器
 			function connectIM() {
 				// plus.nativeUI.showWaiting('链接中')
+//				alert(IMtoken)
 				friends = []
 				RongIMClient.connect(IMtoken, {
 					onSuccess: function(userId) {

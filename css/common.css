@@ -1047,7 +1047,7 @@ li {
 	bottom: 0;
 	/*background: red;*/
 	z-index: 1000;
-	display: none;
+	/*display: none;*/
 	justify-content: center;
 	align-items: center;
 }
@@ -1073,9 +1073,22 @@ li {
 }
 .versionTxt{
 	position: absolute;
-	top: 52%;
+	top: 50%;
 	text-align: center;
 	width: 100%;
+}
+.versionRefresh{
+	position: absolute;
+	top: 54%;
+	left: 50%;
+	margin-left: -70px;
+	text-align: center;
+	width: 100%;
+	width: 140px;
+	height: 40px;
+	line-height: 40px;
+	border: 1px solid #404040;
+	border-radius: 4px;
 }
 .cm_version.show{
 	display: block;

@@ -216,7 +216,7 @@
 										<div class="level cor_y cm_name fs10">{{userMsg.POINTS_LEVEL_NAME?userMsg.POINTS_LEVEL_NAME+'会员':'未登陆'}}</div>
 									</div>
 									
-									<p style="width: 100%;">{{userMsg.MEMBER_INTEGRAL?'小草值：'+userMsg.MEMBER_INTEGRAL:''}}</p>
+									<p style="width: 100%;">{{'小草值：'+userMsg.MEMBER_INTEGRAL}}</p>
 									<div class="cor_w t_r" @tap="_navigateTo('./html/scores.html','scores')">查看积分明细  <span class="mui-icon mui-icon-arrowright fs16"></span></div>
 								</div>
 
@@ -584,9 +584,11 @@
 										_this.store = result.Data.BUYCARD_COUNT
 										_this.coupon = result.Data.DISCOUNTENTRY_COUNT
 										_this.num = result.Data.MEMBER_MOBILE
-
+										
+//										alert( result.Data.MEMBER_HEAD)
+										
 										plus.storage.setItem('userNickName', result.Data.MEMBER_NIKENAME)
-										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD)
+										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD?result.Data.MEMBER_HEAD:'./images/default_avatar.jpg')
 										plus.storage.setItem('myId', result.Data.MEMBER_MOBILE)
 										plus.storage.setItem('realIdCard', result.Data.CARD_NUM)
 										plus.storage.setItem('realName', result.Data.MEMBER_REALNAME)
@@ -631,7 +633,7 @@
 						},
 
 						_toChat() {
-							
+//							alert(0)
 							let isLogin = plus.storage.getItem('isLogin');
 							this.hasNew = false;
 							if(isLogin != '1') {
@@ -714,7 +716,8 @@
 			function refresh(type) {
 				//				if(mainPage){mainPage.evalJS('getList()')}
 				APP._initUser();
-
+//				alert(type)
+//				alert(plus.storage.getItem('isLogin'))
 				if(!type && plus.storage.getItem('isLogin') == '1') {
 					//					若是登陆,就刷新融云链接
 					initIM()

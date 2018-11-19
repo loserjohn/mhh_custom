@@ -216,7 +216,7 @@
 												/*登陆成功*/
 												plus.nativeUI.toast('登陆成功')
 												plus.webview.getWebviewById('orders').evalJS('refresh()')
-												plus.webview.getWebviewById('mine').evalJS('refresh()')
+												plus.webview.getWebviewById('mine').evalJS('refresh(true)')
 
 												if(plus.webview.getWebviewById('login')){
 													plus.webview.getWebviewById('login').close()

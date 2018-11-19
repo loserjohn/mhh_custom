@@ -487,9 +487,9 @@
 					plus.storage.setItem('myId', result.Data)
 
 					plus.webview.getWebviewById('orders').evalJS('refresh()')
-					plus.webview.getWebviewById('mine').evalJS('refresh()')
+					plus.webview.getWebviewById('mine').evalJS('refresh(true)')
 				} else {
-
+//					alert(result.Msg)
 				}
 			}
 		});
@@ -787,7 +787,8 @@
 		}
 	}
 	/*封装mui.ajax*/
-	owner.ajax = function(url, option) {
+	owner.ajax = function(url, option,isCache) {
+//		alert(owner.mark + plus.storage.getItem('token'))
 		var curTime = new Date().getTime();
 		var tokenLife = plus.storage.getItem('tokenLife');
 		option.timeout = 5000;
@@ -795,7 +796,9 @@
 			'Content-Type': 'application/x-www-form-urlencoded',
 			'Authorization': owner.mark + plus.storage.getItem('token')
 		}
-
+		if(isCache){
+			option.headers["Cache-Control"] = 'public'
+		}
 		option.error = function(xhr, type, errorThrown) {
 			plus.nativeUI.closeWaiting()
 			var l = document.getElementById('loader')
@@ -847,7 +850,7 @@
 
 	owner._jump = function(str) {
 		//		A 沉浸式导航栏  W 有导航栏  B 新闻详情  P项目  O是订单详情
-		console.log(str)
+//		console.log(str)
 		if(!str) {
 			return
 		};
@@ -1138,3 +1141,61 @@
 	}
 
 }(window.app = {}));
+
+
+(function(com){ 
+     
+    var hashCode = function(str) { 
+        var hash = 0; 
+        if (!str || str.length == 0) return hash; 
+        for (i = 0; i < str.length; i++) { 
+            char = str.charCodeAt(i); 
+            hash = ((hash << 5) - hash) + char; 
+            hash = hash & hash; // Convert to 32bit integer 
+        } 
+        return hash; 
+    }; 
+    com.hashCode=hashCode; 
+    /** 
+     *存储当前下载路径www.bcty365.com
+     */ 
+    var cache = {}; 
+    cache.getFile = function(netPath, cb) { 
+        var filePathCache = getLocalFileCache(netPath); 
+        if (filePathCache) { 
+            return cb(filePathCache); 
+        } else { 
+            Filedownload(netPath, function(localPath) { 
+                return cb(localPath); 
+            }); 
+        } 
+    }; 
+ 
+    //下载 
+    var Filedownload = function(netPath, callback) { 
+        var dtask = plus.downloader.createDownload(netPath, {}, function(d, status) { 
+            // 下载完成 
+            if (status == 200) { 
+                plus.io.resolveLocalFileSystemURL(d.filename, function(entry) { 
+                    setLocalFileCache(netPath, entry.toLocalURL()); 
+                    callback(entry.toLocalURL()); //获取当前下载路径 
+                }); 
+            } 
+        }); 
+        dtask.start(); 
+    }; 
+ 
+    function getLocalFileCache(netPath) { 
+        var FILE_CACHE_KEY = "filePathCache_" + common.hashCode(netPath); 
+        var localUrlObj = plus.storage.getItem(FILE_CACHE_KEY); 
+        return localUrlObj; 
+    } 
+ 
+    function setLocalFileCache(netPath, localPath) { 
+        var FILE_CACHE_KEY = "filePathCache_" + common.hashCode(netPath); 
+        plus.storage.setItem(FILE_CACHE_KEY, localPath); 
+    } 
+ 
+    com.cache = cache; 
+}(window.common={})) 
+

@@ -44,7 +44,21 @@
 						} else {
 							var newVer = owner.versionMsg.version;
 							// 有更新包
-							owner.checkSystem(callback)
+							plus.nativeUI.confirm('发现新版本，是否立即更新？', (event) => {
+
+								var k = event.index
+								//								alert(k)
+								if(k == 0) {
+									owner.checkSystem(callback)
+								} else {
+//									用户选择不更新
+									if(callback) callback(true)
+								}
+							}, {
+								title: '马嘿嘿提醒您'
+							})
+							
+							
 						}
 					} else {}
 					break;

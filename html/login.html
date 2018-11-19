@@ -136,8 +136,7 @@
 //							app.initHeader();
 						},
 						mounted: function() {
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function () {}, {});
+							
 								 
 							if(mui.os.android){
 								var originalHeight=document.documentElement.clientHeight || document.body.clientHeight;
@@ -155,7 +154,9 @@
 								
 								      }
 								}
-							}	 
+							}	
+							plus.nativeUI.closeWaiting()
+							mui.currentWebview.show('pop-in', 300, function () {}, {});
 						},
 						methods: {
 							/*跳转到手机号码注册*/

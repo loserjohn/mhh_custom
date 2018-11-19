@@ -135,17 +135,15 @@
 			var APP
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS)
-				
+
 				var self = plus.webview.currentWebview();
 				self.setStyle({
-					titleNView:{
-						buttons:[
-						{
-							text:'添加',
-							onclick:addNewAddress,
-							fontSize:'12px'
-						}
-						]
+					titleNView: {
+						buttons: [{
+							text: '添加',
+							onclick: addNewAddress,
+							fontSize: '12px'
+						}]
 					}
 				})
 				APP = new Vue({
@@ -163,7 +161,7 @@
 					},
 					created: function() {
 						//							alert(1)
-//						app.initHeader();
+						//						app.initHeader();
 					},
 					mounted: function() {
 
@@ -228,15 +226,14 @@
 						},
 						/*跳转页面*/
 						_NWnavigateTo(dstUrl, dstId, extras) {
-		
+
 							let exa = extras
 							let option = {
-								showTitle:true,
+								showTitle: true,
 								autoShow: true
 							}
 							app.navigater(dstUrl, dstId, exa, option)
-							
-							
+
 						},
 						/*获取常用地址数据*/
 						_getData(callback) {
@@ -244,6 +241,7 @@
 							//							alert(i)
 							if(i != '1') {
 								if(callback) callback();
+								document.getElementById('loader').style.display = 'none'
 								return
 							}
 							this.isLogin = true
@@ -253,7 +251,7 @@
 							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
 								type: 'get', //HTTP请求类型
 								success: function(result) {
-									
+
 									if(result.Success) {
 										_this.addressList = result.Data.ListInfo
 										mui.later(() => {
@@ -297,9 +295,14 @@
 			function refresh() {
 				APP._getData()
 			}
-			
-			function addNewAddress(){
-				APP._NWnavigateTo('./addAddress.html','addAddress')
+
+			function addNewAddress() {
+				if(i != '1') {
+					plus.nativeUI.toast('请先登录')
+					return
+				}
+
+				APP._NWnavigateTo('./addAddress.html', 'addAddress')
 			}
 		</script>
 	</body>

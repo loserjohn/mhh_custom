@@ -758,7 +758,7 @@
 							dom.src = "../../images/default_avatar.jpg"
 						},
 						//						与商家对话
-						_toChat() {
+						_toChat(item) {
 							let isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
@@ -822,8 +822,7 @@
 											payCode: payCode
 										}
 										let option = {
-											showTitle: true,
-											autoShow: false,
+											showTitle: true
 										}
 										app.navigater(desturl, destid, exa, option)
 
@@ -840,7 +839,7 @@
 							let exa = extras
 							let option = {
 								showTitle: true,
-								autoShow: false,
+//								autoShow: false,
 							}
 							app.navigater(desturl, destid, exa, option)
 
@@ -848,7 +847,7 @@
 						_toShop(desturl, destid, extras){
 							let exa = extras
 							let option = {
-								autoShow: false,
+//								autoShow: false,
 							}
 							app.navigater(desturl, destid, exa, option)
 						},
