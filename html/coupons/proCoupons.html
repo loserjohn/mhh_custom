@@ -207,12 +207,14 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -220,20 +222,20 @@
 						scroll: '',
 						show: false,
 						couponsList: '',
-						detailPre: {},
+						detailPre: {}
 					},
-					created: function() {},
-					mounted: function() {
+					created: function created() {},
+					mounted: function mounted() {
 
-						var _this = this
-						var scroll = this.$refs.scroll
-						this.scrollTop = 0 + 'px'
+						var _this = this;
+						var scroll = this.$refs.scroll;
+						this.scrollTop = 0 + 'px';
 						var self = plus.webview.currentWebview();
 
-						this.couponsList = self.shopCoupons
+						this.couponsList = self.shopCoupons;
 
 						/*首次加载数据*/
-						document.getElementById('loader').style.display = 'none'
+						document.getElementById('loader').style.display = 'none';
 						this.$nextTick(function() {
 							//							初始化scrool
 							if(!_this.scroll) {
@@ -242,24 +244,24 @@
 									click: true,
 									probeType: 3,
 									bounceTime: 200
-								})
+								});
 							} else {
 								_this.scroll.refresh();
 							};
-						})
+						});
 					},
 					filters: {
-						getStatus(k) {
+						getStatus: function getStatus(k) {
 							//							优惠券状态0-未启用，1-启用中,2-审核中
 							switch(k) {
 								case '0':
-									return '未启用'
+									return '未启用';
 									break;
 								case '1':
-									return '启用中'
+									return '启用中';
 									break;
 								case '2':
-									return '审核中...'
+									return '审核中...';
 									break;
 								default:
 									break;
@@ -268,34 +270,33 @@
 					},
 					methods: {
 						/*查看详情*/
-						_checkDetail(item) {
+						_checkDetail: function _checkDetail(item) {
 							if(item) {
-								this.detailPre = item
+								this.detailPre = item;
 							}
 							this.show = !this.show;
-
 						},
+
 						/*立即领取券*/
-						_getCoupons() {
-							var _this = this
-							let status = plus.storage.getItem('isLogin')
+						_getCoupons: function _getCoupons() {
+							var _this = this;
+							var status = plus.storage.getItem('isLogin');
 							if(status != '1') {
 								/*没有登陆状态*/
-								plus.nativeUI.confirm('请您先登陆', (event) => {
+								plus.nativeUI.confirm('请您先登陆', function(event) {
 									if(event.index != 0) return;
-									_this._checkDetail()
-									let desturl = '../html/login.html'
-									let destid = 'login'
-									let exa = {}
-									let option = {
+									_this._checkDetail();
+									var desturl = '../html/login.html';
+									var destid = 'login';
+									var exa = {};
+									var option = {
 										showTitle: true,
 										autoShow: false
-									}
-									app.navigater(desturl, destid, exa, option)
-
+									};
+									app.navigater(desturl, destid, exa, option);
 								}, {
 									title: '马嘿嘿提醒您'
-								}, ['去登陆', '取消'])
+								}, ['去登陆', '取消']);
 							} else {
 								/*用户已登陆执行领取操作*/
 								//								console.log(_this.detailPre.DISCOUNT_CODE)
@@ -304,20 +305,19 @@
 										DISCOUNT_CODE: _this.detailPre.DISCOUNT_CODE
 									},
 									type: 'post', //HTTP请求类型
-									success: function(result) {
+									success: function success(result) {
 
 										if(result.Success) {
 											plus.nativeUI.toast('领取成功');
 
-											_this._checkDetail()
+											_this._checkDetail();
 										} else {
 											/*验证失败*/
-											_this._checkDetail()
-											plus.nativeUI.toast(result.Msg)
-
+											_this._checkDetail();
+											plus.nativeUI.toast(result.Msg);
 										}
 									},
-									error: function(xhr, type, errorThrown) {
+									error: function error(xhr, type, errorThrown) {
 										//异常处理；
 										console.log(type);
 									}
@@ -325,12 +325,12 @@
 							}
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function refresh() {
 				//				alert(1)
-				APP._getData()
+				APP._getData();
 			}
 		</script>
 	</body>

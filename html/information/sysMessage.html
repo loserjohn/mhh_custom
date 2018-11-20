@@ -22,7 +22,7 @@
 				margin-right: 14px;
 			}
 			
-			.panel2{
+			.panel2 {
 				width: 100%;
 				background: #fff;
 				box-sizing: border-box;
@@ -68,32 +68,34 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
 						scrollTop: '',
 						scroll: '',
-						messageList:[],
+						messageList: [],
 						index: 1,
 						norest: false
 					},
-					created: function() {
+					created: function created() {
 						//							alert(1)
 						if(plus.webview.getWebviewById('information')) {
-							plus.webview.getWebviewById('information').evalJS('redClean()')
+							plus.webview.getWebviewById('information').evalJS('redClean()');
 						}
 					},
-					mounted: function() {
+					mounted: function mounted() {
 
-						var _this = this
+						var _this = this;
 						var scroll = this.$refs.scroll;
-						this.scrollTop = 0 + 'px'
+						this.scrollTop = 0 + 'px';
 
 						this.$nextTick(function() {
 							//							初始化scrool
@@ -110,82 +112,77 @@
 										threshold: 50,
 										stop: 0
 									}
-								})
+								});
 							} else {
 								_this.scroll.refresh();
 							};
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
-								_this._getData((b) => {
+								_this._getData(function(b) {
 									if(b) {
-//										没有数据了
+										//										没有数据了
 									} else {
-										_this.scroll.finishPullUp()
+										_this.scroll.finishPullUp();
 									}
-								})
-							})
+								});
+							});
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
-								_this._getData((b) => {
-									_this.scroll.finishPullDown()
+								_this._getData(function(b) {
+									_this.scroll.finishPullDown();
 									if(b) {
-//										没有数据了
+										//										没有数据了
 									} else {
-										_this.scroll.finishPullUp()
+										_this.scroll.finishPullUp();
 									}
-								})
+								});
 							});
-
-						})
+						});
 						/*首次加载数据*/
-						this._getData(() => {
-					
-						})
-
+						this._getData(function() {});
 					},
 					methods: {
 
 						/*读取信息列表*/
-						_getData(callback) {
-							var _this = this
-//							alert(0)
+						_getData: function _getData(callback) {
+							var _this = this;
+							//							alert(0)
 							app.ajax(app.baseUrl + '/api/Push/GetMemberPushList', {
 								data: {
-									pageIndex: parseInt(_this.index)  ,
+									pageIndex: parseInt(_this.index),
 									pageSize: 8
 								},
 								type: 'get', //HTTP请求类型
-								success: function(result) {
-//									alert(1)
+								success: function success(result) {
+									//									alert(1)
 									if(result.Success) {
-										
+
 										var l = _this.messageList.length;
 										_this.messageList = _this.messageList.concat(result.Data.ListInfo);
-//										console.log(_this.messageList.length, l)
+										//										console.log(_this.messageList.length, l)
 										if(l == _this.messageList.length) {
 											_this.norest = true;
 											if(callback) callback(true);
 											return;
 										}
-										_this.index++
-											mui.later(() => {
-												_this.scroll.refresh();
-												if(callback) callback(false);
-											}, 300)
+										_this.index++;
+										mui.later(function() {
+											_this.scroll.refresh();
+											if(callback) callback(false);
+										}, 300);
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function refresh() {
-				APP._getData()
+				APP._getData();
 			}
 		</script>
 	</body>

@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>优惠券管理</title>
+		<title>分享</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../css/common.css" />
@@ -25,15 +25,18 @@
 				border-radius: 3px;
 				padding: 15px 0;
 			}
-			.btns>li img{
+			
+			.btns>li img {
 				width: 60px;
 				display: block;
-				margin: 0  auto;
+				margin: 0 auto;
 			}
-			.btns>li p{
+			
+			.btns>li p {
 				margin-top: 15px;
 			}
-			#app{
+			
+			#app {
 				position: absolute;
 				left: 0;
 				top: 0;
@@ -42,7 +45,8 @@
 				background: url(../images/pg2.jpg) 0 0 /100% 100% no-repeat;
 				/*background: url(../images/pg2.jpg) 0 0 /100% 100% no-repeat;*/
 			}
-			#header{
+			
+			#header {
 				box-shadow: none;
 			}
 		</style>
@@ -56,8 +60,12 @@
 				<div class="button" onclick="shareShow()">分 享</div>
 
 				<ul class="flex btns">
-					<li class=""><img src="../images/wx.png" alt="" class="contain" onclick="shareShow(1)"/><p class="t_c cor_y">微信分享</p></li>
-					<li class=""><img src="../images/pyq.png" alt="" class="contain" onclick="shareShow(2)"/><p class="t_c cor_y">朋友圈分享</p></li>
+					<li class=""><img src="../images/wx.png" alt="" class="contain" onclick="shareShow(1)" />
+						<p class="t_c cor_y">微信分享</p>
+					</li>
+					<li class=""><img src="../images/pyq.png" alt="" class="contain" onclick="shareShow(2)" />
+						<p class="t_c cor_y">朋友圈分享</p>
+					</li>
 					<!--<li class=""><img src="../images/qq.png" alt="" class="contain" onclick="shareShow(3)"/><p class="t_c cor_y">QQ分享</p></li>-->
 				</ul>
 			</div>
@@ -66,23 +74,23 @@
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/app.js"></script>
 		<script src="../js/vue.js"></script>
-				<!--<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>-->
-		<!--		<script src="../js/bscroll.min.js"></script>-->
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
+			});
 
 			mui.plusReady(function() {
 				updateSerivces();
-				plus.nativeUI.closeWaiting()
-				mui.currentWebview.show('pop-in', 300, function () {}, {});
-					var self = plus.webview.currentWebview();
-//				alert(self.num)
-			})
+				plus.nativeUI.closeWaiting();
+				mui.currentWebview.show('pop-in', 300, function() {}, {});
+				var self = plus.webview.currentWebview();
+				//				alert(self.num)
+			});
 			var shares = null;
-			
+
 			/*获取通道*/
 
 			/**
@@ -95,49 +103,47 @@
 						var t = s[i];
 						shares[t.id] = t;
 					}
-//					console.log(JSON.stringify(shares))
+					//					console.log(JSON.stringify(shares))
 				}, function(e) {
 					alert('获取分享服务列表失败：' + e.message);
 				});
-				
 			}
 
 			// 打开分享
-			function shareShow(k){
-				var server={};
-				switch (k){
+			function shareShow(k) {
+				var server = {};
+				switch(k) {
 					case 1:
-					/*微信*/
-					server.s = shares['weixin']
-					server.title = '微信好友'
-					server.x= 'WXSceneSession'
+						/*微信*/
+						server.s = shares['weixin'];
+						server.title = '微信好友';
+						server.x = 'WXSceneSession';
 						break;
 					case 2:
-					/*朋友圈*/
-					server.s = shares['weixin']
-					server.title = '微信朋友圈'
-					server.x= 'WXSceneTimeline'
+						/*朋友圈*/
+						server.s = shares['weixin'];
+						server.title = '微信朋友圈';
+						server.x = 'WXSceneTimeline';
 						break;
 					case 3:
-					/*QQ*/
-					server.s = shares['qq']
-					server.title = 'QQ'
+						/*QQ*/
+						server.s = shares['qq'];
+						server.title = 'QQ';
 						break;
 					default:
 						break;
 				}
-//				alert(0)
-				shareAction(server)
-				
+				//				alert(0)
+				shareAction(server);
 			}
-			
+
 			/**
 			 * 分享操作
 			 * @param {JSON} sb 分享操作对象s.s为分享通道对象(plus.share.ShareService)
 			 * @param {Boolean} bh 是否分享链接
 			 */
 			function shareAction(sb) {
-//				alert(1)
+				//				alert(1)
 				if(!sb || !sb.s) {
 					alert('无效的分享服务！');
 					return;
@@ -150,18 +156,18 @@
 					}
 				};
 				var self = plus.webview.currentWebview();
-				var num = self.num
-				msg.href = 'https://www.mhh999.com/share/custom.html?num='+num;
+				var num = self.num;
+				msg.href = 'https://www.mhh999.com/share/custom.html?num=' + num;
 				msg.title = "马嘿嘿";
-				msg.thumbs = ['https://manage.mhh999.com/upload/image/mhh_avator.png']; 
+				msg.thumbs = ['https://manage.mhh999.com/upload/image/mhh_avator.png'];
 				// 发送分享
 				if(sb.s.authenticated) {
-//					alert('---已授权---');
+					//					alert('---已授权---');
 					shareMessage(msg, sb.s);
 				} else {
-//					alert('---未授权---');
+					//					alert('---未授权---');
 					sb.s.authorize(function() {
-//						alert('授权')
+						//						alert('授权')
 						shareMessage(msg, sb.s);
 					}, function(e) {
 						alert('认证授权失败：' + e.code + ' - ' + e.message);
@@ -174,11 +180,11 @@
 				 * @param {plus.share.ShareService} s
 				 */
 				function shareMessage(msg, s) {
-//					alert(JSON.stringify(msg));
+					//					alert(JSON.stringify(msg));
 					s.send(msg, function() {
 						plus.nativeUI.toast('分享到"' + s.description + '"成功！');
 					}, function(e) {
-						plus.nativeUI.toast('分享到"' + s.description + '"失败！' );
+						plus.nativeUI.toast('分享到"' + s.description + '"失败！');
 					});
 				}
 			}

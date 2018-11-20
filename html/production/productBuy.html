@@ -639,12 +639,14 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			mui.plusReady(function() {
-				var self = plus.webview.currentWebview()
-				app.WXinit(CryptoJS)
+				var self = plus.webview.currentWebview();
+				app.WXinit(CryptoJS);
 				app.initHeader();
 				var APP = new Vue({
 					el: '#app',
@@ -684,126 +686,130 @@
 						screenWidth: '240px'
 					},
 					filters: {
-						dataTxt(value) {
+						dataTxt: function dataTxt(value) {
 							if(value == 0) return '今天';
 							if(value == 1) return '明天';
 							if(value == 2) return '后天';
-							let today = new Date();
-							let dd = new Date();
+							var today = new Date();
+							var dd = new Date();
 							dd.setDate(dd.getDate() + value);
-							let str = (dd.getMonth() + 1) + '月' + dd.getDate() + '日'
-							return str
+							var str = dd.getMonth() + 1 + '月' + dd.getDate() + '日';
+							return str;
 						},
-						commentTxt(value) {
+						commentTxt: function commentTxt(value) {
 							switch(value) {
 								case '1':
-									return '非常非常嘿皮'
+									return '非常非常嘿皮';
 									break;
 								case '2':
-									return '很嘿皮'
+									return '很嘿皮';
 									break;
 								case '3':
-									return '嘿皮'
+									return '嘿皮';
 									break;
 								case '4':
-									return '不嘿皮'
+									return '不嘿皮';
 									break;
 								default:
 									break;
 							}
 						},
-						filterNull(value) {
+						filterNull: function filterNull(value) {
 							if(value == null || value == 'undefined') {
-								return ''
+								return '';
 							}
-							return value
+							return value;
 						}
 					},
-					created: function() {
+					created: function created() {
 
 						/*获取闯进来的项目id*/
 						var self = plus.webview.currentWebview();
-						this.proKey = self.proKey
+						this.proKey = self.proKey;
 
-						let isLogin = plus.storage.getItem('isLogin');
+						var isLogin = plus.storage.getItem('isLogin');
 
 						if(isLogin == '1') {
 							this.islogin = true;
 						}; //没有登陆状态则不获取数据
 
-						this.screenWidth = plus.screen.resolutionWidth + 'px'
+						this.screenWidth = plus.screen.resolutionWidth + 'px';
 					},
-					mounted: function() {
-						var _this = this
+					mounted: function mounted() {
+						var _this2 = this;
+
+						var _this = this;
 
 						/*初始化主页面的高度*/
 						//this.appHeight = plus.display.resolutionHeight
 						this.appHeight = document.getElementById('header').offsetHeight;
 						/*初始化数据*/
 
-						this._initData(() => {
+						this._initData(function() {
 							/*初始化轮播图*/
-							var slider = this.$refs.slider;
+							var slider = _this2.$refs.slider;
 							mui(slider).slider({
 								interval: 3000 //自动播放周期
 							});
 						});
-
 					},
 					methods: {
 						//						默认头像
-						_default(e) {
+						_default: function _default(e) {
 							var dom = e.target;
 							//							console.log(dom)
-							dom.src = "../../images/default_avatar.jpg"
+							dom.src = "../../images/default_avatar.jpg";
 						},
+
 						//						与商家对话
-						_toChat(item) {
-							let isLogin = plus.storage.getItem('isLogin');
+						_toChat: function _toChat(item) {
+							var isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
-								let desturl = '../login.html'
-								let destid = 'login'
-								let exa = {
+								var desturl = '../login.html';
+								var destid = 'login';
+								var exa = {
 									product: item
-								}
-								let option = {
+								};
+								var option = {
 									showTitle: true,
-									autoShow: false,
-								}
-								app.navigater(desturl, destid, exa, option)
+									autoShow: false
+								};
+								app.navigater(desturl, destid, exa, option);
+								return;
 							}
 
-							let fdId = this.product.RY_ID;
-							let fdname = this.product.SHOP_NAME;
-							let fdAvatar = this.product.SHOP_LOGO;
+							var fdId = this.product.RY_ID;
+							var fdname = this.product.SHOP_NAME;
+							var fdAvatar = this.product.SHOP_LOGO;
 
-							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
-							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {})
+							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")');
+							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {});
 						},
+
 						//						商铺充值卡购买
-						_recharge(code) {
+						_recharge: function _recharge(code) {
 							if(!code) return;
-							let status = plus.storage.getItem('isLogin')
-							let real = plus.storage.getItem('realStatus')
+							var status = plus.storage.getItem('isLogin');
+							var real = plus.storage.getItem('realStatus');
 							if(status != '1') {
 								/*没有登陆状态*/
-								plus.nativeUI.confirm('请您先登陆', (event) => {
+								plus.nativeUI.confirm('请您先登陆', function(event) {
 									if(event.index != 0) return;
-									let desturl = '../login.html'
-									let destid = 'login'
-									let exa = {
+									var desturl = '../login.html';
+									var destid = 'login';
+									var exa = {
 										product: item
-									}
-									let option = {
+									};
+									var option = {
 										showTitle: true,
-										autoShow: false,
-									}
-									app.navigater(desturl, destid, exa, option)
+										autoShow: false
+									};
+									app.navigater(desturl, destid, exa, option);
 								}, {
 									title: '马嘿嘿提醒您'
-								}, ['去登陆', '取消'])
-								return false
+								}, ['去登陆', '取消']);
+								return false;
 							}
 
 							app.ajax(app.baseUrl + '/api/Order/CreateBusiRechargeOrder', {
@@ -811,123 +817,123 @@
 									RECHARGE_CODE: code
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
-									let payCode = result.Msg; //订单号
+								success: function success(result) {
+									var payCode = result.Msg; //订单号
 									if(result.Success) {
-										plus.nativeUI.toast('订单创建成功')
-										let desturl = '../cashPay.html'
-										let destid = 'cashPay'
-										let exa = {
+										plus.nativeUI.toast('订单创建成功');
+										var desturl = '../cashPay.html';
+										var destid = 'cashPay';
+										var exa = {
 											type: 2, //1表示的是只能现金支付,2可以平台余额支付
 											payCode: payCode
-										}
-										let option = {
+										};
+										var option = {
 											showTitle: true
-										}
-										app.navigater(desturl, destid, exa, option)
-
+										};
+										app.navigater(desturl, destid, exa, option);
 									} else {
-										plus.nativeUI.closeWaiting()
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 						},
-						/*跳转页面*/
-						_navigateTo(desturl, destid, extras) {
-							let exa = extras
-							let option = {
-								showTitle: true,
-//								autoShow: false,
-							}
-							app.navigater(desturl, destid, exa, option)
 
+						/*跳转页面*/
+						_navigateTo: function _navigateTo(desturl, destid, extras) {
+							var exa = extras;
+							var option = {
+								showTitle: true
+								//								autoShow: false,
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
-						_toShop(desturl, destid, extras){
-							let exa = extras
-							let option = {
-//								autoShow: false,
-							}
-							app.navigater(desturl, destid, exa, option)
+						_toShop: function _toShop(desturl, destid, extras) {
+							var exa = extras;
+							var option = {
+								//								autoShow: false,
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						/*切换tab*/
-						_tabBar(k) {
+						_tabBar: function _tabBar(k) {
 							this.curTab = k;
-							let anchor1 = this.$refs.anchor1;
-							let anchor2 = this.$refs.anchor2;
-							let anchor3 = this.$refs.anchor3;
+							var anchor1 = this.$refs.anchor1;
+							var anchor2 = this.$refs.anchor2;
+							var anchor3 = this.$refs.anchor3;
 							switch(k) {
 								case 1:
-									this.scroll.scrollToElement(anchor1, 300, 0, 0, 'ease')
+									this.scroll.scrollToElement(anchor1, 300, 0, 0, 'ease');
 									break;
 								case 2:
-									this.scroll.scrollToElement(anchor2, 300, 0, 0, 'ease')
+									this.scroll.scrollToElement(anchor2, 300, 0, 0, 'ease');
 									break;
 								case 3:
-									this.scroll.scrollToElement(anchor3, 300, 0, 0, 'ease')
+									this.scroll.scrollToElement(anchor3, 300, 0, 0, 'ease');
 									break;
 								default:
 									break;
 							}
 						},
+
 						/*模态框显示*/
-						_switchModal() {
-							this.modalShow = !this.modalShow
+						_switchModal: function _switchModal() {
+							this.modalShow = !this.modalShow;
 						},
+
 						/*初始化数据*/
-						_initData(callback) {
-							this.loader = true
-							var _this = this
+						_initData: function _initData(callback) {
+							this.loader = true;
+							var _this = this;
 							app.ajax(app.baseUrl + '/api/Project/GetProject', {
 								type: 'get', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
 								data: {
 									PROJECT_CODE: _this.proKey
 								},
-								success: function(result) {
-									mui.later(() => {
-										_this.loader = false
+								success: function success(result) {
+									mui.later(function() {
+										_this.loader = false;
 
-										document.getElementById('loader').style.display = 'none'
+										document.getElementById('loader').style.display = 'none';
 
 										if(result.Success) {
-											_this.product = result.Data.dataFormart
-											_this.enabledTime = result.Data.enabledTime
-											_this.imgprev = result.Data.dataFormart.PROJECT_IMGS[result.Data.dataFormart.PROJECT_IMGS.length - 1]
-											_this.imgnext = result.Data.dataFormart.PROJECT_IMGS[0]
+											_this.product = result.Data.dataFormart;
+											_this.enabledTime = result.Data.enabledTime;
+											_this.imgprev = result.Data.dataFormart.PROJECT_IMGS[result.Data.dataFormart.PROJECT_IMGS.length - 1];
+											_this.imgnext = result.Data.dataFormart.PROJECT_IMGS[0];
 											_this.masterCode = result.Data.dataFormart.SHOP_CODE;
 											_this.hasCollec = result.Data.dataFormart.IS_ATTENTION;
 											//											alert(result.Data.dataFormart.IS_ATTENTION)
-											_this.levels = parseInt(result.Data.dataFormart.SHOP_STAR)
-											_this._initComment()
-											_this._initShopMsg()
-											_this._initScroll()
+											_this.levels = parseInt(result.Data.dataFormart.SHOP_STAR);
+											_this._initComment();
+											_this._initShopMsg();
+											_this._initScroll();
 
-											if(callback) callback()
+											if(callback) callback();
 										} else {
-											plus.nativeUI.closeWaiting()
+											plus.nativeUI.closeWaiting();
 											plus.nativeUI.toast(result.Msg);
-											mui.back()
-
+											mui.back();
 										}
-									}, 500)
-
+									}, 500);
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 									app.catchErr(type);
-									document.getElementById('loader').style.display = 'none'
+									document.getElementById('loader').style.display = 'none';
 								}
-							})
+							});
 						},
+
 						/*初始化下拉滑块*/
-						_initScroll() {
-							var _this = this
+						_initScroll: function _initScroll() {
+							var _this = this;
 							/*初始化下拉scroll*/
 							this.$nextTick(function() {
-								var scroll = this.$refs.scroll
-								var wrapper = this.$refs.wrapper
+								var scroll = this.$refs.scroll;
+								var wrapper = this.$refs.wrapper;
 								/*竖向下拉刷新*/
 								if(!_this.scroll) {
 									//							初始化标题栏
@@ -935,11 +941,11 @@
 										click: true,
 										probeType: 3,
 										scrollX: false,
-										bounceTime: 200,
+										bounceTime: 200
 										//										pullUpLoad: {
 										//											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
 										//										}
-									})
+									});
 								} else {
 									_this.scroll.refresh();
 								};
@@ -952,7 +958,7 @@
 										bounceTime: 200,
 										scrollX: true,
 										scrollY: false
-									})
+									});
 								} else {
 									_this.wrapper.refresh();
 								};
@@ -962,12 +968,13 @@
 									bounce: true, //是否启用回弹
 									indicators: false
 								});
-							})
+							});
 						},
+
 						/*获取手艺人信息*/
-						_initShopMsg() {
+						_initShopMsg: function _initShopMsg() {
 							//							console.log(this.masterCode)
-							var _this = this
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Shop/ViewShop', {
 								type: 'post', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
@@ -977,29 +984,30 @@
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									/*登陆成功*/
 									if(result.Success) {
 										/*店铺信息*/
-										_this.shopMsg = result.Data.Shop
+										_this.shopMsg = result.Data.Shop;
 										/*充值卡*/
-										_this.refillcard = result.Data.Recharge
+										_this.refillcard = result.Data.Recharge;
 										/*优惠券*/
-										_this.coupons = result.Data.Discount
+										_this.coupons = result.Data.Discount;
 									} else {
 										/*验证失败*/
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 
-									app.catchErr(type)
+									app.catchErr(type);
 								}
-							})
+							});
 						},
+
 						/*获取评价数据*/
-						_initComment() {
-							var _this = this
+						_initComment: function _initComment() {
+							var _this = this;
 							//							console.log(_this.proKey)
 							mui.ajax(app.baseUrl + '/api/OrderReview/GetReviewList', {
 								type: 'get', //HTTP请求类型
@@ -1008,125 +1016,120 @@
 									PROJECT_CODE: _this.proKey,
 									// REVIEW_TYPE: 1,
 									pageIndex: 1,
-									pageSize: 4,
+									pageSize: 4
 								},
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									/*登陆成功*/
 									if(result.Success) {
 										_this.comment = result.Data.ListInfo;
 										_this.total = result.Data.Total;
-
 									} else {
 										/*验证失败*/
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									app.catchErr(type)
+									app.catchErr(type);
 								}
-							})
+							});
 						},
+
 						/*下单*/
-						_toOrder() {
-							var _this = this
+						_toOrder: function _toOrder() {
+							var _this = this;
 							/*判断登陆状态*/
-							let status = plus.storage.getItem('isLogin')
-							let real = plus.storage.getItem('realStatus')
+							var status = plus.storage.getItem('isLogin');
+							var real = plus.storage.getItem('realStatus');
 							if(status != '1') {
 								/*没有登陆状态*/
-								plus.nativeUI.confirm('请您先登陆', (event) => {
+								plus.nativeUI.confirm('请您先登陆', function(event) {
 									if(event.index != 0) return;
-									let desturl = '../login.html'
-									let destid = 'login'
-									let exa = {
+									var desturl = '../login.html';
+									var destid = 'login';
+									var exa = {
 										type: 2, //1表示的是只能现金支付,2可以平台余额支付
 										payCode: payCode
-									}
-									let option = {
+									};
+									var option = {
 										showTitle: true,
-										autoShow: false,
-									}
-									app.navigater(desturl, destid, exa, option)
-
+										autoShow: false
+									};
+									app.navigater(desturl, destid, exa, option);
 								}, {
 									title: '马嘿嘿提醒您'
-								}, ['去登陆', '取消'])
+								}, ['去登陆', '取消']);
 							} else {
 								/*用户已登陆执行收藏操作*/
-								let desturl = './productOrder.html'
-								let destid = 'productOrder'
-								let exa = {
+								var desturl = './productOrder.html';
+								var destid = 'productOrder';
+								var exa = {
 									product: _this.product,
 									/*传入项目信息*/
 									masterCode: _this.masterCode /*传入手艺人的code*/
-								}
-								let option = {
+								};
+								var option = {
 									showTitle: true
-								}
-								app.navigater(desturl, destid, exa, option)
-
+								};
+								app.navigater(desturl, destid, exa, option);
 							}
-
 						},
+
 						/*收藏项目*/
-						_collect() {
+						_collect: function _collect() {
 							if(this.hasCollec) {
 								return;
 							}
-							var _this = this
+							var _this = this;
 							/*判断登陆状态*/
-							let status = plus.storage.getItem('isLogin')
+							var status = plus.storage.getItem('isLogin');
 							if(status != '1') {
 								/*没有登陆状态*/
-								plus.nativeUI.confirm('请您先登陆', (event) => {
+								plus.nativeUI.confirm('请您先登陆', function(event) {
 									if(event.index != 0) return;
-									let desturl = '../login.html'
-									let destid = 'login'
-									let exa = {
+									var desturl = '../login.html';
+									var destid = 'login';
+									var exa = {
 										type: 2, //1表示的是只能现金支付,2可以平台余额支付
 										payCode: payCode
-									}
-									let option = {
+									};
+									var option = {
 										showTitle: true,
-										autoShow: false,
-									}
-									app.navigater(desturl, destid, exa, option)
+										autoShow: false
+									};
+									app.navigater(desturl, destid, exa, option);
 								}, {
 									title: '马嘿嘿提醒您'
-								}, ['去登陆', '取消'])
+								}, ['去登陆', '取消']);
 							} else {
 								/*用户已登陆执行收藏操作*/
-								plus.nativeUI.showWaiting()
+								plus.nativeUI.showWaiting();
 								app.ajax(app.baseUrl + '/api/Project/LoveProject', {
 									type: 'post', //HTTP请求类型
 									data: {
-										PROJECT_CODE: _this.proKey,
+										PROJECT_CODE: _this.proKey
 									},
-									success: function(result) {
+									success: function success(result) {
 										/*登陆成功*/
-										plus.nativeUI.closeWaiting()
+										plus.nativeUI.closeWaiting();
 										if(result.Success) {
-											plus.nativeUI.toast('收藏成功')
-											_this.hasCollec = true
+											plus.nativeUI.toast('收藏成功');
+											_this.hasCollec = true;
 										} else {
 											/*验证失败*/
-											plus.nativeUI.toast('收藏失败')
+											plus.nativeUI.toast('收藏失败');
 										}
 									}
-								})
+								});
 							}
 						}
 					}
-				})
-
+				});
 			});
 			/*获取用户身份之后刷新页面*/
-			function initPage() {
-
-			}
+			function initPage() {}
 		</script>
 	</body>
 

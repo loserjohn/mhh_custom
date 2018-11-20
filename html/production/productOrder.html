@@ -347,12 +347,14 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -394,51 +396,50 @@
 						realName: '', // 投保人真实姓名
 						realIdCard: '' //投保人真实身份证号码
 					},
-					created: function() {
+					created: function created() {
 						//						app.initHeader();
 						var self = plus.webview.currentWebview();
-						this.product = self.product
-						this.masterCode = self.masterCode
-						this.totalAmount =   self.product.IS_ACTIVITY==1?self.product.ACTIVITY_PRICE:self.product.PROJECT_DISCOUNT ;
+						this.product = self.product;
+						this.masterCode = self.masterCode;
+						this.totalAmount = self.product.IS_ACTIVITY == 1 ? self.product.ACTIVITY_PRICE : self.product.PROJECT_DISCOUNT;
 
-						this.realName = plus.storage.getItem('realName') ? plus.storage.getItem('realName') : ''
-						this.realIdCard = plus.storage.getItem('realIdCard') ? plus.storage.getItem('realIdCard') : ''
-
+						this.realName = plus.storage.getItem('realName') ? plus.storage.getItem('realName') : '';
+						this.realIdCard = plus.storage.getItem('realIdCard') ? plus.storage.getItem('realIdCard') : '';
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						var _this = this;
 
-						var scroll = this.$refs.scroll
-						var wraper = this.$refs.wraper
+						var scroll = this.$refs.scroll;
+						var wraper = this.$refs.wraper;
 						//							初始化scroll的屏幕位置
 						this.appHeight = 0;
 
 						/*初始化横向scroll*/
-						this._initScroll()
+						this._initScroll();
 						/*初始化数据*/
-						this._getData(() => {})
+						this._getData(function() {});
 						//						plus.nativeUI.closeWaiting()
 						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
 					},
 					methods: {
 						//						投保
-						_toInsure() {
+						_toInsure: function _toInsure() {
 							//							alert(1)
 							//							console.log(JSON.stringify(this.inssure) );
 							if(this.inssure.length == 0) {
-								this.showInsure = false
+								this.showInsure = false;
 							} else {
-								this.showInsure = true
+								this.showInsure = true;
 							}
-
 						},
+
 						/*初始化下拉框*/
-						_initScroll() {
-							var _this = this
+						_initScroll: function _initScroll() {
+							var _this = this;
 							/*初始化下拉scroll*/
 							this.$nextTick(function() {
-								var scroll = this.$refs.scroll
-								var wrapper = this.$refs.wrapper
+								var scroll = this.$refs.scroll;
+								var wrapper = this.$refs.wrapper;
 								/*竖向下拉刷新*/
 								if(!_this.scroll) {
 									//							初始化标题栏
@@ -446,11 +447,11 @@
 										click: true,
 										probeType: 3,
 										scrollX: false,
-										bounceTime: 200,
+										bounceTime: 200
 										//										pullUpLoad: {
 										//											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
 										//										}
-									})
+									});
 								} else {
 									_this.scroll.refresh();
 								};
@@ -460,29 +461,29 @@
 									_this.wrapper = new BScroll(wrapper, {
 										click: true,
 										probeType: 3,
-										bounceTime: 200,
+										bounceTime: 200
 										//										scrollX: true,
 										//										scrollY: false
-									})
+									});
 								} else {
 									_this.wrapper.refresh();
 								};
-							})
+							});
 						},
+
 						/*获取数据*/
-						_getData(callback) {
-							var _this = this
+						_getData: function _getData(callback) {
+							var _this = this;
 							/*获取手艺人地址信息*/
 							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
 								type: 'get', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									_this.loader = false;
 									if(result.Success) {
-										_this.addressList = result.Data.ListInfo
-
+										_this.addressList = result.Data.ListInfo;
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
@@ -491,33 +492,34 @@
 							app.ajax(app.baseUrl + '/api/Discount/GetDiscountList', {
 								type: 'post', //HTTP请求类型
 								data: {
-									PROJECT_CODE: _this.product.PROJECT_CODE,
+									PROJECT_CODE: _this.product.PROJECT_CODE
 								},
-								success: function(result) {
-		
+								success: function success(result) {
+
 									if(result.Success) {
-										if(result.Data.ListInfo == null){
-											_this.couponsList = []
-										}else{
-											_this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
-										}	
-							// _this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
-										if(callback) callback()
+										if(result.Data.ListInfo == null) {
+											_this.couponsList = [];
+										} else {
+											_this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : [];
+										}
+										// _this.couponsList = result.Data.ListInfo ? result.Data.ListInfo : []
+										if(callback) callback();
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 						},
 
 						/*回到顶部*/
-						_backTop() {
-							this.scroll.scrollTo(0, 0, 300)
+						_backTop: function _backTop() {
+							this.scroll.scrollTo(0, 0, 300);
 						},
+
 						/*提交订单*/
-						_toSubmit() {
-							var _this = this
+						_toSubmit: function _toSubmit() {
+							var _this = this;
 
 							/*订单信息判断*/
 							if(!this.address) {
@@ -535,72 +537,72 @@
 								}
 							}
 
-							plus.nativeUI.showWaiting('订单生成中')
+							plus.nativeUI.showWaiting('订单生成中');
 							var data = {
 								PROJECT_CODE: _this.product.PROJECT_CODE,
 								ADDRESS: _this.address,
 								date: _this.orderTime.split(' ')[0],
 								point: _this.orderTime.split(' ')[1],
 								REMARK: _this.remark
-							}
+							};
 							if(this.showInsure) {
 								data.INSURER = this.realName;
-								data.INSURER_IDCARD = this.realIdCard
+								data.INSURER_IDCARD = this.realIdCard;
 							}
 
 							if(this.curCoupon) {
-								data.ENTRY_CODE = this.curCoupon.ENTRY_CODE
+								data.ENTRY_CODE = this.curCoupon.ENTRY_CODE;
 							}
 
 							app.ajax(app.baseUrl + '/api/Order/CreateOrder', {
 								type: 'post', //HTTP请求类型
 								data: data,
-								success: function(result) {
-									plus.nativeUI.closeWaiting()
+								success: function success(result) {
+									plus.nativeUI.closeWaiting();
 
 									if(result.Success) {
-										plus.nativeUI.toast('订单创建成功')
-										mui.later(() => {
-											let payCode = result.Msg; //订单号
+										plus.nativeUI.toast('订单创建成功');
+										mui.later(function() {
+											var payCode = result.Msg; //订单号
 
-											let desturl = './toPay.html'
-											let destid = 'toPay'
-											let exa = {
+											var desturl = './toPay.html';
+											var destid = 'toPay';
+											var exa = {
 												payCode: payCode
-											}
-											let option = {
+											};
+											var option = {
 												showTitle: true
-											}
-											app.navigater(desturl, destid, exa, option)
-
-										}, 1000) /*成功跳转支付页面*/
-
+											};
+											app.navigater(desturl, destid, exa, option);
+										}, 1000); /*成功跳转支付页面*/
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
+						},
 
-						},
 						/*模态框显示控制*/
-						_modelToggle(t) {
+						_modelToggle: function _modelToggle(t) {
 							if(t) {
-								this.chooseType = t
+								this.chooseType = t;
 							}
-							this.modalShow = !this.modalShow
+							this.modalShow = !this.modalShow;
 						},
+
 						/*选择地址*/
-						_modelToggle2() {
-							this.addressShow = !this.addressShow
+						_modelToggle2: function _modelToggle2() {
+							this.addressShow = !this.addressShow;
 						},
+
 						/*选择服务时间*/
-						_chooseTime() {
+						_chooseTime: function _chooseTime() {
 							var self = plus.webview.currentWebview();
 							self.setStyle({
 								mask: 'rgba(0,0,0,.7)'
 							});
-							plus.nativeUI.showWaiting()
+							plus.nativeUI.showWaiting();
 							var w = plus.webview.create('./timePicker.html', 'timePicker', {
 								top: '200px',
 								bottom: '0'
@@ -608,78 +610,78 @@
 								account: this.product.ACCOUNT_CODE,
 								pId: 'productOrder'
 							});
-							mui.later(() => {
-								plus.nativeUI.closeWaiting()
-								w.show('slide-in-bottom', 300, function() {}, {})
-							}, 1000)
-
+							mui.later(function() {
+								plus.nativeUI.closeWaiting();
+								w.show('slide-in-bottom', 300, function() {}, {});
+							}, 1000);
 						},
+
 						/*回传接受预约时间*/
-						_orderTime(date) {
+						_orderTime: function _orderTime(date) {
 							if(date == "-") {
-								this.orderTime = ''
+								this.orderTime = '';
 							} else {
-								this.orderTime = app.dateFormate(date)
+								this.orderTime = app.dateFormate(date);
 							}
-
 						},
+
 						/*选择呢使用优惠券*/
-						_chooseCoupons(item) {
-							let limit = item.DISCOUNT_LIMIT;
-							let amount = item.DISCOUNT_AMOUNT;
+						_chooseCoupons: function _chooseCoupons(item) {
+							var limit = item.DISCOUNT_LIMIT;
+							var amount = item.DISCOUNT_AMOUNT;
 							/*没有达到门槛金额*/
 							if(this.totalAmount < limit) {
-								plus.nativeUI.alert('尚未达到最低使用金额，不能使用该优惠券', () => {})
+								plus.nativeUI.alert('尚未达到最低使用金额，不能使用该优惠券', function() {});
 								return;
 							}
 
 							this.curCoupon = item;
 							if(this.product.PROJECT_DISCOUNT <= amount) {
-								this.totalAmount = 0
+								this.totalAmount = 0;
 							} else {
 								this.totalAmount = this.product.PROJECT_DISCOUNT - amount;
 							}
-							this._modelToggle()
+							this._modelToggle();
 						},
+
 						/*选择地址*/
-						_chooseAddress(str) {
-							this.address = str
-							this._modelToggle()
+						_chooseAddress: function _chooseAddress(str) {
+							this.address = str;
+							this._modelToggle();
 						},
+
 						/*不使用优惠券*/
-						_noUse() {
+						_noUse: function _noUse() {
 							this.curCoupon = '';
 							this.totalAmount = this.product.PROJECT_DISCOUNT;
-							this._modelToggle()
+							this._modelToggle();
 						},
-						/*跳转地址管理*/
-						_address() {
-	
 
-							let desturl = '../address/address.html'
-							let destid = 'address'
-							let exa = {}
-							let option = {
+						/*跳转地址管理*/
+						_address: function _address() {
+
+							var desturl = '../address/address.html';
+							var destid = 'address';
+							var exa = {};
+							var option = {
 								showTitle: true,
 								autoShow: false
-							}
-							app.navigater(desturl, destid, exa, option)
+							};
+							app.navigater(desturl, destid, exa, option);
 
-							this._modelToggle()
+							this._modelToggle();
 						}
 					}
-				})
-
+				});
 			});
 
 			function hasTime(date) {
 				if(date == "-") {
-					APP._orderTime('-')
-
+					APP._orderTime('-');
 				} else if(date) {
 					/*如果有回传选择的日期*/
-					let time = new Date(date)
-					APP._orderTime(time)
+					var time = new Date(date);
+					APP._orderTime(time);
 				}
 
 				//				alert(date+time)
@@ -691,7 +693,7 @@
 			}
 
 			function refresh() {
-				APP._getData()
+				APP._getData();
 			}
 		</script>
 	</body>

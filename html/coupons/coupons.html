@@ -223,11 +223,13 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
-		
+			});
+			var APP;
+
 			mui.plusReady(function() {
 				var wv = plus.webview.currentWebview();
 				wv.setStyle({
@@ -239,7 +241,7 @@
 						}]
 					}
 				});
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -257,16 +259,16 @@
 						switchTxt: '查看失效优惠券',
 						more: '加载更多'
 					},
-					created: function() {
+					created: function created() {
 						//						app.initHeader();
 					},
-					mounted: function() {
+					mounted: function mounted() {
 
-						var _this = this
-						var scroll = this.$refs.scroll
-						this.scrollTop = 0 + 'px'
+						var _this = this;
+						var scroll = this.$refs.scroll;
+						this.scrollTop = 0 + 'px';
 						/*首次加载数据*/
-						this._getData()
+						this._getData();
 						this.$nextTick(function() {
 							//							初始化scrool
 							if(!_this.scroll) {
@@ -281,60 +283,54 @@
 									},
 									pullUpLoad: {
 										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
-									},
-								})
+									}
+								});
 							} else {
 								_this.scroll.refresh();
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
 								//								plus.nativeUI.showWaiting()
-								_this.index = 1
-								_this.couponsList = []
-								_this.more = '加载更多'
-								_this._getData((b) => {
+								_this.index = 1;
+								_this.couponsList = [];
+								_this.more = '加载更多';
+								_this._getData(function(b) {
 									//									plus.nativeUI.closeWaiting()
-									if(b) {
-
-									} else {
-										_this.scroll.finishPullUp()
-
+									if(b) {} else {
+										_this.scroll.finishPullUp();
 									}
-									_this.scroll.finishPullDown()
-									plus.nativeUI.closeWaiting()
-								})
-							})
+									_this.scroll.finishPullDown();
+									plus.nativeUI.closeWaiting();
+								});
+							});
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
-								_this._getData((b) => {
-									if(b) {
-
-									} else {
-										_this.scroll.finishPullUp()
-
+								_this._getData(function(b) {
+									if(b) {} else {
+										_this.scroll.finishPullUp();
 									}
-								})
-							})
-						})
+								});
+							});
+						});
 					},
 					filters: {
-						getStatus(k) {
+						getStatus: function getStatus(k) {
 							//							优惠券状态0-未启用，1-启用中,2-审核中
 							switch(k) {
 								case '0':
-									return '不可用'
+									return '不可用';
 									break;
 								case '1':
-									return '可用'
+									return '可用';
 									break;
 								case '2':
-									return '已使用'
+									return '已使用';
 									break;
 								case '3':
-									return '过期'
+									return '过期';
 									break;
 								case '4':
-									return '作废'
+									return '作废';
 									break;
 								default:
 									break;
@@ -343,13 +339,13 @@
 					},
 					methods: {
 						/*查看详情*/
-						_checkDetail(item) {
+						_checkDetail: function _checkDetail(item) {
 							if(item) {
-								this.detailPre = item
+								this.detailPre = item;
 								if(item.ENTRY_STATUS == '1') {
-									this.btn = '立即使用'
+									this.btn = '立即使用';
 								} else {
-									this.btn = '查看店铺'
+									this.btn = '查看店铺';
 								}
 							}
 
@@ -360,10 +356,11 @@
 								//								this.scroll.enable()
 							}
 						},
-						/*获取数据*/
-						_getData(callback) {
 
-							var _this = this
+						/*获取数据*/
+						_getData: function _getData(callback) {
+
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Discount/GetDiscountList', {
 								data: {
 									pageIndex: _this.index,
@@ -374,83 +371,82 @@
 									'Authorization': app.mark + plus.storage.getItem('token')
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 
-									mui.later(() => {
-										document.getElementById('loader').style.display = "none"
+									mui.later(function() {
+										document.getElementById('loader').style.display = "none";
 										if(result.Success) {
-											var l = _this.couponsList.length
+											var l = _this.couponsList.length;
 											if(l == result.Data.Total) {
-												_this.more = '没有数据了'
-												_this.scroll.refresh()
+												_this.more = '没有数据了';
+												_this.scroll.refresh();
 												if(callback) callback(true);
-												return
+												return;
 											}
-											_this.couponsList = _this.couponsList.concat(result.Data.ListInfo)
-											_this.index += 1
+											_this.couponsList = _this.couponsList.concat(result.Data.ListInfo);
+											_this.index += 1;
 											_this.scroll.refresh();
 											if(callback) callback(false);
-
 										} else {
 											/*验证失败*/
-											_this.loader = false
+											_this.loader = false;
 											_this.scroll.refresh();
 										}
-									}, 500)
+									}, 500);
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									app.catchErr(xhr, type, errorThrown)
+									app.catchErr(xhr, type, errorThrown);
 								}
 							});
 						},
+
 						/*跳转过期券*/
-						_toSwitch() {
+						_toSwitch: function _toSwitch() {
 							if(this.type == 1) {
-								this.type = 2
-								this.switchTxt = '查看可用优惠券'
+								this.type = 2;
+								this.switchTxt = '查看可用优惠券';
 							} else {
-								this.type = 1
-								this.switchTxt = '查看失效优惠券'
+								this.type = 1;
+								this.switchTxt = '查看失效优惠券';
 							}
 						},
+
 						/*去使用*/
-						_toUse(code) {
+						_toUse: function _toUse(code) {
 							this._checkDetail();
-							let desturl = '../technician/technician.html'
-							let destid = 'technician'
-							let exa = {
+							var desturl = '../technician/technician.html';
+							var destid = 'technician';
+							var exa = {
 								shopCode: code
-							}
-							let option = {
+							};
+							var option = {
 								createNew: true,
 								autoWaiting: false
-							}
-							app.navigater(desturl, destid, exa, option)
-
+							};
+							app.navigater(desturl, destid, exa, option);
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function refresh() {
-				APP._getData()
+				APP._getData();
 			}
 
 			function toRule() {
 
-				let desturl = '../rules.html'
-				let destid = 'rules'
-				let exa = {
+				var desturl = '../rules.html';
+				var destid = 'rules';
+				var exa = {
 					type: 2
-				}
-				let option = {
+				};
+				var option = {
 					showTitle: true,
 					autoWaiting: false,
 					createNew: true
-				}
-				app.navigater(desturl, destid, exa, option)
-
+				};
+				app.navigater(desturl, destid, exa, option);
 			}
 		</script>
 	</body>

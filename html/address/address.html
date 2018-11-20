@@ -56,23 +56,23 @@
 		</style>
 	</head>
 
-	<body>	
+	<body>
 		<!--等待页面-->
-<div class="loader" style="top:0;bottom:50px" id="loader">
-	<ul>
-		<li id='a'></li>
-		<li id='b'></li>
-		<li id='c'></li>
-		<li id='d'></li>
-		<li id='e'></li>
-		<li id='f'></li>
-		<li id='g'></li>
-		<li id='h'></li>
-		<li id='i'></li>
-	</ul>
-</div>
-		<div id="app">		
-			
+		<div class="loader" style="top:0;bottom:50px" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app">
+
 			<!--地址-->
 			<div class="cards scrollBox " :style="{top:scrollTop+ 'px'}" ref="scroll">
 				<div class="reset relative" style="min-height: 101%;padding: 10px 0;">
@@ -128,7 +128,7 @@
 						添加地址
 					</h3>
 			</div>
-			
+
 		</div>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/app.js"></script>
@@ -136,33 +136,35 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
-						loader:true,						
+						loader: true,
 						scrollTop: '',
 						scroll: '',
 						show: false,
 						addressList: '',
 						detailPre: {}
 					},
-					created: function() {
+					created: function created() {
 						//							alert(1)
-//						app.initHeader();
+						//						app.initHeader();
 					},
-					mounted: function() {
+					mounted: function mounted() {
 
-						var _this = this
-						var scroll = this.$refs.scroll
-						this.scrollTop = 0
+						var _this = this;
+						var scroll = this.$refs.scroll;
+						this.scrollTop = 0;
 						/*首次加载数据*/
-						this._getData()
+						this._getData();
 
 						this.$nextTick(function() {
 							//							初始化scrool
@@ -176,34 +178,33 @@
 										threshold: 50,
 										stop: 0
 									}
-								})
+								});
 							} else {
 								_this.scroll.refresh();
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
-//								plus.nativeUI.showWaiting()
-								_this._getData(() => {
-//									plus.nativeUI.closeWaiting();
+								//								plus.nativeUI.showWaiting()
+								_this._getData(function() {
+									//									plus.nativeUI.closeWaiting();
 									_this.scroll.refresh();
-									_this.scroll.finishPullDown()
-								})
-
-							})
-						})
+									_this.scroll.finishPullDown();
+								});
+							});
+						});
 					},
 					filters: {
-						getStatus(k) {
+						getStatus: function getStatus(k) {
 							//							优惠券状态0-未启用，1-启用中,2-审核中
 							switch(k) {
 								case '0':
-									return '未启用'
+									return '未启用';
 									break;
 								case '1':
-									return '启用中'
+									return '启用中';
 									break;
 								case '2':
-									return '审核中...'
+									return '审核中...';
 									break;
 								default:
 									break;
@@ -212,135 +213,136 @@
 					},
 					methods: {
 						/*添加新地址*/
-						_toAddNew() {
-							let desturl = './addAddress.html'
-							let destid = 'addAddress'
-							let exa = {}
-							let option = {
-								showTitle:true,
+						_toAddNew: function _toAddNew() {
+							var desturl = './addAddress.html';
+							var destid = 'addAddress';
+							var exa = {};
+							var option = {
+								showTitle: true,
 								autoShow: true
-							}
-							app.navigater(desturl, destid, exa, option)
-							
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						/*删除操作*/
-						_delect(code) {
-							var _this = this
+						_delect: function _delect(code) {
+							var _this = this;
 							//							alert(code)
-							plus.nativeUI.confirm('删除该地址？', (event) => {
+							plus.nativeUI.confirm('删除该地址？', function(event) {
 								if(event.index == 0) {
 									var data = {
-										ADDRESS_CODE: code,
-									}
-									//
-									plus.nativeUI.showWaiting('删除中...')
+										ADDRESS_CODE: code
+										//
+									};
+									plus.nativeUI.showWaiting('删除中...');
 									app.ajax(app.baseUrl + '/api/Address/DeleteAddress', {
 										data: data,
 										type: 'post', //HTTP请求类型
-										success: function(result) {
+										success: function success(result) {
 											if(result.Success) {
 												var msg = "删除成功";
 												if(plus.webview.getWebviewById('productOrder')) {
-													plus.webview.getWebviewById('productOrder').evalJS('refresh()')
+													plus.webview.getWebviewById('productOrder').evalJS('refresh()');
 												}
-												mui.later(() => {
-													plus.nativeUI.closeWaiting()
-													plus.nativeUI.toast(msg)
-													_this._getData()
-												}, 1000)
+												mui.later(function() {
+													plus.nativeUI.closeWaiting();
+													plus.nativeUI.toast(msg);
+													_this._getData();
+												}, 1000);
 												/*还原数据*/
 											} else {
-												plus.nativeUI.closeWaiting()
-												plus.nativeUI.toast(result.Msg)
-												console.log(result.Msg)
+												plus.nativeUI.closeWaiting();
+												plus.nativeUI.toast(result.Msg);
+												console.log(result.Msg);
 											}
-
 										},
-										error: function(xhr, type, errorThrown) {
+										error: function error(xhr, type, errorThrown) {
 											//异常处理；
 											console.log(type);
 										}
 									});
 								}
-							})
+							});
 						},
+
 						/*设为默认*/
-						_handle(code, status) {
-							if(status == '1') return
-							var _this = this
-							plus.nativeUI.showWaiting('设置中...')
+						_handle: function _handle(code, status) {
+							if(status == '1') return;
+							var _this = this;
+							plus.nativeUI.showWaiting('设置中...');
 							app.ajax(app.baseUrl + '/api/Address/SetDefaultAddress', {
 								// dataType:'json',//服务器返回json格式数据
 								data: {
 									ADDRESS_CODE: code
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
 										var msg = "设置成功";
-										mui.later(() => {
-											plus.nativeUI.closeWaiting()
-											plus.nativeUI.toast(msg)
-											_this._getData()
-										}, 1000)
+										mui.later(function() {
+											plus.nativeUI.closeWaiting();
+											plus.nativeUI.toast(msg);
+											_this._getData();
+										}, 1000);
 										/*还原数据*/
 									} else {
-										plus.nativeUI.closeWaiting()
-										plus.nativeUI.toast(result.Msg)
-										console.log(result.Msg)
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg);
+										console.log(result.Msg);
 									}
-
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 									console.log(type);
 								}
 							});
+						},
 
-						},
 						/*编辑*/
-						_edit(item) {
-						},
+						_edit: function _edit(item) {},
+
 						/*获取地址数据*/
-						_getData(callback) {
-							this.loader = true
-							var _this = this
+						_getData: function _getData(callback) {
+							this.loader = true;
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Address/GetListAddress', {
 								type: 'get', //HTTP请求类型
-								timeout : 5000,
-								headers : {
-										'Content-Type': 'application/x-www-form-urlencoded',
-										'Authorization': app.mark + plus.storage.getItem('token')
+								timeout: 5000,
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded',
+									'Authorization': app.mark + plus.storage.getItem('token')
 								},
-								success: function(result) {
-									mui.later(() => {
+								success: function success(result) {
+									mui.later(function() {
 										_this.loader = false;
-										document.getElementById('loader').style.display = 'none'
+										document.getElementById('loader').style.display = 'none';
 										if(result.Success) {
-											_this.addressList = result.Data.ListInfo											
+											_this.addressList = result.Data.ListInfo;
 										} else {
-											plus.nativeUI.toast(result.Msg)											
+											plus.nativeUI.toast(result.Msg);
 										}
-										if(callback) callback()
-									}, 500)									
+										if(callback) callback();
+									}, 500);
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									_this.loader = false;
 									app.catchErr(xhr, type, errorThrown);
 								}
 							});
 						}
 					}
-				})
-			})
-			function place(){
-				var s = plus.webview.getWebviewById('addAddress')
-				if(s){
-					s.evalJS('_initPosition()')
+				});
+			});
+
+			function place() {
+				var s = plus.webview.getWebviewById('addAddress');
+				if(s) {
+					s.evalJS('_initPosition()');
 				}
 			}
+
 			function refresh() {
-				APP._getData()
+				APP._getData();
 			}
 		</script>
 	</body>

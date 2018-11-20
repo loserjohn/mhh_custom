@@ -129,12 +129,14 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 
 				var self = plus.webview.currentWebview();
 				self.setStyle({
@@ -145,7 +147,7 @@
 							fontSize: '12px'
 						}]
 					}
-				})
+				});
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -159,33 +161,33 @@
 						addressList: [],
 						loader: true
 					},
-					created: function() {
+					created: function created() {
 						//							alert(1)
 						//						app.initHeader();
 					},
-					mounted: function() {
+					mounted: function mounted() {
 
-						var _this = this
-						var scroll = this.$refs.scroll
+						var _this = this;
+						var scroll = this.$refs.scroll;
 						this.scrollTop = 0 + 'px';
 
 						/*首次加载获取当前位置*/
-						var co = JSON.parse(plus.storage.getItem('pos'))
+						var co = JSON.parse(plus.storage.getItem('pos'));
 						if(co) {
-							_this.curPos = co.address
+							_this.curPos = co.address;
 						}
 
 						/*首次加载数据*/
-						this._getData(() => {})
+						this._getData(function() {});
 					},
 					methods: {
 						/*初始化位置*/
-						_initPos() {
+						_initPos: function _initPos() {
 							this.loading = true;
 							var _this = this;
-							plus.geolocation.getCurrentPosition((position) => {
-								var obj = position.address
-								var add = obj.province + obj.city + position.address.street
+							plus.geolocation.getCurrentPosition(function(position) {
+								var obj = position.address;
+								var add = obj.province + obj.city + position.address.street;
 
 								/*储存重新定位的地址*/
 								var co = {
@@ -194,115 +196,115 @@
 									latitude: position.coords.latitude,
 									/*纬度*/
 									address: obj.city + position.address.street
-								}
-								plus.storage.setItem('pos', JSON.stringify(co))
-								var s = plus.webview.getLaunchWebview()
-								s.evalJS('setPos("' + co.address + '")')
+								};
+								plus.storage.setItem('pos', JSON.stringify(co));
+								var s = plus.webview.getLaunchWebview();
+								s.evalJS('setPos("' + co.address + '")');
 								if(plus.webview.getWebviewById('productList')) {
-									plus.webview.getWebviewById('productList').evalJS('setPos("' + item.REMARK + '")')
+									plus.webview.getWebviewById('productList').evalJS('setPos("' + item.REMARK + '")');
 								}
-								mui.later(() => {
+								mui.later(function() {
 									_this.curPos = add;
-									_this.loading = false
-								}, 1000)
-
-							}, () => {
-								plus.nativeUI.toast('位置获取失败，请手动选择地址')
-								_this.loading = false
+									_this.loading = false;
+								}, 1000);
+							}, function() {
+								plus.nativeUI.toast('位置获取失败，请手动选择地址');
+								_this.loading = false;
 							}, {
 								enableHighAccuracy: true,
-								timeout: () => {
-									plus.nativeUI.toast('信号不佳，位置获取失败')
+								timeout: function timeout() {
+									plus.nativeUI.toast('信号不佳，位置获取失败');
 								}
 							});
 						},
-						_navigateTo(dstUrl, dstId, extras) {
+						_navigateTo: function _navigateTo(dstUrl, dstId, extras) {
 
-							let exa = extras
-							let option = {
+							var exa = extras;
+							var option = {
 								autoShow: false
-							}
-							app.navigater(dstUrl, dstId, exa, option)
+							};
+							app.navigater(dstUrl, dstId, exa, option);
 						},
-						/*跳转页面*/
-						_NWnavigateTo(dstUrl, dstId, extras) {
 
-							let exa = extras
-							let option = {
+						/*跳转页面*/
+						_NWnavigateTo: function _NWnavigateTo(dstUrl, dstId, extras) {
+
+							var exa = extras;
+							var option = {
 								showTitle: true,
 								autoShow: true
-							}
-							app.navigater(dstUrl, dstId, exa, option)
-
+							};
+							app.navigater(dstUrl, dstId, exa, option);
 						},
+
 						/*获取常用地址数据*/
-						_getData(callback) {
-							let i = plus.storage.getItem('isLogin');
+						_getData: function _getData(callback) {
+							var i = plus.storage.getItem('isLogin');
 							//							alert(i)
 							if(i != '1') {
 								if(callback) callback();
-								document.getElementById('loader').style.display = 'none'
-								return
+								document.getElementById('loader').style.display = 'none';
+								return;
 							}
-							this.isLogin = true
+							this.isLogin = true;
 							//							alert(2)
-							var _this = this
+							var _this = this;
 
 							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
 								type: 'get', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 
 									if(result.Success) {
-										_this.addressList = result.Data.ListInfo
-										mui.later(() => {
-											document.getElementById('loader').style.display = 'none'
+										_this.addressList = result.Data.ListInfo;
+										mui.later(function() {
+											document.getElementById('loader').style.display = 'none';
 											if(callback) callback();
-										}, 300)
+										}, 300);
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 						},
+
 						/*选用常用地址的经纬度来搜索*/
-						_setAddressPos(item) {
+						_setAddressPos: function _setAddressPos(item) {
 							if(!item) return;
 							//							console.log(JSON.stringify(item))
-							plus.nativeUI.toast('重新定位中')
+							plus.nativeUI.toast('重新定位中');
 							var co = {
 								longitude: item.LON,
 								/*经度*/
 								latitude: item.LAT,
 								/*纬度*/
 								address: item.REMARK
-							}
-							var s = plus.webview.getLaunchWebview()
+							};
+							var s = plus.webview.getLaunchWebview();
 							plus.storage.setItem('pos', JSON.stringify(co));
-							s.evalJS('setPos("' + item.REMARK + '")')
+							s.evalJS('setPos("' + item.REMARK + '")');
 
 							if(plus.webview.getWebviewById('productList')) {
-								plus.webview.getWebviewById('productList').evalJS('setPos("' + item.REMARK + '")')
+								plus.webview.getWebviewById('productList').evalJS('setPos("' + item.REMARK + '")');
 							}
 
-							mui.back()
+							mui.back();
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function refresh() {
-				APP._getData()
+				APP._getData();
 			}
 
 			function addNewAddress() {
 				if(i != '1') {
-					plus.nativeUI.toast('请先登录')
-					return
+					plus.nativeUI.toast('请先登录');
+					return;
 				}
 
-				APP._NWnavigateTo('./addAddress.html', 'addAddress')
+				APP._NWnavigateTo('./addAddress.html', 'addAddress');
 			}
 		</script>
 	</body>

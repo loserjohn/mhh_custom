@@ -215,9 +215,9 @@
 										<div class="cm_name cor_w">{{userMsg.MEMBER_NIKENAME}}</div>
 										<div class="level cor_y cm_name fs10">{{userMsg.POINTS_LEVEL_NAME?userMsg.POINTS_LEVEL_NAME+'会员':'未登陆'}}</div>
 									</div>
-									
+
 									<p style="width: 100%;">{{'小草值：'+userMsg.MEMBER_INTEGRAL}}</p>
-									<div class="cor_w t_r" @tap="_navigateTo('./html/scores.html','scores')">查看积分明细  <span class="mui-icon mui-icon-arrowright fs16"></span></div>
+									<div class="cor_w t_r" @tap="_navigateTo('./html/scores.html','scores')">分销积分 <span class="mui-icon mui-icon-arrowright fs16"></span></div>
 								</div>
 
 								<div v-else @tap="_toLoginPage()">
@@ -401,14 +401,15 @@
 		<script src="./js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
 			mui.init({
 				swipeBack: false
 			});
-			var APP
-			var mainPage
+			var APP;
+			var mainPage;
 			mui.plusReady(function() {
-				var self = plus.webview.currentWebview()
-				app.WXinit(CryptoJS)
+				var self = plus.webview.currentWebview();
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -437,71 +438,66 @@
 						blockData: []
 					},
 					filters: {
-						wan(value) {
-							let num = parseInt(value);
+						wan: function wan(value) {
+							var num = parseInt(value);
 							if(num >= 10000) {
-								let a = (num / 10000).toFixed(2)
-								return a
+								var a = (num / 10000).toFixed(2);
+								return a;
 							} else {
-								return num
+								return num;
 							}
-
 						}
 					},
-					created: function() {
+					created: function created() {
 						app.initHeader();
 						//						alert(plus.storage.getItem('isLogin'))
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						//						plus.storage.clear();
-						var _this = this
-						this.islogin = plus.storage.getItem('isLogin') == '1' ? true : false
+						var _this = this;
+						this.islogin = plus.storage.getItem('isLogin') == '1' ? true : false;
 
 						/*初始化主页面的高度*/
-						this.appHeight = plus.display.resolutionHeight
+						this.appHeight = plus.display.resolutionHeight;
 
 						/*初始化下拉scroll*/
-						this._initScroll()
-						this._initBlock() //初始化豆腐块
-
+						this._initScroll();
+						this._initBlock(); //初始化豆腐块
 					},
 					methods: {
-						_jump(str) {
-							app._jump(str)
+						_jump: function _jump(str) {
+							app._jump(str);
 						},
+
 						//						初始化豆腐块
-						_initBlock() {
-							var _this = this
+						_initBlock: function _initBlock() {
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Carousel/GetMinePannelList', {
 								type: 'get', //HTTP请求类型
 								timeout: 5000, //超时时间设置为10秒；
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
-
-									/*登陆成功*/
-									plus.nativeUI.closeWaiting()
+								success: function success(result) {
+									plus.nativeUI.closeWaiting();
 									if(result.Success) {
 										_this.blockData = result.Data.ListInfo;
-										_this.scroll.refresh()
-
+//										_this.scroll.refresh();
 									} else {
 										/*验证失败*/
 									}
 								},
-								error: function(xhr, type, errorThrown) {
-
-								}
-							})
+								error: function error(xhr, type, errorThrown) {}
+							});
 						},
+
 						/*初始化滑动模块*/
-						_initScroll() {
-							var _this = this
+						_initScroll: function _initScroll() {
+							var _this = this;
 							/*初始化下拉scroll*/
 							this.$nextTick(function() {
-								var scroll = this.$refs.scroll
-								var wrapper = this.$refs.wrapper
+								var scroll = this.$refs.scroll;
+								var wrapper = this.$refs.wrapper;
 
 								/*页面竖向下拉刷新*/
 								if(!_this.scroll) {
@@ -515,35 +511,33 @@
 											threshold: 40,
 											stop: 0
 										}
-									})
+									});
 								} else {
 									_this.scroll.refresh();
 								};
 								/*下拉刷新*/
 								_this.scroll.on('pullingDown', function(e) {
-									plus.nativeUI.showWaiting()
+									plus.nativeUI.showWaiting();
 									//									alert(1)
-									_this._initData(() => {
+									_this._initData(function() {
 
 										plus.nativeUI.closeWaiting();
 										//										_this.scroll.finishPullDown();
 										//										_this.scroll.refresh()
-
-									})
-								})
-								_this.scroll.on('scroll', (e) => {
-									let y = e.y;
+									});
+								});
+								_this.scroll.on('scroll', function(e) {
+									var y = e.y;
 									if(y > 0) {
 										_this.opacity = 0;
 										//										
 									} else if(y < -200) {
-										_this.opacity = 1
+										_this.opacity = 1;
 									} else {
-										let m = Math.abs(y) / 200
-										_this.opacity = m
+										var m = Math.abs(y) / 200;
+										_this.opacity = m;
 									}
-
-								})
+								});
 								/*推荐项目横向滑动*/
 								if(!_this.wrapper) {
 									//	初始化标题栏
@@ -553,23 +547,23 @@
 										bounceTime: 200,
 										scrollX: true,
 										scrollY: false
-									})
+									});
 								} else {
 									_this.wrapper.refresh();
 								};
-
-							})
+							});
 						},
+
 						/*初始化mine页面数据*/
-						_initData(callback) {
-							var _this = this
-							let isLogin = plus.storage.getItem('isLogin');
+						_initData: function _initData(callback) {
+							var _this = this;
+							var isLogin = plus.storage.getItem('isLogin');
 
 							if(isLogin != '1') {
 
-								if(callback) callback()
+								if(callback) callback();
 
-								return
+								return;
 							}; //没有登陆状态则不获取数据
 							this.islogin = true;
 
@@ -577,37 +571,36 @@
 							/*获取用户总账户余额*/
 							app.ajax(app.baseUrl + '/api/MemberInfo/GetMemberInfo', {
 								type: 'get', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										_this.userMsg = result.Data
-										_this.account = result.Data.MEMBER_ACOUNT
-										_this.store = result.Data.BUYCARD_COUNT
-										_this.coupon = result.Data.DISCOUNTENTRY_COUNT
-										_this.num = result.Data.MEMBER_MOBILE
-										
-//										alert( result.Data.MEMBER_HEAD)
-										
-										plus.storage.setItem('userNickName', result.Data.MEMBER_NIKENAME)
-										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD?result.Data.MEMBER_HEAD:'./images/default_avatar.jpg')
-										plus.storage.setItem('myId', result.Data.MEMBER_MOBILE)
-										plus.storage.setItem('realIdCard', result.Data.CARD_NUM)
-										plus.storage.setItem('realName', result.Data.MEMBER_REALNAME)
+										_this.userMsg = result.Data;
+										_this.account = result.Data.MEMBER_ACOUNT;
+										_this.store = result.Data.BUYCARD_COUNT;
+										_this.coupon = result.Data.DISCOUNTENTRY_COUNT;
+										_this.num = result.Data.MEMBER_MOBILE;
+
+										//										alert( result.Data.MEMBER_HEAD)
+
+										plus.storage.setItem('userNickName', result.Data.MEMBER_NIKENAME);
+										plus.storage.setItem('pic_head', result.Data.MEMBER_HEAD ? result.Data.MEMBER_HEAD : './images/default_avatar.jpg');
+										plus.storage.setItem('myId', result.Data.MEMBER_MOBILE);
+										plus.storage.setItem('realIdCard', result.Data.CARD_NUM);
+										plus.storage.setItem('realName', result.Data.MEMBER_REALNAME);
 
 										//										记录认证状态
-										plus.storage.setItem('realStatus', result.Data.MEMBER_STATUS)
+										plus.storage.setItem('realStatus', result.Data.MEMBER_STATUS);
 
-										if(callback) callback()
+										if(callback) callback();
 										_this.scroll.finishPullDown();
 										_this.$nextTick(function() {
-											_this.scroll.refresh()
-										})
+											_this.scroll.refresh();
+										});
 										//										mui.later(function(){
 										//											_this.scroll.refresh()
 										//										},500)
-
 									} else {
 										plus.nativeUI.closeWaiting();
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
@@ -619,117 +612,110 @@
 									pageSize: 8,
 									ORDER_TYPE: 1
 								},
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										_this.hisList = result.Data.ListInfo
-
+										_this.hisList = result.Data.ListInfo;
 									} else {
 										plus.nativeUI.closeWaiting();
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
-
 						},
-
-						_toChat() {
-//							alert(0)
-							let isLogin = plus.storage.getItem('isLogin');
+						_toChat: function _toChat() {
+//														alert(0)
+							var isLogin = plus.storage.getItem('isLogin');
 							this.hasNew = false;
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
-								let desturl = './html/login.html'
-								let destid = 'login'
-								let exa = {}
-								let option = {
+								var desturl = './html/login.html';
+								var destid = 'login';
+								var exa = {};
+								var option = {
 									showTitle: true,
 									autoShow: false
-								}
-								app.navigater(desturl, destid, exa, option)
-								return
+								};
+								app.navigater(desturl, destid, exa, option);
+								return;
 							}
-							mainPage = plus.webview.getWebviewById('information')
-//							alert(1)
+							mainPage = plus.webview.getWebviewById('information');
+							//							alert(1)
 							if(mainPage) {
-								mainPage.show('pop-in', 300, function() {}, {})
+								mainPage.show('pop-in', 300, function() {}, {});
 							}
+						},
+						_toLoginPage: function _toLoginPage() {
+							var desturl = './html/login.html';
+							var destid = 'login';
+							var exa = {};
+							var option = {
+								showTitle: true,
+								autoShow: false
+							};
+							app.navigater(desturl, destid, exa, option);
+						},
 
-						},
-						_toLoginPage() {
-							let desturl = './html/login.html'
-								let destid = 'login'
-								let exa = {}
-								let option = {
-									showTitle: true,
-									autoShow: false
-								}
-								app.navigater(desturl, destid, exa, option)
-							
-					
-						},
 						/*跳转页面*/
-						_navigateTo(desturl, destid, extras) {
-							let isLogin = plus.storage.getItem('isLogin');
+						_navigateTo: function _navigateTo(desturl, destid, extras) {
+							var isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
-								this._toLoginPage()
-								return
+								this._toLoginPage();
+								return;
 							};
 
-								let exa = extras
-								let option = {
-									showTitle: true
-								}
-								app.navigater(desturl, destid, exa, option)
+							var exa = extras;
+							var option = {
+								showTitle: true
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
-						_toDetail(dstUrl, dstId, extras) {
-								let exa = extras
-								let option = {
-//									autoShow: false
-								}
-								app.navigater(dstUrl, dstId, exa, option)			
+						_toDetail: function _toDetail(dstUrl, dstId, extras) {
+							var exa = extras;
+							var option = {
+								//									autoShow: false
+							};
+							app.navigater(dstUrl, dstId, exa, option);
 						},
-						_initUser() {
-							let isLogin = plus.storage.getItem('isLogin');
+						_initUser: function _initUser() {
+							var isLogin = plus.storage.getItem('isLogin');
 							if(isLogin == '1') {
 								/*登陆状态*/
 								this.islogin = true;
-
 							} else {
 								this.islogin = false;
-								this.account = 0
+								this.account = 0;
 								/*账户余额*/
-								this.store = 0
+								this.store = 0;
 								/*商铺平台*/
-								this.coupon = 0
-								
-								this.hisList = []
+								this.coupon = 0;
+
+								this.hisList = [];
 							}
 
-							this._initData()
+							this._initData();
 						}
 					}
-				})
-
+				});
 			});
 			/*获取用户身份之后刷新页面*/
 			function refresh(type) {
 				//				if(mainPage){mainPage.evalJS('getList()')}
 				APP._initUser();
-//				alert(type)
-//				alert(plus.storage.getItem('isLogin'))
-				if(!type && plus.storage.getItem('isLogin') == '1') {
+				//				alert(type)
+				//				alert(plus.storage.getItem('isLogin'))
+				if(type && plus.storage.getItem('isLogin') == '1') {
 					//					若是登陆,就刷新融云链接
-					initIM()
+					initIM();
 				}
 			}
 			//			重新链接im
 			function initIM() {
-
-				mainPage = plus.webview.getWebviewById('information')
+//alert(666)
+				mainPage = plus.webview.getWebviewById('information');
 
 				if(!mainPage) {
-					//					alert(666)
+										
 					mainPage = mui.preload({
 						"id": 'information',
 						"url": './html/information/information.html',
@@ -742,34 +728,31 @@
 							}
 						}
 					});
-
-					
 				} else {
 					//					alert(111)
-					mainPage.evalJS('connectIM()')
+					mainPage.evalJS('connectIM()');
 				}
-
 			}
 
 			function autoLogin() {
 				/*执行自动登陆状态判断*/
-				app.autoLogin((s) => {
+				app.autoLogin(function(s) {
 
 					if(s) {
 						plus.webview.getLaunchWebview().evalJS('closeVersion()');
-						APP._initData()
+						APP._initData();
 					} else {
-						plus.webview.getLaunchWebview().evalJS('closeVersion()')
+						plus.webview.getLaunchWebview().evalJS('closeVersion()');
 					}
-				})
+				});
 			}
 
 			function hasNew() {
-				APP.hasNew = true
+				APP.hasNew = true;
 			}
 
 			function noNew() {
-				APP.hasNew = false
+				APP.hasNew = false;
 			}
 		</script>
 	</body>

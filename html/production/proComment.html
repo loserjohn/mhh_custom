@@ -265,11 +265,13 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				var APP = new Vue({
 					el: '#app',
 					data: {
@@ -279,63 +281,61 @@
 						currtab: 0,
 						note: '加载更多',
 						commentList: [{ //非常非常嘿皮
-								index: 1,
-								infoList: [],
-								norest: false
-							},
-							{ //很嘿皮
-								index: 1,
-								infoList: [],
-								norest: false
-							},
-							{ //嘿皮
-								index: 1,
-								infoList: [],
-								norest: false
-							},
-							{ //不嘿皮
-								index: 1,
-								infoList: [],
-								norest: false
-							}
-						],
+							index: 1,
+							infoList: [],
+							norest: false
+						}, { //很嘿皮
+							index: 1,
+							infoList: [],
+							norest: false
+						}, { //嘿皮
+							index: 1,
+							infoList: [],
+							norest: false
+						}, { //不嘿皮
+							index: 1,
+							infoList: [],
+							norest: false
+						}],
 						proCode: ''
 					},
-					created: function() {
+					created: function created() {
 						app.initHeader();
 						//							console.log( app.mark + plus.storage.getItem('token'))
 					},
 					filters: {
-						commentTxt(value) {
+						commentTxt: function commentTxt(value) {
 							switch(value) {
 								case '1':
-									return '非常非常嘿皮'
+									return '非常非常嘿皮';
 									break;
 								case '2':
-									return '很嘿皮'
+									return '很嘿皮';
 									break;
 								case '3':
-									return '嘿皮'
+									return '嘿皮';
 									break;
 								case '4':
-									return '不嘿皮'
+									return '不嘿皮';
 									break;
 								default:
 									break;
 							}
 						}
 					},
-					mounted: function() {
+					mounted: function mounted() {
+						var _this2 = this;
+
 						//							console.log(app.mark + plus.storage.getItem('token'))
 						var _this = this;
 
-						var scroll = this.$refs.scroll
-						var wraper = this.$refs.wraper
+						var scroll = this.$refs.scroll;
+						var wraper = this.$refs.wraper;
 						//							初始化scroll的屏幕位置
 						this.tabContenTop = document.getElementById('header').offsetHeight + 40 + 'px';
 
 						var self = plus.webview.currentWebview();
-						this.proCode = self.proCode
+						this.proCode = self.proCode;
 						//						alert(self.proCode)
 						/*初始化横向scroll*/
 						this.$nextTick(function() {
@@ -348,7 +348,7 @@
 									bounceTime: 200,
 									scrollX: true,
 									scrollY: false
-								})
+								});
 							} else {
 								_this.wraper.refresh();
 							};
@@ -366,78 +366,73 @@
 										threshold: 50,
 										stop: 0
 									}
-								})
+								});
 							} else {
 								_this.scroll.refresh();
 							};
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
-								_this._getData((b) => {
-									if(b) {
-
-									} else {
-										_this.scroll.finishPullUp()
-
+								_this._getData(function(b) {
+									if(b) {} else {
+										_this.scroll.finishPullUp();
 									}
-								})
-							})
+								});
+							});
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
-								_this._refreshData()
-							})
-						})
+								_this._refreshData();
+							});
+						});
 
-						this._getData((b) => {
-							plus.nativeUI.closeWaiting()
+						this._getData(function(b) {
+							plus.nativeUI.closeWaiting();
 							mui.currentWebview.show('pop-in', 300, function() {}, {});
-							if(b) {
-
-							} else {
-								this.scroll.finishPullUp()
-
+							if(b) {} else {
+								_this2.scroll.finishPullUp();
 							}
-						})
-
+						});
 					},
 					methods: {
 						//							tab切换
-						_changeTab: function(key) {
+						_changeTab: function _changeTab(key) {
+							var _this3 = this;
+
 							//								alert(key)
-							this.currtab = parseInt(key)
-							this.scroll.refresh()
+							this.currtab = parseInt(key);
+							this.scroll.refresh();
 							if(this.commentList[this.currtab].index == 1) {
-								this._getData((b) => {
+								this._getData(function(b) {
 									if(b) {
 										//											this.note = "没有数据了"
 									} else {
-										this.scroll.finishPullUp()
+										_this3.scroll.finishPullUp();
 										//											this.note = "加载更多"
 									}
-								})
+								});
 							} else {
 								if(!this.commentList[this.currtab].norest) {
 									//										该分类还有数据
-									this.scroll.finishPullUp()
+									this.scroll.finishPullUp();
 									this.scroll.refresh();
 								}
 								this.scroll.refresh();
-								return
+								return;
 							}
 						},
 						/*获取数据*/
-						_getData(callback) {
+						_getData: function _getData(callback) {
 							var tabType = this.currtab;
 
-							var proType = parseInt(tabType) + 1
+							var proType = parseInt(tabType) + 1;
 							var index = this.commentList[tabType].index;
-							var _this = this
+							var _this = this;
 							var data = {
 								pageIndex: index,
 								pageSize: 5,
 								PROJECT_CODE: _this.proCode,
 								REVIEW_TYPE: proType
-							}
-							//							console.log(JSON.stringify(data))
+								//							console.log(JSON.stringify(data))
+							};
 							mui.ajax(app.baseUrl + '/api/OrderReview/GetReviewList', {
 								data: data,
 								type: 'get', //HTTP请求类型
@@ -445,9 +440,9 @@
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-		
+
 										var l = _this.commentList[tabType].infoList.length;
 
 										_this.commentList[tabType].infoList = _this.commentList[tabType].infoList.concat(result.Data.ListInfo);
@@ -457,67 +452,59 @@
 											if(callback) callback(true);
 											return;
 										}
-										_this.commentList[tabType].index += 1
-										mui.later(() => {
+										_this.commentList[tabType].index += 1;
+										mui.later(function() {
 											_this.scroll.refresh();
 											if(callback) callback(false);
-										}, 300)
-
+										}, 300);
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.toast(result.Msg);
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									app.catchErr(type)
+									app.catchErr(type);
 								}
 							});
 						},
+
 						/*刷新*/
-						_refreshData() {
-							var _this = this
-							plus.nativeUI.showWaiting()
+						_refreshData: function _refreshData() {
+							var _this = this;
+							plus.nativeUI.showWaiting();
 							this.commentList = [{ //非常非常嘿皮
-									index: 1,
-									infoList: [],
-									norest: false
-								},
-								{ //很嘿皮
-									index: 1,
-									infoList: [],
-									norest: false
-								},
-								{ //嘿皮
-									index: 1,
-									infoList: [],
-									norest: false
-								},
-								{ //不嘿皮
-									index: 1,
-									infoList: [],
-									norest: false
+								index: 1,
+								infoList: [],
+								norest: false
+							}, { //很嘿皮
+								index: 1,
+								infoList: [],
+								norest: false
+							}, { //嘿皮
+								index: 1,
+								infoList: [],
+								norest: false
+							}, { //不嘿皮
+								index: 1,
+								infoList: [],
+								norest: false
+							}];
+							this._getData(function(b) {
+								if(b) {} else {
+									_this.scroll.finishPullUp();
 								}
-							]
-							this._getData((b) => {
-								if(b) {
-
-								} else {
-									_this.scroll.finishPullUp()
-
-								}
-								_this.scroll.finishPullDown()
-								plus.nativeUI.closeWaiting()
-							})
+								_this.scroll.finishPullDown();
+								plus.nativeUI.closeWaiting();
+							});
 						},
+
 						/*回到顶部*/
-						_backTop() {
-							this.scroll.scrollTo(0, 0, 300)
+						_backTop: function _backTop() {
+							this.scroll.scrollTo(0, 0, 300);
 						}
 					}
-				})
-
+				});
 			});
 		</script>
 	</body>

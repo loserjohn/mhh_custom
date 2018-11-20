@@ -108,13 +108,7 @@
 						</div>
 						<i class="iconfont icon-xiayibu "></i>
 					</li>
-					<!--<li class="mui-table-view-cell flex" @tap="_realCheck">
-						<div>实名认证</div>
-						<div class="f1 t_r">
-							  
-						</div>
-						<i class="iconfont icon-xiayibu "></i>
-					</li>-->
+					
 					<li class="mui-table-view-cell flex" @tap="toRule">
 						<!--<i class="iconfont icon-geren  mui-pull-left cor_y"></i>-->
 						<div>帮助中心</div>
@@ -122,6 +116,13 @@
 
 						</div>
 						<i class="iconfont icon-xiayibu "></i>
+					</li>
+					<li class="mui-table-view-cell flex" @tap="_realCheck">
+						<div>当前版本</div>
+						<div class="f1 t_r">
+							  V 1.1.0
+						</div>
+						<!--<i class="iconfont icon-xiayibu "></i>-->
 					</li>
 
 				</ul>
@@ -143,12 +144,14 @@
 		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -157,35 +160,35 @@
 						agent: '',
 						phone: '',
 						realname: '',
-						cardNum: ''
+						cardNum: '',
+						version:''
 					},
-					created: function() {
+					created: function created() {
 						var self = plus.webview.currentWebview();
 						this.avatar = self.menber.MEMBER_HEAD;
 						this.nickname = self.menber.MEMBER_NIKENAME;
-						//						this.agent = self.menber.MEMBER_SEX;
+						
+						
 						this.phone = self.menber.USERNAME;
 						this.realname = self.menber.MEMBER_REALNAME;
 						this.cardNum = self.menber.CARD_NUM;
-
+						
+						this.version = plus.runtime.version
+//						console.log(JSON.stringify(plus.runtime))
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						//						alert('set'+plus.storage.getItem('isLogin'))
-						var _this = this
-						plus.nativeUI.closeWaiting()
-
+						var _this = this;
+						plus.nativeUI.closeWaiting();
 					},
-					filters: {
-
-					},
+					filters: {},
 					methods: {
 						//					    实名认证
-						_realCheck() {
+						_realCheck: function _realCheck() {},
 
-						},
 						//						修改电话号码
-						_updatedNum() {
-							var _this = this
+						_updatedNum: function _updatedNum() {
+							var _this = this;
 							mui.openWindow({
 								url: './updatedNum.html',
 								id: 'updatedNum',
@@ -220,14 +223,15 @@
 								},
 								waiting: {
 									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
+									title: '正在加载...' //等待对话框上显示的提示内容
 								}
-							})
+							});
 						},
+
 						//						上传头像
-						_uploadPic() {
-							Clip.getIMG('选择头像', (src) => {
-								console.log(src)
+						_uploadPic: function _uploadPic() {
+							Clip.getIMG('选择头像', function(src) {
+//								console.log(src);
 								mui.openWindow({
 									url: './imgClick.html',
 									id: 'imgClick',
@@ -249,82 +253,78 @@
 									},
 									waiting: {
 										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
+										title: '正在加载...' //等待对话框上显示的提示内容
 									}
-								})
-							})
+								});
+							});
 						},
+
 						//						选择了头像
-						_chooseAvatar(src) {
-							var _this = this
+						_chooseAvatar: function _chooseAvatar(src) {
+							var _this = this;
 							if(!src) return;
 							this._upload({
 								MEMBER_HEAD: src
-							}, (res) => {
-								_this.avatar = src
-							})
+							}, function(res) {
+								_this.avatar = src;
+							});
 						},
+
 						//						修改认证信息
-						_updateMsg(type) {
-							type = parseInt(type)
+						_updateMsg: function _updateMsg(type) {
+							type = parseInt(type);
 							switch(type) {
 								case 1:
 									this._upload({
 										MEMBER_NIKENAME: this.nickname
-									}, (res) => {
-
-									})
+									}, function(res) {});
 									break;
 								case 2:
 									this._upload({
 										MEMBER_REALNAME: this.realname
-									}, (res) => {
-
-									})
+									}, function(res) {});
 									break;
 								case 3:
 									this._upload({
 										CARD_NUM: this.cardNum
-									}, (res) => {
-
-									})
+									}, function(res) {});
 									break;
 								default:
 									break;
 							}
 						},
+
 						//						修改资料
-						_upload(option, callback) {
+						_upload: function _upload(option, callback) {
 							if(!option) return;
 							if(option.MEMBER_NIKENAME) {
 								plus.storage.setItem('userNickName', option.MEMBER_NIKENAME);
 							}
 							//							console.log(JSON.stringify(option))
-							plus.nativeUI.showWaiting()
+							plus.nativeUI.showWaiting();
 							app.ajax(app.baseUrl + '/api/MemberInfo/UpdateMemberInfo', {
 								data: option,
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
 										//										mui.later(() => {
-										plus.nativeUI.closeWaiting()
+										plus.nativeUI.closeWaiting();
 										if(callback) callback();
-										plus.webview.getWebviewById('mine').evalJS('refresh()')
+										plus.webview.getWebviewById('mine').evalJS('refresh()');
 										//										}, 1000)
-
 									} else {
-										plus.nativeUI.closeWaiting()
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg);
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									console.log(type);
 								}
 							});
 						},
+
 						/*退出登录*/
-						_loginOut() {
+						_loginOut: function _loginOut() {
 							plus.nativeUI.confirm("退出当前用户？", function(e) {
 								if(e.index == 0) {
 									//										alert(1)
@@ -332,20 +332,19 @@
 									plus.nativeUI.toast('退出登录');
 									plus.storage.setItem('isLogin', '0');
 
-									plus.webview.getWebviewById('orders').evalJS('refresh()')
-									plus.webview.getWebviewById('mine').evalJS('refresh()')
-									plus.webview.getWebviewById('mine').evalJS('noNew()')
+									plus.webview.getWebviewById('orders').evalJS('refresh()');
+									plus.webview.getWebviewById('mine').evalJS('refresh()');
+									plus.webview.getWebviewById('mine').evalJS('noNew()');
 
 									if(plus.webview.getWebviewById('information')) {
-										plus.webview.getWebviewById('information').close()
+										plus.webview.getWebviewById('information').close();
 									}
 
-									mui.back()
+									mui.back();
 								}
-
 							});
 						},
-						toRule() {
+						toRule: function toRule() {
 							mui.openWindow({
 								url: './rules.html',
 								id: 'rules',
@@ -381,17 +380,17 @@
 								},
 								waiting: {
 									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
+									title: '正在加载...' //等待对话框上显示的提示内容
 								}
-							})
+							});
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function choosePic(src) {
 				//				alert(111)
-				APP._chooseAvatar(src)
+				APP._chooseAvatar(src);
 			}
 		</script>
 	</body>

@@ -35,19 +35,19 @@
 
 	<body>
 		<!--等待页面-->
-			<div class="loader" style="top:44px" id="loader">
-				<ul>
-					<li id='a'></li>
-					<li id='b'></li>
-					<li id='c'></li>
-					<li id='d'></li>
-					<li id='e'></li>
-					<li id='f'></li>
-					<li id='g'></li>
-					<li id='h'></li>
-					<li id='i'></li>
-				</ul>
-			</div>
+		<div class="loader" style="top:44px" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
 		<div id="app">
 
 			<div id="content" class="cm_tabBars">
@@ -58,7 +58,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 			<!--地址-->
 			<div class="cards scrollBox " :style="{top:scrollTop+ 'px',bottom:0}" ref="scroll">
 				<div class="reset relative" style="min-height: 101%;">
@@ -105,7 +105,7 @@
 										<div class="f1 cm_txt">
 											<h4 class="">{{item.PROJECT_NAME}}</h4>
 											<div class="cm_technician flex">
-												<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'"  @error="_default" class="avatar" />
+												<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" class="avatar" />
 												<div class="f1">
 													<p class="lh18">{{item.SHOP_NAME}}</p>
 													<p class="flex">嘿皮值:
@@ -173,12 +173,14 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				//				app.initHeader();
 				APP = new Vue({
 					el: '#app',
@@ -204,19 +206,19 @@
 
 						more: '加载更多'
 					},
-					created: function() {
+					created: function created() {
 						//							alert(1)
 
 					},
-					mounted: function() {
+					mounted: function mounted() {
 
-						var _this = this
-						var scroll = this.$refs.scroll
-						this.scrollTop = 40
+						var _this = this;
+						var scroll = this.$refs.scroll;
+						this.scrollTop = 40;
 
 						var self = plus.webview.currentWebview();
 						if(self.type) {
-							this.type = self.type
+							this.type = self.type;
 						}
 
 						this.$nextTick(function() {
@@ -233,74 +235,67 @@
 									},
 									pullUpLoad: {
 										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
-									},
-								})
+									}
+								});
 							} else {
 								_this.scroll.refresh();
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
 								plus.nativeUI.showWaiting();
-								let t = _this.type
+								var t = _this.type;
 								switch(t) {
 									case 1:
 										/*项目*/
 										_this.index1 = 1;
 										_this.proList = [];
-										_this.norest1 = false
+										_this.norest1 = false;
 										break;
 									case 2:
 										/*手艺人*/
 										_this.index2 = 1;
 										_this.matList = [];
-										_this.norest2 = false
+										_this.norest2 = false;
 										break;
 									default:
 										break;
 								}
-								_this.more = '加载更多'
-								_this._getData((b) => {
-									if(b) {
-
-									} else {
-										_this.scroll.finishPullUp()
-
+								_this.more = '加载更多';
+								_this._getData(function(b) {
+									if(b) {} else {
+										_this.scroll.finishPullUp();
 									}
-									_this.scroll.finishPullDown()
-									plus.nativeUI.closeWaiting()
-								})
-
-							})
+									_this.scroll.finishPullDown();
+									plus.nativeUI.closeWaiting();
+								});
+							});
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
-								_this._getData((b) => {
-									if(b) {
-
-									} else {
-										_this.scroll.finishPullUp()
-
+								_this._getData(function(b) {
+									if(b) {} else {
+										_this.scroll.finishPullUp();
 									}
-								})
-							})
-						})
+								});
+							});
+						});
 						/*首次加载数据*/
-						this._getData(() => {
+						this._getData(function() {
 							//							plus.nativeUI.closeWaiting()
 							//							mui.currentWebview.show('pop-in', 300, function() {}, {});
-						})
+						});
 					},
 					filters: {
-						getStatus(k) {
+						getStatus: function getStatus(k) {
 							//							优惠券状态0-未启用，1-启用中,2-审核中
 							switch(k) {
 								case '0':
-									return '未启用'
+									return '未启用';
 									break;
 								case '1':
-									return '启用中'
+									return '启用中';
 									break;
 								case '2':
-									return '审核中...'
+									return '审核中...';
 									break;
 								default:
 									break;
@@ -309,74 +304,77 @@
 					},
 					methods: {
 						//						默认头像
-						_default(e){
+						_default: function _default(e) {
 							var dom = e.target;
-//							console.log(dom)
-							dom.src="../../images/default_avatar.jpg"
+							//							console.log(dom)
+							dom.src = "../../images/default_avatar.jpg";
 						},
-						_level(n) {
+						_level: function _level(n) {
 							//							alert(parseInt(n))
 							if(!n) {
-								return 1
+								return 1;
 							} else {
-								return parseInt(n)
+								return parseInt(n);
 							}
-
 						},
+
 						/*切换*/
-						_switch(t) {
-							this.type = t
+						_switch: function _switch(t) {
+							var _this2 = this;
+
+							this.type = t;
 							//							alert(t)
 							switch(t) {
 								case 1:
 									/*项目*/
 									if(this.index1 == 1) {
-										this._getData((b) => {
+										this._getData(function(b) {
 											if(b) {
 												//											this.note = "没有数据了"
 											} else {
-												this.scroll.finishPullUp()
+												_this2.scroll.finishPullUp();
 												//											this.note = "加载更多"
 											}
-										})
+										});
 									}
 									break;
 								case 2:
 									/*手艺人*/
 									if(this.index2 == 1) {
-										this._getData((b) => {
+										this._getData(function(b) {
 											if(b) {
 												//											this.note = "没有数据了"
 											} else {
-												this.scroll.finishPullUp()
+												_this2.scroll.finishPullUp();
 												//											this.note = "加载更多"
 											}
-										})
+										});
 									}
 									break;
 								default:
 									break;
 							}
 						},
+
 						/*取消搜藏*/
-						_delect(code) {
-							var _this = this
-							let t = this.type
-							let data;
+						_delect: function _delect(code) {
+							var _this = this;
+							var t = this.type;
+							var data = void 0;
 							switch(t) {
 								case 1:
 									/*项目*/
-									url = '/api/Project/RevokeLoveProject'
+									url = '/api/Project/RevokeLoveProject';
 									data = {
 										PROJECT_CODE: code
-									}
+									};
 									break;
 								case 2:
 									/*手艺人*/
-									url = '/api/Shop/DisAttention'
+									url = '/api/Shop/DisAttention';
 									data = {
 										SHOP_CODE: code
-									}
+									};
 									break;
 								default:
 									break;
@@ -384,79 +382,78 @@
 							app.ajax(app.baseUrl + url, {
 								data: data,
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										plus.nativeUI.toast('取消成功')
+										plus.nativeUI.toast('取消成功');
 										plus.nativeUI.showWaiting();
 										switch(t) {
 											case 1:
 												/*项目*/
 												_this.index1 = 1;
 												_this.proList = [];
-												_this.norest1 = false
+												_this.norest1 = false;
 												break;
 											case 2:
 												/*手艺人*/
 												_this.index2 = 1;
 												_this.matList = [];
-												_this.norest2 = false
+												_this.norest2 = false;
 												break;
 											default:
 												break;
 										}
-										_this.more = '加载更多'
-										_this._getData(() => {
+										_this.more = '加载更多';
+										_this._getData(function() {
 											_this.scroll.finishPullDown();
-											_this.scroll.finishPullUp()
-											mui.later(() => {
+											_this.scroll.finishPullUp();
+											mui.later(function() {
 												plus.nativeUI.closeWaiting();
-											}, 1000)
-										})
-
+											}, 1000);
+										});
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
-
 						},
+
 						/*查看详情*/
-						_preDetail(item) {
+						_preDetail: function _preDetail(item) {
 							if(item) {
-								this.detailPre = item
+								this.detailPre = item;
 							}
 							this.show = !this.show;
 						},
+
 						/*获取收藏数据*/
-						_getData(callback) {
-//							this.loader = true
-							var _this = this
-							var url = ''
+						_getData: function _getData(callback) {
+							//							this.loader = true
+							var _this = this;
+							var url = '';
 							var index;
-							let t = this.type
-							let ajaxWay;
+							var t = this.type;
+							var ajaxWay = void 0;
 							switch(t) {
 								case 1:
 									/*项目*/
-									url = '/api/Project/GetLoveProjects'
-									index = this.index1
-									ajaxWay = 'get'
+									url = '/api/Project/GetLoveProjects';
+									index = this.index1;
+									ajaxWay = 'get';
 									break;
 								case 2:
 									/*手艺人*/
-									url = '/api/Shop/GetAttentionShopList'
-									index = this.index2
-									ajaxWay = 'post'
+									url = '/api/Shop/GetAttentionShopList';
+									index = this.index2;
+									ajaxWay = 'post';
 									break;
 								default:
 									break;
 							}
-							let data = {
+							var data = {
 								pageIndex: index,
 								pageSize: 8
-							}
+							};
 							mui.ajax(app.baseUrl + url, {
 								data: data,
 								type: ajaxWay, //HTTP请求类型
@@ -464,26 +461,26 @@
 									'Content-Type': 'application/x-www-form-urlencoded',
 									'Authorization': app.mark + plus.storage.getItem('token')
 								},
-								success: function(result) {
-									
-									mui.later(() => {
-										_this.loader = false
-										document.getElementById('loader').style.display = 'none'
+								success: function success(result) {
+
+									mui.later(function() {
+										_this.loader = false;
+										document.getElementById('loader').style.display = 'none';
 										if(result.Success) {
 											switch(t) {
 												case 1:
 													/*项目*/
-													let l1 = _this.proList.length;
+													var l1 = _this.proList.length;
 													if(l1 == result.Data.Total) {
 														if(callback) callback();
-														_this.norest1 = true
+														_this.norest1 = true;
 														//													plus.nativeUI.closeWaiting();
-														if(callback) callback(true)
+														if(callback) callback(true);
 														return;
 													}
 
-													_this.proList = _this.proList.concat(result.Data.ListInfo)
-													_this.index1 += 1
+													_this.proList = _this.proList.concat(result.Data.ListInfo);
+													_this.index1 += 1;
 
 													_this.scroll.refresh();
 													if(callback) callback(false);
@@ -491,80 +488,78 @@
 													break;
 												case 2:
 													/*手艺人*/
-													let l2 = _this.matList.length;
+													var l2 = _this.matList.length;
 													//												console.log(2,l2,result.Data.Total)
 													if(l2 == result.Data.Total) {
 														if(callback) callback();
-														_this.norest2 = true
-														if(callback) callback(true)
+														_this.norest2 = true;
+														if(callback) callback(true);
 														return;
 													}
 
-													_this.matList = _this.matList.concat(result.Data.ListInfo)
-													_this.index2 += 1
-				
-														_this.scroll.refresh();
-														if(callback) callback(false);
-									
+													_this.matList = _this.matList.concat(result.Data.ListInfo);
+													_this.index2 += 1;
+
+													_this.scroll.refresh();
+													if(callback) callback(false);
+
 													break;
 												default:
 													break;
 											}
-
 										} else {
 											/*验证失败*/
-											plus.nativeUI.toast(result.Msg)
-
+											plus.nativeUI.toast(result.Msg);
 										}
-									},300)
+									}, 300);
 								},
-								error: function(xhr, type, errorThrown) {
-									_this.loader = false
+								error: function error(xhr, type, errorThrown) {
+									_this.loader = false;
 									_this.scroll.refresh();
-									app.catchErr(xhr, type, errorThrown)
+									app.catchErr(xhr, type, errorThrown);
 								}
 							});
 						},
+
 						/*转转预览*/
-						_toDetail(code) {
-							let t = this.type
-							let id;
-							let url;
-							let extras = {}
+						_toDetail: function _toDetail(code) {
+							var t = this.type;
+							var id = void 0;
+							var url = void 0;
+							var extras = {};
 							switch(t) {
 								case 1:
 									/*项目*/
-									url = '../production/productBuy.html'
-									id = 'productBuy'
+									url = '../production/productBuy.html';
+									id = 'productBuy';
 									extras = {
 										proKey: code
-									}
+									};
 									break;
 								case 2:
 									/*手艺人*/
-									url = '../technician/technician.html'
-									id = 'technician'
+									url = '../technician/technician.html';
+									id = 'technician';
 									extras = {
 										shopCode: code
-									}
+									};
 									break;
 								default:
 									break;
 							}
-							let desturl = url
-							let destid = id
-							let exa = extras
-							let option = {}
-							app.navigater(desturl, destid, exa, option)			
-							
+							var desturl = url;
+							var destid = id;
+							var exa = extras;
+							var option = {};
+							app.navigater(desturl, destid, exa, option);
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function refresh() {
 
-				APP._getData()
+				APP._getData();
 			}
 		</script>
 	</body>

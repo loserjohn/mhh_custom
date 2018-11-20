@@ -280,9 +280,9 @@
 
 			</div>
 
-			<div class="cm_loading flex " v-show="loading">
+			<!--<div class="cm_loading flex " v-show="loading">
 				<span class="mui-icon mui-icon-spinner-cycle mui-spin "></span>
-			</div>
+			</div>-->
 		</div>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/app.js"></script>
@@ -290,12 +290,14 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -320,11 +322,9 @@
 						/*当前地址经度*/
 						isDefault: false
 					},
-					created: function() {
-
-					},
-					mounted: function() {
-						var _this = this
+					created: function created() {},
+					mounted: function mounted() {
+						var _this = this;
 
 						/*添加新卡操作则初始化定位*/
 						var self = plus.webview.currentWebview();
@@ -334,7 +334,7 @@
 							/*编辑操作*/
 							this.title = '编辑地址';
 							this.type = "edit";
-							this._initAddress()
+							this._initAddress();
 						} else {
 							/*添加新地址操作*/
 							this.title = '添加新地址';
@@ -344,72 +344,77 @@
 					},
 					methods: {
 						/*初始化信息 编辑操作的话*/
-						_initAddress() {
+						_initAddress: function _initAddress() {
+							var _this2 = this;
 
-							this.province = this.addressMsg.ADDRESS_SHENG
-							this.town = this.addressMsg.ADDRESS_SHI
-							this.area = this.addressMsg.ADDRESS_QU
-							this.street = this.addressMsg.ADDRESS_JIE
-							this.address = this.addressMsg.ADDRESS_MEN
+							this.province = this.addressMsg.ADDRESS_SHENG;
+							this.town = this.addressMsg.ADDRESS_SHI;
+							this.area = this.addressMsg.ADDRESS_QU;
+							this.street = this.addressMsg.ADDRESS_JIE;
+							this.address = this.addressMsg.ADDRESS_MEN;
 
 							/*初始化选择选项*/
-							this._updatedTown(0, () => {
-								this._updatedTown(1, () => {
-									this._updatedTown(2, () => {
-										this.loading = false;
-										document.getElementById('loader').style.display = 'none'
-									})
-								})
-							})
+							this._updatedTown(0, function() {
+								_this2._updatedTown(1, function() {
+									_this2._updatedTown(2, function() {
+										_this2.loading = false;
+										document.getElementById('loader').style.display = 'none';
+									});
+								});
+							});
 						},
+
 						/*切换开关*/
-						_switch() {
-							this.isDefault = !this.isDefault
+						_switch: function _switch() {
+							this.isDefault = !this.isDefault;
 						},
+
 						/*初始化位置*/
-						_initPos() {
+						_initPos: function _initPos() {
 							//							alert(1)
 							this.loading = true;
-							document.getElementById('loader').style.display = 'none'
+							document.getElementById('loader').style.display = 'none';
+							plus.nativeUI.showWaiting('定位地址中,请稍后')
 							var _this = this;
-							plus.geolocation.getCurrentPosition((position) => {
-								var obj = position.address
-								//								console.log(JSON.stringify(position))
+							plus.geolocation.getCurrentPosition(function(position) {
+								var obj = position.address;
+								plus.nativeUI.closeWaiting()
 
-								_this.province = position.address.province
-								_this.town = position.address.city
-								_this.area = position.address.district
-								_this.street = position.address.street
+								_this.province = position.address.province;
+								_this.town = position.address.city;
+								_this.area = position.address.district;
+								_this.street = position.address.street;
 								//								_this.house = position.address.street
 
-								_this.longitude = (position.coords.longitude).toFixed(6)
-								_this.latitude = (position.coords.latitude).toFixed(6)
+								_this.longitude = position.coords.longitude.toFixed(6);
+								_this.latitude = position.coords.latitude.toFixed(6);
 
 								//								var add = obj.province + obj.city + position.addresses
-								var add = obj.street
+								var add = obj.street;
 
 								/*初始化选择选项*/
-								_this._updatedTown(0, () => {
-									_this._updatedTown(1, () => {
-										_this._updatedTown(2, () => {
-											_this.loading = false
-										})
-									})
-								})
-
-							}, () => {
-								plus.nativeUI.toast('位置获取失败，请手动选择地址')
+								_this._updatedTown(0, function() {
+									_this._updatedTown(1, function() {
+										_this._updatedTown(2, function() {
+											_this.loading = false;
+										});
+									});
+								});
+							}, function() {
+								plus.nativeUI.closeWaiting()
+								plus.nativeUI.toast('位置获取失败，请手动选择地址');
 							}, {
 								enableHighAccuracy: true,
-								timeout: () => {
-									plus.nativeUI.toast('信号不佳，位置获取失败')
+								timeout: function timeout() {
+									plus.nativeUI.toast('信号不佳，位置获取失败');
 								}
 							});
 						},
-						//	更新城市选项
-						_updatedTown(t, callback) {
 
-							var _this = this
+						//	更新城市选项
+						_updatedTown: function _updatedTown(t, callback) {
+
+							var _this = this;
 							switch(t) {
 								case 0:
 
@@ -421,13 +426,12 @@
 										headers: {
 											'Content-Type': 'application/x-www-form-urlencoded'
 										},
-										success: function(result) {
+										success: function success(result) {
 											/*登陆成功*/
 											// 储存本地 记录登陆时间		
-											_this.provinceList = result
-
+											_this.provinceList = result;
 										},
-										error: function(xhr, type, errorThrown) {
+										error: function error(xhr, type, errorThrown) {
 											//异常处理；
 											console.log(type);
 										}
@@ -445,12 +449,12 @@
 										headers: {
 											'Content-Type': 'application/x-www-form-urlencoded'
 										},
-										success: function(result) {
+										success: function success(result) {
 											/*登陆成功*/
 
-											_this.townList = result
+											_this.townList = result;
 										},
-										error: function(xhr, type, errorThrown) {
+										error: function error(xhr, type, errorThrown) {
 											//异常处理；
 											console.log(type);
 										}
@@ -468,11 +472,11 @@
 										headers: {
 											'Content-Type': 'application/x-www-form-urlencoded'
 										},
-										success: function(result) {
+										success: function success(result) {
 											/*登陆成功*/
-											_this.areaList = result
+											_this.areaList = result;
 										},
-										error: function(xhr, type, errorThrown) {
+										error: function error(xhr, type, errorThrown) {
 											//异常处理；
 											console.log(type);
 										}
@@ -480,21 +484,20 @@
 									break;
 								case 3:
 									/*更新区信息*/
-									_this.street = ''
+									_this.street = '';
 									break;
 
 								default:
 									break;
 							}
-							if(callback) callback()
-
+							if(callback) callback();
 						},
+
 						/*提交添加*/
-						_submit() {
+						_submit: function _submit() {
 							if(!this.province || !this.town || !this.area) {
 								plus.nativeUI.alert("请选择省市县", function() {}, "马嘿嘿提醒您", "ok");
 								return;
-
 							} else if(!this.street) {
 								plus.nativeUI.alert("请填写街道", function() {}, "马嘿嘿提醒您", "ok");
 								return;
@@ -512,8 +515,8 @@
 								LON: this.longitude,
 								LAT: this.latitude,
 								ISDEFAULT: this.isDefault ? '1' : '0'
-							}
-							//							console.log()
+								//							console.log()
+							};
 							var msg;
 							//							alert(this.type)
 							switch(this.type) {
@@ -522,46 +525,45 @@
 									break;
 								case 'edit':
 									data.ADDRESS_CODE = this.addressMsg.ADDRESS_CODE;
-									msg = "修改成功"
+									msg = "修改成功";
 									break;
 								default:
 									break;
 							}
 							//							console.log(JSON.stringify(data))
-							plus.nativeUI.showWaiting('提交中...')
+							plus.nativeUI.showWaiting('提交中...');
 							app.ajax(app.baseUrl + '/api/Address/AddAddress', {
 								// dataType:'json',//服务器返回json格式数据
 								data: data,
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										mui.later(() => {
-											plus.nativeUI.closeWaiting()
+										mui.later(function() {
+											plus.nativeUI.closeWaiting();
 											if(plus.webview.getWebviewById('address')) {
-												plus.webview.getWebviewById('address').evalJS('refresh()')
+												plus.webview.getWebviewById('address').evalJS('refresh()');
 											}
 
 											if(plus.webview.getWebviewById('productOrder')) {
-												plus.webview.getWebviewById('productOrder').evalJS('refresh()')
+												plus.webview.getWebviewById('productOrder').evalJS('refresh()');
 											}
 											plus.nativeUI.alert(msg, function() {
-												mui.back()
+												mui.back();
 											}, "马嘿嘿提醒您", "ok");
-										}, 1000)
+										}, 1000);
 
 										/*还原数据*/
 									} else {
-										plus.nativeUI.closeWaiting()
-										plus.nativeUI.toast(result.Msg)
-										console.log(result.Msg)
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg);
+										console.log(result.Msg);
 									}
-
 								}
 							});
-
 						},
+
 						/*地图选址*/
-						_toLocation() {
+						_toLocation: function _toLocation() {
 							mui.openWindow({
 								url: './location.html',
 								id: 'location',
@@ -581,32 +583,32 @@
 								},
 								waiting: {
 									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
+									title: '正在加载...' //等待对话框上显示的提示内容
 								}
-							})
+							});
 						},
+
 						/*从地图选址*/
-						_setPos(pos) {
+						_setPos: function _setPos(pos) {
 							//							console.log(JSON.stringify(pos))
 							//alert(this.street 	)
 							this.longitude = pos.longitude;
 							this.latitude = pos.latitude;
 							this.street = pos.street;
-							this.address = pos.address
+							this.address = pos.address;
 						}
-
 					}
-				})
-			})
+				});
+			});
 
 			function _initPosition() {
 				//				alert(2)
-				APP._initPos()
+				APP._initPos();
 			}
 
 			function setPos(pos) {
 				//								alert( pos)
-				APP._setPos(pos)
+				APP._setPos(pos);
 			}
 		</script>
 	</body>

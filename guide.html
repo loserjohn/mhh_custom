@@ -21,8 +21,9 @@
 				height: 100vh;
 				position: relative;
 			}
-			.start{
-				border:1px solid #fff;
+			
+			.start {
+				border: 1px solid #fff;
 				border-radius: 3px;
 				line-height: 44px;
 				text-align: center;
@@ -72,51 +73,53 @@
 		<script src="./js/vue.js"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: false
 			});
-			
+
 			/*主屏高度*/
 			mui.plusReady(function() {
 				if(mui.os.ios) {
 					plus.navigator.setFullscreen(true);
 				}
 				plus.navigator.closeSplashscreen();
-				
+
 				mui('#slider').slider({
 					interval: 3000 //自动播放周期
 				});
-				
-				mui('#app').on('tap','#slider',function(){
+
+				mui('#app').on('tap', '#slider', function() {
 					plus.navigator.setFullscreen(false);
-					plus.storage.setItem('isFirst','1')
-					mui.back()
-				})
-				
-//				var APP = new Vue({
-//					el: '#app',
-//					data: {
-//
-//					},
-//					created: function() {},
-//					mounted: function() {
-//						//图片切换时，触发动画
-//						//						document.querySelector('.mui-slider').addEventListener('slide', function(event) {
-//						//						 	//注意slideNumber是从0开始的；
-//						//						 	var index = event.detail.slideNumber+1;
-//						//						 	if(index==2||index==3){
-//						//						 		var item = document.getElementById("tips-"+index);
-//						//						 		if(item.classList.contains("mui-hidden")){
-//						//						 			item.classList.remove("mui-hidden");
-//						//						 			item.classList.add("guide-show");
-//						//						 		}
-//						//						 	}
-//						//						});
-//					},
-//					methods: {
-//
-//					}
-//				})
+					plus.storage.setItem('isFirst', '1');
+					mui.back();
+				});
+
+				//				var APP = new Vue({
+				//					el: '#app',
+				//					data: {
+				//
+				//					},
+				//					created: function() {},
+				//					mounted: function() {
+				//						//图片切换时，触发动画
+				//						//						document.querySelector('.mui-slider').addEventListener('slide', function(event) {
+				//						//						 	//注意slideNumber是从0开始的；
+				//						//						 	var index = event.detail.slideNumber+1;
+				//						//						 	if(index==2||index==3){
+				//						//						 		var item = document.getElementById("tips-"+index);
+				//						//						 		if(item.classList.contains("mui-hidden")){
+				//						//						 			item.classList.remove("mui-hidden");
+				//						//						 			item.classList.add("guide-show");
+				//						//						 		}
+				//						//						 	}
+				//						//						});
+				//					},
+				//					methods: {
+				//
+				//					}
+				//				})
 			});
 		</script>
 	</body>

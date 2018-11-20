@@ -698,12 +698,14 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			mui.plusReady(function() {
-				var self = plus.webview.currentWebview()
-				app.WXinit(CryptoJS)
+				var self = plus.webview.currentWebview();
+				app.WXinit(CryptoJS);
 				var APP = new Vue({
 					el: '#app',
 					data: {
@@ -737,79 +739,78 @@
 						index: 1 //当前页码
 					},
 					filters: {
-						dataTxt(value) {
+						dataTxt: function dataTxt(value) {
 							if(value == 0) return '今天';
 							if(value == 1) return '明天';
 							if(value == 2) return '后天';
-							let today = new Date();
-							let dd = new Date();
+							var today = new Date();
+							var dd = new Date();
 							dd.setDate(dd.getDate() + value);
 
-							let str = (dd.getMonth() + 1) + '月' + dd.getDate() + '日'
-							return str
+							var str = dd.getMonth() + 1 + '月' + dd.getDate() + '日';
+							return str;
 						},
-						commentTxt(value) {
+						commentTxt: function commentTxt(value) {
 							switch(value) {
 								case '1':
-									return '非常非常嘿皮'
+									return '非常非常嘿皮';
 									break;
 								case '2':
-									return '很嘿皮'
+									return '很嘿皮';
 									break;
 								case '3':
-									return '嘿皮'
+									return '嘿皮';
 									break;
 								case '4':
-									return '不嘿皮'
+									return '不嘿皮';
 									break;
 								default:
 									break;
 							}
 						},
-						filterNull(value) {
+						filterNull: function filterNull(value) {
 							if(value == null || value == 'undefined') {
-								return ''
+								return '';
 							}
-							return value
+							return value;
 						}
 					},
-					created: function() {
+					created: function created() {
 						app.initHeader();
 
 						var self = plus.webview.currentWebview();
-						this.shopCode = self.shopCode
+						this.shopCode = self.shopCode;
 						var isLogin = plus.storage.getItem('isLogin');
 
 						if(isLogin == '1') {
 							this.islogin = true;
 						}; //没有登陆状态则不获取数据
-
 					},
-					mounted: function() {
-						var _this = this
+					mounted: function mounted() {
+						var _this = this;
 						mui('.mui-scroll-wrapper').scroll({
 							bounce: false //是: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
 						});
 						this.scrollHeight = plus.screen.resolutionHeight - document.getElementById('header').offsetHeight - 44 + 'px';
 
 						/*初始化手艺人数据*/
-						this._initData()
+						this._initData();
 
 						/*初始化下拉scroll*/
 						this.$nextTick(function() {
-							var scroll = this.$refs.scroll
-							var wrapper = this.$refs.wrapper
+							var scroll = this.$refs.scroll;
+							var wrapper = this.$refs.wrapper;
 							/*竖向下拉刷新*/
 							if(!_this.scroll) {
 								//							初始化标题栏
 								_this.scroll = new BScroll(scroll, {
 									click: true,
 									probeType: 3,
-									bounceTime: 200,
+									bounceTime: 200
 									//									pullUpLoad: {
 									//										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
 									//									},
-								})
+								});
 							} else {
 								_this.scroll.refresh();
 							};
@@ -822,7 +823,7 @@
 									bounceTime: 200,
 									scrollX: true,
 									scrollY: false
-								})
+								});
 							} else {
 								_this.wrapper.refresh();
 							};
@@ -831,151 +832,154 @@
 								bounce: true, //是否启用回弹
 								indicators: false
 							});
-						})
+						});
 					},
 					methods: {
 						//						默认头像
-						_default(e) {
+						_default: function _default(e) {
 							var dom = e.target;
-							console.log(dom)
-							dom.src = "../../images/default_avatar.jpg"
+							console.log(dom);
+							dom.src = "../../images/default_avatar.jpg";
 						},
 
 						//						与商家对话
-						_toChat() {
-							let isLogin = plus.storage.getItem('isLogin');
+						_toChat: function _toChat() {
+							var isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
-								this._navigateTitle('../login.html', 'login')
-								return
+								this._navigateTitle('../login.html', 'login');
+								return;
 							}
-							let fdId = this.shopMsg.RY_ID;
-							let fdname = this.shopMsg.SHOP_NAME;
-							let fdAvatar = this.shopMsg.SHOP_LOGO;
+							var fdId = this.shopMsg.RY_ID;
+							var fdname = this.shopMsg.SHOP_NAME;
+							var fdAvatar = this.shopMsg.SHOP_LOGO;
 
-							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")')
-							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {})
+							plus.webview.getWebviewById('information').evalJS('initHis("' + fdId + '","' + fdname + '","' + fdAvatar + '")');
+							plus.webview.getWebviewById('information').show('pop-in', 300, function() {}, {});
 						},
-						_phone() {
-							plus.nativeUI.toast('致电中，请稍等')
+						_phone: function _phone() {
+							plus.nativeUI.toast('致电中，请稍等');
 							plus.device.dial(this.shopMsg.SHOP_MOBILE, false);
 						},
+
 						//						商铺充值卡购买
-						_recharge(code) {
+						_recharge: function _recharge(code) {
 							if(!code) return;
-							let real = plus.storage.getItem('realStatus')
-							let isLogin = plus.storage.getItem('isLogin');
+							var real = plus.storage.getItem('realStatus');
+							var isLogin = plus.storage.getItem('isLogin');
 							if(isLogin != '1') {
 								plus.nativeUI.toast('请您先登陆');
 
-								this._navigateTitle('../login.html', 'login')
+								this._navigateTitle('../login.html', 'login');
 
-								return
+								return;
 							}
 
 							/*创建项目订单*/
-							plus.nativeUI.showWaiting()
+							plus.nativeUI.showWaiting();
 							app.ajax(app.baseUrl + '/api/Order/CreateBusiRechargeOrder', {
 								data: {
 									RECHARGE_CODE: code
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
-									let payCode = result.Msg; //订单号
-									plus.nativeUI.closeWaiting()
+								success: function success(result) {
+									var payCode = result.Msg; //订单号
+									plus.nativeUI.closeWaiting();
 									if(result.Success) {
-										plus.nativeUI.toast('订单创建成功')
-										let desturl = '../cashPay.html'
-										let destid = 'cashPay'
-										let exa = {
+										plus.nativeUI.toast('订单创建成功');
+										var desturl = '../cashPay.html';
+										var destid = 'cashPay';
+										var exa = {
 											type: 2, //1表示的是只能现金支付,2可以平台余额支付
 											payCode: payCode
-										}
-										let option = {
+										};
+										var option = {
 											showTitle: true
-										}
-										app.navigater(desturl, destid, exa, option)
-
+										};
+										app.navigater(desturl, destid, exa, option);
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.toast(result.Msg);
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 									console.log(111 + type);
 								}
 							});
-
 						},
-						_navigateTitle(desturl, destid, extras) {
-							let exa = extras
-							let option = {
-								showTitle: true,
-							}
-							app.navigater(desturl, destid, exa, option)
-
+						_navigateTitle: function _navigateTitle(desturl, destid, extras) {
+							var exa = extras;
+							var option = {
+								showTitle: true
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						/*跳转页面*/
-						_navigateTo(desturl, destid, extras) {
+						_navigateTo: function _navigateTo(desturl, destid, extras) {
 
-							let exa = extras
-							let option = {}
-							app.navigater(desturl, destid, exa, option)
-
+							var exa = extras;
+							var option = {};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						/*收藏手艺人*/
-						_collect() {
+						_collect: function _collect() {
+							var _this2 = this;
+
 							if(this.hasCollec) {
 								return;
 							}
-							var _this = this
+							var _this = this;
 							/*判断登陆状态*/
-							let status = plus.storage.getItem('isLogin')
+							var status = plus.storage.getItem('isLogin');
 							if(status != '1') {
 								/*没有登陆状态*/
-								plus.nativeUI.confirm('请您先登陆', (event) => {
+								plus.nativeUI.confirm('请您先登陆', function(event) {
 									if(event.index != 0) return;
-									this._navigateTitle('../login.html', 'login')
+									_this2._navigateTitle('../login.html', 'login');
 								}, {
 									title: '马嘿嘿提醒您'
-								}, ['去登陆', '取消'])
+								}, ['去登陆', '取消']);
 							} else {
 								/*用户已登陆执行收藏操作*/
-								plus.nativeUI.showWaiting()
+								plus.nativeUI.showWaiting();
 								app.ajax(app.baseUrl + '/api/Shop/Attention', {
 									type: 'post', //HTTP请求类型
 									data: {
-										SHOP_CODE: _this.shopCode,
+										SHOP_CODE: _this.shopCode
 									},
-									success: function(result) {
+									success: function success(result) {
 										/*登陆成功*/
-										plus.nativeUI.closeWaiting()
+										plus.nativeUI.closeWaiting();
 										if(result.Success) {
-											plus.nativeUI.toast('收藏成功')
-											_this.hasCollec = true
+											plus.nativeUI.toast('收藏成功');
+											_this.hasCollec = true;
 										} else {
 											/*验证失败*/
-											plus.nativeUI.toast('收藏失败')
+											plus.nativeUI.toast('收藏失败');
 										}
 									}
-								})
+								});
 							}
 						},
+
 						/*切换*/
-						_switch(k) {
+						_switch: function _switch(k) {
 							this.curTabType = k;
 							this.scroll.refresh();
 						},
+
 						/*模态框显示*/
-						_switchModal() {
-							this.modalShow = !this.modalShow
+						_switchModal: function _switchModal() {
+							this.modalShow = !this.modalShow;
 						},
+
 						/*初始化数据*/
-						_initData(callback) {
-							this.loader = true
-							var _this = this
+						_initData: function _initData(callback) {
+							this.loader = true;
+							var _this = this;
 							/*初始化店铺信息*/
 							app.ajax(app.baseUrl + '/api/Shop/ViewShop', {
 								type: 'post', //HTTP请求类型
@@ -984,47 +988,44 @@
 									SHOP_CODE: _this.shopCode
 								},
 
-								success: function(result) {
+								success: function success(result) {
 									/*登陆成功*/
-									mui.later(() => {
+									mui.later(function() {
 										_this.loader = false;
-										document.getElementById('loader').style.display = 'none'
+										document.getElementById('loader').style.display = 'none';
 										if(result.Success) {
 											/*店铺信息*/
-											_this.shopMsg = result.Data.Shop
-											_this.levels = parseInt(result.Data.Shop.SHOP_STAR)
+											_this.shopMsg = result.Data.Shop;
+											_this.levels = parseInt(result.Data.Shop.SHOP_STAR);
 											/*充值卡*/
-											_this.refillcard = result.Data.Recharge
+											_this.refillcard = result.Data.Recharge;
 											/*优惠券*/
-											_this.coupons = result.Data.Discount
-											_this.hasCollec = result.Data.Shop.IS_ATTENTION
+											_this.coupons = result.Data.Discount;
+											_this.hasCollec = result.Data.Shop.IS_ATTENTION;
 											//											alert(_this.hasCollec)
-											_this._initComment()
+											_this._initComment();
 
-											_this.enabledTime = result.Data.enabledTime
-											if(callback) callback()
+											_this.enabledTime = result.Data.enabledTime;
+											if(callback) callback();
 										} else {
 											/*验证失败*/
 										}
-									}, 500)
+									}, 500);
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 									_this.loader = false;
-									app.catchErr(type)
-									document.getElementById('loader').style.display = 'none'
+									app.catchErr(type);
+									document.getElementById('loader').style.display = 'none';
 								}
-							})
+							});
 							/*店铺全部项目*/
-							this._initAllPro()
-
+							this._initAllPro();
 						},
-						_scanMore() {
-
-						},
-						_initAllPro() {
+						_scanMore: function _scanMore() {},
+						_initAllPro: function _initAllPro() {
 							/*店铺全部项目*/
-							var _this = this
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Project/GetShopProjects', {
 								type: 'get', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
@@ -1037,31 +1038,32 @@
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									/*登陆成功*/
 									if(result.Success) {
 										/*列表*/
 										//										_this.shopMsg = result.Data.Shop	
-										_this.allProduct = _this.allProduct.concat(result.Data.ListInfo)
+										_this.allProduct = _this.allProduct.concat(result.Data.ListInfo);
 										if(_this.allProduct.length == result.Data.Total && _this.index != 1) {
-											plus.nativeUI.toast('没有更多数据')
+											plus.nativeUI.toast('没有更多数据');
 											return;
 										}
-										_this.index += 1
+										_this.index += 1;
 										//										if(callback) callback()
 									} else {
 										/*验证失败*/
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									app.catchErr(type)
+									app.catchErr(type);
 								}
-							})
+							});
 						},
+
 						/*获取评价数据*/
-						_initComment() {
-							var _this = this
+						_initComment: function _initComment() {
+							var _this = this;
 							//							alert(_this.proKey)
 							mui.ajax(app.baseUrl + '/api/OrderReview/GetReviewList', {
 								type: 'get', //HTTP请求类型
@@ -1070,12 +1072,12 @@
 									//									PROJECT_CODE: _this.proKey,
 									REVIEW_TYPE: 1,
 									pageIndex: 1,
-									pageSize: 4,
+									pageSize: 4
 								},
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									/*登陆成功*/
 									if(result.Success) {
 										_this.comment = result.Data.ListInfo;
@@ -1084,20 +1086,17 @@
 										/*验证失败*/
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									app.catchErr(type)
+									app.catchErr(type);
 								}
-							})
-						},
+							});
+						}
 					}
-				})
-
+				});
 			});
 			/*获取用户身份之后刷新页面*/
-			function initPage() {
-
-			}
+			function initPage() {}
 		</script>
 	</body>
 

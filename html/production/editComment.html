@@ -234,11 +234,13 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				var APP = new Vue({
 					el: '#app',
 					data: {
@@ -253,75 +255,77 @@
 						commontPic3: '',
 						content: ''
 					},
-					created: function() {
+					created: function created() {
 						//							console.log( app.mark + plus.storage.getItem('token'))
 					},
 					filters: {
-						commentTxt(value) {
+						commentTxt: function commentTxt(value) {
 							switch(value) {
 								case '1':
-									return '非常非常嘿皮'
+									return '非常非常嘿皮';
 									break;
 								case '2':
-									return '很嘿皮'
+									return '很嘿皮';
 									break;
 								case '3':
-									return '嘿皮'
+									return '嘿皮';
 									break;
 								case '4':
-									return '不嘿皮'
+									return '不嘿皮';
 									break;
 								default:
 									break;
 							}
 						}
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						//							console.log(app.mark + plus.storage.getItem('token'))
 						var _this = this;
 						var self = plus.webview.currentWebview();
-						this.product = self.product
+						this.product = self.product;
 						//							初始化scroll的屏幕位置
 						this.tabContenTop = 0 + 'px';
 
-//						plus.nativeUI.closeWaiting()
-//						mui.currentWebview.show('pop-in', 300, function() {}, {});
-
+						//						plus.nativeUI.closeWaiting()
+						//						mui.currentWebview.show('pop-in', 300, function() {}, {});
 					},
 					methods: {
-						_switchType(k){
-							this.type=k
+						_switchType: function _switchType(k) {
+							this.type = k;
 						},
-						//						评分
-						_score(s) {
-							this.starLevel = s + 1
 
+						//						评分
+						_score: function _score(s) {
+							this.starLevel = s + 1;
 						},
+
 						/*图片上传*/
-						_uploadPic(key) {
+						_uploadPic: function _uploadPic(key) {
+							var _this2 = this;
 
 							switch(key) {
 								case 1:
-									app.getIMG('评价图片', (src) => {
-										this.commontPic1 = src
-									})
+									app.getIMG('评价图片', function(src) {
+										_this2.commontPic1 = src;
+									});
 									break;
 								case 2:
-									app.getIMG('评价图片', (src) => {
-										this.commontPic2 = src
-									})
+									app.getIMG('评价图片', function(src) {
+										_this2.commontPic2 = src;
+									});
 									break;
 								case 3:
-									app.getIMG('评价图片', (src) => {
-										this.commontPic3 = src
-									})
+									app.getIMG('评价图片', function(src) {
+										_this2.commontPic3 = src;
+									});
 									break;
 								default:
 									break;
 							}
 						},
+
 						/*跳转页面*/
-						_navigateTo(dstUrl, dstId, extras) {
+						_navigateTo: function _navigateTo(dstUrl, dstId, extras) {
 							mui.openWindow({
 								url: dstUrl,
 								id: dstId,
@@ -339,17 +343,18 @@
 								extras: extras,
 								waiting: {
 									autoShow: false, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
+									title: '正在加载...' //等待对话框上显示的提示内容
 								}
-							})
+							});
 						},
+
 						//						提交评价
-						_submit() {
+						_submit: function _submit() {
 							if(!this.content) {
 								plus.nativeUI.alert("请输入评价内容", function() {}, '马嘿嘿提醒您');
 								return;
 							}
-							var _this = this
+							var _this = this;
 							plus.nativeUI.showWaiting();
 							/*调用登陆接口*/
 
@@ -361,34 +366,32 @@
 								PUNCTUAL_POINT: (this.timeScore / 10).toFixed(1),
 								SEVICE_POINT: (this.serverScore / 10).toFixed(1),
 								SKILL_POINT: (this.skillScore / 10).toFixed(1)
-							}
-							if(this.commontPic1) data.REPLY_IMG1 = this.commontPic1
-							if(this.commontPic2) data.REPLY_IMG2 = this.commontPic2
-							if(this.commontPic3) data.REPLY_IMG3 = this.commontPic3
+							};
+							if(this.commontPic1) data.REPLY_IMG1 = this.commontPic1;
+							if(this.commontPic2) data.REPLY_IMG2 = this.commontPic2;
+							if(this.commontPic3) data.REPLY_IMG3 = this.commontPic3;
 							//								console.log(JSON.stringify(data))
 
 							app.ajax(app.baseUrl + '/api/OrderReview/AddReview', {
 								data: data,
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									plus.nativeUI.closeWaiting();
 									if(result.Success) {
-										plus.nativeUI.toast('评论成功')
-										plus.webview.getWebviewById('orders').evalJS('refresh()')	
-										mui.later(function(){
-											mui.back()
-										},500)
-										
+										plus.nativeUI.toast('评论成功');
+										plus.webview.getWebviewById('orders').evalJS('refresh()');
+										mui.later(function() {
+											mui.back();
+										}, 500);
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 						}
 					}
-				})
-
+				});
 			});
 		</script>
 	</body>

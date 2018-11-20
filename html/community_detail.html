@@ -20,33 +20,42 @@
 				/*background: #eee;*/
 				box-sizing: border-box;
 				border: 1px dashed #d3d3d3;
-				padding:20px  10px;
+				padding: 20px 10px;
 			}
-			.note p ,.note div{
+			
+			.note p,
+			.note div {
 				line-height: 30px;
 			}
+			
 			.tags {
 				margin-right: 10px;
 			}
-			.labels{
+			
+			.labels {
 				margin-left: 10px;
 			}
-			 .labels.active,
+			
+			.labels.active,
 			.labels.active i {
 				color: #ccaa42;
 			}
-			.picList{
+			
+			.picList {
 				width: 100%;
 				box-sizing: border-box;
 			}
-			.videoBox{
+			
+			.videoBox {
 				width: 100%;
 				box-sizing: border-box;
 				border: 1px dotted #d3d3d3;
 			}
-			.richTxt{
+			
+			.richTxt {
 				overflow: hidden;
 			}
+			
 			.richTxt p,
 			.richTxt div,
 			.richTxt h1,
@@ -56,42 +65,46 @@
 			.richTxt h5,
 			.richTxt h6,
 			.richTxt img,
-			.richTxt video{
+			.richTxt video {
 				max-width: 100%!important;
-				
 			}
 			
-			.commonEdit{
+			.commonEdit {
 				margin-bottom: 40px;
 			}
-			.commonEdit .submiComment{
+			
+			.commonEdit .submiComment {
 				width: 100px;
 				float: right;
 			}
-			.commonEdit .txtbox{
-				margin-top:20px;
+			
+			.commonEdit .txtbox {
+				margin-top: 20px;
 				font-size: 12px;
 			}
-			.commontsBox{
+			
+			.commontsBox {
 				margin-bottom: 40px;
-				
 			}
-			.commontsBox .list{
+			
+			.commontsBox .list {
 				border-bottom: 1px dotted #d3d3d3;
 				min-height: 70px;
 				margin-top: 10px;
-				
 			}
-			.commontsBox .list .avatar{
+			
+			.commontsBox .list .avatar {
 				width: 40px;
 				height: 40px;
 				margin-right: 10px;
 				overflow: hidden;
 			}
-			.title{
+			
+			.title {
 				border-bottom: 1px solid #212121;
 			}
-			.submitBox{
+			
+			.submitBox {
 				margin-top: 20px;
 			}
 		</style>
@@ -99,7 +112,7 @@
 
 	<body>
 		<div id="app">
-			
+
 			<!--等待页面-->
 			<div class="loader" style="top:0" v-show="loader">
 				<ul>
@@ -115,7 +128,7 @@
 				</ul>
 			</div>
 			<div class="container " id="content" style="background: #fff">
-				<div >
+				<div>
 					<h3 class="t_c detailTitle">{{detailContent.title}}</h3>
 					<div class="detailAbstract cor_y" v-if="detailContent.infoAbstract">{{detailContent.infoAbstract}}</div>
 					<ul class="clearfix " style="padding-top: 10px;margin-bottom: 20px;">
@@ -125,9 +138,9 @@
 					</ul>
 					<!--视频-->
 					<!--<video :src="detail.lstUrl[0]"  v-if="detail.type==2" controls="controls" class="videoBox" poster="../images/videoDefault.png"></video>-->
-					<div class="richTxt" v-html="detailContent.content"></div>				
+					<div class="richTxt" v-html="detailContent.content"></div>
 				</div>
-				
+
 				<div class="commonEdit">
 					<aside class="cm_name title">评论编辑</aside>
 					<textarea name="" rows="" cols="" class="txtbox" v-model="comment" placeholder="请输入评论内容"></textarea>
@@ -135,39 +148,39 @@
 						<div class="cm_btn_blank" @tap="_submit">提交评论</div>
 					</div>
 				</div>
-				
+
 				<div class="commontsBox">
 					<aside class="cm_name title">评论社区</aside>
 					<article style="padding: 15px 0; box-sizing: border-box;">
 						<ul class="">
-							<li class="list flex" v-for="(item,index) in commentList" :key="index">						
+							<li class="list flex" v-for="(item,index) in commentList" :key="index">
 								<aside class="avatar">
-									<img @error="noPic($event)" :src="item.REVIEW_USER_HEAD?item.REVIEW_USER_HEAD:'../images/default_avatar.jpg'"   alt=""  class="cover"/>
+									<img @error="noPic($event)" :src="item.REVIEW_USER_HEAD?item.REVIEW_USER_HEAD:'../images/default_avatar.jpg'" alt="" class="cover" />
 								</aside>
 								<article class="f1">
 									<div>{{item.REVIEW_USER_NAME}}</div>
 									<p>{{item.REVIEW_TIME}}</p>
 									<div v-html="item.REVIEW_CONTENT"></div>
 								</article>
-							</li>						
+							</li>
 						</ul>
 					</article>
 					<div class="submitBox">
 						<div class="cm_btn_blank" @tap="_scanMore">查看更多</div>
 					</div>
-					
+
 				</div>
-				
-				<div class=" flex note" >
-						<p class="f1 ">{{detail.views}}人已看</p>
-						<div class="f1">
-							<div class="fr labels cor_r" @tap.stop="_report" >
-								<i class="iconfont icon-xinxi cor_r"></i> 举报
-							</div>
-							<div class="fr labels" :class="{active:isGood}"  @tap="_good" >
-								<i class="iconfont icon-zan cor_g"></i> 点赞{{detail.goods}}
-							</div>
+
+				<div class=" flex note">
+					<p class="f1 ">{{detail.views}}人已看</p>
+					<div class="f1">
+						<div class="fr labels cor_r" @tap.stop="_report">
+							<i class="iconfont icon-xinxi cor_r"></i> 举报
 						</div>
+						<div class="fr labels" :class="{active:isGood}" @tap="_good">
+							<i class="iconfont icon-zan cor_g"></i> 点赞{{detail.goods}}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -176,58 +189,59 @@
 		<script src="../js/vue.js"></script>
 		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
-					swipeBack: true
-			})
+				swipeBack: true
+			});
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				var APP = new Vue({
 					el: '#app',
 					data: {
-						loader:true,
+						loader: true,
 						detail: '',
 						detailContent: '',
-						isGood:false,
-						comment:'',//评论内容
-						commentIndex:1,
-						commentSize:8,
-						commentList:[],
-						norest:false
+						isGood: false,
+						comment: '', //评论内容
+						commentIndex: 1,
+						commentSize: 8,
+						commentList: [],
+						norest: false
 					},
-					created: function() {
-	
-					},
-					mounted: function() {
+					created: function created() {},
+					mounted: function mounted() {
 						var self = plus.webview.currentWebview();
 						this.detail = self.detail;
 
-						this._getData()
-						this._getComment()
+						this._getData();
+						this._getComment();
 					},
 					methods: {
-						noPic(e){
-//							console.log(e.target)
-							var dom = e.target
-							dom.src = '../images/default_avatar.jpg'
+						noPic: function noPic(e) {
+							//							console.log(e.target)
+							var dom = e.target;
+							dom.src = '../images/default_avatar.jpg';
 						},
-						_scanMore(){
-							if(this.norest){
+						_scanMore: function _scanMore() {
+							if(this.norest) {
 								plus.nativeUI.toast('没有数据了');
 								return;
 							}
-							this.commentIndex +=1;
-							this._getComment((b)=>{
-								if(b){
-									plus.nativeUI.toast('没有评论了')
+							this.commentIndex += 1;
+							this._getComment(function(b) {
+								if(b) {
+									plus.nativeUI.toast('没有评论了');
 								}
-							})
+							});
 						},
-//						提交评论
-						_submit(){
-							let s = plus.storage.getItem('isLogin');
-						    if(!s || s == '0'){
-						    	plus.nativeUI.toast('没有登陆状态，请先登陆');
-						    	mui.openWindow({
+
+						//						提交评论
+						_submit: function _submit() {
+							var s = plus.storage.getItem('isLogin');
+							if(!s || s == '0') {
+								plus.nativeUI.toast('没有登陆状态，请先登陆');
+								mui.openWindow({
 									url: './login.html',
 									id: 'login',
 									styles: {
@@ -244,62 +258,62 @@
 									extras: {},
 									waiting: {
 										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
+										title: '正在加载...' //等待对话框上显示的提示内容
 									}
-								})
-						    	
-						    	return
-						    }
-							if(!this.comment){
-								plus.nativeUI.toast('请填写评论内容')
+								});
+
 								return;
 							}
-							
-							
-							var _this =this
+							if(!this.comment) {
+								plus.nativeUI.toast('请填写评论内容');
+								return;
+							}
+
+							var _this = this;
 							plus.nativeUI.showWaiting();
 							app.ajax(app.baseUrl + '/api/CmsInfoReview/Add', {
 								data: {
 									infoCode: this.detail.infoCode,
-									REVIEW_CONTENT:this.comment
+									REVIEW_CONTENT: this.comment
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										plus.nativeUI.closeWaiting()
-										
-										plus.nativeUI.toast('评论成功')
+										plus.nativeUI.closeWaiting();
+
+										plus.nativeUI.toast('评论成功');
 										_this.comment = '';
-										_this._refresh()
+										_this._refresh();
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 						},
-//						刷新数据
-						_refresh(){
+
+						//						刷新数据
+						_refresh: function _refresh() {
+							var _this2 = this;
+
 							plus.nativeUI.showWaiting();
 							this.comment = '';
 							this.commentIndex = 1;
-							
+
 							this.norest = false;
-							mui.later(()=>{
-								this.commentList = [];
-								this._getComment(()=>{
-								
-								plus.nativeUI.closeWaiting()	
-								})
-								
-							},2000)
-							
+							mui.later(function() {
+								_this2.commentList = [];
+								_this2._getComment(function() {
+
+									plus.nativeUI.closeWaiting();
+								});
+							}, 2000);
 						},
-//						举报
-						_report(){
-							plus.nativeUI.confirm('由于该资讯涉及非法内容,您将向马嘿嘿平台举报该条资讯',(e)=>{
-								if(e.index==0){
+
+						//						举报
+						_report: function _report() {
+							plus.nativeUI.confirm('由于该资讯涉及非法内容,您将向马嘿嘿平台举报该条资讯', function(e) {
+								if(e.index == 0) {
 									plus.nativeUI.showWaiting();
 									mui.ajax(app.baseUrl + '/api/Recommend/GetRecommendTypes', {
 										type: 'get', //HTTP请求类型
@@ -307,94 +321,92 @@
 										headers: {
 											'Content-Type': 'application/x-www-form-urlencoded'
 										},
-										success: function(result) {
-											mui.later(()=>{
-												plus.nativeUI.closeWaiting()
+										success: function success(result) {
+											mui.later(function() {
+												plus.nativeUI.closeWaiting();
 												if(result.Success) {
-													plus.nativeUI.toast('您的检举信息已经提交')
+													plus.nativeUI.toast('您的检举信息已经提交');
 												} else {
 													/*验证失败*/
 												}
-											},1000)
-											
+											}, 1000);
 										},
-										error: function(xhr, type, errorThrown) {
-
-										}
-									})
+										error: function error(xhr, type, errorThrown) {}
+									});
 								}
-							},'马嘿嘿提醒您')
+							}, '马嘿嘿提醒您');
 						},
+
 						/*获取数据*/
-						_getData(callback) {
-							this.loader = true
-							var _this = this
-//							plus.nativeUI.showWaiting()
+						_getData: function _getData(callback) {
+							this.loader = true;
+							var _this = this;
+							//							plus.nativeUI.showWaiting()
 							app.ajax(app.baseUrl + '/api/Info/GetMhhCmsItem', {
 								data: {
 									infoCode: this.detail.infoCode
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
-									_this.loader = false
+								success: function success(result) {
+									_this.loader = false;
 									if(result.Success) {
-//										plus.nativeUI.closeWaiting()
-										_this.detailContent = result.Data	
+										//										plus.nativeUI.closeWaiting()
+										_this.detailContent = result.Data;
 										_this.isGood = result.Data.isGood;
 										if(callback) callback();
 									} else {
 										/*验证失败*/
-										plus.nativeUI.closeWaiting()
-										plus.nativeUI.toast(result.Msg)
-										
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg);
 									}
 								},
-								error: function(xhr, type, errorThrown) {
-									_this.loader = false
-									app.catchErr(type)
+								error: function error(xhr, type, errorThrown) {
+									_this.loader = false;
+									app.catchErr(type);
 								}
 							});
 						},
-//						获取评论列表
-						_getComment(callback){
-							var _this = this
+
+						//						获取评论列表
+						_getComment: function _getComment(callback) {
+							var _this = this;
 							app.ajax(app.baseUrl + '/api/CmsInfoReview/GetReviews', {
 								data: {
 									infoCode: this.detail.infoCode,
-									pageIndex:_this.commentIndex,
-									pageSize:_this.commentSize,
+									pageIndex: _this.commentIndex,
+									pageSize: _this.commentSize
 								},
 								type: 'get', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										plus.nativeUI.closeWaiting()
+										plus.nativeUI.closeWaiting();
 										var l = _this.commentList.length;
-										_this.commentList = _this.commentList.concat(result.Data.ListInfo)
-										if(_this.commentList.length == l) {										
+										_this.commentList = _this.commentList.concat(result.Data.ListInfo);
+										if(_this.commentList.length == l) {
 											if(callback) callback(true);
-											_this.norest = true
+											_this.norest = true;
 											return;
 										}
 										if(callback) callback(false);
 									} else {
 										/*验证失败*/
-										plus.nativeUI.closeWaiting()
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast(result.Msg);
 									}
 								},
-								error: function(xhr, type, errorThrown) {
-									app.catchErr(type)
+								error: function error(xhr, type, errorThrown) {
+									app.catchErr(type);
 								}
 							});
 						},
+
 						/*点赞*/
-						_good(){
-//						    if(this.isGood )return false;
-						    let s = plus.storage.getItem('isLogin');
-						    if(!s || s == '0'){
-						    	plus.nativeUI.toast('没有登陆状态，请先登陆');
-						    	mui.openWindow({
+						_good: function _good() {
+							//						    if(this.isGood )return false;
+							var s = plus.storage.getItem('isLogin');
+							if(!s || s == '0') {
+								plus.nativeUI.toast('没有登陆状态，请先登陆');
+								mui.openWindow({
 									url: './login.html',
 									id: 'login',
 									styles: {
@@ -411,42 +423,40 @@
 									extras: {},
 									waiting: {
 										autoShow: true, //自动显示等待框，默认为true
-										title: '正在加载...', //等待对话框上显示的提示内容
+										title: '正在加载...' //等待对话框上显示的提示内容
 									}
-								})
-						    	
-						    	return
-						    }
-					
-							var _this =this
+								});
+
+								return;
+							}
+
+							var _this = this;
 							app.ajax(app.baseUrl + '/api/InfoGoods/GoodInfo', {
 								data: {
 									infoCode: _this.detail.infoCode
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										_this.isGood = true
-										plus.nativeUI.closeWaiting()	
-										plus.nativeUI.toast('点赞成功')
-										_this.detail.goods +=1										
+										_this.isGood = true;
+										plus.nativeUI.closeWaiting();
+										plus.nativeUI.toast('点赞成功');
+										_this.detail.goods += 1;
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)									
+										plus.nativeUI.toast(result.Msg);
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 									console.log(type);
 								}
 							});
-							
-							
 						}
 					}
 
-				})
-			})
+				});
+			});
 		</script>
 	</body>
 

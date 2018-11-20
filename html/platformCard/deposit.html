@@ -180,11 +180,13 @@
 		<script src="../../js/vue.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
+			});
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				var APP = new Vue({
 					el: '#app',
 					data: {
@@ -196,48 +198,46 @@
 						cardEnables: false,
 						phone: ''
 					},
-					created: function() {
+					created: function created() {},
+					mounted: function mounted() {
+						var _this = this;
 
-					},
-					mounted: function() {
-						var _this = this
-
-						var self = plus.webview.currentWebview()
+						var self = plus.webview.currentWebview();
 						this.allMoney = self.amount;
 						this.phone = self.phone;
-						document.getElementById('loader').style.display = 'none'
-
+						document.getElementById('loader').style.display = 'none';
 					},
 					methods: {
 						//						检验卡号
-						_valideCard() {
-							var _this = this
+						_valideCard: function _valideCard() {
+							var _this = this;
 							mui.ajax('https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?_input_charset=utf-8&cardNo=' + _this.bankNum + '&cardBinCheck=true', {
 								type: 'get', //HTTP请求类型
 								timeout: 10000, //超时时间设置为10秒；
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									//									console.log(JSON.stringify(result));
 									var status = result.validated;
 									if(!status) {
-										plus.nativeUI.alert('无效卡号')
+										plus.nativeUI.alert('无效卡号');
 									} else {
-										_this.cardEnables = true
+										_this.cardEnables = true;
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 
-									owner.catchErr(type)
+									owner.catchErr(type);
 								}
 							});
 						},
+
 						/*提交取现*/
-						_submit() {
-							var _this = this
-							
+						_submit: function _submit() {
+							var _this = this;
+
 							if(!this.bankNum) {
 								plus.nativeUI.alert("请输入卡号", function() {}, "马嘿嘿提醒您", "ok");
 								return;
@@ -275,50 +275,50 @@
 									BANK_MOBILE: _this.phone,
 									AMOUNT: parseInt(_this.money)
 								},
-								headers :{
+								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded',
 									'Authorization': app.mark + plus.storage.getItem('token')
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									/*登陆成功*/
-										if(result.Success) {
-											mui('#submit').button('reset');
-											plus.nativeUI.toast('提现成功');
-											plus.webview.getWebviewById('mine').evalJS('refresh()')
-											plus.webview.getWebviewById('platformCard').evalJS('refresh()')
-											mui.later(() => {
-												mui.back()
-											}, 500)
-
-										} else {
-											mui('#submit').button('reset');
-											plus.nativeUI.toast(result.Msg)
-										}
+									if(result.Success) {
+										mui('#submit').button('reset');
+										plus.nativeUI.toast('提现成功');
+										plus.webview.getWebviewById('mine').evalJS('refresh()');
+										plus.webview.getWebviewById('platformCard').evalJS('refresh()');
+										mui.later(function() {
+											mui.back();
+										}, 500);
+									} else {
+										mui('#submit').button('reset');
+										plus.nativeUI.toast(result.Msg);
+									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									mui('#submit').button('reset');
-									app.catchErr(xhr, type, errorThrown)
+									app.catchErr(xhr, type, errorThrown);
 								}
 							});
-
 						},
+
 						/*重置*/
-						_reset() {
-							this.money = ''
+						_reset: function _reset() {
+							this.money = '';
 						},
-						/*矫正数字*/
-						_validNum() {
-							this.money = parseInt(this.money)
-						},
-						/*全部去除*/
-						_allIn() {
-							this.money = this.allMoney
-						}
 
+						/*矫正数字*/
+						_validNum: function _validNum() {
+							this.money = parseInt(this.money);
+						},
+
+						/*全部去除*/
+						_allIn: function _allIn() {
+							this.money = this.allMoney;
+						}
 					}
-				})
-			})
+				});
+			});
 		</script>
 	</body>
 

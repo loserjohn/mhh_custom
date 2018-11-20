@@ -112,12 +112,12 @@
 								<i class="iconfont icon-bangdingyinhangqia"></i>
 								<div>{{item.RECHARGE_NAME}}</div>
 								<div class="f1 t_r cardsName lh44 ">
-									余额：￥{{item.BUYCARD_RESIDUE}} 
+									余额：￥{{item.BUYCARD_RESIDUE}}
 								</div>
 								<div class="t_r cor_y" style="width: 20px;">
 									<span class="iconfont icon-gou3" v-show="curWay==2 && buyCarCode==item.BUYCARD_CODE"></span>
 								</div>
-							</div>					
+							</div>
 							<div class="lh24 cor_g">{{item.BUYCARD_CODE}}</div>
 						</li>
 					</ul>
@@ -167,11 +167,13 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
-	swipeBack: true
+				swipeBack: true
 			});
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				var APP = new Vue({
 					el: '#app',
 					data: {
@@ -203,40 +205,40 @@
 						timeEnabled: true
 					},
 					filters: {
-						minute(value) {
+						minute: function minute(value) {
 							if(value == 0) {
-								return '订单超时,支付通道关闭'
+								return '订单超时,支付通道关闭';
 							}
-							let m = Math.floor(value / 60)
-							let s = value % 60;
-							m = (m >= 10) ? m : '0' + m;
-							s = (s >= 10) ? s : '0' + s;
-							return '剩余时间:' + m + ':' + s
+							var m = Math.floor(value / 60);
+							var s = value % 60;
+							m = m >= 10 ? m : '0' + m;
+							s = s >= 10 ? s : '0' + s;
+							return '剩余时间:' + m + ':' + s;
 						}
 					},
-					created: function() {
+					created: function created() {
 						/*开始倒计时*/
-						var _this = this
-						var time = setInterval(() => {
+						var _this = this;
+						var time = setInterval(function() {
 							_this.time -= 1;
 							if(_this.time <= 0) {
 								_this.time = 0;
-								_this.timeEnabled = false
-								clearInterval(time)
+								_this.timeEnabled = false;
+								clearInterval(time);
 							}
-						}, 1000)
+						}, 1000);
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						//							console.log(app.mark + plus.storage.getItem('token'))
 						var _this = this;
 
 						var self = plus.webview.currentWebview();
 
-						this.orderCode = self.payCode
+						this.orderCode = self.payCode;
 						/*初始化支付通道*/
-						this._initPay()
+						this._initPay();
 						//初始化订单内容
-						this._iniOrder(() => {})
+						this._iniOrder(function() {});
 
 						var old_back = mui.back;
 						mui.back = function() {
@@ -247,21 +249,21 @@
 									old_back();
 								}
 							});
-						}
-
+						};
 					},
 					methods: {
 						/*判断充值卡是否i可用*/
-						_enabledCard(money) {
+						_enabledCard: function _enabledCard(money) {
 							if(money >= this.order.ORDER_PAY_AMOUNT) {
-								return true
+								return true;
 							} else {
-								return false
+								return false;
 							}
 						},
+
 						/*初始化支付通道*/
-						_initPay() {
-							var _this = this
+						_initPay: function _initPay() {
+							var _this = this;
 							plus.payment.getChannels(function(channels) {
 								for(var i in channels) {
 									if(channels[i].id == "alipay") {
@@ -275,8 +277,9 @@
 								alert(" 获取支付通道失败： " + e.message);
 							});
 						},
+
 						//初始化订单内容
-						_iniOrder(callback) {
+						_iniOrder: function _iniOrder(callback) {
 							var _this = this;
 							/*获取订单详情*/
 							app.ajax(app.baseUrl + '/api/OrderService/GetOrder', {
@@ -284,71 +287,71 @@
 								data: {
 									ORDER_CODE: _this.orderCode
 								},
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										_this.order = result.Data.data
-										_this.amount = result.Data.data.ORDER_PAY_AMOUNT
-
+										_this.order = result.Data.data;
+										_this.amount = result.Data.data.ORDER_PAY_AMOUNT;
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 							/*获取用户总账户余额*/
 							app.ajax(app.baseUrl + '/api/MemberInfo/GetMemberInfo', {
 								type: 'get', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										_this.account = result.Data.MEMBER_ACOUNT
+										_this.account = result.Data.MEMBER_ACOUNT;
 										//										alert(_this.account)
 										if(_this.order.ORDER_PAY_AMOUNT > _this.account) {
 
-											_this.disable = false
+											_this.disable = false;
 											//												alert(_this.disable)
 										}
-										if(callback) callback()
+										if(callback) callback();
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
-							this._initRefillcards() //初始化充值卡
-
+							this._initRefillcards(); //初始化充值卡
 						},
+
 						/*初始化充值卡*/
-						_initRefillcards() {
+						_initRefillcards: function _initRefillcards() {
 							var _this = this;
 							app.ajax(app.baseUrl + '/api/Buycard/GetBycardList', {
 								type: 'get', //HTTP请求类型
 								data: {
 									ORDER_CODE: _this.orderCode
 								},
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										_this.cardsList = result.Data.ListInfo
-										console.log(_this.cardsList.length)
+										_this.cardsList = result.Data.ListInfo;
+										console.log(_this.cardsList.length);
 										//												alert(result.Data.ListInfo.length)
 										//										 alert(result.Data.ListInfo.length)
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
 						},
+
 						/*选择支付方式*/
-						_payWay(t, item) {
+						_payWay: function _payWay(t, item) {
 							/*	item是当选择都是店铺充值卡支付的时候,接收到的充值卡对象*/
-							var _this = this
+							var _this = this;
 							switch(t) {
 								case 1:
 									/*余额支付*/
 									if(this.order.ORDER_PAY_AMOUNT > this.account) {
-										this.disable = false
+										this.disable = false;
 									}
-									this.buyCarCode = ''
+									this.buyCarCode = '';
 									break;
 								case 2:
 									/*充值卡支付*/
@@ -356,122 +359,122 @@
 									/*BUYCARD_RESIDUE是剩余总面额*/
 									if(item.BUYCARD_RESIDUE < _this.order.ORDER_PAY_AMOUNT) {
 										plus.nativeUI.toast('余额不足，无法完成支付');
-										this.disable = false
+										this.disable = false;
 										return;
 									}
-									this.disable = true
-									this.buyCarCode = item.BUYCARD_CODE
+									this.disable = true;
+									this.buyCarCode = item.BUYCARD_CODE;
 
 									break;
 								case 3:
 									/*支付宝支付*/
-									this.disable = true
-									this.buyCarCode = ''
+									this.disable = true;
+									this.buyCarCode = '';
 									break;
 								case 4:
 									/*微信支付*/
-									this.disable = true
-									this.buyCarCode = ''
+									this.disable = true;
+									this.buyCarCode = '';
 									break;
 								default:
 									break;
 							}
-							this.curWay = t
+							this.curWay = t;
 						},
+
 						/*支付方式判断*/
-						_paySubmit() {
+						_paySubmit: function _paySubmit() {
 							if(!this.timeEnabled) {
-								plus.nativeUI.alert('订单超时，请重新创建订单', () => {})
-								return
+								plus.nativeUI.alert('订单超时，请重新创建订单', function() {});
+								return;
 							}
 
-							let s = this.curWay;
+							var s = this.curWay;
 							if(!this.disable) return;
 							//							alert(this.disable)
-							var _this = this
+							var _this = this;
 
 							switch(s) {
 								case 1:
-									plus.nativeUI.showWaiting('支付中...')
+									plus.nativeUI.showWaiting('支付中...');
 									/*余额支付*/
-									let data = {
+									var data = {
 										ORDER_CODE: _this.orderCode,
 										ORDER_PAY_TYPE: 2
-									}
+									};
 									app.ajax(app.baseUrl + '/api/Order/PayOrder', {
 										// dataType:'json',//服务器返回json格式数据
 										data: data,
 										type: 'post', //HTTP请求类型
-										success: function(result) {
+										success: function success(result) {
 											if(result.Success) {
-												mui.later(() => {
-													plus.nativeUI.closeWaiting()
-													plus.nativeUI.toast('支付成功')
-													_this.success()
-												}, 1500)
+												mui.later(function() {
+													plus.nativeUI.closeWaiting();
+													plus.nativeUI.toast('支付成功');
+													_this.success();
+												}, 1500);
 
 												/*还原数据*/
 											} else {
-												plus.nativeUI.closeWaiting()
-												plus.nativeUI.toast(result.Msg)
-//												console.log(result.Msg)
+												plus.nativeUI.closeWaiting();
+												plus.nativeUI.toast(result.Msg);
+												//												console.log(result.Msg)
 											}
-
 										}
 									});
 									break;
 								case 2:
 									if(!_this.buyCarCode) return;
-									plus.nativeUI.showWaiting('支付中...')
+									plus.nativeUI.showWaiting('支付中...');
 									/*充值卡支付*/
-									let data2 = {
+									var data2 = {
 										ORDER_CODE: _this.orderCode,
 										ORDER_PAY_TYPE: 3,
 										BUYCARD_CODE: _this.buyCarCode
-									}
-//									console.log(JSON.stringify(data2))
+										//									console.log(JSON.stringify(data2))
+									};
 									app.ajax(app.baseUrl + '/api/Order/PayOrder', {
 										// dataType:'json',//服务器返回json格式数据
 										data: data2,
 										type: 'post', //HTTP请求类型
-										success: function(result) {
+										success: function success(result) {
 											if(result.Success) {
-												mui.later(() => {
-													plus.nativeUI.closeWaiting()
-													plus.nativeUI.toast('支付成功')
-													_this.success()
-												}, 1500)
+												mui.later(function() {
+													plus.nativeUI.closeWaiting();
+													plus.nativeUI.toast('支付成功');
+													_this.success();
+												}, 1500);
 												/*还原数据*/
 											} else {
-												plus.nativeUI.closeWaiting()
-												plus.nativeUI.toast(result.Msg)
-												console.log(result.Msg)
+												plus.nativeUI.closeWaiting();
+												plus.nativeUI.toast(result.Msg);
+												console.log(result.Msg);
 											}
-
 										}
 									});
 									break;
 								case 3:
 									/*支付宝支付*/
-									this._pay('alipay')
+									this._pay('alipay');
 									break;
 								case 4:
 									/*微信支付*/
-									this._pay('wxpay')
+									this._pay('wxpay');
 									break;
 								default:
 									break;
 							}
 						},
+
 						/*支付操作*/
-						_pay(id) {
-//							alert(id)
-							var _this = this
+						_pay: function _pay(id) {
+							//							alert(id)
+							var _this = this;
 							var ALIPAYSERVER = app.baseUrl + '/api/Order/PayOrder?ORDER_PAY_TYPE=1&PAY_WAY=1&ORDER_CODE=' + this.orderCode;
 							var WXPAYSERVER = app.baseUrl + '/api/Order/PayOrder?ORDER_PAY_TYPE=1&PAY_WAY=2&ORDER_CODE=' + this.orderCode;
 
 							var PAYSERVER = '';
-							
+
 							if(id == 'alipay') {
 								//								alert(1)
 								PAYSERVER = ALIPAYSERVER;
@@ -483,65 +486,66 @@
 								plus.nativeUI.alert(' 不支持此支付通道！ ', null, ' 充值 ');
 								return;
 							}
-//							console.log(JSON.stringify(this.orderCode) )
+							//							console.log(JSON.stringify(this.orderCode) )
 							var xhr = new XMLHttpRequest();
 							//							var amount = inputMoney.value;
-							plus.nativeUI.showWaiting('支付中...')
+							plus.nativeUI.showWaiting('支付中...');
 							xhr.onreadystatechange = function() {
 								switch(xhr.readyState) {
 									case 4:
 										if(xhr.status == 200) {
-//											alert(result)
-											plus.nativeUI.closeWaiting()
+											//											alert(result)
+											plus.nativeUI.closeWaiting();
 											plus.payment.request(_this.channel, JSON.parse(xhr.responseText).Data, function(result) {
-//												plus.nativeUI.alert(" 支付成功！ ", function() {
-													plus.nativeUI.toast('支付成功')		
-													_this.success()
-//												});
+												//												plus.nativeUI.alert(" 支付成功！ ", function() {
+												plus.nativeUI.toast('支付成功');
+												_this.success();
+												//												});
 											}, function(error) {
 												plus.nativeUI.alert(" 支付失败");
 											});
 										} else {
-											plus.nativeUI.closeWaiting()
+											plus.nativeUI.closeWaiting();
 											alert(" 获取订单信息失败！ ");
 										}
 										break;
 									default:
 										break;
 								}
-							};							
+							};
 							xhr.open('POST', PAYSERVER);
 							xhr.setRequestHeader("Authorization", app.mark + plus.storage.getItem('token'));
 							xhr.send();
 						},
+
 						/*支付成功跳转支付成功页面*/
-						success() {
-							if(this.curWay==1 || this.curWay==2){
-								plus.webview.currentWebview().close()
-								plus.webview.getWebviewById('orders').evalJS('refresh()')
-								if(plus.webview.getWebviewById('toPay')){
+						success: function success() {
+							if(this.curWay == 1 || this.curWay == 2) {
+								plus.webview.currentWebview().close();
+								plus.webview.getWebviewById('orders').evalJS('refresh()');
+								if(plus.webview.getWebviewById('toPay')) {
 									plus.webview.getWebviewById('toPay').close();
 								}
-								
-								if(plus.webview.getWebviewById('productOrder')){
+
+								if(plus.webview.getWebviewById('productOrder')) {
 									plus.webview.getWebviewById('productOrder').close();
 								}
-								if(plus.webview.getWebviewById('productBuy')){
+								if(plus.webview.getWebviewById('productBuy')) {
 									plus.webview.getWebviewById('productBuy').close();
 								}
-								if(plus.webview.getWebviewById('productList')){
+								if(plus.webview.getWebviewById('productList')) {
 									plus.webview.getWebviewById('productList').close();
 								}
-								
-								if(plus.webview.getWebviewById('platformCard')){
+
+								if(plus.webview.getWebviewById('platformCard')) {
 									plus.webview.getWebviewById('platformCard').close();
 								}
-								if(plus.webview.getWebviewById('spread')){
+								if(plus.webview.getWebviewById('spread')) {
 									plus.webview.getWebviewById('spread').close();
 								}
 								plus.webview.getLaunchWebview().show();
-								plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
-																
+								plus.webview.getLaunchWebview().evalJS('switchMenu(2)');
+
 								return;
 							}
 							mui.openWindow({
@@ -560,9 +564,9 @@
 								},
 								waiting: {
 									autoShow: true, //自动显示等待框，默认为true
-									title: '正在加载...', //等待对话框上显示的提示内容
+									title: '正在加载...' //等待对话框上显示的提示内容
 								}
-							})
+							});
 						}
 					}
 

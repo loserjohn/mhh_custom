@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>注册</title>
@@ -8,14 +9,14 @@
 		<link rel="stylesheet" href="../css/common.css" />
 		<link rel="stylesheet" href="../css/iconfont.css" />
 		<style>
-			.yzm{
+			.yzm {
 				width: 150px;
 				margin-top: 15px;
 			}
-			.btns {
-			    margin-top: 15px;
-			}
 			
+			.btns {
+				margin-top: 15px;
+			}
 		</style>
 	</head>
 
@@ -30,59 +31,53 @@
 					须知				
 			</button>
 		</header>-->
-			
-			<div class="container " id = "content">
+
+			<div class="container " id="content">
 				<div class="container">
 					<div class="cm_input_groups flex">
 						<div class="cm_groups_title">
 							手机号
-						</div>	
+						</div>
 						<input class="f1 cm_groups_input" v-model.number="mobile" type="text" placeholder="请输入您的手机号码" value="" />
 					</div>
 					<div class=" flex">
 						<div class="cm_input_groups flex">
 							<div class="cm_groups_title">
 								验证码
-							</div>	
+							</div>
 							<input class="f1 cm_groups_input" v-model="validate" type="text" placeholder="验证码" value="" />
 						</div>
 						<div class="yzm cm_btn_half" @click="_getYZM">
-								{{enables?ctime:'获取验证码'}}	
+							{{enables?ctime:'获取验证码'}}
 						</div>
 					</div>
 					<div class="cm_input_groups flex mui-input-row">
 						<div class="cm_groups_title">
 							密码
-						</div>	
-						<input class="f1 cm_groups_input" :type="toggleType?'password':'text'"  v-model="password" placeholder="请输入您的密码" value="" />
+						</div>
+						<input class="f1 cm_groups_input" :type="toggleType?'password':'text'" v-model="password" placeholder="请输入您的密码" value="" />
 						<i class="iconfont icon-kanguo fs16" @click="_toggleType" :class="{cor_y:toggleType?true:false}"></i>
-					</div>	
+					</div>
 					<div class="cm_input_groups flex">
 						<div class="cm_groups_title" style="width: 140px;">
 							推荐人号码
-						</div>	
+						</div>
 						<input class="f1 cm_groups_input" v-model.number="parent" type="text" placeholder="请输入推荐人手机号码" value="" />
 					</div>
 				</div>
 				<div class="btns">
-					<div class="cm_btn" @click = "_toregiste">
+					<div class="cm_btn" @click="_toregiste">
 						注册
 					</div>
 					<div class="flex">
-						<div class="f1 t_l" >
-							<input
-							  type="checkbox"
-							  v-model="agree"
-							  true-value="yes"
-							  false-value="no"
-							  id ="agree"
-							>
+						<div class="f1 t_l">
+							<input type="checkbox" v-model="agree" true-value="yes" false-value="no" id="agree">
 							<label for="agree">同意<span class="cor_y">《马嘿嘿用户协议》</span></label>
 						</div>
 					</div>
 				</div>
 				<img src="../images/logo2.png" alt="" class="logo_bg" />
-				
+
 			</div>
 		</div>
 		<script src="../js/mui.min.js"></script>
@@ -91,208 +86,223 @@
 		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
-	swipeBack: true
-			})
-			mui.plusReady(function(){
-				app.WXinit(CryptoJS)
-//				var wv = plus.webview.currentWebview();
-//						wv.setStyle({
-//							titleNView: {
-//								autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-//								titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-//								titleSize: "14px", // 字体大小,默认17px
-//								backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-//								progress: { // 标题栏控件的进度条样式
-//									color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-//									height: "2px" // 进度条高度,默认值为"2px"         
-//								},
-//								splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-//									color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-//									height: "1px" // 分割线高度,默认值为"2px"
-//								}
-//							}
-//						});
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS);
+				//				var wv = plus.webview.currentWebview();
+				//						wv.setStyle({
+				//							titleNView: {
+				//								autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+				//								titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+				//								titleSize: "14px", // 字体大小,默认17px
+				//								backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+				//								progress: { // 标题栏控件的进度条样式
+				//									color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
+				//									height: "2px" // 进度条高度,默认值为"2px"         
+				//								},
+				//								splitLine: { // 标题栏控件的底部分割线，类似borderBottom
+				//									color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
+				//									height: "1px" // 分割线高度,默认值为"2px"
+				//								}
+				//							}
+				//						});
 				var APP = new Vue({
-						el: '#app',
-						data: {
-							opId:'',						
-							pic_head:'',/* 用户头像 */							
-							petname:'',/* 用户昵称 */							
-							mobile:'',/* 电话 */
-							validate:'', /* 验证码 */
-							password:'', /* 密码 */
-							type:2, /* 注册类型 */
-							agree:'yes',
-							toggleType:true,
-							enables:false,
-							time:90,
-							parent:''
-						},
-						created() {
-//							app.initHeader();
-						},
-						computed:{
-							ctime(){
-								return '('+this.time+'s)'
-								
-							}
-						},
-						mounted(){					
-							this.opId = plus.storage.getItem('opId');
-							this.pic_head = plus.storage.getItem('pic_head');
-							this.petname = plus.storage.getItem('petname');
-							
-							plus.nativeUI.closeWaiting()
-							mui.currentWebview.show('pop-in', 300, function () {}, {});
-							if(mui.os.android){
-								var originalHeight=document.documentElement.clientHeight || document.body.clientHeight;
-							
-								window.onresize=function(){							
-								    //软键盘弹起与隐藏  都会引起窗口的高度发生变化
-								    var  resizeHeight=document.documentElement.clientHeight || document.body.clientHeight;
-								
-								    if(resizeHeight*1<originalHeight*1){ //resizeHeight<originalHeight证明窗口被挤压了
-								
-								            plus.webview.currentWebview().setStyle({
-								                height:originalHeight
-								            });
-								
-								      }
-								}
-							}
-						},
-						methods: {
-							/*注册臭验证*/
-							_toregiste(){
-								var _this = this
-								/*号码验证*/
-								if(!this.mobile){
-									plus.nativeUI.alert("请输入手机号", function(){},'马嘿嘿提醒您');
-									return;
-								}else if(!app.checkPhone(this.mobile)){
-									plus.nativeUI.alert("手机号码不正确", function(){},'马嘿嘿提醒您');
-									return;
-								}else if(!this.validate){
-									plus.nativeUI.alert("请输入验证码", function(){},'马嘿嘿提醒您');
-									return;
-								}else if(!this.password){
-									plus.nativeUI.alert("请输入密码", function(){},'马嘿嘿提醒您');
-									return;
-								}else if(this.agree!=='yes'){
-									plus.nativeUI.alert("请您务必同意马嘿嘿用户协议", function(){},'马嘿嘿提醒您');
-									return;
-								}else if(!this.enables ){
-									plus.nativeUI.alert("超过时限", function(){
-										return false; 
-									},'马嘿嘿提醒您');
-									return;
-								}		
-								
-								plus.nativeUI.showWaiting();
-								/*调用注册接口*/
-								var data ={
-									password:this.password,
-									aespassword:this._Encrypt(this.password),
-									validate:this.validate,
-									parent:this.parent,
-									type:1,
-									mobile:this.mobile,								
-								}
-								app.registe(data,function(status, msg){
-									if (status) {
-										/*注册成功*/
-										
-										/*直接登陆*/
-										var data ={
-											username:_this.mobile,
-											rpass:_this.password,
-											password:_this._Encrypt(_this.password),
-											type:1,						
-										}
-										app.zhlogin(data,(status,msg)=>{
-											plus.nativeUI.closeWaiting();
-											if(status){
-												/*登陆成功*/
-												plus.nativeUI.toast('登陆成功')
-												plus.webview.getWebviewById('orders').evalJS('refresh()')
-												plus.webview.getWebviewById('mine').evalJS('refresh(true)')
+					el: '#app',
+					data: {
+						opId: '',
+						pic_head: '',
+						/* 用户头像 */
+						petname: '',
+						/* 用户昵称 */
+						mobile: '',
+						/* 电话 */
+						validate: '',
+						/* 验证码 */
+						password: '',
+						/* 密码 */
+						type: 2,
+						/* 注册类型 */
+						agree: 'yes',
+						toggleType: true,
+						enables: false,
+						time: 90,
+						parent: ''
+					},
+					created: function created() {
+						//							app.initHeader();
+					},
 
-												if(plus.webview.getWebviewById('login')){
-													plus.webview.getWebviewById('login').close()
-												}
-												mui.back()
-												/*跳转首页*/
-											}else{
-												plus.nativeUI.closeWaiting();
-												plus.nativeUI.toast(msg)
-											}
-										})									
-									} else {
-										plus.nativeUI.closeWaiting();
-										plus.nativeUI.toast(msg)
-									}
-								},'wx')
-
-								
-							},
-							/* 获取验证码 */
-							_getYZM(){	
-								if(this.enables)return;
-								// alert(app.checkPhone(this.mobile))
-								if(!this.mobile || !app.checkPhone(this.mobile)){
-									plus.nativeUI.alert("手机号码不正确", function(){
-										return false; 
-									},'马嘿嘿提醒您');
-									return;
-								}
-							
-								var waiting = plus.nativeUI.showWaiting();
-								app.getValidate(this.mobile,1,(status,Msg)=>{
-									waiting.close()
-									if(status){
-										/*开始倒计时*/
-										this._timeMove()
-										plus.nativeUI.toast("发送成功");
-									}else{
-										plus.nativeUI.toast(Msg);
-									}
-								})
-							},
-//							加密
-							_Encrypt(str) {
-								str = str + '|.|' + new Date().getTime()
-								var key = CryptoJS.enc.Utf8.parse(app._KEY);
-								var iv = CryptoJS.enc.Utf8.parse(app._IV);
-								var encrypted = '';
-								var srcs = CryptoJS.enc.Utf8.parse(str);
-								encrypted = CryptoJS.AES.encrypt(srcs, key, {
-									iv: iv,
-									mode: CryptoJS.mode.CBC,
-									padding: CryptoJS.pad.Pkcs7
-								});
-								return encrypted.ciphertext.toString();
-							},
-//							切换密码框
-							_toggleType(){
-								this.toggleType =!this.toggleType
-							},
-							/*倒计时*/
-							_timeMove(){
-								this.enables = true;
-								var time=setInterval(()=>{
-									this.time -=1;
-									if(this.time==0){
-										this.enables = false;
-										clearInterval(time);
-										this.time = 90
-									}
-								},1000)
-							}
+					computed: {
+						ctime: function ctime() {
+							return '(' + this.time + 's)';
 						}
+					},
+					mounted: function mounted() {
+						this.opId = plus.storage.getItem('opId');
+						this.pic_head = plus.storage.getItem('pic_head');
+						this.petname = plus.storage.getItem('petname');
 
-					})
-			})
+						plus.nativeUI.closeWaiting();
+						mui.currentWebview.show('pop-in', 300, function() {}, {});
+						if(mui.os.android) {
+							var originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+							window.onresize = function() {
+								//软键盘弹起与隐藏  都会引起窗口的高度发生变化
+								var resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+								if(resizeHeight * 1 < originalHeight * 1) {
+									//resizeHeight<originalHeight证明窗口被挤压了
+
+									plus.webview.currentWebview().setStyle({
+										height: originalHeight
+									});
+								}
+							};
+						}
+					},
+
+					methods: {
+						/*注册臭验证*/
+						_toregiste: function _toregiste() {
+							var _this = this;
+							/*号码验证*/
+							if(!this.mobile) {
+								plus.nativeUI.alert("请输入手机号", function() {}, '马嘿嘿提醒您');
+								return;
+							} else if(!app.checkPhone(this.mobile)) {
+								plus.nativeUI.alert("手机号码不正确", function() {}, '马嘿嘿提醒您');
+								return;
+							} else if(!this.validate) {
+								plus.nativeUI.alert("请输入验证码", function() {}, '马嘿嘿提醒您');
+								return;
+							} else if(!this.password) {
+								plus.nativeUI.alert("请输入密码", function() {}, '马嘿嘿提醒您');
+								return;
+							} else if(this.agree !== 'yes') {
+								plus.nativeUI.alert("请您务必同意马嘿嘿用户协议", function() {}, '马嘿嘿提醒您');
+								return;
+							} else if(!this.enables) {
+								plus.nativeUI.alert("超过时限", function() {
+									return false;
+								}, '马嘿嘿提醒您');
+								return;
+							}
+
+							plus.nativeUI.showWaiting();
+							/*调用注册接口*/
+							var data = {
+								password: this.password,
+								aespassword: this._Encrypt(this.password),
+								validate: this.validate,
+								parent: this.parent,
+								type: 1,
+								mobile: this.mobile
+							};
+							app.registe(data, function(status, msg) {
+								if(status) {
+									/*注册成功*/
+
+									/*直接登陆*/
+									var data = {
+										username: _this.mobile,
+										rpass: _this.password,
+										password: _this._Encrypt(_this.password),
+										type: 1
+									};
+									app.zhlogin(data, function(status, msg) {
+										plus.nativeUI.closeWaiting();
+										if(status) {
+											/*登陆成功*/
+											plus.nativeUI.toast('登陆成功');
+											plus.webview.getWebviewById('orders').evalJS('refresh()');
+											plus.webview.getWebviewById('mine').evalJS('refresh(true)');
+
+											if(plus.webview.getWebviewById('login')) {
+												plus.webview.getWebviewById('login').close();
+											}
+											mui.back();
+											/*跳转首页*/
+										} else {
+											plus.nativeUI.closeWaiting();
+											plus.nativeUI.toast(msg);
+										}
+									});
+								} else {
+									plus.nativeUI.closeWaiting();
+									plus.nativeUI.toast(msg);
+								}
+							}, 'wx');
+						},
+
+						/* 获取验证码 */
+						_getYZM: function _getYZM() {
+							var _this2 = this;
+
+							if(this.enables) return;
+							// alert(app.checkPhone(this.mobile))
+							if(!this.mobile || !app.checkPhone(this.mobile)) {
+								plus.nativeUI.alert("手机号码不正确", function() {
+									return false;
+								}, '马嘿嘿提醒您');
+								return;
+							}
+
+							var waiting = plus.nativeUI.showWaiting();
+							app.getValidate(this.mobile, 1, function(status, Msg) {
+								waiting.close();
+								if(status) {
+									/*开始倒计时*/
+									_this2._timeMove();
+									plus.nativeUI.toast("发送成功");
+								} else {
+									plus.nativeUI.toast(Msg);
+								}
+							});
+						},
+
+						//							加密
+						_Encrypt: function _Encrypt(str) {
+							str = str + '|.|' + new Date().getTime();
+							var key = CryptoJS.enc.Utf8.parse(app._KEY);
+							var iv = CryptoJS.enc.Utf8.parse(app._IV);
+							var encrypted = '';
+							var srcs = CryptoJS.enc.Utf8.parse(str);
+							encrypted = CryptoJS.AES.encrypt(srcs, key, {
+								iv: iv,
+								mode: CryptoJS.mode.CBC,
+								padding: CryptoJS.pad.Pkcs7
+							});
+							return encrypted.ciphertext.toString();
+						},
+
+						//							切换密码框
+						_toggleType: function _toggleType() {
+							this.toggleType = !this.toggleType;
+						},
+
+						/*倒计时*/
+						_timeMove: function _timeMove() {
+							var _this3 = this;
+
+							this.enables = true;
+							var time = setInterval(function() {
+								_this3.time -= 1;
+								if(_this3.time == 0) {
+									_this3.enables = false;
+									clearInterval(time);
+									_this3.time = 90;
+								}
+							}, 1000);
+						}
+					}
+
+				});
+			});
 		</script>
 	</body>
 

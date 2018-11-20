@@ -347,12 +347,14 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -384,46 +386,45 @@
 						/*星级筛选*/
 						currPosMark: ''
 					},
-					created: function() {
+					created: function created() {
 						app.initHeader();
 						/*获取转过来的项目联系*/
 						var self = plus.webview.currentWebview();
-						this.proType = self.proType
-
+						this.proType = self.proType;
 					},
 					filters: {
-						sortName(value) {
+						sortName: function sortName(value) {
 							switch(value) {
 								case 0:
-									return '智能排序'
+									return '智能排序';
 									break;
 								case 1:
-									return '人气最高'
+									return '人气最高';
 									break;
 								case 2:
-									return '距离最近'
+									return '距离最近';
 									break;
 								case 3:
-									return '价格最低'
+									return '价格最低';
 									break;
 								case 4:
-									return '价格最高'
+									return '价格最高';
 									break;
 								default:
 									break;
 							}
 						}
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						//							console.log(app.mark + plus.storage.getItem('token'))
 						var _this = this;
 
-						var scroll = this.$refs.scroll
+						var scroll = this.$refs.scroll;
 						//							初始化scroll的屏幕位置
 						this.scrollTop = document.getElementById('header').offsetHeight + 88 + 'px';
 
 						/*初始化数据*/
-						this._getData()
+						this._getData();
 
 						/*初始化scroll*/
 						this.$nextTick(function() {
@@ -441,62 +442,56 @@
 										threshold: 50,
 										stop: 0
 									}
-								})
-
+								});
 							} else {
 								_this.scroll.refresh();
 							};
 							_this.scroll.on('pullingUp', function() {
-								_this._getData((b) => {
-									if(b) {
-
-									} else {
-										_this.scroll.finishPullUp()
-
+								_this._getData(function(b) {
+									if(b) {} else {
+										_this.scroll.finishPullUp();
 									}
-								})
-							})
+								});
+							});
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
-								plus.nativeUI.showWaiting()
+								plus.nativeUI.showWaiting();
 								_this.index = 1;
 								_this.node = '查看加载更多';
 								_this.result = [];
-								_this._getData((b) => {
-									plus.nativeUI.closeWaiting()
-									if(b) {
-
-									} else {
-										_this.scroll.finishPullUp()
+								_this._getData(function(b) {
+									plus.nativeUI.closeWaiting();
+									if(b) {} else {
+										_this.scroll.finishPullUp();
 									}
-									_this.scroll.finishPullDown()
-									plus.nativeUI.closeWaiting()
-								})
-							})
-
-						})
+									_this.scroll.finishPullDown();
+									plus.nativeUI.closeWaiting();
+								});
+							});
+						});
 					},
 					methods: {
 						//						默认头像
-						_default(e) {
+						_default: function _default(e) {
 							var dom = e.target;
 							//							console.log(dom)
-							dom.src = "../../images/default_avatar.jpg"
+							dom.src = "../../images/default_avatar.jpg";
 						},
-						_getArr(str) {
-							var arr = str.split(',')
-							var res = []
-							arr.forEach((item) => {
-								res.push(item)
-							})
-							return res
+						_getArr: function _getArr(str) {
+							var arr = str.split(',');
+							var res = [];
+							arr.forEach(function(item) {
+								res.push(item);
+							});
+							return res;
 						},
-						_chooseStars(k) {
-							this.level = k
+						_chooseStars: function _chooseStars(k) {
+							this.level = k;
 							//							alert(this.level)
 						},
+
 						/*选择排序*/
-						_chooseSort(k) {
+						_chooseSort: function _chooseSort(k) {
 							this.sort = k;
 							this.index = 1;
 							this.node = '查看加载更多';
@@ -504,105 +499,106 @@
 							this._getData();
 							this.classShow = false;
 						},
+
 						/*选择分类*/
-						_chooseType(t) {
+						_chooseType: function _chooseType(t) {
 							this.proType = t;
 							this.index = 1;
 							this.node = '查看加载更多';
 							this.result = [];
 							this._getData();
 							this.classShow = false;
-							this.scroll.finishPullUp()
+							this.scroll.finishPullUp();
 						},
+
 						/*切换视图及数据变化*/
-						_switchView(t) {
+						_switchView: function _switchView(t) {
 							switch(t) {
 								case 1:
-									this.viewType = !this.viewType
+									this.viewType = !this.viewType;
 									break;
 								case 2:
 									if(this.classShow && this.classShowType == 1) {
 										this.classShow = false;
-										return
+										return;
 									}
-									this.classShow = true
-									this.classShowType = 1 /*模态框显示的市分类的选项*/
+									this.classShow = true;
+									this.classShowType = 1; /*模态框显示的市分类的选项*/
 									break;
 								case 3:
 									if(this.classShow && this.classShowType == 2) {
 										this.classShow = false;
-										return
+										return;
 									}
 
-									this.classShow = true
-									this.classShowType = 2 /*模态框显示的是排序的选项*/
+									this.classShow = true;
+									this.classShowType = 2; /*模态框显示的是排序的选项*/
 									break;
 								case 4:
 
-									this.classShow = false /*模态框显示的是排序的选项*/
+									this.classShow = false; /*模态框显示的是排序的选项*/
 									break;
 								default:
 									break;
 							}
-
 						},
+
 						/*跳转页面*/
-						_NWnavigateTo(dstUrl, dstId, extras) {
-							let exa = extras
-							let option = {
-
-							}
-							app.navigater(dstUrl, dstId, exa, option)
-
+						_NWnavigateTo: function _NWnavigateTo(dstUrl, dstId, extras) {
+							var exa = extras;
+							var option = {};
+							app.navigater(dstUrl, dstId, exa, option);
 						},
+
 						/*跳转页面*/
-						_navigateTo(dstUrl, dstId, extras) {
-							let exa = extras
-							let option = {
-//								autoShow: false
-								showTitle:true,
-							}
-							app.navigater(dstUrl, dstId, exa, option)
-
+						_navigateTo: function _navigateTo(dstUrl, dstId, extras) {
+							var exa = extras;
+							var option = {
+								//								autoShow: false
+								showTitle: true
+							};
+							app.navigater(dstUrl, dstId, exa, option);
 						},
+
 						//						确认筛选
-						_submit() {
-							this.index = 1
-							this.result = []
-							plus.nativeUI.showWaiting()
-							this._getData(() => {
-								plus.nativeUI.closeWaiting()
-							})
+						_submit: function _submit() {
+							this.index = 1;
+							this.result = [];
+							plus.nativeUI.showWaiting();
+							this._getData(function() {
+								plus.nativeUI.closeWaiting();
+							});
 						},
-						/*获取数据*/
-						_getData(callback) {
 
-							var _this = this
-							let pos = plus.storage.getItem('pos')
+						/*获取数据*/
+						_getData: function _getData(callback) {
+
+							var _this = this;
+							var pos = plus.storage.getItem('pos');
 							if(!pos) {
 								plus.nativeUI.closeWaiting();
-								plus.nativeUI.toast('无法获取您的定位，请你刷新')
-								plus.webview.currentWebview().close()
+								plus.nativeUI.toast('无法获取您的定位，请你刷新');
+								plus.webview.currentWebview().close();
 								return;
 							}
 
-							pos = JSON.parse(pos)
+							pos = JSON.parse(pos);
 
-							this.currPosMark = pos.address
+							this.currPosMark = pos.address;
 
 							var data = {
 								pageIndex: this.index,
 								pageSize: 6,
-								lon: (pos.longitude).toFixed(6),
-								lat: (pos.latitude).toFixed(6),
+								lon: pos.longitude.toFixed(6),
+								lat: pos.latitude.toFixed(6),
 								SHOP_BUSINESS_TYPE: this.proType,
 								ORDER_TYPE: this.sort
 								//								distance: 5000
-							}
+							};
 
-							if(this.min) data.lowest = this.min
-							if(this.max) data.highest = this.max
-							if(this.level != 0) data.SHOP_STAR = this.level
+							if(this.min) data.lowest = this.min;
+							if(this.max) data.highest = this.max;
+							if(this.level != 0) data.SHOP_STAR = this.level;
 							//console.log(JSON.stringify(data))
 							mui.ajax(app.baseUrl + '/api/Shop/GetShops', {
 								data: data,
@@ -611,80 +607,80 @@
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
-									_this.loader = false
+								success: function success(result) {
+									_this.loader = false;
 									if(result.Success) {
 
 										if(_this.result.length == result.Data.Total) {
-											_this.scroll.refresh()
-											_this.node = '没有数据了'
-											if(callback) callback(true)
-											return
+											_this.scroll.refresh();
+											_this.node = '没有数据了';
+											if(callback) callback(true);
+											return;
 										} else {
 											_this.result = _this.result.concat(result.Data.ListInfo);
 											_this.index += 1;
-											mui.later(() => {
-												_this.scroll.refresh()
-												if(callback) callback(false)
-											}, 500)
+											mui.later(function() {
+												_this.scroll.refresh();
+												if(callback) callback(false);
+											}, 500);
 										}
 									} else {
-										if(callback) callback()
-										plus.nativeUI.toast(result.Msg)
-										mui.back()
+										if(callback) callback();
+										plus.nativeUI.toast(result.Msg);
+										mui.back();
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									_this.loader = false
-									app.catchErr(type)
+									_this.loader = false;
+									app.catchErr(type);
 								}
 							});
-							_this.modalShow = false
+							_this.modalShow = false;
 						},
+
 						/*刷新*/
-						_refreshData() {
+						_refreshData: function _refreshData() {},
 
-						},
 						/*回到顶部*/
-						_backTop() {
-							this.scroll.scrollTo(0, 0, 300)
+						_backTop: function _backTop() {
+							this.scroll.scrollTo(0, 0, 300);
 						},
-						/*模态框显示控制*/
-						_modelToggle() {
-							this.modalShow = !this.modalShow;
-							this.classShow = false
-						},
-						//						跳转搜索页/**/
-						_toSearch() {
-							let desturl = './search.html'
-							let destid = 'search'
-							let exa = {}
-							let option = {
-								autoShow: false
-							}
-							app.navigater(desturl, destid, exa, option)
 
+						/*模态框显示控制*/
+						_modelToggle: function _modelToggle() {
+							this.modalShow = !this.modalShow;
+							this.classShow = false;
 						},
+
+						//						跳转搜索页/**/
+						_toSearch: function _toSearch() {
+							var desturl = './search.html';
+							var destid = 'search';
+							var exa = {};
+							var option = {
+								autoShow: false
+							};
+							app.navigater(desturl, destid, exa, option);
+						},
+
 						/*切换类型*/
-						_switch(k) {
+						_switch: function _switch(k) {
 							/*当模态框打开的时候不能切换*/
 							if(this.classShow) return;
-							k == this.curType && (() => {
-								return
-							})()
-							this.curType = k
-						},
-
+							k == this.curType && function() {
+								return;
+							}();
+							this.curType = k;
+						}
 					}
-				})
-
+				});
 			});
 
 			function setPos(a) {
-				APP.currPosMark = a
+				APP.currPosMark = a;
 
-				APP._submit()
+				APP._submit();
 			}
 		</script>
 	</body>

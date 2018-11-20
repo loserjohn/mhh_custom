@@ -73,21 +73,21 @@
 
 	<body>
 		<!--等待页面-->
-			<div class="loader" style="top:0;"  id="loader">
-				<ul>
-					<li id='a'></li>
-					<li id='b'></li>
-					<li id='c'></li>
-					<li id='d'></li>
-					<li id='e'></li>
-					<li id='f'></li>
-					<li id='g'></li>
-					<li id='h'></li>
-					<li id='i'></li>
-				</ul>
-			</div>
+		<div class="loader" style="top:0;" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
 		<div id="app">
-			
+
 			<!--卡片-->
 			<div class="cards scrollBox " ref="scroll" :style="{top:scrollTop,bottom:0}" id="scroll">
 				<div class="cm_ul reset" style="min-height: 101%;">
@@ -152,11 +152,13 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			
-			var APP
+			});
+
+			var APP;
 			mui.plusReady(function() {
 				var wv = plus.webview.currentWebview();
 				wv.setStyle({
@@ -168,7 +170,7 @@
 						}]
 					}
 				});
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -180,32 +182,32 @@
 						loader: true
 					},
 					filters: {
-						getStatus(k) {
+						getStatus: function getStatus(k) {
 							switch(k) {
 								case '0':
-									return '未启用'
+									return '未启用';
 									break;
 								case '1':
-									return '启用中'
+									return '启用中';
 									break;
 								case '2':
-									return '审核中'
+									return '审核中';
 									break;
 								default:
 									break;
 							}
 						}
 					},
-					created: function() {
+					created: function created() {
 						//							alert(1)
 
 					},
-					mounted: function() {
+					mounted: function mounted() {
 
-						var _this = this
+						var _this = this;
 
 						var scroll = this.$refs.scroll;
-						this.scrollTop = 0 + 'px'
+						this.scrollTop = 0 + 'px';
 
 						this.$nextTick(function() {
 							//							初始化scrool
@@ -221,64 +223,63 @@
 									},
 									pullUpLoad: {
 										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
-									},
-								})
+									}
+								});
 							} else {
 								_this.scroll.refresh();
 							};
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
 								//								plus.nativeUI.showWaiting()
-								_this.index = 1
-								_this.cardsList = []
-								_this.more = '加载更多'
-								_this._getData(() => {
+								_this.index = 1;
+								_this.cardsList = [];
+								_this.more = '加载更多';
+								_this._getData(function() {
 									//										plus.nativeUI.closeWaiting();
 									_this.scroll.finishPullDown();
-									_this.scroll.finishPullUp()
-								})
-
-							})
+									_this.scroll.finishPullUp();
+								});
+							});
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
-								_this._getData((b) => {
+								_this._getData(function(b) {
 									//									plus.nativeUI.closeWaiting();
-									_this.scroll.finishPullUp()
-								})
-							})
-						})
+									_this.scroll.finishPullUp();
+								});
+							});
+						});
 
 						/*首次加载数据*/
-						this._getData()
+						this._getData();
 					},
 					methods: {
 						//						默认头像
-						_default(e) {
+						_default: function _default(e) {
 							var dom = e.target;
 							//							console.log(dom)
-							dom.src = "../../images/default_avatar.jpg"
+							dom.src = "../../images/default_avatar.jpg";
 						},
+
 						/*去使用*/
-						_toUse(code) {
-							let desturl = '../technician/technician.html'
-							let destid = 'technician'
-							let exa = {
+						_toUse: function _toUse(code) {
+							var desturl = '../technician/technician.html';
+							var destid = 'technician';
+							var exa = {
 								shopCode: code
-							}
-							let option = {
+							};
+							var option = {
 								autoWaiting: false
-							}
-							app.navigater(desturl, destid, exa, option)
-
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						/*添加新卡*/
-						_toAddNewCard(item) {
+						_toAddNewCard: function _toAddNewCard(item) {},
 
-						},
 						/*读取卡列表*/
-						_getData(callback) {
-							this.loader = true
-							var _this = this
+						_getData: function _getData(callback) {
+							this.loader = true;
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Buycard/GetBycardList', {
 								data: {
 									pageIndex: _this.index,
@@ -289,43 +290,42 @@
 									'Authorization': app.mark + plus.storage.getItem('token')
 								},
 								type: 'get', //HTTP请求类型
-								success: function(result) {
-									mui.later(() => {
-										document.getElementById('loader').style.display = 'none'
+								success: function success(result) {
+									mui.later(function() {
+										document.getElementById('loader').style.display = 'none';
 										if(result.Success) {
 											//										alert( result.Data.ListInfo.length)
-											var l = _this.cardsList.length
+											var l = _this.cardsList.length;
 											if(l == result.Data.Total) {
-												_this.more = '没有数据了'
+												_this.more = '没有数据了';
 												if(callback) callback();
-												return
+												return;
 											}
-											_this.cardsList = _this.cardsList.concat(result.Data.ListInfo)
-											_this.index += 1
+											_this.cardsList = _this.cardsList.concat(result.Data.ListInfo);
+											_this.index += 1;
 											_this.scroll.refresh();
 											if(callback) callback();
 										} else {
 											/*验证失败*/
-											plus.nativeUI.toast(result.Msg)
+											plus.nativeUI.toast(result.Msg);
 											if(callback) callback();
 										}
-									}, 500)
-
+									}, 500);
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									_this.loader = false
-									app.catchErr(xhr, type, errorThrown)
+									_this.loader = false;
+									app.catchErr(xhr, type, errorThrown);
 								}
 							});
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function refresh() {
 				//				alert(1)
-				APP._getData()
+				APP._getData();
 			}
 
 			function toRule() {
@@ -364,9 +364,9 @@
 					},
 					waiting: {
 						autoShow: false, //自动显示等待框，默认为true
-						title: '正在加载...', //等待对话框上显示的提示内容
+						title: '正在加载...' //等待对话框上显示的提示内容
 					}
-				})
+				});
 			}
 		</script>
 	</body>

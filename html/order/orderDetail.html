@@ -299,12 +299,14 @@
 		<script src="../../js/bscroll.min.js"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
-			var APP
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -316,120 +318,119 @@
 						currntType: -1,
 						orderType: -1
 					},
-					created: function() {},
-					mounted: function() {
+					created: function created() {},
+					mounted: function mounted() {
 
-						this._initData()
-
+						this._initData();
 					},
 					filters: {
-						tabStatus(value) {
+						tabStatus: function tabStatus(value) {
 							switch(value) {
 								case '0':
-									return '待付款'
+									return '待付款';
 									break;
 								case '1':
-									return '待服务'
+									return '待服务';
 									break;
 								case '2':
-									return '服务中'
+									return '服务中';
 									break;
 								case '3':
-									return '已完成'
+									return '已完成';
 									break;
 								case '4':
-									return '退款'
+									return '退款';
 									break;
 								default:
 									break;
 							}
 						},
-						getStatus(value) {
+						getStatus: function getStatus(value) {
 							switch(value) {
 								case '0':
-									return '待付款'
+									return '待付款';
 									break;
 								case '1':
-									return '已支付'
+									return '已支付';
 									break;
 								case '2':
-									return '待服务'
+									return '待服务';
 									break;
 								case '3':
-									return '服务中'
+									return '服务中';
 									break;
 								case '4':
-									return '待评价'
+									return '待评价';
 									break;
 								case '5':
-									return '已完成'
+									return '已完成';
 									break;
 								case '6':
-									return '退款中'
+									return '退款中';
 									break;
 								case '7':
-									return '退款成功'
+									return '退款成功';
 									break;
 								case '8':
-									return '退款失败'
+									return '退款失败';
 									break;
 								case '9':
-									return '已取消'
+									return '已取消';
 									break;
 								default:
 									break;
 							}
 						},
-						payWay(value) {
+						payWay: function payWay(value) {
 							switch(value) {
 								case '1':
-									return '项目订单'
+									return '项目订单';
 									break;
 								case '2':
-									return '平台充值卡订单'
+									return '平台充值卡订单';
 									break;
 								case '3':
-									return '商铺充值卡订单'
+									return '商铺充值卡订单';
 									break;
 								default:
 									break;
 							}
-
 						}
 					},
 					methods: {
 						/*未付款订单 直接付款*/
-						_toPay(payCode) {
-							let desturl = '../production/toPay.html'
-							let destid = 'toPay'
-							let exa = {
+						_toPay: function _toPay(payCode) {
+							var desturl = '../production/toPay.html';
+							var destid = 'toPay';
+							var exa = {
 								payCode: payCode
-							}
-							let option = {
+							};
+							var option = {
 								showTitle: true
-							}
-							app.navigater(desturl, destid, exa, option)
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
-						//						去评价
-						_toComment(item) {
-							let desturl = '../production/editComment.html'
-							let destid = 'editComment'
-							let exa = {
-								product: item
-							}
-							let option = {
-								showTitle: true
-							}
-							app.navigater(desturl, destid, exa, option)
 
+						//						去评价
+						_toComment: function _toComment(item) {
+							var desturl = '../production/editComment.html';
+							var destid = 'editComment';
+							var exa = {
+								product: item
+							};
+							var option = {
+								showTitle: true
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						//						回传时间
-						_orderTime(date) {
+						_orderTime: function _orderTime(date) {
 							if(date && date != "-") {
-								var _this = this
-								var time = app.dateFormate(date)
+								var _this = this;
+								var time = app.dateFormate(date);
 								//								console.log(time)
-								plus.nativeUI.showWaiting()
+								plus.nativeUI.showWaiting();
 								var self = plus.webview.currentWebview();
 
 								app.ajax(app.baseUrl + '/api/OrderService/SetOrderServiceTime', {
@@ -439,27 +440,28 @@
 										point: time.split(' ')[1]
 									},
 									type: 'post', //HTTP请求类型
-									success: function(result) {
+									success: function success(result) {
 										if(result.Success) {
-											plus.nativeUI.closeWaiting()
-											plus.nativeUI.toast('修改成功')
+											plus.nativeUI.closeWaiting();
+											plus.nativeUI.toast('修改成功');
 
-											_this._initData()
+											_this._initData();
 										} else {
-											plus.nativeUI.toast(result.Msg)
-											plus.nativeUI.closeWaiting()
+											plus.nativeUI.toast(result.Msg);
+											plus.nativeUI.closeWaiting();
 										}
 									}
 								});
 							}
 						},
+
 						//						去预约时间
-						toOrder() {
+						toOrder: function toOrder() {
 							var self = plus.webview.currentWebview();
 							self.setStyle({
 								mask: 'rgba(0,0,0,.7)'
 							});
-							plus.nativeUI.showWaiting()
+							plus.nativeUI.showWaiting();
 							var w = plus.webview.create('../production/timePicker.html', 'timePicker', {
 								top: '200px',
 								bottom: '0'
@@ -467,53 +469,56 @@
 								account: this.detail.ACCOUNT_CODE,
 								pId: 'orderDetail'
 							});
-							mui.later(() => {
-								plus.nativeUI.closeWaiting()
-								w.show('slide-in-bottom', 300, function() {}, {})
-							}, 1000)
+							mui.later(function() {
+								plus.nativeUI.closeWaiting();
+								w.show('slide-in-bottom', 300, function() {}, {});
+							}, 1000);
 						},
+
 						//						取消预约时间
-						cancelOrder() {
-							plus.nativeUI.confirm('确认取消当前预约的时间？', (event) => {
-								var _this = this
+						cancelOrder: function cancelOrder() {
+							var _this2 = this;
+
+							plus.nativeUI.confirm('确认取消当前预约的时间？', function(event) {
+								var _this = _this2;
 								var self = plus.webview.currentWebview();
 								var index = event.index;
 
 								if(index == 0) {
-									plus.nativeUI.showWaiting()
+									plus.nativeUI.showWaiting();
 									app.ajax(app.baseUrl + '/api/OrderService/CancelOrderServiceTime', {
 										data: {
 											orderCode: self.orderId
 										},
 										type: 'post', //HTTP请求类型
-										success: function(result) {
-											document.getElementById('loader').style.display = 'none'
+										success: function success(result) {
+											document.getElementById('loader').style.display = 'none';
 											if(result.Success) {
-												plus.nativeUI.toast('取消成功')
-												plus.nativeUI.closeWaiting()
+												plus.nativeUI.toast('取消成功');
+												plus.nativeUI.closeWaiting();
 												var self = plus.webview.currentWebview();
 												self.setStyle({
 													mask: 'none'
 												});
-												_this._initData()
+												_this._initData();
 											} else {
-												plus.nativeUI.toast(result.Msg)
-												plus.nativeUI.closeWaiting()
+												plus.nativeUI.toast(result.Msg);
+												plus.nativeUI.closeWaiting();
 											}
 										}
 									});
 								}
-							})
-
+							});
 						},
+
 						//						默认头像
-						_default(e) {
+						_default: function _default(e) {
 							var dom = e.target;
 							//							console.log(dom)
-							dom.src = "../../images/default_avatar.jpg"
+							dom.src = "../../images/default_avatar.jpg";
 						},
-						_initData(callback) {
-							var _this = this
+						_initData: function _initData(callback) {
+							var _this = this;
 							var self = plus.webview.currentWebview();
 							/*加载获取订单详情*/
 							app.ajax(app.baseUrl + '/api/OrderService/GetOrder', {
@@ -521,102 +526,104 @@
 									ORDER_CODE: self.orderId
 								},
 								type: 'get', //HTTP请求类型
-								success: function(result) {
-									document.getElementById('loader').style.display = 'none'
+								success: function success(result) {
+									document.getElementById('loader').style.display = 'none';
 									if(result.Success) {
 										// 储存本地 记录登陆时间	
-										_this.detail = result.Data.data
+										_this.detail = result.Data.data;
 										_this.coupon = result.Data.Coupon;
-										_this.serverNum = result.Data.data.SERVICE_NUM
-										_this.currntType = _this.detail.ORDER_STATUS_TYPE
-										_this.orderType = _this.detail.ORDER_STATUS
+										_this.serverNum = result.Data.data.SERVICE_NUM;
+										_this.currntType = _this.detail.ORDER_STATUS_TYPE;
+										_this.orderType = _this.detail.ORDER_STATUS;
 
-										if(callback) callback()
+										if(callback) callback();
 									} else {
 										/*验证失败*/
-										if(callback) callback()
+										if(callback) callback();
 									}
 								}
 							});
 						},
 
 						/*完成服务*/
-						_completeServer() {
-							plus.nativeUI.confirm('确认已经完成服务？', (event) => {
+						_completeServer: function _completeServer() {
+							var _this3 = this;
+
+							plus.nativeUI.confirm('确认已经完成服务？', function(event) {
 								var index = event.index;
 								if(index == 0) {
-									plus.nativeUI.showWaiting('提交中')
+									plus.nativeUI.showWaiting('提交中');
 									app.ajax(app.baseUrl + '/api/BusiOrderService/SuccessOrderService', {
 										data: {
-											ORDER_CODE: this.detail.ORDER_CODE
+											ORDER_CODE: _this3.detail.ORDER_CODE
 										},
 										// dataType:'json',//服务器返回json格式数据
 										type: 'post', //HTTP请求类型
 
-										success: function(result) {
-											plus.nativeUI.closeWaiting()
+										success: function success(result) {
+											plus.nativeUI.closeWaiting();
 											if(result.Success) {
 												plus.nativeUI.toast('服务已完成');
-												_this._initData()
+												_this._initData();
 											} else {
 												/*验证失败*/
-												plus.nativeUI.toast(result.Msg)
-
+												plus.nativeUI.toast(result.Msg);
 											}
 										}
 									});
 								}
-
 							}, {
 								title: '马嘿嘿提醒您'
-							})
+							});
 						},
+
 						//	左右滑动切换
-						_swipipeTab(w) {
+						_swipipeTab: function _swipipeTab(w) {
 							if(w > 0) {
 								//									向右
-								this.currtab++
+								this.currtab++;
 							} else {
 								//									向左
-								this.currtab--
+								this.currtab--;
 							}
 							if(this.currtab <= 0) {
-								this.currtab = 4
+								this.currtab = 4;
 							} else if(this.currtab > 4) {
-								this.currtab = 1
+								this.currtab = 1;
 							}
 						},
+
 						/*跳转页面*/
-						_navigateTo(dstUrl, dstId, extras) {
-							let exa = extras
-							let option = {}
-							app.navigater(dstUrl, dstId, exa, option)
+						_navigateTo: function _navigateTo(dstUrl, dstId, extras) {
+							var exa = extras;
+							var option = {};
+							app.navigater(dstUrl, dstId, exa, option);
 						},
+
 						/*开始服务*/
-						_beginServer(b) {
-							this.show = b
+						_beginServer: function _beginServer(b) {
+							this.show = b;
 						},
+
 						/*致电*/
-						_callPhone() {
-							plus.nativeUI.toast('致电中，请稍等')
+						_callPhone: function _callPhone() {
+							plus.nativeUI.toast('致电中，请稍等');
 							plus.device.dial(this.detail.SHOP_MOBILE, false);
 						},
+
 						/*验证服务码*/
-						_validServerNum() {
-
-						}
+						_validServerNum: function _validServerNum() {}
 					}
-				})
-
+				});
 			});
 
 			function hasTime(date) {
 				if(date == "-") {
-					APP._orderTime('-')
+					APP._orderTime('-');
 				} else if(date) {
 					/*如果有回传选择的日期*/
-					let time = new Date(date)
-					APP._orderTime(time)
+					var time = new Date(date);
+					APP._orderTime(time);
 				}
 
 				var self = plus.webview.currentWebview();

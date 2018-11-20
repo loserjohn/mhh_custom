@@ -43,23 +43,8 @@
 							return;
 						} else {
 							var newVer = owner.versionMsg.version;
-							// 有更新包
-							plus.nativeUI.confirm('发现新版本，是否立即更新？', (event) => {
-
-								var k = event.index
-								//								alert(k)
-								if(k == 0) {
-									owner.checkSystem(callback)
-								} else {
-//									用户选择不更新
-									if(callback) callback(true)
-								}
-							}, {
-								title: '马嘿嘿提醒您'
-							})
-							
-							
-						}
+							owner.checkSystem(callback)
+				}
 					} else {}
 					break;
 				default:
@@ -82,7 +67,7 @@
 				if(callback) callback(true) //可以调用自动登陆
 				return false;
 			} else if(owner.versionMsg.Android == 2) {
-				plus.nativeUI.confirm("发现新版本,立即升级", function(e) {
+				plus.nativeUI.confirm("发现新版本,是否后台更新升级?", function(e) {
 					if(e.index == 0) {
 						owner.createDownload();
 					} else {
@@ -90,7 +75,14 @@
 					}
 				}, '马嘿嘿提醒你');
 			} else {
-				owner.downWgt(1);
+				plus.nativeUI.confirm("发现新的更新包,立即更新?", function(e) {
+					if(e.index == 0) {
+						owner.downWgt(1);
+					} else {
+						if(callback) callback(true)
+					}
+				}, '马嘿嘿提醒你');
+				
 			}
 		} else {
 			if(owner.versionMsg.iOS == 1) {
@@ -105,7 +97,14 @@
 					}
 				}, '马嘿嘿提醒你');
 			} else {
-				owner.downWgt(2);
+				plus.nativeUI.confirm("发现新的更新包,立即更新?", function(e) {
+					if(e.index == 0) {
+						owner.downWgt(2);
+					} else {
+						if(callback) callback(true)
+					}
+				}, '马嘿嘿提醒你');
+				
 			}
 		}
 	}

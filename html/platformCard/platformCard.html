@@ -112,21 +112,21 @@
 
 	<body>
 		<!--等待页面-->
-			<div class="loader" style="top:0;z-index: 10000;" id="loader">
-				<ul>
-					<li id='a'></li>
-					<li id='b'></li>
-					<li id='c'></li>
-					<li id='d'></li>
-					<li id='e'></li>
-					<li id='f'></li>
-					<li id='g'></li>
-					<li id='h'></li>
-					<li id='i'></li>
-				</ul>
-			</div>
+		<div class="loader" style="top:0;z-index: 10000;" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
 		<div id="app">
-			
+
 			<!--我的余额-->
 			<div id="content">
 				<div class=" flex block1 container">
@@ -214,12 +214,14 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
-			})
-			var APP
+			});
+			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -234,87 +236,86 @@
 						phone: '' //电话号码
 					},
 					filters: {
-						getStatus(k) {
+						getStatus: function getStatus(k) {
 							switch(k) {
 								case '0':
-									return '未启用'
+									return '未启用';
 									break;
 								case '1':
-									return '启用中'
+									return '启用中';
 									break;
 								case '2':
-									return '审核中'
+									return '审核中';
 									break;
 								default:
 									break;
 							}
 						}
 					},
-					created: function() {},
-					mounted: function() {
+					created: function created() {},
+					mounted: function mounted() {
 
-						var _this = this
+						var _this = this;
 
 						var scroll = this.$refs.scroll;
-						this.scrollTop = 44 + 'px'
+						this.scrollTop = 44 + 'px';
 
-// 						this.$nextTick(function() {
-// 							//							初始化scrool
-// 							if(!_this.scroll) {
-// 								//							初始化标题栏
-// 								_this.scroll = new BScroll(scroll, {
-// 									click: true,
-// 									probeType: 3,
-// 									bounceTime: 200,
-// 									pullDownRefresh: {
-// 										threshold: 50,
-// 										stop: 0
-// 									}
-// 								})
-// 							} else {
-// 								_this.scroll.refresh();
-// 							};
-// 							/*下拉刷新*/
-// 							_this.scroll.on('pullingDown', function(e) {
-// 
-// 								//								plus.nativeUI.showWaiting()
-// 								_this._getData(() => {
-// 									//									plus.nativeUI.closeWaiting();
-// 									_this.scroll.finishPullDown()
-// 								})
-// 
-// 							})
-// 						})
+						// 						this.$nextTick(function() {
+						// 							//							初始化scrool
+						// 							if(!_this.scroll) {
+						// 								//							初始化标题栏
+						// 								_this.scroll = new BScroll(scroll, {
+						// 									click: true,
+						// 									probeType: 3,
+						// 									bounceTime: 200,
+						// 									pullDownRefresh: {
+						// 										threshold: 50,
+						// 										stop: 0
+						// 									}
+						// 								})
+						// 							} else {
+						// 								_this.scroll.refresh();
+						// 							};
+						// 							/*下拉刷新*/
+						// 							_this.scroll.on('pullingDown', function(e) {
+						// 
+						// 								//								plus.nativeUI.showWaiting()
+						// 								_this._getData(() => {
+						// 									//									plus.nativeUI.closeWaiting();
+						// 									_this.scroll.finishPullDown()
+						// 								})
+						// 
+						// 							})
+						// 						})
 						/*首次加载数据*/
-						this._getData()
-
+						this._getData();
 					},
 					methods: {
 						/*查看详细*/
-						_checkDetail(item) {
+						_checkDetail: function _checkDetail(item) {
 							if(item) {
-								this.detailPre = item
+								this.detailPre = item;
 							}
 
 							this.show = !this.show;
-
 						},
+
 						/*读取卡列表*/
-						_getData(callback) {
-							this.loader = true
-							var _this = this
+						_getData: function _getData(callback) {
+							this.loader = true;
+							var _this = this;
 							/*获取账户信息*/
 							/*获取用户总账户余额*/
 							app.ajax(app.baseUrl + '/api/MemberInfo/GetMemberInfo', {
 								type: 'get', //HTTP请求类型
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										_this.account = result.Data.MEMBER_ACOUNT
-										_this.phone = result.Data.MEMBER_MOBILE
-										if(callback) callback()
+										_this.account = result.Data.MEMBER_ACOUNT;
+										_this.phone = result.Data.MEMBER_MOBILE;
+										if(callback) callback();
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
@@ -326,89 +327,85 @@
 									'Content-Type': 'application/x-www-form-urlencoded',
 									'Authorization': app.mark + plus.storage.getItem('token')
 								},
-								success: function(result) {
-									mui.later(() => {
-										_this.loader = false
-										document.getElementById('loader').style.display = 'none'
+								success: function success(result) {
+									mui.later(function() {
+										_this.loader = false;
+										document.getElementById('loader').style.display = 'none';
 										if(result.Success) {
-											_this.cardsList = result.Data.ListInfo
-//											_this.scroll.refresh();
+											_this.cardsList = result.Data.ListInfo;
+											//											_this.scroll.refresh();
 											if(callback) callback();
-
 										} else {
 											/*验证失败*/
-											plus.nativeUI.toast(result.Msg)
-
+											plus.nativeUI.toast(result.Msg);
 										}
-									}, 500)
+									}, 500);
 								},
-								error: function(xhr, type, errorThrown) {
-									_this.loader = false
-									app.catchErr(xhr, type, errorThrown)
+								error: function error(xhr, type, errorThrown) {
+									_this.loader = false;
+									app.catchErr(xhr, type, errorThrown);
 								}
 							});
 						},
-						_toPay(code) {
+						_toPay: function _toPay(code) {
 
 							if(!code) return;
 							/*创建项目订单*/
-							plus.nativeUI.showWaiting()
+							plus.nativeUI.showWaiting();
 							app.ajax(app.baseUrl + '/api/Order/CreateSiteRechargeOrder', {
 								data: {
 									RECHARGE_CODE: code
 								},
 								type: 'post', //HTTP请求类型
-								success: function(result) {
-									let payCode = result.Msg; //订单号
-									plus.nativeUI.closeWaiting()
+								success: function success(result) {
+									var payCode = result.Msg; //订单号
+									plus.nativeUI.closeWaiting();
 									if(result.Success) {
-										plus.nativeUI.toast('订单创建成功')
-										let desturl = '../cashPay.html'
-										let destid = 'cashPay'
-										let exa = {
+										plus.nativeUI.toast('订单创建成功');
+										var desturl = '../cashPay.html';
+										var destid = 'cashPay';
+										var exa = {
 											type: 1, //1表示的是只能现金支付,2可以平台余额支付
 											payCode: payCode
-										}
+										};
 
-										let option = {
+										var option = {
 											showTitle: true
-										}
-										app.navigater(desturl, destid, exa, option)
-
+										};
+										app.navigater(desturl, destid, exa, option);
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-
+										plus.nativeUI.toast(result.Msg);
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
 									console.log(type);
 								}
 							});
 						},
+
 						//						提现申请
-						_toDeposit() {
-							var _this = this
-							let desturl = './deposit.html'
-							let destid = 'deposit'
-							let exa = {
+						_toDeposit: function _toDeposit() {
+							var _this = this;
+							var desturl = './deposit.html';
+							var destid = 'deposit';
+							var exa = {
 								amount: _this.account,
 								phone: _this.phone
-							}
+							};
 
-							let option = {
+							var option = {
 								showTitle: true
-							}
-							app.navigater(desturl, destid, exa, option)
-
+							};
+							app.navigater(desturl, destid, exa, option);
 						}
 					}
-				})
-			})
+				});
+			});
 
 			function refresh() {
-				APP._getData()
+				APP._getData();
 			}
 		</script>
 	</body>

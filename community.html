@@ -16,6 +16,7 @@
 				top: 0;
 				/*background: red;*/
 			}
+			
 			.bg {
 				width: 100%;
 				height: 244px;
@@ -44,9 +45,11 @@
 				border-radius: 4px;
 				margin-right: 15px;
 			}
-			.invitation_footer{
+			
+			.invitation_footer {
 				margin-top: 5px;
 			}
+			
 			.invitation_footer>p {
 				line-height: 22px;
 			}
@@ -59,10 +62,10 @@
 				color: #c4c4c4;
 				vertical-align: middle;
 			}
-			.labels i{
+			
+			.labels i {
 				font-size: 14px;
 				color: #c4c4c4;
-				
 			}
 			
 			.invitation_footer .labels.active,
@@ -109,18 +112,15 @@
 			}
 			
 			.textPre {
-				
 				width: 100px;
 				height: 100px;
 				margin-right: 10px;
 				overflow: hidden;
-				
 			}
 			
 			.textPre>img {
 				width: 100%;
 			}
-			
 		</style>
 	</head>
 
@@ -131,7 +131,7 @@
 				<div class=" f1  cor_w t_c page_title">
 					小草社区
 				</div>
-				<a class=" mui-pull-right cor_y fs16 t_r" style="line-height: 45px;padding-right: 10px;width: 66px" @tap = "_backTop">
+				<a class=" mui-pull-right cor_y fs16 t_r" style="line-height: 45px;padding-right: 10px;width: 66px" @tap="_backTop">
 					<span class="mui-icon mui-icon-arrowup"></span>
 				</a>
 			</header>
@@ -180,13 +180,13 @@
 											<p class="time">{{item.time}}</p>
 										</div>
 									</div>
-									<div class="invitation_content">										
+									<div class="invitation_content">
 										<div class="textBox flex">
 											<div class="textPre">
 												<img :src="item.lstUrl[0]" alt="" />
 											</div>
 											<div class="f1">
-											<h3 >{{item.title}}</h3>
+												<h3>{{item.title}}</h3>
 												<ul class="clearfix ">
 													<li class="fl cor_g   tags " v-for="labels in item.infoLable">
 														<i class="iconfont icon-shengqian"></i> {{labels}}
@@ -194,7 +194,7 @@
 												</ul>
 											</div>
 										</div>
-										
+
 									</div>
 									<div class="invitation_footer flex">
 										<p class="f1">12已看</p>
@@ -281,7 +281,6 @@
 						<div class="t_c ">--{{more }}--</div>
 					</div>
 
-
 				</div>
 			</div>
 		</div>
@@ -291,13 +290,15 @@
 		<script src="js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
-				swipeBack: false,
+				swipeBack: false
 			});
-			var APP
+			var APP;
 			mui.plusReady(function() {
 
-				var self = plus.webview.currentWebview()
+				var self = plus.webview.currentWebview();
 				//自定义监听图标点击事件
 				APP = new Vue({
 					el: '#app',
@@ -308,24 +309,24 @@
 						islogin: false,
 						more: '加载更多',
 						index: 1,
-						opacity: 0,
+						opacity: 0
 						/*头部的透明控制*/
 					},
-					created: function() {
+					created: function created() {
 						app.initHeader();
 					},
-					mounted: function() {
-						var _this = this
+					mounted: function mounted() {
+						var _this = this;
 						/*初始化主页面的高度*/
-						this.appHeight = plus.display.resolutionHeight
+						this.appHeight = plus.display.resolutionHeight;
 
 						/*首次加载数据*/
-						this._initData(() => {
+						this._initData(function() {
 							plus.nativeUI.closeWaiting();
-						})
+						});
 						/*初始化下拉scroll*/
 						this.$nextTick(function() {
-							var scroll = this.$refs.scroll
+							var scroll = this.$refs.scroll;
 							/*竖向下拉刷新*/
 							if(!_this.scroll) {
 								//							初始化标题栏
@@ -341,44 +342,43 @@
 									pullUpLoad: {
 										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
 									}
-								})
+								});
 							} else {
 								_this.scroll.refresh();
 							}
-							_this.scroll.on('scroll', (e) => {
-									let y = e.y;
-//									console.log(y)
-									if(y > 0) {
-										_this.opacity = 0;
-										//										
-									} else if(y < -200) {
-										_this.opacity = 1
-									} else {
-										let m = Math.abs(y) / 200
-										_this.opacity = m
-									}
-
-								})
+							_this.scroll.on('scroll', function(e) {
+								var y = e.y;
+								//									console.log(y)
+								if(y > 0) {
+									_this.opacity = 0;
+									//										
+								} else if(y < -200) {
+									_this.opacity = 1;
+								} else {
+									var m = Math.abs(y) / 200;
+									_this.opacity = m;
+								}
+							});
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
 								//								console.log(1)
-								_this._refresh()
-							})
+								_this._refresh();
+							});
 							/*上拉加载*/
 							_this.scroll.on('pullingUp', function(e) {
-								_this._initData((b) => {
-									if(!b){
-										_this.scroll.finishPullUp()
-									}									
-								})
-							})
+								_this._initData(function(b) {
+									if(!b) {
+										_this.scroll.finishPullUp();
+									}
+								});
+							});
 						});
 					},
 					methods: {
 						//						举报
-						_report(){
-							plus.nativeUI.confirm('由于该资讯涉及非法内容,您将向马嘿嘿平台举报该条资讯',(e)=>{
-								if(e.index==0){
+						_report: function _report() {
+							plus.nativeUI.confirm('由于该资讯涉及非法内容,您将向马嘿嘿平台举报该条资讯', function(e) {
+								if(e.index == 0) {
 									plus.nativeUI.showWaiting();
 									mui.ajax(app.baseUrl + '/api/Recommend/GetRecommendTypes', {
 										type: 'get', //HTTP请求类型
@@ -386,110 +386,105 @@
 										headers: {
 											'Content-Type': 'application/x-www-form-urlencoded'
 										},
-										success: function(result) {
-											mui.later(()=>{
-												plus.nativeUI.closeWaiting()
+										success: function success(result) {
+											mui.later(function() {
+												plus.nativeUI.closeWaiting();
 												if(result.Success) {
-													plus.nativeUI.toast('您的检举信息已经提交')
+													plus.nativeUI.toast('您的检举信息已经提交');
 												} else {
 													/*验证失败*/
 												}
-											},1000)
-											
+											}, 1000);
 										},
-										error: function(xhr, type, errorThrown) {
-								
-										}
-									})
+										error: function error(xhr, type, errorThrown) {}
+									});
 								}
-							},'马嘿嘿提醒您')
+							}, '马嘿嘿提醒您');
 						},
-						
+
 						/*加载社区数据*/
-						_initData(callback) {
+						_initData: function _initData(callback) {
 							//							alert(1)
-							var _this = this
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Info/GetMemberMhhCmsList', {
 								data: {
 									pageIndex: _this.index,
-									pageSize:4
+									pageSize: 4
 								},
 								type: 'post', //HTTP请求类型
-								timeout:10000,
-								headers:{
+								timeout: 10000,
+								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
-										let l = _this.newList.length;
-										_this.newList = _this.newList.concat(result.Data.ListInfo)
-										
+										var l = _this.newList.length;
+										_this.newList = _this.newList.concat(result.Data.ListInfo);
+
 										if(l == _this.newList.length) {
-											_this.more = '没有数据了'										
-											if(callback) callback(true)
+											_this.more = '没有数据了';
+											if(callback) callback(true);
 											return;
-										}								
+										}
 										_this.index += 1;
-										mui.later(()=>{
-												_this.scroll.refresh();												
-												if(callback)callback(false);
-											},300)		
+										mui.later(function() {
+											_this.scroll.refresh();
+											if(callback) callback(false);
+										}, 300);
 									} else {
 										/*验证失败*/
 										plus.nativeUI.closeWaiting();
-										if(callback) callback(false)
-//										plus.nativeUI.toast(result.Msg)
+										if(callback) callback(false);
+										//										plus.nativeUI.toast(result.Msg)
 									}
 								},
-								error:function(xhr, type, errorThrown){									
-									app.catchErr(type)
+								error: function error(xhr, type, errorThrown) {
+									app.catchErr(type);
 								}
 							});
 						},
+
 						/*刷新当前页面*/
-						_refresh() {
-							var _this = this
-							plus.nativeUI.showWaiting()
-								_this.index = 1
-								_this.newList = []
-								_this.more = '加载更多'
-								_this._initData((b) => {
-									if(b){
-										
-									}else{
-										_this.scroll.finishPullUp()
-									}
+						_refresh: function _refresh() {
+							var _this = this;
+							plus.nativeUI.showWaiting();
+							_this.index = 1;
+							_this.newList = [];
+							_this.more = '加载更多';
+							_this._initData(function(b) {
+								if(b) {} else {
+									_this.scroll.finishPullUp();
+								}
 								plus.nativeUI.closeWaiting();
 								_this.scroll.finishPullDown();
-								})
-														
+							});
 						},
-						
+
 						/*跳转至帖子的详情页*/
-						_toDetail(item) {
-							let desturl = './html/community_detail.html'
-							let destid = 'community_detail'
-							let exa = {
+						_toDetail: function _toDetail(item) {
+							var desturl = './html/community_detail.html';
+							var destid = 'community_detail';
+							var exa = {
 								detail: item
-							}
-							let option = {
-								showTitle:true,
+							};
+							var option = {
+								showTitle: true,
 								autoWaiting: false,
 								createNew: true
-							}
-							app.navigater(desturl, destid, exa, option)
-							
-							
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						/*回到顶部*/
-						_backTop(){
-							this.scroll.scrollTo(0,0,300)
+						_backTop: function _backTop() {
+							this.scroll.scrollTo(0, 0, 300);
 						}
 					}
-				})
+				});
 			});
-			function refresh(){
-				APP._refresh()
+
+			function refresh() {
+				APP._refresh();
 			}
 		</script>
 	</body>

@@ -10,17 +10,19 @@
 		<link rel="stylesheet" href="../css/iconfont.css" />
 		<link rel="stylesheet" href="../css/animate.css" />
 		<style>
-			.suc{
+			.suc {
 				width: 160px;
 				height: 160px;
 				margin: 40px auto;
 				display: block;
 			}
-			.btn{
+			
+			.btn {
 				width: 100%;
 				height: 44px;
 				line-height: 44px;
-				text-align: center;;
+				text-align: center;
+				;
 				border: 1px solid #404040;
 				border-radius: 5px;
 				margin-top: 50px;
@@ -40,13 +42,13 @@
 			</header>
 
 			<div id="content">
-				<img src="../images/success.png" class="suc"/>
+				<img src="../images/success.png" class="suc" />
 				<h3 class="t_c fs20">支付成功</h3>
 				<div class="cor_r t_c">{{time}}秒后返回</div>
 				<div class="container">
 					<!--<div class="btn cor_y fs16" @tap="_back">立即返回</div>-->
 				</div>
-				
+
 			</div>
 		</div>
 		<script src="../js/mui.min.js"></script>
@@ -56,65 +58,66 @@
 		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
-				swipeBack: false			
+				swipeBack: false
 			});
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				var APP = new Vue({
 					el: '#app',
 					data: {
-						time:5
+						time: 5
 					},
-					filters:{
-						
-					},
-					created: function() {
+					filters: {},
+					created: function created() {
+						var _this = this;
+
 						app.initHeader();
-						var t = setInterval(()=>{
-							this.time-=1;
-							if(this.time ==0){
-								clearInterval(t)
-								this._back()
+						var t = setInterval(function() {
+							_this.time -= 1;
+							if(_this.time == 0) {
+								clearInterval(t);
+								_this._back();
 							}
-						},1000)
+						}, 1000);
 					},
-					mounted: function() {
-						plus.nativeUI.closeWaiting()
+					mounted: function mounted() {
+						plus.nativeUI.closeWaiting();
 						mui.currentWebview.show('pop-in', 300, function() {}, {});
 					},
 					methods: {
-						_back(){
-							if(plus.webview.getWebviewById('toPay')){
+						_back: function _back() {
+							if(plus.webview.getWebviewById('toPay')) {
 								plus.webview.getWebviewById('toPay').close();
 							}
-							
-							if(plus.webview.getWebviewById('productOrder')){
+
+							if(plus.webview.getWebviewById('productOrder')) {
 								plus.webview.getWebviewById('productOrder').close();
 							}
-							if(plus.webview.getWebviewById('productBuy')){
+							if(plus.webview.getWebviewById('productBuy')) {
 								plus.webview.getWebviewById('productBuy').close();
 							}
-							if(plus.webview.getWebviewById('productList')){
+							if(plus.webview.getWebviewById('productList')) {
 								plus.webview.getWebviewById('productList').close();
 							}
-							
-							if(plus.webview.getWebviewById('platformCard')){
+
+							if(plus.webview.getWebviewById('platformCard')) {
 								plus.webview.getWebviewById('platformCard').close();
 							}
-							if(plus.webview.getWebviewById('spread')){
+							if(plus.webview.getWebviewById('spread')) {
 								plus.webview.getWebviewById('spread').close();
 							}
-							
-							plus.webview.getWebviewById('orders').evalJS('refresh()')
-							
+
+							plus.webview.getWebviewById('orders').evalJS('refresh()');
+
 							plus.webview.getLaunchWebview().show();
-							plus.webview.getLaunchWebview().evalJS('switchMenu(2)')
-							
-//							mui.back()
-					
+							plus.webview.getLaunchWebview().evalJS('switchMenu(2)');
+
+							//							mui.back()
 						}
-					}	
+					}
 				});
 			});
 		</script>

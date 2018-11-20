@@ -18,21 +18,25 @@
 				overflow: hidden;
 				margin-right: 15px;
 			}
-			.reasonArea{
-				border: 0 ;
+			
+			.reasonArea {
+				border: 0;
 				font-size: 14px;
 			}
-			.picBox{
+			
+			.picBox {
 				height: 150px;
 			}
-			.picBox .problemItem{
+			
+			.picBox .problemItem {
 				background: #fff;
 				max-width: 80px;
 				max-height: 80px;
 				text-align: center;
 				margin: 5px;
 			}
-			.picBox .problemItem .pics{
+			
+			.picBox .problemItem .pics {
 				width: 100%;
 				height: 100%;
 				overflow: hidden;
@@ -53,8 +57,8 @@
 			</header>-->
 
 			<!--订单内容-->
-			<div   id="content">
-				<div class="clearfix scrollContent">			
+			<div id="content">
+				<div class="clearfix scrollContent">
 					<!--项目-->
 					<div class="panelPad block2">
 						<div class="pro flex">
@@ -68,57 +72,57 @@
 									<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item in  levels " />
 								</p>
 								<div>
-									交易金额：<span class="cor_r fs16 lh30">￥{{order.ORDER_PAY_AMOUNT}} </span> 
+									交易金额：<span class="cor_r fs16 lh30">￥{{order.ORDER_PAY_AMOUNT}} </span>
 								</div>
 							</div>
-							
+
 						</div>
 
 					</div>
-									
-					<!--备注-->				
+
+					<!--备注-->
 					<div class="panel  block3">
 						<!--问题图片-->
 						<div class="mui-table-view">
 							<div class="mui-table-view-cell picBox">
 								<p class="cm_name">问题图片（最多三张）</p>
-								<ul class="flex" >
+								<ul class="flex">
 									<li v-for="item  in picList" class=" problemItem">
 										<div class="pics">
-											<img :src="item" alt="" class="contain"/>
-										</div>							
+											<img :src="item" alt="" class="contain" />
+										</div>
 									</li>
 									<li class="problemItem " @tap="_getPic">
 										<div class="pics">
-											<img src="../../images/blank.png" class="cover"/>
-										</div>			
-									</li>									
+											<img src="../../images/blank.png" class="cover" />
+										</div>
+									</li>
 								</ul>
 							</div>
 						</div>
-	
-							<ul class="mui-table-view mui-table-view-radio">
-								<li class="mui-table-view-cell mui-selected" @tap="_reason('多买/买错/不想要')">
-									<a class="mui-navigate-right ">多买/买错/不想要</a>
-								</li>
-								<li class="mui-table-view-cell " @tap="_reason('服务时间对不上')">
-									<a class="mui-navigate-right">服务时间对不上</a>
-								</li>
-								<li class="mui-table-view-cell" @tap="_reason('临时有事')">
-									<a class="mui-navigate-right">临时有事</a>
-								</li>
-								<li class="mui-table-view-cell" @tap="_reason('联系不上美匠人')">
-									<a class="mui-navigate-right">联系不上美匠人</a>
-								</li>
-								<li class="mui-table-view-cell " @tap="_reason('服务态度极差')">
-									<a class="mui-navigate-right">服务态度极差</a>
-								</li>
-								<li class="mui-table-view-cell" @tap="_reason('作品有损坏')">
-									<a class="mui-navigate-right">作品有损坏</a>
-								</li>
-							</ul>
-		
-						<div class="mui-table-view">							
+
+						<ul class="mui-table-view mui-table-view-radio">
+							<li class="mui-table-view-cell mui-selected" @tap="_reason('多买/买错/不想要')">
+								<a class="mui-navigate-right ">多买/买错/不想要</a>
+							</li>
+							<li class="mui-table-view-cell " @tap="_reason('服务时间对不上')">
+								<a class="mui-navigate-right">服务时间对不上</a>
+							</li>
+							<li class="mui-table-view-cell" @tap="_reason('临时有事')">
+								<a class="mui-navigate-right">临时有事</a>
+							</li>
+							<li class="mui-table-view-cell" @tap="_reason('联系不上美匠人')">
+								<a class="mui-navigate-right">联系不上美匠人</a>
+							</li>
+							<li class="mui-table-view-cell " @tap="_reason('服务态度极差')">
+								<a class="mui-navigate-right">服务态度极差</a>
+							</li>
+							<li class="mui-table-view-cell" @tap="_reason('作品有损坏')">
+								<a class="mui-navigate-right">作品有损坏</a>
+							</li>
+						</ul>
+
+						<div class="mui-table-view">
 							<div class="mui-table-view-cell">
 								<p class="cm_name">退款原因</p>
 								<textarea class="reasonArea" v-model="remark" placeholder="请输入退款原因"></textarea>
@@ -148,13 +152,15 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
-//				app.initHeader();
+				app.WXinit(CryptoJS);
+				//				app.initHeader();
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -172,54 +178,54 @@
 						/*订单详情*/
 						order: '',
 						remark: '多买/买错/不想要', //原因
-	
-						reason:0,
-						picList:[]
-					},
-					created: function() {
-						
-						var self = plus.webview.currentWebview();
-						this.orderCode = self.orderCode
 
+						reason: 0,
+						picList: []
 					},
-					mounted: function() {
+					created: function created() {
+
+						var self = plus.webview.currentWebview();
+						this.orderCode = self.orderCode;
+					},
+					mounted: function mounted() {
 						var _this = this;
 
-						var scroll = this.$refs.scroll
+						var scroll = this.$refs.scroll;
 						//						var wraper = this.$refs.wraper
 						//							初始化scroll的屏幕位置
 						this.appHeight = 0;
 						/*初始化数据*/
-						this._getData(() => {})
+						this._getData(function() {});
 					},
 					methods: {
-//						获取问题图片
-						_getPic(){
-							if(this.picList.length>=3){
-								plus.nativeUI.toast('问题图片不超过三张')
+						//						获取问题图片
+						_getPic: function _getPic() {
+							if(this.picList.length >= 3) {
+								plus.nativeUI.toast('问题图片不超过三张');
 								return;
 							}
-							var _this = this
-							app.getIMG('上传图片',function(src){
-								plus.nativeUI.showWaiting()
-								let img = new Image();
-								img.src =src
-								img.onload = function(){
+							var _this = this;
+							app.getIMG('上传图片', function(src) {
+								plus.nativeUI.showWaiting();
+								var img = new Image();
+								img.src = src;
+								img.onload = function() {
 									plus.nativeUI.closeWaiting();
-//									alert(1)
-									_this.picList.push(src)
-								}
-								
-							})
+									//									alert(1)
+									_this.picList.push(src);
+								};
+							});
 						},
+
 						/*选择原因*/
-						_reason(txt){
-//							alert(txt)
-							this.remark = txt
+						_reason: function _reason(txt) {
+							//							alert(txt)
+							this.remark = txt;
 						},
+
 						/*获取数据*/
-						_getData(callback) {
-							var _this = this
+						_getData: function _getData(callback) {
+							var _this = this;
 							//							alert(1)
 							/*获取订单详情*/
 							app.ajax(app.baseUrl + '/api/OrderService/GetOrder', {
@@ -227,77 +233,72 @@
 								data: {
 									ORDER_CODE: _this.orderCode
 								},
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
 										_this.order = result.Data.data;
-										_this.levels = parseInt(result.Data.data.SHOP_STAR)
-										if(callback) callback()
+										_this.levels = parseInt(result.Data.data.SHOP_STAR);
+										if(callback) callback();
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-										if(callback) callback()
+										plus.nativeUI.toast(result.Msg);
+										if(callback) callback();
 									}
 								}
 							});
-
 						},
 
 						/*提交订单*/
-						_toSubmit() {
-							var _this = this
+						_toSubmit: function _toSubmit() {
+							var _this = this;
 
 							/*订单信息判断*/
-							if(!this.remark ) {
+							if(!this.remark) {
 								plus.nativeUI.alert("请输入退款原因", function() {}, '马嘿嘿提醒您');
 								return;
-							} 
-//							console.log(_this.picList.join(','))
+							}
+							//							console.log(_this.picList.join(','))
 							/*订单信息判断*/
-							plus.nativeUI.showWaiting()
+							plus.nativeUI.showWaiting();
 							var data = {
 								ORDER_CODE: _this.orderCode,
 								REFUND_DETAILS: _this.remark,
-								LIST_IMG:_this.picList.join(',')
-							}
+								LIST_IMG: _this.picList.join(',')
+							};
 
 							app.ajax(app.baseUrl + '/api/Order/ApplyRefundOrder', {
 								type: 'post', //HTTP请求类型
 								data: data,
-								success: function(result) {
-									plus.nativeUI.closeWaiting()
+								success: function success(result) {
+									plus.nativeUI.closeWaiting();
 
 									if(result.Success) {
-										plus.nativeUI.toast('您的申请，已经提交审核')
-										
-										 
-										mui.later(()=>{
-											plus.webview.getWebviewById('orders').evalJS('refresh()')
-											mui.back()
-										},1000)
-										
-										/*成功跳转支付页面*/
+										plus.nativeUI.toast('您的申请，已经提交审核');
 
+										mui.later(function() {
+											plus.webview.getWebviewById('orders').evalJS('refresh()');
+											mui.back();
+										}, 1000);
+
+										/*成功跳转支付页面*/
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
-
-						},
+						}
 					}
-				})
-
+				});
 			});
 
 			function hasTime(date) {
 				//				alert(new Date(date) )
-				let time = new Date(date)
+				var time = new Date(date);
 				//				alert(date+time)
 				if(date) {
 					/*如果有回传选择的日期*/
 					//					alert(666)
-					APP._orderTime(time)
+					APP._orderTime(time);
 				}
 				var self = plus.webview.currentWebview();
 				self.setStyle({

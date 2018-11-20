@@ -295,17 +295,17 @@
 									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(prevPic.LINK_URL)">
 										<!--<img :src="prevPic.LINK_IMAGE" >-->
-										<img src="images/bannerload.gif" class="lazy" :data-src="prevPic.LINK_IMAGE">
+										<img src="images/index/banner2.png" class="lazy" :data-src="prevPic.LINK_IMAGE">
 									</div>
 									<!-- 第一张 -->
 									<div class="mui-slider-item" v-for="item in activityPics" @tap="_jump(item.LINK_URL)">
 										<!--<img :src="item.LINK_IMAGE" class="lazy" >-->
-										<img src="images/bannerload.gif" class="lazy" :data-src="item.LINK_IMAGE">
+										<img src="images/index/banner2.png" class="lazy" :data-src="item.LINK_IMAGE">
 									</div>
 									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(nextPic.LINK_URL)">
 										<!--<img :src="nextPic.LINK_IMAGE">-->
-										<img src="images/bannerload.gif" class="lazy" :data-src="nextPic.LINK_IMAGE">
+										<img src="images/index/banner2.png" class="lazy" :data-src="nextPic.LINK_IMAGE">
 									</div>
 								</div>
 								<div class="mui-slider-indicator">
@@ -332,59 +332,59 @@
 						<div v-for="item in blockData" class="block2">
 							<div class=" flex " v-if="item.type==1">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-									<!--<img :src="item.listData[0].img" alt="" class="contain " />-->
-									<img src="images/block.png" class=" contain lazy" :data-src="item.listData[0].img">
+									<img :src="item.listData[0].img" alt="" class="contain " />
+									<!--<img src="images/block.png" class=" contain lazy" :data-src="item.listData[0].img">-->
 								</div>
 							</div>
 							<div class=" flex " v-else-if="item.type==2">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-									<!--<img :src="item.listData[0].img" alt="" class="contain " />-->
-									<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">
+									<img :src="item.listData[0].img" alt="" class="contain " />
+									<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">-->
 								</div>
 								<div class="f1 t_c" @tap="_jump(item.listData[1].keyCode)">
-									<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">
-									<!--<img :src="item.listData[1].img" alt="" class="contain" />-->
+									<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
+									<img :src="item.listData[1].img" alt="" class="contain" />
 								</div>
 							</div>
 
 							<div class="flex " v-else-if="item.type==3">
 								<div class=" f2">
 									<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-										<!--<img :src="item.listData[0].img" alt="" class="contain" />-->
-										<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">
+										<img :src="item.listData[0].img" alt="" class="contain" />
+										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">-->
 									</div>
 
 								</div>
 								<div class="f3 ">
 									<div class=" t_c" @tap="_jump(item.listData[1].keyCode)">
-										<!--<img :src="item.listData[1].img" alt="" class="contain" />-->
-										<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">
+										<img :src="item.listData[1].img" alt="" class="contain" />
+										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
 									</div>
 									<div class=" t_c" @tap="_jump(item.listData[2].keyCode)">
-										<!--<img :src="item.listData[2].img" alt="" class="contain" />-->
-										<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">
+										<img :src="item.listData[2].img" alt="" class="contain" />
+										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">-->
 									</div>
 								</div>
 							</div>
 							<div class=" flex " v-else-if="item.type==4">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
 									<!--<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />-->
-									<!--<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />-->
-									<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">
+									<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />
+									<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">-->
 								</div>
 								<div class="f1 t_c">
 									<div class="" @tap="_jump(item.listData[1].keyCode)">
-										<!--<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain" />-->
-										<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">
+										<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain" />
+										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
 									</div>
 									<div class="flex">
 										<div class="f1 t_c" @tap="_jump(item.listData[2].keyCode)">
-											<!--<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain " />-->
-											<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">
+											<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain " />
+											<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">-->
 										</div>
 										<div class="f1 t_c" @tap="_jump(item.listData[3].keyCode)">
-											<!--<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain" />-->
-											<img src="images/block.png" class="contain lazy" :data-src="item.listData[3].img">
+											<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain" />
+											<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[3].img">-->
 										</div>
 									</div>
 								</div>
@@ -395,7 +395,7 @@
 						<!--推荐活动-->
 						<div class="block3  panel" v-for="(item,index) in  recommend" v-show="item.Items.length>1">
 							<!--<img :src="item.TYPE_IMAGE?item.TYPE_IMAGE:'./images/index/index3.png'" alt="" class="contain" />-->
-							<img src="images/block.png" class="contain lazy" :data-src="item.TYPE_IMAGE">
+							<img src="images/index/banner3.png" class="contain lazy" :data-src="item.TYPE_IMAGE">
 							<div class="mui-scroll-wrapper activityBox " :id="'wrapper'+index">
 								<ul class="reset flex mui-scroll " :style="{width:100*(item.Items.length+1)+'px'}">
 									<li class="activityItem " v-for="list in item.Items" @tap="_NWnavigateTo('./html/production/productBuy.html','productBuy',{proKey:list.PROJECT_CODE})">
@@ -460,13 +460,11 @@
 					<img src="images/noLogin.png" alt="" width="60" height="60" class="versionLoad" />
 					<div class="versionTxt" id="versionTxt">无法连接网络</div>
 					<!--<div class="versionRefresh" @tap="_reconnect">重新连接</div>-->
-				</div>			
+				</div>
 			</div>
 
-		
 		</div>
 
-		
 		<script src="./js/mui.min.js"></script>
 		<script src="./js/util.js"></script>
 		<script src="./js/app.js"></script>
@@ -474,20 +472,22 @@
 		<script src="./js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/system.js"></script>
-		<script src="js/async.js"></script>
+		<!--<script src="js/async.js"></script>-->
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: false
 			});
-			var APP
-			var activePage
-			var targetPage
+			var APP;
+			var activePage;
+			var targetPage;
 			//			alert('我是更新后的版本')
 			mui.plusReady(function() {
-				var self = plus.webview.currentWebview()
-				app.WXinit(CryptoJS)
-				app.pushInit()
+				var self = plus.webview.currentWebview();
+				app.WXinit(CryptoJS);
+				app.pushInit();
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -510,40 +510,33 @@
 						nextPic: '',
 
 						blockData: [], //豆腐块设计
-						noNet:false,//网络状态		
+						noNet: false, //网络状态		
 						menusBackgroundPic: '', //menu整块的背景图片
 						menusList: [] //分类按钮
 					},
-					created: function() {
+					created: function created() {
 						app.initHeader();
 
 						//						/*页面首次加载,将登陆默认为0*/
-						plus.storage.setItem('isLogin', '0')
-						
-						
-						
-
+						plus.storage.setItem('isLogin', '0');
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						/*初始化主页面的高度*/
-						this.appHeight = plus.display.resolutionHeight
-						
+						this.appHeight = plus.display.resolutionHeight;
+
 						//						检查是否有网路
-						if(!onNet()){
-//							无网络则跳提示	
-							plus.nativeUI.toast('请检查网络')
-							this.noNet = true
+						if(!onNet()) {
+							//							无网络则跳提示	
+							plus.nativeUI.toast('请检查网络');
+							this.noNet = true;
 							return;
-
 						}
-						
-						
-						
-						this._initIndex()
 
-						systemOS.versionInit((t) => {
+						this._initIndex();
+
+						systemOS.versionInit(function(t) {
 							if(t) {
-								let isFirst = plus.storage.getItem('isFirst')
+								var isFirst = plus.storage.getItem('isFirst');
 
 								if(!isFirst || isFirst == '0') {
 									//																		第一次登陆  打开引导页
@@ -561,49 +554,49 @@
 									//											autoShow: false
 									//										}
 									//									});
-								} else {
-
-								}
+								} else {}
 
 								//没有更新版本
 								mui.later(function() {
-									plus.webview.getWebviewById('mine').evalJS('autoLogin()')
+									plus.webview.getWebviewById('mine').evalJS('autoLogin()');
 									plus.navigator.closeSplashscreen();
-								}, 500)
-
+								}, 500);
 							}
-						})
+						});
 						//新版本检测
-
 					},
 					methods: {
-//						重新连接网络
-						_reconnect(){
-//							alert(1)
-							this.noNet = false
-							this._initIndex()
+						//						重新连接网络
+						_reconnect: function _reconnect() {
+							//							alert(1)
+							this.noNet = false;
+							this._initIndex();
 						},
-						_initIndex(){
+						_initIndex: function _initIndex() {
+							var _this2 = this;
+
 							/*首页定位*/
-							this._initPos(() => {
+							this._initPos(function() {
 								/*位置信息获取之后初始化最新上架*/
-								this._initNew()
-							})
-							this._initScroll() //初始化下拉
-							this._initCarousel()
-							this._initBlock() //初始化豆腐块
-	
-							this._initMenus() /*初始化导航栏*/
+								_this2._initNew();
+							});
+							this._initScroll(); //初始化下拉
+							this._initCarousel();
+							this._initBlock(); //初始化豆腐块
+
+							this._initMenus(); /*初始化导航栏*/
 						},
+
 						//						默认头像
-						_default(e) {
+						_default: function _default(e) {
 							var dom = e.target;
 							//							console.log(dom)
-							dom.src = "./images/default_avatar.jpg"
+							dom.src = "./images/default_avatar.jpg";
 						},
+
 						//						初始化豆腐块
-						_initBlock() {
-							var _this = this
+						_initBlock: function _initBlock() {
+							var _this = this;
 							mui.ajax(app.baseUrl + '/api/Carousel/GetPannelList', {
 								type: 'get', //HTTP请求类型
 								timeout: 5000, //超时时间设置为10秒；
@@ -611,27 +604,27 @@
 									'Content-Type': 'application/x-www-form-urlencoded',
 									"Cache-Control": "max-age=1000000"
 								},
-								success: function(result) {
+								success: function success(result) {
 
 									/*登陆成功*/
-									plus.nativeUI.closeWaiting()
+									plus.nativeUI.closeWaiting();
 									if(result.Success) {
 										//										初始化豆腐块
-										_this.blockData = result.Data.ListInfo
+										_this.blockData = result.Data.ListInfo;
 
-										_this.menusBackgroundPic = 'url(' + result.Data.homeFast.menusBackgroundPic + ')'
+										_this.menusBackgroundPic = 'url(' + result.Data.homeFast.menusBackgroundPic + ')';
 										//										初始化菜单
-										_this.menusList = result.Data.homeFast.menusList
+										_this.menusList = result.Data.homeFast.menusList;
 
 										//										初始化轮播图
-										_this.activityPics = result.Data.bannerData
+										_this.activityPics = result.Data.bannerData;
 										if(result.Data.bannerData.length >= 1) {
-											_this.prevPic = _this.activityPics[_this.activityPics.length - 1]
+											_this.prevPic = _this.activityPics[_this.activityPics.length - 1];
 											_this.nextPic = _this.activityPics[0];
 										}
 										var status = 0;
-										_this.activityPics.forEach((item, index) => {
-											let img = new Image();
+										_this.activityPics.forEach(function(item, index) {
+											var img = new Image();
 											img.src = item.LINK_IMAGE;
 
 											img.onload = function() {
@@ -642,14 +635,14 @@
 														interval: 3000 //自动播放周期
 													});
 												}
-											}
-										})
+											};
+										});
 										//										初始化推荐
-										_this.recommend = result.Data.recommendTypes.ListInfo
+										_this.recommend = result.Data.recommendTypes.ListInfo;
 
 										/*推荐项目横向滑动*/
-										mui.later(() => {
-											_this.recommend.forEach((item, index) => {
+										mui.later(function() {
+											_this.recommend.forEach(function(item, index) {
 												mui('#wrapper' + index).scroll({
 													scrollY: false, //是否竖向滚动
 													scrollX: true, //是否横向滚动
@@ -657,67 +650,67 @@
 													bounce: true, //是否启用回弹
 													indicators: false
 												});
-											})
-										}, 500)
-
+											});
+										}, 500);
 									} else {
 										/*验证失败*/
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {}
+							});
+						},
 
-								}
-							})
-						},
 						//						跳转活动页面
-						_jump(str) {
-							app._jump(str)
+						_jump: function _jump(str) {
+							app._jump(str);
 						},
+
 						//						判断定位权限
-						_checkPermissionPos() {
+						_checkPermissionPos: function _checkPermissionPos() {
 							var pp = plus.navigator.checkPermission('LOCATION');
 							switch(pp) {
 								case 'authorized':
 									//									plus.nativeUI.alert('已开启定位权限');
-									return true
+									return true;
 									break;
 								case 'denied':
 									plus.nativeUI.alert('已关闭定位权限,请前往设置中打开');
 									if(plus.storage.getItem('pos')) {
-										return true
+										return true;
 									} else {
-										return false
+										return false;
 									}
 									break;
 								case 'undetermined':
 									plus.nativeUI.alert('未确定定位权限,请前往设置中打开');
 									if(plus.storage.getItem('pos')) {
-										return true
+										return true;
 									} else {
-										return false
+										return false;
 									}
 
 									break;
 								case 'unknown':
 									plus.nativeUI.alert('无法查询定位权限,请前往设置中打开');
 									if(plus.storage.getItem('pos')) {
-										return true
+										return true;
 									} else {
-										return false
+										return false;
 									}
 									break;
 								default:
 									//									plus.nativeUI.alert('不支持定位权限');
 									if(plus.storage.getItem('pos')) {
-										return true
+										return true;
 									} else {
-										return false
+										return false;
 									}
 									break;
 							}
 						},
+
 						/*初始化轮播图*/
-						_initCarousel() {
+						_initCarousel: function _initCarousel() {
 							//							var _this = this;
 							//							_this.activityPics = [{
 							//									LINK_IMAGE: './images/index/banner1.png',
@@ -740,8 +733,9 @@
 							//								interval: 3000 //自动播放周期
 							//							});
 						},
+
 						/*初始化导航栏*/
-						_initMenus() {
+						_initMenus: function _initMenus() {
 							/*返回键监听*/
 							var backButtonPress = 0;
 							mui.back = function(event) {
@@ -774,20 +768,19 @@
 							 * 根据判断view控件点击位置判断切换的tab
 							 */
 							nview.addEventListener('click', function(e) {
-								//								console.log(plus.webview.currentWebview().id)
+								//	console.log(plus.webview.currentWebview().id)
 								var clientX = e.clientX;
 								if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
 									currIndex = 0;
-
 								} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.5)) {
 									currIndex = 1;
-									plus.webview.getWebviewById('community').evalJS('refresh()')
+									plus.webview.getWebviewById('community').evalJS('refresh()');
 								} else if(clientX > parseInt(pageW * 0.5) && clientX <= parseInt(pageW * 0.75)) {
 									currIndex = 2;
-									plus.webview.getWebviewById('orders').evalJS('refresh()')
+									plus.webview.getWebviewById('orders').evalJS('refresh()');
 								} else {
 									currIndex = 3;
-									plus.webview.getWebviewById('orders').evalJS('refresh(true)')
+									plus.webview.getWebviewById('orders').evalJS('refresh(true)');
 								}
 								// 匹配对应tab窗口	
 								if(currIndex > 0) {
@@ -807,12 +800,13 @@
 								activePage = targetPage;
 							});
 						},
+
 						/*初始化滑动模块*/
-						_initScroll() {
-							var _this = this
+						_initScroll: function _initScroll() {
+							var _this = this;
 							/*初始化下拉scroll*/
 							this.$nextTick(function() {
-								var scroll = this.$refs.scroll
+								var scroll = this.$refs.scroll;
 								//								var wrapper = this.$refs.wrapper1
 
 								/*页面竖向下拉刷新*/
@@ -827,43 +821,40 @@
 											threshold: 80,
 											stop: 0
 										}
-									})
+									});
 								} else {
 									_this.scroll.refresh();
 								};
-								_this.scroll.on('scroll', (e) => {
-									let y = e.y;
+								_this.scroll.on('scroll', function(e) {
+									var y = e.y;
 									if(y > 0) {
 										_this.opacity = 0;
 										//										
 									} else if(y < -200) {
-										_this.opacity = 1
+										_this.opacity = 1;
 									} else {
-										let m = Math.abs(y) / 200
-										_this.opacity = m
+										var m = Math.abs(y) / 200;
+										_this.opacity = m;
 									}
-
-								})
+								});
 
 								/*下拉刷新数据*/
 								_this.scroll.on('pullingDown', function(e) {
-									plus.nativeUI.showWaiting()
-									_this._initPos(() => {
+									plus.nativeUI.showWaiting();
+									_this._initPos(function() {
 										/*位置信息获取之后初始化最新上架*/
-										_this._initNew(() => {
-											plus.nativeUI.closeWaiting()
-											_this.scroll.finishPullDown()
-										})
-									})
-
-								})
-
-							})
+										_this._initNew(function() {
+											plus.nativeUI.closeWaiting();
+											_this.scroll.finishPullDown();
+										});
+									});
+								});
+							});
 						},
 
 						/*最近上新*/
-						_initNew(callback) {
-							var _this = this
+						_initNew: function _initNew(callback) {
+							var _this = this;
 							//							console.log(JSON.stringify(this.co))
 							/*获取最新上架列表*/
 							mui.ajax(app.baseUrl + '/api/Project/GetProjects', {
@@ -880,25 +871,26 @@
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
-								success: function(result) {
+								success: function success(result) {
 									/*登陆成功*/
 									if(result.Success) {
-										_this.newst = result.Data.ListInfo
-										if(callback) callback()
+										_this.newst = result.Data.ListInfo;
+										if(callback) callback();
 									} else {
 										/*验证失败*/
 
 									}
 								},
-								error: function(xhr, type, errorThrown) {
+								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									app.catchErr(type)
+									app.catchErr(type);
 								}
-							})
+							});
 						},
+
 						/*菜单页面*/
-						_menuTo(type, extras) {
-							var r = this._checkPermissionPos()
+						_menuTo: function _menuTo(type, extras) {
+							var r = this._checkPermissionPos();
 							//							alert(r)
 							//							跳转菜单页面必须要有定位信息
 							if(!r) {
@@ -907,7 +899,7 @@
 									var Intent = plus.android.importClass('android.content.Intent');
 									var Settings = plus.android.importClass('android.provider.Settings');
 									var intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS); //可设置表中所有Action字段
-									main.startActivity(intent)
+									main.startActivity(intent);
 								}
 
 								if(mui.os.ios) {
@@ -924,7 +916,7 @@
 							}
 
 							if(!plus.storage.getItem('pos')) {
-								plus.nativeUI.toast('位置获取失败,请刷新或者尝试手动获取')
+								plus.nativeUI.toast('位置获取失败,请刷新或者尝试手动获取');
 								return;
 							}
 
@@ -932,40 +924,39 @@
 								return;
 							}
 
-							let desturl = './html/production/productList.html'
-							let destid = 'productList'
-							let exa = {
+							var desturl = './html/production/productList.html';
+							var destid = 'productList';
+							var exa = {
 								proType: extras
-							}
-							let option = {
+							};
+							var option = {
 								autoWaiting: false
-							}
-							app.navigater(desturl, destid, exa, option)
-
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
-						_NWnavigateTo(desturl, destid, extras) {
+						_NWnavigateTo: function _NWnavigateTo(desturl, destid, extras) {
 
-							let exa = extras
-							let option = {}
-							app.navigater(desturl, destid, exa, option)
-
+							var exa = extras;
+							var option = {};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						//						带有导航栏的跳状
-						_NTnavigateTo(desturl, destid, extras) {
-							let exa = extras
-							let option = {
+						_NTnavigateTo: function _NTnavigateTo(desturl, destid, extras) {
+							var exa = extras;
+							var option = {
 								showTitle: true,
-								autoWaiting: false,
-							}
-							app.navigater(desturl, destid, exa, option)
-
+								autoWaiting: false
+							};
+							app.navigater(desturl, destid, exa, option);
 						},
+
 						/*初始化位置*/
-						_initPos(callback) {
+						_initPos: function _initPos(callback) {
 							var _this = this;
-							plus.geolocation.getCurrentPosition((position) => {
+							plus.geolocation.getCurrentPosition(function(position) {
 								if(!position || !position.address || !position.address.city) return;
-								var obj = position.address
+								var obj = position.address;
 								//								console.log(JSON.stringify(position))
 								_this.co = {
 									longitude: position.coords.longitude,
@@ -973,36 +964,35 @@
 									latitude: position.coords.latitude,
 									/*纬度*/
 									address: obj.city + position.address.street
-								}
+								};
 
-								plus.storage.setItem('pos', JSON.stringify(_this.co))
+								plus.storage.setItem('pos', JSON.stringify(_this.co));
 
 								if(callback) callback();
 
-								var add = obj.city + position.address.street
+								var add = obj.city + position.address.street;
 								_this.curPos = add;
-							}, () => {
-								plus.nativeUI.toast('位置获取失败,请手动获取')
+							}, function() {
+								plus.nativeUI.toast('位置获取失败,请手动获取');
 								if(callback) callback();
-								plus.nativeUI.closeWaiting()
+								plus.nativeUI.closeWaiting();
 							}, {
 								enableHighAccuracy: false,
-								timeout: () => {
-									plus.nativeUI.toast('信号不佳，位置获取失败')
+								timeout: function timeout() {
+									plus.nativeUI.toast('信号不佳，位置获取失败');
 								}
 							});
-						},
+						}
 					}
-				})
-
+				});
 			});
 			/*制定底部显示的tab页面*/
 			function switchMenu(key) {
 				//				alert(1)
-				key = parseInt(key)
+				key = parseInt(key);
 				activePage = plus.webview.currentWebview();
 				//				alert(activePage.id)
-				var subpages = util.options.subpages
+				var subpages = util.options.subpages;
 				if(key > 0) {
 					targetPage = plus.webview.getWebviewById(subpages[key - 1]);
 				} else {
@@ -1018,47 +1008,44 @@
 				//更新当前活跃的页面
 				activePage = targetPage;
 				//				alert(activePage.id)
-
 			}
 			/*回传位置信息*/
 			function setPos(str) {
 				APP.curPos = str;
-				APP.co = JSON.parse(plus.storage.getItem('pos'))
+				APP.co = JSON.parse(plus.storage.getItem('pos'));
 				//				console.log(plus.storage.getItem('pos'))
-				APP._initNew()
+				APP._initNew();
 			}
 			//			关闭等待
 			function closeVersion() {
 				if(document.getElementById('version')) {
 					mui.later(function() {
-						document.getElementById('version').style.display = 'none'
-					}, 500)
-
+						document.getElementById('version').style.display = 'none';
+					}, 500);
 				}
 			}
 			//			外链的回掉跳转 作品详情页
 			function _navigateToPro(code) {
-				let desturl = './html/production/productBuy.html'
-				let destid = 'productBuy'
-				let exa = {
+				var desturl = './html/production/productBuy.html';
+				var destid = 'productBuy';
+				var exa = {
 					proKey: code
-				}
-				let option = {
-					showTitle: false,
-				}
-				app.navigater(desturl, destid, exa, option)
-
+				};
+				var option = {
+					showTitle: false
+				};
+				app.navigater(desturl, destid, exa, option);
 			}
 			(function(lazyimg) {
 
 				lazyimg.lazyLoad = function(doc, cb) {
 
 					lazyLoad(doc ? doc : document);
-				}
-				var lazyLoad = function(doc, cb) {
+				};
+				var lazyLoad = function lazyLoad(doc, cb) {
 					//					
 					var imgs = doc.querySelectorAll('img.lazy');
-					async.each(imgs, function(img, cb1) {
+					mui.each(imgs, function(index,img) {
 						var data_src = img.getAttribute('data-src');
 						//						alert(data_src)
 						if(data_src && data_src.indexOf('https://') >= 0) {
@@ -1066,61 +1053,58 @@
 								setPath(img, localUrl);
 							});
 						}
-					}, function() {
-						cb && cb();
 					});
-
-				}
+				};
 
 				function setPath(img, src) {
 					//					alert(src)
 					img.setAttribute('src', src);
 					img.classList.remove("lazy");
 				}
-			}(window.Lazyimg = {}));
+			})(window.Lazyimg = {});
 
 			document.addEventListener("netchange", onNetChange, false);
 
-			function onNetChange() {　　 //获取当前网络类型
-				　　
-				var nt = plus.networkinfo.getCurrentType();　　
-				switch(nt) {　　　　
-					case plus.networkinfo.CONNECTION_ETHERNET:
-						　　APP._reconnect()　　　
-						break;　　　　
-					case plus.networkinfo.CONNECTION_WIFI:
-//					alert(0)
+			function onNetChange() {
+				//获取当前网络类型
 
-						　APP._reconnect()　　　
-						break;　　　　　　　　　
+				var nt = plus.networkinfo.getCurrentType();
+				switch(nt) {
+					case plus.networkinfo.CONNECTION_ETHERNET:
+						APP._reconnect();
+						break;
+					case plus.networkinfo.CONNECTION_WIFI:
+						//					alert(0)
+
+						APP._reconnect();
+						break;
 					case plus.networkinfo.CONNECTION_CELL2G:
-						　APP._reconnect()　　　
-						break;　
+						APP._reconnect();
+						break;
 					case plus.networkinfo.CONNECTION_CELL3G:
-						　APP._reconnect()　　　
-						break;　　　　　
+						APP._reconnect();
+						break;
 					case plus.networkinfo.CONNECTION_CELL4G:
-						　　APP._reconnect()　　　
-						break;　　　　　　　
+						APP._reconnect();
+						break;
 					default:
-//						mui.toast("当前没有网络");　　
-						
-						plus.nativeUI.alert("网络异常，请检查")
-						APP.noNet = true　　　　
-						break;　　
+						//						mui.toast("当前没有网络");　　
+
+						plus.nativeUI.alert("网络异常，请检查");
+						APP.noNet = true;
+						break;
 				}
 			}
-  			function onNet(urlstr) {
-                var nt = plus.networkinfo.getCurrentType();　　
-                if(nt == plus.networkinfo.CONNECTION_NONE) {
-                    return false
 
-                } else {
-                    //连接网络
-					 return true
-                }
-            }
-  			
+			function onNet(urlstr) {
+				var nt = plus.networkinfo.getCurrentType();
+				if(nt == plus.networkinfo.CONNECTION_NONE) {
+					return false;
+				} else {
+					//连接网络
+					return true;
+				}
+			}
 		</script>
 	</body>
 

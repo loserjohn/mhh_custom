@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html>
+
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
@@ -23,7 +24,8 @@
 				padding: 0!important;
 				overflow: hidden;
 				font-size: 14px;
-			}			
+			}
+			
 			p {
 				margin: 0;
 				padding: 0;
@@ -57,7 +59,8 @@
 				color: #757575;
 			}
 			/*搜索结果页*/
-			.footer{
+			
+			.footer {
 				position: absolute;
 				width: 100%;
 				bottom: 0;
@@ -68,6 +71,7 @@
 				overflow: hidden;
 				/*box-shadow: 0 0 4px #404040;*/
 			}
+			
 			#addressDels {
 				position: absolute;
 				width: 100%;
@@ -90,7 +94,7 @@
 				height: 2rem;
 			}
 			
-			#addressDels  span{
+			#addressDels span {
 				display: block;
 				/*float: left;*/
 				width: 8px;
@@ -104,7 +108,6 @@
 				margin-left: 3%;
 				margin-right: 3%;
 			}
-			
 			
 			#addressDels li p {
 				line-height: 2rem;
@@ -165,7 +168,8 @@
 				background: #fff;
 				border-bottom: 2px solid #212121;
 			}
-			.resultBox{
+			
+			.resultBox {
 				position: absolute;
 				width: 100%;
 				margin-top: 20%;
@@ -174,7 +178,6 @@
 				overflow: hidden;
 				bottom: 10px;
 			}
-			
 		</style>
 	</head>
 
@@ -191,54 +194,56 @@
 		</header>
 		<div id="container" class="map" tabindex="0"></div>
 		<input type="text" name="pos" id="pos" value="" placeholder="" style="display: none;" />
-		<div class="suggestBox" id="suggestBox" >
+		<div class="suggestBox" id="suggestBox">
 
 		</div>
 		<div class="footer">
-			<div class=" flex" id="addressDels" >
+			<div class=" flex" id="addressDels">
 				<ul class="f1" style="max-width: 70%;">
 					<li class="poi  flex">
 						<span></span>
 						<p class="nearpoi f1 ellipsis"></p>
-				
+
 					</li>
-					<li class="address  flex">				
+					<li class="address  flex">
 						<span></span>
 						<p class="info f1 ellipsis"></p>
 					</li>
 				</ul>
-				<a href="#" id="submit" >确定</a>
+				<a href="#" id="submit">确定</a>
 			</div>
 			<!--结果-->
-			<div class="resultBox mui-scroll-wrapper" >
-					<div class="mui-scroll" >
-						<div id="resultBox"></div>
-					</div>
-			</div>		
+			<div class="resultBox mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div id="resultBox"></div>
+				</div>
+			</div>
 		</div>
-		
+
 		<script>
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			mui.plusReady(function() {
 				app.initHeader();
-				plus.nativeUI.closeWaiting()
-				
-//				alert(document.getElementById('header').offsetHeight+'px')
-				document.getElementById('suggestBox').style.top= '64px'
-				
-//				mui.later(function(){
-//					mui.currentWebview.show('pop-in', 300, function() {}, {});
-//				},2000)
-					mui.currentWebview.show('pop-in', 300, function() {}, {});
+				plus.nativeUI.closeWaiting();
+
+				//				alert(document.getElementById('header').offsetHeight+'px')
+				document.getElementById('suggestBox').style.top = '64px';
+
+				//				mui.later(function(){
+				//					mui.currentWebview.show('pop-in', 300, function() {}, {});
+				//				},2000)
+				mui.currentWebview.show('pop-in', 300, function() {}, {});
 				var lon = '';
 				var lan = '';
 				var address = '';
-				var street = ''
+				var street = '';
 
 				AMapUI.loadUI(['misc/PositionPicker', 'misc/PoiPicker'], function(PositionPicker, PoiPicker) {
-					var resBox = document.getElementById('resultBox')
+					var resBox = document.getElementById('resultBox');
 					var map = new AMap.Map('container', {
 						zoom: 14,
 						scrollWheel: false
@@ -251,7 +256,7 @@
 						placeSearchOptions: {
 							map: map,
 							type: '商务住宅|公司企业|生活服务',
-							autoFitView:false,
+							autoFitView: false,
 							pageSize: 6 //关联搜索分页
 						},
 						AutocompleteOptions: {
@@ -259,15 +264,14 @@
 						}
 
 					});
-					
-					
+
 					var poiPicker2 = new PoiPicker({
 						input: 'pos',
 						searchResultsContainer: 'resultBox',
 						placeSearchOptions: {
 							map: map,
 							type: '商务住宅|公司企业|生活服务',
-							autoFitView:false,
+							autoFitView: false,
 							pageSize: 6 //关联搜索分页
 						},
 						AutocompleteOptions: {
@@ -278,7 +282,7 @@
 					// 加载定位插件，实现定位功能
 
 					AMap.plugin('AMap.Geolocation', function() {
-						geolocation = new AMap.Geolocation({
+						var geolocation = new AMap.Geolocation({
 							enableHighAccuracy: true, //是否使用高精度定位，默认:true
 							timeout: 10000, //超过10秒后停止定位，默认：无穷大
 							maximumAge: 0, //定位结果缓存0毫秒，默认：0
@@ -296,38 +300,38 @@
 					// 搜索选址
 
 					poiPicker.on('poiPicked', function(poiResult) {
-						poiPicker.clearSuggest()
-//						poiPicker.hideSearchResults();
+						poiPicker.clearSuggest();
+						//						poiPicker.hideSearchResults();
 
-						lat = poiResult.item.location.lat
+						lat = poiResult.item.location.lat;
 
-						lng = poiResult.item.location.lng
-						
-						$('.poi .nearpoi').text(poiResult.item.name)
-//console.log(JSON.stringify(poiResult.item))
-						$('.address .info').text(poiResult.item.address)
+						lng = poiResult.item.location.lng;
 
-						$('#address').val(poiResult.item.address)
+						$('.poi .nearpoi').text(poiResult.item.name);
+						//console.log(JSON.stringify(poiResult.item))
+						$('.address .info').text(poiResult.item.address);
+
+						$('#address').val(poiResult.item.address);
 						map.panTo([lng, lat]);
 					});
-//					点击搜索
-					function search(msg){
-						poiPicker.clearSuggest()
+					//					点击搜索
+					function search(msg) {
+						poiPicker.clearSuggest();
 						poiPicker2.searchByKeyword(msg);
 						mui('.mui-scroll-wrapper').scroll({
-							 scrollY: true, //是否竖向滚动
-							 scrollX: false, //是否横向滚动
-							 startX: 0, //初始化时滚动至x
-							 startY: 0, //初始化时滚动至y
-							 indicators: true, //是否显示滚动条
-							 deceleration:0.0006, //阻尼系数,系数越小滑动越灵敏
-							 bounce: true //是否启用回弹
+							scrollY: true, //是否竖向滚动
+							scrollX: false, //是否横向滚动
+							startX: 0, //初始化时滚动至x
+							startY: 0, //初始化时滚动至y
+							indicators: true, //是否显示滚动条
+							deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+							bounce: true //是否启用回弹
 						});
 					}
-					
+
 					function onComplete(data) {
-						$('#address').val(data.formattedAddress)
-						$('.address .info').text(data.formattedAddress)
+						$('#address').val(data.formattedAddress);
+						$('.address .info').text(data.formattedAddress);
 					}
 					//解析定位错误信息
 					function onError(data) {
@@ -341,38 +345,37 @@
 					// 拖拽选址
 
 					positionPicker.on('success', function(positionResult) {
-												
-						lon = positionResult.position.lng
-						lan = positionResult.position.lat
-						street = positionResult.nearestRoad
+
+						lon = positionResult.position.lng;
+						lan = positionResult.position.lat;
+						street = positionResult.nearestRoad;
 						address = positionResult.address;
-//						console.log(positionResult.nearestRoad)
-						$('.poi .nearpoi').text(positionResult.nearestPOI)
-						$('.address .info').text(positionResult.address)
-						
-						search(positionResult.address)
-						
+						//						console.log(positionResult.nearestRoad)
+						$('.poi .nearpoi').text(positionResult.nearestPOI);
+						$('.address .info').text(positionResult.address);
+
+						search(positionResult.address);
 					});
 					positionPicker.on('fail', function(positionResult) {
-						$('.poi .nearpoi').text('')
-						$('.address .info').text('')
+						$('.poi .nearpoi').text('');
+						$('.address .info').text('');
 					});
-					var onModeChange = function(e) {
-						positionPicker.setMode(e.target.value)
-					}
+					var onModeChange = function onModeChange(e) {
+						positionPicker.setMode(e.target.value);
+					};
 					positionPicker.start();
 					map.panBy(0, 1);
 
 					mui('#addressDels').on('tap', '#submit', function() {
 
 						if(!lon || !lan || !address) {
-							mui.back()
+							mui.back();
 							return;
 						}
 
 						var self = plus.webview.currentWebview();
-						var prevID = self.prevWebview
-						var s = plus.webview.getWebviewById(prevID)
+						var prevID = self.prevWebview;
+						var s = plus.webview.getWebviewById(prevID);
 						var co = {
 							longitude: lon,
 							/*经度*/
@@ -380,36 +383,36 @@
 							/*纬度*/
 							address: address,
 							street: street
-						}
-//						console.log(JSON.stringify(co))
+							//						console.log(JSON.stringify(co))
+						};
 						switch(prevID) {
 							case 'addAddress':
-								s.evalJS('setPos(' + JSON.stringify(co) + ')')
+								s.evalJS('setPos(' + JSON.stringify(co) + ')');
 								mui.currentWebview.close();
 								break;
 
 							default:
 
-								plus.storage.setItem('pos', JSON.stringify(co))
-								plus.webview.getLaunchWebview().evalJS('setPos("' + co.address + '")')
+								plus.storage.setItem('pos', JSON.stringify(co));
+								plus.webview.getLaunchWebview().evalJS('setPos("' + co.address + '")');
 								if(plus.webview.getWebviewById('productList')) {
-									plus.webview.getWebviewById('productList').evalJS('setPos("' + co.address + '")')
+									plus.webview.getWebviewById('productList').evalJS('setPos("' + co.address + '")');
 								}
 								break;
 						}
 						if(plus.webview.getWebviewById('where')) {
-							plus.webview.getWebviewById('where').close()
+							plus.webview.getWebviewById('where').close();
 						}
 
-						mui.back()
-					})
-					
+						mui.back();
+					});
+
 					mui('#header').on('tap', '#close', function() {
-						poiPicker.clearSuggest()
-						$('#search').val('')
-					})
+						poiPicker.clearSuggest();
+						$('#search').val('');
+					});
 				});
-			})
+			});
 
 			//			提交操作
 		</script>

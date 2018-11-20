@@ -230,12 +230,14 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
+			'use strict';
+
 			mui.init({
 				swipeBack: true
 			});
 			var APP;
 			mui.plusReady(function() {
-				app.WXinit(CryptoJS)
+				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
@@ -255,17 +257,16 @@
 						product: '',
 						/*订单详情*/
 						order: '',
-						remark: '', //备注
+						remark: '' //备注
 					},
-					created: function() {
+					created: function created() {
 						var self = plus.webview.currentWebview();
-						this.orderCode = self.orderCode
-
+						this.orderCode = self.orderCode;
 					},
-					mounted: function() {
+					mounted: function mounted() {
 						var _this = this;
 
-						var scroll = this.$refs.scroll
+						var scroll = this.$refs.scroll;
 						//						var wraper = this.$refs.wraper
 						//							初始化scroll的屏幕位置
 						this.appHeight = 0;
@@ -273,32 +274,32 @@
 						/*初始化横向scroll*/
 						//						this._initScroll()
 						/*初始化数据*/
-						this._getData(() => {})
+						this._getData(function() {});
 						//						plus.nativeUI.closeWaiting()
 						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
 					},
 					methods: {
-						_toNum() {
+						_toNum: function _toNum() {
 							if(!this.count) {
-								this.count = 0
-								this.countNum = 0
+								this.count = 0;
+								this.countNum = 0;
 							} else {
-								this.totalAmount = (this.count * 0.01).toFixed(2)
+								this.totalAmount = (this.count * 0.01).toFixed(2);
 							}
 						},
-						_sub() {
+						_sub: function _sub() {
 							if(this.count == 0) return;
 							this.count--;
-							this.totalAmount = (this.count * 0.01).toFixed(2)
+							this.totalAmount = (this.count * 0.01).toFixed(2);
 						},
-						_add() {
+						_add: function _add() {
 							this.count++;
-							this.totalAmount = (this.count * 0.01).toFixed(2)
+							this.totalAmount = (this.count * 0.01).toFixed(2);
 						},
 
 						/*获取数据*/
-						_getData(callback) {
-							var _this = this
+						_getData: function _getData(callback) {
+							var _this = this;
 							//							alert(1)
 							/*获取订单详情*/
 							app.ajax(app.baseUrl + '/api/OrderService/GetOrder', {
@@ -306,28 +307,28 @@
 								data: {
 									ORDER_CODE: _this.orderCode
 								},
-								success: function(result) {
+								success: function success(result) {
 									if(result.Success) {
 										_this.order = result.Data.data;
-										_this.levels = parseInt(result.Data.data.SHOP_STAR)
-										if(callback) callback()
+										_this.levels = parseInt(result.Data.data.SHOP_STAR);
+										if(callback) callback();
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
-										if(callback) callback()
+										plus.nativeUI.toast(result.Msg);
+										if(callback) callback();
 									}
 								}
 							});
-
 						},
 
 						/*回到顶部*/
-						_backTop() {
-							this.scroll.scrollTo(0, 0, 300)
+						_backTop: function _backTop() {
+							this.scroll.scrollTo(0, 0, 300);
 						},
+
 						/*提交订单*/
-						_toSubmit() {
-							var _this = this
+						_toSubmit: function _toSubmit() {
+							var _this = this;
 
 							/*订单信息判断*/
 							if(!this.count || this.count == 0) {
@@ -335,49 +336,43 @@
 								return;
 							}
 
-							plus.nativeUI.showWaiting()
+							plus.nativeUI.showWaiting();
 							var data = {
 								ORDER_CODE: _this.orderCode,
 								count: _this.count
-							}
-							//							console.log(_this.orderCode)
-							//														console.log(JSON.stringify(data))
+								//							console.log(_this.orderCode)
+								//														console.log(JSON.stringify(data))
+							};
 							app.ajax(app.baseUrl + '/api/Order/CreateAdditionOrder', {
 								type: 'post', //HTTP请求类型
 								data: data,
-								success: function(result) {
-									plus.nativeUI.closeWaiting()
+								success: function success(result) {
+									plus.nativeUI.closeWaiting();
 
 									if(result.Success) {
-										plus.nativeUI.toast('操作成功')
-										mui.later(() => {
-											let payCode = result.Msg; //订单号
-											let desturl = './toPay.html'
-											let destid = 'toPay'
-											let exa = {
+										plus.nativeUI.toast('操作成功');
+										mui.later(function() {
+											var payCode = result.Msg; //订单号
+											var desturl = './toPay.html';
+											var destid = 'toPay';
+											var exa = {
 												payCode: payCode
-											}
-											let option = {
+											};
+											var option = {
 												showTitle: true
-											}
-											app.navigater(desturl, destid, exa, option)
-											
-										
-										}, 1000)
+											};
+											app.navigater(desturl, destid, exa, option);
+										}, 1000);
 										/*成功跳转支付页面*/
-
 									} else {
 										/*验证失败*/
-										plus.nativeUI.toast(result.Msg)
+										plus.nativeUI.toast(result.Msg);
 									}
 								}
 							});
-
-						},
-
+						}
 					}
-				})
-
+				});
 			});
 		</script>
 	</body>
