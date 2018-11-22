@@ -86,7 +86,7 @@
 		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: true
@@ -219,8 +219,8 @@
 										if(status) {
 											/*登陆成功*/
 											plus.nativeUI.toast('登陆成功');
-											plus.webview.getWebviewById('orders').evalJS('refresh()');
-											plus.webview.getWebviewById('mine').evalJS('refresh(true)');
+//											plus.webview.getWebviewById('orders').evalJS('refresh()');
+//											plus.webview.getWebviewById('mine').evalJS('refresh(true)');
 
 											if(plus.webview.getWebviewById('login')) {
 												plus.webview.getWebviewById('login').close();

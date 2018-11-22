@@ -698,7 +698,7 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: true
@@ -920,7 +920,9 @@
 						_navigateTo: function _navigateTo(desturl, destid, extras) {
 
 							var exa = extras;
-							var option = {};
+							var option = {
+								createNew:true
+							};
 							app.navigater(desturl, destid, exa, option);
 						},
 

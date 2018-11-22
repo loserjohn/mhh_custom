@@ -1,154 +1,165 @@
 {
-  "index.html": {
-    "resources": [
-      "community.html",
-      "mine.html"
-    ],
-    "refer": [
-      "community.html",
-      "mine.html",
-      "orders.html",
-      "html/address/where.html",
-      "html/production/productList.html",
-      "html/production/productBuy.html",
-      "html/production/search.html",
-      "updating.html"
-    ]
-  },
-  "mine.html": {
-    "refer": [
-      "html/login.html",
-      "html/set.html",
-      "html/kefu.html",
-      "html/information/information.html",
-      "html/refillcard/refillcard.html",
-      "html/address/address.html",
-      "html/collection/collection.html",
-      "html/platformCard/platformCard.html",
-      "html/production/productBuy.html",
-      "html/coupons/coupons.html",
-      "html/share.html",
-      "html/scores.html"
-    ]
-  },
-  "html/login.html": {
-    "refer": [
-      "html/bound.html",
-      "html/registe.html",
-      "html/forgetPass.html",
-      "html/yzmLogin.html"
-    ]
-  },
-  "html/address/where.html": {
-    "refer": [
-      "html/address/location.html",
-      "html/address/address.html",
-      "html/address/addAddress.html"
-    ]
-  },
-  "html/production/productList.html": {
-    "refer": [
-      "html/address/where.html",
-      "html/technician/technician.html",
-      "html/production/search.html"
-    ]
-  },
-  "community.html": {
-    "refer": [
-      "html/community_detail.html"
-    ]
-  },
-  "html/set.html": {
-    "refer": [
-      "html/imgClick.html",
-      "html/updatedNum.html",
-      "html/rules.html"
-    ]
-  },
-  "html/information/information.html": {
-    "refer": [
-      "html/information/chat.html",
-      "html/information/sysMessage.html"
-    ]
-  },
-  "html/production/productBuy.html": {
-    "refer": [
-      "html/technician/technician.html",
-      "html/login.html",
-      "html/production/productOrder.html"
-    ]
-  },
-  "html/information/chat.html": {
-    "refer": [
-      "html/information/location.html"
-    ]
-  },
-  "html/collection/collection.html": {
-    "refer": [
-      "html/technician/technician.html",
-      "html/production/productBuy.html"
-    ]
-  },
-  "html/technician/technician.html": {
-    "refer": [
-      "html/coupons/proCoupons.html",
-      "html/cashPay.html",
-      "html/login.html"
-    ]
-  },
-  "orders.html": {
-    "refer": [
-      "html/technician/technician.html",
-      "html/order/orderDetail.html",
-      "html/order/refund.html",
-      "html/login.html"
-    ]
-  },
-  "html/cashPay.html": {
-    "refer": [
-      "html/success.html"
-    ]
-  },
-  "html/refillcard/refillcard.html": {
-    "refer": [
-      "html/technician/technician.html"
-    ]
-  },
-  "html/order/orderDetail.html": {
-    "refer": [
-      "html/technician/technician.html",
-      "html/production/productBuy.html"
-    ]
-  },
-  "html/production/search.html": {
-    "refer": [
-      "html/production/productBuy.html"
-    ]
-  },
-  "html/production/productOrder.html": {
-    "refer": [
-      "html/production/timePicker.html",
-      "html/production/toPay.html"
-    ]
-  },
-  "html/production/toPay.html": {
-    "refer": [
-      "html/success.html"
-    ]
-  },
-  "html/address/address.html": {
-    "refer": [
-      "html/address/addAddress.html"
-    ]
-  },
-  "html/coupons/coupons.html": {
-    "refer": [
-      "html/rules.html"
-    ]
-  },
-  "html/platformCard/platformCard.html": {
-    "refer": [
-      "html/platformCard/deposit.html"
-    ]
-  }
+	"index.html": {
+		"resources": [
+			"community.html",
+			"mine.html"
+		],
+		"refer": [
+			"community.html",
+			"mine.html",
+			"orders.html",
+			"html/address/where.html",
+			"html/production/productList.html",
+			"html/production/productBuy.html",
+			"html/production/search.html",
+			"updating.html"
+		]
+	},
+	"mine.html": {
+		"refer": [
+			"html/login.html",
+			"html/set.html",
+			"html/kefu.html",
+			"html/information/information.html",
+			"html/refillcard/refillcard.html",
+			"html/address/address.html",
+			"html/collection/collection.html",
+			"html/platformCard/platformCard.html",
+			"html/production/productBuy.html",
+			"html/coupons/coupons.html",
+			"html/share.html",
+			"html/scores.html"
+		]
+	},
+	"html/login.html": {
+		"refer": [
+			"html/bound.html",
+			"html/registe.html",
+			"html/forgetPass.html",
+			"html/yzmLogin.html"
+		]
+	},
+	"html/address/where.html": {
+		"refer": [
+			"html/address/location.html",
+			"html/address/address.html",
+			"html/address/addAddress.html"
+		]
+	},
+	"html/production/productList.html": {
+		"refer": [
+			"html/address/where.html",
+			"html/technician/technician.html",
+			"html/production/search.html"
+		]
+	},
+	"community.html": {
+		"refer": [
+			"html/community_detail.html"
+		]
+	},
+	"html/set.html": {
+		"refer": [
+			"html/imgClick.html",
+			"html/updatedNum.html",
+			"html/rules.html"
+		]
+	},
+	"html/information/information.html": {
+		"refer": [
+			"html/information/chat.html",
+			"html/information/sysMessage.html"
+		]
+	},
+	"html/production/productBuy.html": {
+		"refer": [
+			"html/technician/technician.html",
+			"html/login.html",
+			"html/production/productOrder.html",
+			"html/cashPay.html"
+		]
+	},
+	"html/information/chat.html": {
+		"refer": [
+			"html/information/location.html"
+		]
+	},
+	"html/collection/collection.html": {
+		"refer": [
+			"html/technician/technician.html",
+			"html/production/productBuy.html"
+		]
+	},
+	"html/technician/technician.html": {
+		"refer": [
+			"html/coupons/proCoupons.html",
+			"html/cashPay.html",
+			"html/login.html",
+			"html/production/productBuy.html"
+		]
+	},
+	"orders.html": {
+		"refer": [
+			"html/technician/technician.html",
+			"html/order/orderDetail.html",
+			"html/order/refund.html",
+			"html/login.html",
+			"html/production/toPay.html",
+			"html/production/spread.html",
+			"html/production/editComment.html"
+		]
+	},
+	"html/cashPay.html": {
+		"refer": [
+			"html/success.html"
+		]
+	},
+	"html/refillcard/refillcard.html": {
+		"refer": [
+			"html/technician/technician.html"
+		]
+	},
+	"html/order/orderDetail.html": {
+		"refer": [
+			"html/technician/technician.html",
+			"html/production/productBuy.html"
+		]
+	},
+	"html/production/search.html": {
+		"refer": [
+			"html/production/productBuy.html"
+		]
+	},
+	"html/production/productOrder.html": {
+		"refer": [
+			"html/production/timePicker.html",
+			"html/production/toPay.html"
+		]
+	},
+	"html/production/toPay.html": {
+		"refer": [
+			"html/success.html"
+		]
+	},
+	"html/address/address.html": {
+		"refer": [
+			"html/address/addAddress.html"
+		]
+	},
+	"html/coupons/coupons.html": {
+		"refer": [
+			"html/rules.html"
+		]
+	},
+	"html/platformCard/platformCard.html": {
+		"refer": [
+			"html/platformCard/deposit.html"
+		]
+	},
+	"html/production/editComment.html": {
+		"refer": [
+			"html/technician/technician.html",
+			"html/production/productBuy.html"
+		]
+	}
 }

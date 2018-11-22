@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<style>
 			/*列表项样式*/
 			
@@ -114,15 +115,20 @@
 	</head>
 
 	<body>
-		<!--<header class="fixed  header flex" id="header">
-			<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
-			<div class=" f1  cor_w t_c page_title">
-				评价
+		<!--等待页面-->
+			<div class="loader" style="top:0" id="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
 			</div>
-			<button class=" mui-btn  mui-btn-link mui-btn-nav mui-pull-right cor_w">
-					须知				
-				</button>
-		</header>-->
 		<div id="app">
 			<!--项目作品-->
 			<div class="tabsItems  panel" id="content">
@@ -234,7 +240,7 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: true
@@ -286,8 +292,7 @@
 						//							初始化scroll的屏幕位置
 						this.tabContenTop = 0 + 'px';
 
-						//						plus.nativeUI.closeWaiting()
-						//						mui.currentWebview.show('pop-in', 300, function() {}, {});
+						document.getElementById('loader').style.display = 'none'
 					},
 					methods: {
 						_switchType: function _switchType(k) {
@@ -306,17 +311,36 @@
 							switch(key) {
 								case 1:
 									app.getIMG('评价图片', function(src) {
+										
 										_this2.commontPic1 = src;
+										plus.nativeUI.showWaiting()
+										var img = new Image();
+										img.src = src;
+										img.onload=function(){
+											plus.nativeUI.closeWaiting()
+										}
 									});
 									break;
 								case 2:
 									app.getIMG('评价图片', function(src) {
 										_this2.commontPic2 = src;
+										plus.nativeUI.showWaiting()
+										var img = new Image();
+										img.src = src;
+										img.onload=function(){
+											plus.nativeUI.closeWaiting()
+										}
 									});
 									break;
 								case 3:
 									app.getIMG('评价图片', function(src) {
 										_this2.commontPic3 = src;
+										plus.nativeUI.showWaiting()
+										var img = new Image();
+										img.src = src;
+										img.onload=function(){
+											plus.nativeUI.closeWaiting()
+										}
 									});
 									break;
 								default:

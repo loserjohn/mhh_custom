@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<style>
 			/*购买项目*/
 			
@@ -155,6 +156,20 @@
 	</head>
 
 	<body>
+		<!--等待页面-->
+			<div class="loader" style="top:0" id="loader">
+				<ul>
+					<li id='a'></li>
+					<li id='b'></li>
+					<li id='c'></li>
+					<li id='d'></li>
+					<li id='e'></li>
+					<li id='f'></li>
+					<li id='g'></li>
+					<li id='h'></li>
+					<li id='i'></li>
+				</ul>
+			</div>
 		<div id="app">
 			<!--<header class="fixed  header flex" id="header">
 				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
@@ -230,7 +245,7 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: true
@@ -274,7 +289,9 @@
 						/*初始化横向scroll*/
 						//						this._initScroll()
 						/*初始化数据*/
-						this._getData(function() {});
+						this._getData(function() {
+							document.getElementById('loader').style.display = 'none'
+						});
 						//						plus.nativeUI.closeWaiting()
 						//						mui.currentWebview.show('pop-in', 300, function() {}, {});c
 					},

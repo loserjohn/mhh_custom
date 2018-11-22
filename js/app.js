@@ -238,18 +238,18 @@
 	/*微信重新调用授权 自动登陆*/
 	owner.reWxLogin = function(callback) {
 		var auth = auths.s_server;
-		var waiting = plus.nativeUI.showWaiting();
+		plus.nativeUI.showWaiting();
 		if(auth.authResult && auth.userInfo && plus.storage.getItem('opId')) {
 			// 已经授权
 			plus.storage.setItem('opId', auth.userInfo.openid);
 			plus.storage.setItem('lastLoginWay', '2');
 			var t = new Date().getTime().toString();
 			plus.storage.setItem('lastLoginTime', t.toString());
-			waiting.close();
+			plus.nativeUI.closeWaiting();
 			owner._toMain(2, callback);
 		} else {
 			// 没有授权
-			waiting.close();
+			plus.nativeUI.closeWaiting();
 			owner.wxOAuth(callback);
 		}
 	}
@@ -278,10 +278,11 @@
 					}
 				}, function(e) {
 					//					plus.nativeUI.toast("获取用户信息失败" + e.message);
+					plus.nativeUI.closeWaiting();
 					plus.nativeUI.toast("获取用户信息失败,请检查网络");
 				});
 			}, function(e) {
-				//				waiting.close();
+				plus.nativeUI.closeWaiting();
 				plus.nativeUI.toast("登录认证失,请检查网络");
 			});
 

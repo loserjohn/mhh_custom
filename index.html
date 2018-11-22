@@ -294,18 +294,18 @@
 								<div class="mui-slider-group mui-slider-loop" style="min-height: 150px;">
 									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(prevPic.LINK_URL)">
-										<!--<img :src="prevPic.LINK_IMAGE" >-->
-										<img src="images/index/banner2.png" class="lazy" :data-src="prevPic.LINK_IMAGE">
+										<img :src="prevPic.LINK_IMAGE" >
+										<!--<img src="images/index/banner2.png" class="lazy" :data-src="prevPic.LINK_IMAGE">-->
 									</div>
 									<!-- 第一张 -->
 									<div class="mui-slider-item" v-for="item in activityPics" @tap="_jump(item.LINK_URL)">
-										<!--<img :src="item.LINK_IMAGE" class="lazy" >-->
-										<img src="images/index/banner2.png" class="lazy" :data-src="item.LINK_IMAGE">
+										<img :src="item.LINK_IMAGE" class="lazy" >
+										<!--<img src="images/index/banner2.png" class="lazy" :data-src="item.LINK_IMAGE">-->
 									</div>
 									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(nextPic.LINK_URL)">
-										<!--<img :src="nextPic.LINK_IMAGE">-->
-										<img src="images/index/banner2.png" class="lazy" :data-src="nextPic.LINK_IMAGE">
+										<img :src="nextPic.LINK_IMAGE">
+										<!--<img src="images/index/banner2.png" class="lazy" :data-src="nextPic.LINK_IMAGE">-->
 									</div>
 								</div>
 								<div class="mui-slider-indicator">
@@ -317,10 +317,10 @@
 						<!--分类按钮-->
 						<div class="menus " :style="{backgroundImage:menusBackgroundPic}">
 							<ul class="flex">
-								<li class="menusItem" v-for="item in menusList" @tap="_menuTo(item.type,item.text)">
+								<li class="menusItem" v-for="(item,index) in menusList" @tap="_menuTo(item.type,item.text)">
 									<a href="####">
-										<!--<img :src="item.backgroundPic"  width="50" />-->
-										<img src="images/block.png" class="lazy" :data-src="item.backgroundPic" width="50">
+										<img :src="item.backgroundPic"  width="50" />
+										<!--<img :src="'images/index/ic'+index+'.png'" class="lazy" :data-src="item.backgroundPic" width="50">-->
 										<p>{{item.text}}</p>
 									</a>
 								</li>
@@ -394,8 +394,8 @@
 
 						<!--推荐活动-->
 						<div class="block3  panel" v-for="(item,index) in  recommend" v-show="item.Items.length>1">
-							<!--<img :src="item.TYPE_IMAGE?item.TYPE_IMAGE:'./images/index/index3.png'" alt="" class="contain" />-->
-							<img src="images/index/banner3.png" class="contain lazy" :data-src="item.TYPE_IMAGE">
+							<img :src="item.TYPE_IMAGE?item.TYPE_IMAGE:'./images/index/index3.png'" alt="" class="contain" />
+							<!--<img src="images/index/banner3.png" class="contain lazy" :data-src="item.TYPE_IMAGE">-->
 							<div class="mui-scroll-wrapper activityBox " :id="'wrapper'+index">
 								<ul class="reset flex mui-scroll " :style="{width:100*(item.Items.length+1)+'px'}">
 									<li class="activityItem " v-for="list in item.Items" @tap="_NWnavigateTo('./html/production/productBuy.html','productBuy',{proKey:list.PROJECT_CODE})">
@@ -475,7 +475,7 @@
 		<!--<script src="js/async.js"></script>-->
 
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: false
@@ -572,19 +572,21 @@
 							this.noNet = false;
 							this._initIndex();
 						},
-						_initIndex: function _initIndex() {
+						_initIndex: function _initIndex(cb) {
 							var _this2 = this;
 
 							/*首页定位*/
 							this._initPos(function() {
 								/*位置信息获取之后初始化最新上架*/
 								_this2._initNew();
+								if(cb)cb()
 							});
 							this._initScroll(); //初始化下拉
 							this._initCarousel();
 							this._initBlock(); //初始化豆腐块
 
 							this._initMenus(); /*初始化导航栏*/
+							
 						},
 
 						//						默认头像
@@ -630,7 +632,7 @@
 											img.onload = function() {
 												status += 1;
 												if(status == result.Data.ListInfo.length) {
-													Lazyimg.lazyLoad();
+//													Lazyimg.lazyLoad();
 													mui(slider).slider({
 														interval: 3000 //自动播放周期
 													});
@@ -843,10 +845,14 @@
 									plus.nativeUI.showWaiting();
 									_this._initPos(function() {
 										/*位置信息获取之后初始化最新上架*/
-										_this._initNew(function() {
+										_this._initIndex(function(){
 											plus.nativeUI.closeWaiting();
 											_this.scroll.finishPullDown();
 										});
+//										_this._initNew(function() {
+//											plus.nativeUI.closeWaiting();
+//											_this.scroll.finishPullDown();
+//										});
 									});
 								});
 							});
@@ -1036,32 +1042,32 @@
 				};
 				app.navigater(desturl, destid, exa, option);
 			}
-			(function(lazyimg) {
-
-				lazyimg.lazyLoad = function(doc, cb) {
-
-					lazyLoad(doc ? doc : document);
-				};
-				var lazyLoad = function lazyLoad(doc, cb) {
-					//					
-					var imgs = doc.querySelectorAll('img.lazy');
-					mui.each(imgs, function(index,img) {
-						var data_src = img.getAttribute('data-src');
-						//						alert(data_src)
-						if(data_src && data_src.indexOf('https://') >= 0) {
-							common.cache.getFile(data_src, function(localUrl) {
-								setPath(img, localUrl);
-							});
-						}
-					});
-				};
-
-				function setPath(img, src) {
-					//					alert(src)
-					img.setAttribute('src', src);
-					img.classList.remove("lazy");
-				}
-			})(window.Lazyimg = {});
+//			(function(lazyimg) {
+//
+//				lazyimg.lazyLoad = function(doc, cb) {
+//
+//					lazyLoad(doc ? doc : document);
+//				};
+//				var lazyLoad = function lazyLoad(doc, cb) {
+//					//					
+//					var imgs = doc.querySelectorAll('img.lazy');
+//					mui.each(imgs, function(index,img) {
+//						var data_src = img.getAttribute('data-src');
+//						//						alert(data_src)
+//						if(data_src && data_src.indexOf('https://') >= 0) {
+//							common.cache.getFile(data_src, function(localUrl) {
+//								setPath(img, localUrl);
+//							});
+//						}
+//					});
+//				};
+//
+//				function setPath(img, src) {
+//					//					alert(src)
+//					img.setAttribute('src', src);
+//					img.classList.remove("lazy");
+//				}
+//			})(window.Lazyimg = {});
 
 			document.addEventListener("netchange", onNetChange, false);
 

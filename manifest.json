@@ -3,7 +3,7 @@
     "id" : "H5CA05305", /*应用的标识，创建应用时自动生成，勿手动修改*/
     "name" : "马嘿嘿", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.1.0", /*应用版本名称*/
+        "name" : "1.1.2", /*应用版本名称*/
         "code" : "83"
     },
     "description" : "", /*应用描述信息*/
@@ -454,7 +454,8 @@
                 "refer" : [
                     "html/technician/technician.html",
                     "html/login.html",
-                    "html/production/productOrder.html"
+                    "html/production/productOrder.html",
+                    "html/cashPay.html"
                 ],
                 "priority" : 0
             },
@@ -473,7 +474,8 @@
                 "refer" : [
                     "html/coupons/proCoupons.html",
                     "html/cashPay.html",
-                    "html/login.html"
+                    "html/login.html",
+                    "html/production/productBuy.html"
                 ],
                 "priority" : 0
             },
@@ -483,7 +485,10 @@
                     "html/technician/technician.html",
                     "html/order/orderDetail.html",
                     "html/order/refund.html",
-                    "html/login.html"
+                    "html/login.html",
+                    "html/production/toPay.html",
+                    "html/production/spread.html",
+                    "html/production/editComment.html"
                 ],
                 "priority" : 0
             },
@@ -530,6 +535,11 @@
             "html/platformCard/platformCard.html" : {
                 "resources" : [],
                 "refer" : [ "html/platformCard/deposit.html" ],
+                "priority" : 0
+            },
+            "html/production/editComment.html" : {
+                "resources" : [],
+                "refer" : [ "html/technician/technician.html", "html/production/productBuy.html" ],
                 "priority" : 0
             }
         },
@@ -615,10 +625,8 @@
                 "images/zfb_zf.png",
                 "images/default_avatar.jpg",
                 "js/util.js",
-                "html/production/editComment.html",
                 "images/faces/ee_35.png",
                 "images/faces/ee_34.png",
-                "html/production/spread.html",
                 "images/m.jpg",
                 "images/no.png",
                 "images/card.png",

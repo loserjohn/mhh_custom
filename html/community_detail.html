@@ -111,10 +111,8 @@
 	</head>
 
 	<body>
-		<div id="app">
-
-			<!--等待页面-->
-			<div class="loader" style="top:0" v-show="loader">
+		<!--等待页面-->
+			<div class="loader" style="top:0" id="loader">
 				<ul>
 					<li id='a'></li>
 					<li id='b'></li>
@@ -127,6 +125,9 @@
 					<li id='i'></li>
 				</ul>
 			</div>
+		<div id="app">
+
+			
 			<div class="container " id="content" style="background: #fff">
 				<div>
 					<h3 class="t_c detailTitle">{{detailContent.title}}</h3>
@@ -189,7 +190,7 @@
 		<script src="../js/vue.js"></script>
 		<script src="../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: true
@@ -348,9 +349,10 @@
 								},
 								type: 'post', //HTTP请求类型
 								success: function success(result) {
+									document.getElementById('loader').style.display = 'none'
 									_this.loader = false;
 									if(result.Success) {
-										//										plus.nativeUI.closeWaiting()
+										
 										_this.detailContent = result.Data;
 										_this.isGood = result.Data.isGood;
 										if(callback) callback();
@@ -378,6 +380,7 @@
 								},
 								type: 'get', //HTTP请求类型
 								success: function success(result) {
+									document.getElementById('loader').style.display = 'none'
 									if(result.Success) {
 										plus.nativeUI.closeWaiting();
 										var l = _this.commentList.length;

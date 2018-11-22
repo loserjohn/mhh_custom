@@ -264,18 +264,16 @@
 				</aside>
 
 				<!--时段选择-->
-				<div class="timesBox " ref="scroll">
+				<div class="timesBox " ref="scroll" >
 					<div class="reset " style="min-height:101%">
 						<!--类型1-->
-						<div v-show="type==1?true:false" class="animated slideInRight">
-
+						<div v-if="type==1?true:false" class="animated slideInRight" >
 							<ul class="flex scrollWrap  reset">
-								<li class="timeItem" v-for="item in dayTime" :class="{active:item.status==1?true:false,choose:chooseTime==item.text?true:false}" @tap="_chooseTime(item.text,item.status)">
+								<li class="timeItem" v-for="item in dayTime" :class="{active:item.status==1?true:false,choose:chooseTime==item.text?true:false}" @click="_chooseTime(item.text,item.status)">
 									<div class="t_c fs16 lh28">{{item.text}}</div>
 									<p class="t_c fs12">{{item.status==1?'可预约':'已预约'}}</p>
 								</li>
 							</ul>
-
 						</div>
 						<!--类型2-->
 						<div v-show="type==2?true:false" class="animated slideInRight ">
@@ -310,7 +308,6 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 				<div class="cm_loading flex " v-show="loading">
@@ -329,7 +326,7 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: true
@@ -354,7 +351,7 @@
 						thirtyDate: [],
 						/*30天数组*/
 						dayTime: [], //时间段
-						type: 1 /*类型切换 1 或者2*/ ,
+						type: 2 /*类型切换 1 或者2*/ ,
 						accountCode: '',
 						/*账户code*/
 						loading: false,
@@ -364,10 +361,11 @@
 						chooseTime: '' /*当前选择的时段*/
 					},
 					created: function created() {
+						
 						var self = plus.webview.currentWebview();
 						this.accountCode = self.account;
 						this.pId = self.pId;
-						//						alert(self.account)
+					
 						/*赋值当前的日期*/
 						var n = new Date();
 						var year = n.getFullYear();
@@ -417,7 +415,7 @@
 								_this.wrapper.refresh();
 							};
 
-							//	初始化类型1的 时间段横条滑块
+							//	初始化类型1的 竖向时间段滑块
 							if(!_this.scroll) {
 								//							初始化标题栏
 								_this.scroll = new BScroll(scroll, {
@@ -431,8 +429,12 @@
 
 							/*初始化日历*/
 							_this._initCalendar(function() {
-								_this._chooseDay(new Date(), 0);
+								_this._chooseDay(new Date(), 0,function(){
+									_this.type = 1;
+								});
+//								_this.type = 1;
 							});
+				
 						});
 					},
 					methods: {
@@ -591,7 +593,7 @@
 						},
 
 						/*选择某一天*/
-						_chooseDay: function _chooseDay(date, index) {
+						_chooseDay: function _chooseDay(date, index,cb) {
 							this.loading = true;
 							var _this = this;
 							this.curIndex = index;
@@ -613,7 +615,9 @@
 										mui.later(function() {
 											_this.loading = false;
 											_this.dayTime = result.Data.ListInfo;
-										}, 500);
+											_this.scroll.refresh()
+											if(cb)cb()
+										}, 1000);
 
 										//										 alert(result.Data.ListInfo.length)
 									} else {
@@ -649,6 +653,7 @@
 
 						/*时段选择*/
 						_chooseTime: function _chooseTime(time, status) {
+//							alert(0)
 							if(status == 0) return;
 							//							console.log( this.chooseDate+time);
 							this.chooseTime = time;

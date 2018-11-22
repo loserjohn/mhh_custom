@@ -29,7 +29,7 @@
 		}
 	}
 	if(!window.indexedDB) {
-		window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.")
+		window.alert("您的浏览器不支持indexDB,可能导致您的即时聊天不可用,正在修复中，请留意后续版本")
 	} else {
 		owner.initDB()
 	}

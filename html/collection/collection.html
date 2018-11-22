@@ -173,7 +173,7 @@
 		<script src="../../js/bscroll.min.js"></script>
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: true
@@ -361,6 +361,8 @@
 							var _this = this;
 							var t = this.type;
 							var data = void 0;
+							var url = '';
+//							console.log(code)
 							switch(t) {
 								case 1:
 									/*项目*/
@@ -379,6 +381,7 @@
 								default:
 									break;
 							}
+							console.log(url)
 							app.ajax(app.baseUrl + url, {
 								data: data,
 								type: 'post', //HTTP请求类型

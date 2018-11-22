@@ -206,8 +206,8 @@
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==0" @tap="_delectOrder(item.ORDER_CODE)">删除订单</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==2" @tap="_NTnavigateTo('./html/production/spread.html','spread',{orderCode:item.ORDER_CODE})">补差价</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==2||item.ORDER_STATUS_TYPE==1||item.ORDER_STATUS_TYPE==8" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">退款</div>
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==4" @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})">查看手艺人</div>
-											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE ==3" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
+											<div class="f1 btns"  @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})">查看手艺人</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS == 4" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==8" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">发起退款</div>
 										</div>
 									</li>
@@ -467,7 +467,7 @@
 		<script src="./js/bscroll.min.js"></script>
 		<script src="./js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			'use strict';
+		  
 
 			mui.init({
 				swipeBack: false
