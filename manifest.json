@@ -372,7 +372,18 @@
             },
             "debug" : false
         },
-        "adid" : "127376240105"
+        "adid" : "127376240105",
+		"confusion": { 
+                "description": "JS原生混淆", 
+                "resources": { 
+                        "js/app.js": { 
+                        },
+						"js/util.js": { 
+						},
+						"js/system.js": { 
+						}
+                } 
+        }
     },
     "dependencies" : {
         "pages" : {

@@ -285,6 +285,13 @@
 									}, function(res) {});
 									break;
 								case 3:
+									var regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+									if(!regIdNo.test(this.cardNum)){  
+									    plus.nativeUI.alert('身份证号填写有误');  
+									    this.cardNum = plus.webview.currentWebview().menber.CARD_NUM;				
+									    return false;  
+									}  	
+													
 									this._upload({
 										CARD_NUM: this.cardNum
 									}, function(res) {});
