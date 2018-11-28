@@ -44,7 +44,7 @@
 						} else {
 							var newVer = owner.versionMsg.version;
 							owner.checkSystem(callback)
-				}
+						}
 					} else {}
 					break;
 				default:
@@ -60,7 +60,7 @@
 
 	//系统检测
 	owner.checkSystem = function(callback) {
-		
+
 		if(plus.os.name == 'Android') { // Android 用户    
 			　　　　　　
 			if(owner.versionMsg.Android == 1) {
@@ -82,7 +82,7 @@
 						if(callback) callback(true)
 					}
 				}, '马嘿嘿提醒你');
-				
+
 			}
 		} else {
 			if(owner.versionMsg.iOS == 1) {
@@ -104,7 +104,7 @@
 						if(callback) callback(true)
 					}
 				}, '马嘿嘿提醒你');
-				
+
 			}
 		}
 	}
@@ -127,7 +127,7 @@
 
 	//	下载差量升级包		
 	owner.downWgt = function(key) {
-		
+
 		// 下载wgt文件
 		var wgtUrl;
 		switch(key) {

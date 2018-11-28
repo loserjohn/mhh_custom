@@ -386,315 +386,355 @@
         }
     },
     "dependencies" : {
-        "pages" : {
-            "index.html" : {
-                "resources" : [ "community.html", "mine.html" ],
-                "refer" : [
-                    "orders.html",
-                    "html/address/where.html",
-                    "html/production/productList.html",
-                    "html/production/productBuy.html",
-                    "html/production/search.html",
-                    "updating.html"
-                ],
-                "priority" : 0
-            },
-            "mine.html" : {
-                "resources" : [],
-                "refer" : [
-                    "html/login.html",
-                    "html/set.html",
-                    "html/kefu.html",
-                    "html/information/information.html",
-                    "html/refillcard/refillcard.html",
-                    "html/address/address.html",
-                    "html/collection/collection.html",
-                    "html/platformCard/platformCard.html",
-                    "html/production/productBuy.html",
-                    "html/coupons/coupons.html",
-                    "html/share.html",
-                    "html/scores.html"
-                ],
-                "priority" : 0
-            },
-            "html/login.html" : {
-                "resources" : [],
-                "refer" : [
-                    "html/bound.html",
-                    "html/registe.html",
-                    "html/forgetPass.html",
-                    "html/yzmLogin.html"
-                ],
-                "priority" : 0
-            },
-            "html/address/where.html" : {
-                "resources" : [],
-                "refer" : [
-                    "html/address/location.html",
-                    "html/address/address.html",
-                    "html/address/addAddress.html"
-                ],
-                "priority" : 0
-            },
-            "html/production/productList.html" : {
-                "resources" : [],
-                "refer" : [
-                    "html/address/where.html",
-                    "html/technician/technician.html",
-                    "html/production/search.html"
-                ],
-                "priority" : 0
-            },
-            "community.html" : {
-                "resources" : [],
-                "refer" : [ "html/community_detail.html" ],
-                "priority" : 0
-            },
-            "html/set.html" : {
-                "resources" : [],
-                "refer" : [ "html/imgClick.html", "html/updatedNum.html", "html/rules.html" ],
-                "priority" : 0
-            },
-            "html/information/information.html" : {
-                "resources" : [],
-                "refer" : [ "html/information/chat.html", "html/information/sysMessage.html" ],
-                "priority" : 0
-            },
-            "html/production/productBuy.html" : {
-                "resources" : [],
-                "refer" : [
-                    "html/technician/technician.html",
-                    "html/login.html",
-                    "html/production/productOrder.html",
-                    "html/cashPay.html"
-                ],
-                "priority" : 0
-            },
-            "html/information/chat.html" : {
-                "resources" : [],
-                "refer" : [ "html/information/location.html" ],
-                "priority" : 0
-            },
-            "html/collection/collection.html" : {
-                "resources" : [],
-                "refer" : [ "html/technician/technician.html", "html/production/productBuy.html" ],
-                "priority" : 0
-            },
-            "html/technician/technician.html" : {
-                "resources" : [],
-                "refer" : [
-                    "html/coupons/proCoupons.html",
-                    "html/cashPay.html",
-                    "html/login.html",
-                    "html/production/productBuy.html"
-                ],
-                "priority" : 0
-            },
-            "orders.html" : {
-                "resources" : [],
-                "refer" : [
-                    "html/technician/technician.html",
-                    "html/order/orderDetail.html",
-                    "html/order/refund.html",
-                    "html/login.html",
-                    "html/production/toPay.html",
-                    "html/production/spread.html",
-                    "html/production/editComment.html"
-                ],
-                "priority" : 0
-            },
-            "html/cashPay.html" : {
-                "resources" : [],
-                "refer" : [ "html/success.html" ],
-                "priority" : 0
-            },
-            "html/refillcard/refillcard.html" : {
-                "resources" : [],
-                "refer" : [ "html/technician/technician.html" ],
-                "priority" : 0
-            },
-            "html/order/orderDetail.html" : {
-                "resources" : [],
-                "refer" : [ "html/technician/technician.html", "html/production/productBuy.html" ],
-                "priority" : 0
-            },
-            "html/production/search.html" : {
-                "resources" : [],
-                "refer" : [ "html/production/productBuy.html" ],
-                "priority" : 0
-            },
-            "html/production/productOrder.html" : {
-                "resources" : [],
-                "refer" : [ "html/production/timePicker.html", "html/production/toPay.html" ],
-                "priority" : 0
-            },
-            "html/production/toPay.html" : {
-                "resources" : [],
-                "refer" : [ "html/success.html" ],
-                "priority" : 0
-            },
-            "html/address/address.html" : {
-                "resources" : [],
-                "refer" : [ "html/address/addAddress.html" ],
-                "priority" : 0
-            },
-            "html/coupons/coupons.html" : {
-                "resources" : [],
-                "refer" : [ "html/rules.html" ],
-                "priority" : 0
-            },
-            "html/platformCard/platformCard.html" : {
-                "resources" : [],
-                "refer" : [ "html/platformCard/deposit.html" ],
-                "priority" : 0
-            },
-            "html/production/editComment.html" : {
-                "resources" : [],
-                "refer" : [ "html/technician/technician.html", "html/production/productBuy.html" ],
-                "priority" : 0
-            }
-        },
-        "idle" : {
-            "resources" : [
-                "css/animate.css",
-                "images/community/community1.png",
-                "images/no1.png",
-                "images/faces/ee_2.png",
-                "images/ye.png",
-                "images/videoDefault.png",
-                "images/faces/ee_19.png",
-                "images/audioBg.png",
-                "css/iconfont.css",
-                "fonts/iconfont.ttf",
-                "images/faces/ee_16.png",
-                "js/mui.js",
-                "images/no3.png",
-                "images/no5.png",
-                "images/pg2.jpg",
-                "js/app.js",
-                "images/faces/ee_23.png",
-                "fonts/mui.ttf",
-                "images/star.png",
-                "images/faces/ee_8.png",
-                "images/audioRBg.png",
-                "images/community/refresh3.png",
-                "images/levelicon.png",
-                "images/Combined Shape.png",
-                "images/quan_bg.png",
-                "images/index/m6.png",
-                "images/mines/refresh2.png",
-                "images/faces/ee_21.png",
-                "images/icon.png",
-                "images/pyq.png",
-                "css/IMiconfont.css",
-                "images/noLogin.png",
-                "images/faces/ee_12.png",
-                "css/im.css",
-                "images/faces/ee_33.png",
-                "images/faces/ee_22.png",
-                "images/sh.png",
-                "images/faces/ee_15.png",
-                "images/hint.png",
-                "images/btn_bg.png",
-                "images/faces/ee_4.png",
-                "images/btn_bg.jpg",
-                "images/no2.png",
-                "css/common.css",
-                "js/mui.min.js",
-                "images/blank.png",
-                "images/spyy.png",
-                "images/wx_zf.png",
-                "images/index/index2.png",
-                "images/yhq_bg2.png",
-                "images/czk.png",
-                "js/bscroll.min.js",
-                "images/logo1.png",
-                "images/faces/ee_27.png",
-                "images/start_n.png",
-                "images/index/m4.png",
-                "images/faces/ee_1.png",
-                "images/success.png",
-                "images/index/index3.png",
-                "images/index/m5.png",
-                "images/faces/ee_28.png",
-                "images/start_y.png",
-                "css/mui.min.css",
-                "images/faces/ee_6.png",
-                "images/faces/ee_25.png",
-                "images/faces/ee_20.png",
-                "images/no4.png",
-                "html/production/proComment.html",
-                "html/coupons/expiredCoupons.html",
-                "images/index/m2.png",
-                "images/faces/ee_31.png",
-                "images/mines/mine1.png",
-                "images/faces/ee_5.png",
-                "images/yhq_bg.png",
-                "images/faces/ee_9.png",
-                "images/Group 7.png",
-                "images/index/demo1.jpg",
-                "images/zfb_zf.png",
-                "images/default_avatar.jpg",
-                "js/util.js",
-                "images/faces/ee_35.png",
-                "images/faces/ee_34.png",
-                "images/m.jpg",
-                "images/no.png",
-                "images/card.png",
-                "images/index/m1.png",
-                "js/RongIMLib-cs.min.js",
-                "images/index/m3.png",
-                "images/index/index1.png",
-                "images/faces/ee_7.png",
-                "css/cs.min.css",
-                "images/go.png",
-                "images/index/m8.png",
-                "images/label_bg.jpg",
-                "images/faces/ee_26.png",
-                "js/cs.min.js",
-                "images/time.png",
-                "images/mhh_avator.png",
-                "images/index/refresh1.png",
-                "images/logo4.png",
-                "images/webBg.png",
-                "images/qq.png",
-                "images/faces/ee_14.png",
-                "images/d.png",
-                "images/faces/ee_17.png",
-                "js/vue.js",
-                "images/faces/ee_32.png",
-                "images/index/m7.png",
-                "js/emoji.js",
-                "images/level.png",
-                "images/faces/ee_24.png",
-                "images/kefu.png",
-                "images/demo2.jpg",
-                "images/arecord.png",
-                "images/logo2.png",
-                "images/card_bg3.png",
-                "images/refresh4.png",
-                "images/index/bg.jpg",
-                "images/rl.png",
-                "images/card_bg2.png",
-                "images/faces/ee_30.png",
-                "js/aes.js",
-                "images/demo.jpg",
-                "images/wxlogin.png",
-                "images/wx.png",
-                "images/back.png",
-                "images/faces/ee_3.png",
-                "images/m_bg.png",
-                "js/Im.js",
-                "images/faces/ee_10.png",
-                "images/share.jpg",
-                "images/faces/ee_29.png",
-                "images/faces/ee_13.png",
-                "images/faces/ee_18.png",
-                "images/faces/ee_11.png",
-                "images/levelicon2.png",
-                "images/sptx.png"
-            ]
-        }
-    },
+		"pages": {
+			"index.html": {
+				"resources": [
+					"community.html",
+					"mine.html"
+				],
+				"refer": [
+					"orders.html",
+					"html/address/where.html",
+					"html/production/productList.html",
+					"html/production/productBuy.html",
+					"html/production/search.html",
+					"updating.html"
+				],
+				"priority": 0
+			},
+			"mine.html": {
+				"resources": [],
+				"refer": [
+					"html/login.html",
+					"html/set.html",
+					"html/kefu.html",
+					"html/information/information.html",
+					"html/refillcard/refillcard.html",
+					"html/address/address.html",
+					"html/collection/collection.html",
+					"html/platformCard/platformCard.html",
+					"html/production/productBuy.html",
+					"html/coupons/coupons.html",
+					"html/share.html",
+					"html/scores.html"
+				],
+				"priority": 0
+			},
+			"html/login.html": {
+				"resources": [],
+				"refer": [
+					"html/bound.html",
+					"html/registe.html",
+					"html/forgetPass.html",
+					"html/yzmLogin.html"
+				],
+				"priority": 0
+			},
+			"html/address/where.html": {
+				"resources": [],
+				"refer": [
+					"html/address/location.html",
+					"html/address/address.html",
+					"html/address/addAddress.html"
+				],
+				"priority": 0
+			},
+			"html/production/productList.html": {
+				"resources": [],
+				"refer": [
+					"html/address/where.html",
+					"html/technician/technician.html",
+					"html/production/search.html"
+				],
+				"priority": 0
+			},
+			"community.html": {
+				"resources": [],
+				"refer": [
+					"html/community_detail.html"
+				],
+				"priority": 0
+			},
+			"html/set.html": {
+				"resources": [],
+				"refer": [
+					"html/imgClick.html",
+					"html/updatedNum.html",
+					"html/rules.html"
+				],
+				"priority": 0
+			},
+			"html/information/information.html": {
+				"resources": [],
+				"refer": [
+					"html/information/chat.html",
+					"html/information/sysMessage.html"
+				],
+				"priority": 0
+			},
+			"html/production/productBuy.html": {
+				"resources": [],
+				"refer": [
+					"html/technician/technician.html",
+					"html/login.html",
+					"html/production/productOrder.html",
+					"html/cashPay.html",
+					"html/production/proComment.html"
+				],
+				"priority": 0
+			},
+			"html/information/chat.html": {
+				"resources": [],
+				"refer": [
+					"html/information/location.html"
+				],
+				"priority": 0
+			},
+			"html/collection/collection.html": {
+				"resources": [],
+				"refer": [
+					"html/technician/technician.html",
+					"html/production/productBuy.html"
+				],
+				"priority": 0
+			},
+			"html/technician/technician.html": {
+				"resources": [],
+				"refer": [
+					"html/coupons/proCoupons.html",
+					"html/cashPay.html",
+					"html/login.html",
+					"html/production/productBuy.html"
+				],
+				"priority": 0
+			},
+			"orders.html": {
+				"resources": [],
+				"refer": [
+					"html/technician/technician.html",
+					"html/order/orderDetail.html",
+					"html/order/refund.html",
+					"html/login.html",
+					"html/production/toPay.html",
+					"html/production/spread.html",
+					"html/production/editComment.html"
+				],
+				"priority": 0
+			},
+			"html/cashPay.html": {
+				"resources": [],
+				"refer": [
+					"html/success.html"
+				],
+				"priority": 0
+			},
+			"html/refillcard/refillcard.html": {
+				"resources": [],
+				"refer": [
+					"html/technician/technician.html"
+				],
+				"priority": 0
+			},
+			"html/order/orderDetail.html": {
+				"resources": [],
+				"refer": [
+					"html/technician/technician.html",
+					"html/production/productBuy.html"
+				],
+				"priority": 0
+			},
+			"html/production/search.html": {
+				"resources": [],
+				"refer": [
+					"html/production/productBuy.html"
+				],
+				"priority": 0
+			},
+			"html/production/productOrder.html": {
+				"resources": [],
+				"refer": [
+					"html/production/timePicker.html",
+					"html/production/toPay.html"
+				],
+				"priority": 0
+			},
+			"html/production/toPay.html": {
+				"resources": [],
+				"refer": [
+					"html/success.html"
+				],
+				"priority": 0
+			},
+			"html/address/address.html": {
+				"resources": [],
+				"refer": [
+					"html/address/addAddress.html"
+				],
+				"priority": 0
+			},
+			"html/coupons/coupons.html": {
+				"resources": [],
+				"refer": [
+					"html/rules.html"
+				],
+				"priority": 0
+			},
+			"html/platformCard/platformCard.html": {
+				"resources": [],
+				"refer": [
+					"html/platformCard/deposit.html"
+				],
+				"priority": 0
+			},
+			"html/production/editComment.html": {
+				"resources": [],
+				"refer": [
+					"html/technician/technician.html",
+					"html/production/productBuy.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"css/animate.css",
+				"images/community/community1.png",
+				"images/no1.png",
+				"images/faces/ee_2.png",
+				"images/ye.png",
+				"images/videoDefault.png",
+				"images/faces/ee_19.png",
+				"images/audioBg.png",
+				"css/iconfont.css",
+				"fonts/iconfont.ttf",
+				"images/faces/ee_16.png",
+				"js/mui.js",
+				"images/no3.png",
+				"images/no5.png",
+				"images/pg2.jpg",
+				"js/app.js",
+				"images/faces/ee_23.png",
+				"fonts/mui.ttf",
+				"images/star.png",
+				"images/faces/ee_8.png",
+				"images/audioRBg.png",
+				"images/community/refresh3.png",
+				"images/levelicon.png",
+				"images/Combined Shape.png",
+				"images/quan_bg.png",
+				"images/index/m6.png",
+				"images/mines/refresh2.png",
+				"images/faces/ee_21.png",
+				"images/icon.png",
+				"images/pyq.png",
+				"css/IMiconfont.css",
+				"images/noLogin.png",
+				"images/faces/ee_12.png",
+				"css/im.css",
+				"images/faces/ee_33.png",
+				"images/faces/ee_22.png",
+				"images/sh.png",
+				"images/faces/ee_15.png",
+				"images/hint.png",
+				"images/btn_bg.png",
+				"images/faces/ee_4.png",
+				"images/btn_bg.jpg",
+				"images/no2.png",
+				"css/common.css",
+				"js/mui.min.js",
+				"images/blank.png",
+				"images/spyy.png",
+				"images/wx_zf.png",
+				"images/index/index2.png",
+				"images/yhq_bg2.png",
+				"images/czk.png",
+				"js/bscroll.min.js",
+				"images/logo1.png",
+				"images/faces/ee_27.png",
+				"images/start_n.png",
+				"images/index/m4.png",
+				"images/faces/ee_1.png",
+				"images/success.png",
+				"images/index/index3.png",
+				"images/index/m5.png",
+				"images/faces/ee_28.png",
+				"images/start_y.png",
+				"css/mui.min.css",
+				"images/faces/ee_6.png",
+				"images/faces/ee_25.png",
+				"images/faces/ee_20.png",
+				"images/no4.png",
+				"html/coupons/expiredCoupons.html",
+				"images/index/m2.png",
+				"images/faces/ee_31.png",
+				"images/mines/mine1.png",
+				"images/faces/ee_5.png",
+				"images/yhq_bg.png",
+				"images/faces/ee_9.png",
+				"images/Group 7.png",
+				"images/index/demo1.jpg",
+				"images/zfb_zf.png",
+				"images/default_avatar.jpg",
+				"js/util.js",
+				"images/faces/ee_35.png",
+				"images/faces/ee_34.png",
+				"images/m.jpg",
+				"images/no.png",
+				"images/card.png",
+				"images/index/m1.png",
+				"js/RongIMLib-cs.min.js",
+				"images/index/m3.png",
+				"images/index/index1.png",
+				"images/faces/ee_7.png",
+				"css/cs.min.css",
+				"images/go.png",
+				"images/index/m8.png",
+				"images/label_bg.jpg",
+				"images/faces/ee_26.png",
+				"js/cs.min.js",
+				"images/time.png",
+				"images/mhh_avator.png",
+				"images/index/refresh1.png",
+				"images/logo4.png",
+				"images/webBg.png",
+				"images/qq.png",
+				"images/faces/ee_14.png",
+				"images/d.png",
+				"images/faces/ee_17.png",
+				"js/vue.js",
+				"images/faces/ee_32.png",
+				"images/index/m7.png",
+				"js/emoji.js",
+				"images/level.png",
+				"images/faces/ee_24.png",
+				"images/kefu.png",
+				"images/demo2.jpg",
+				"images/arecord.png",
+				"images/logo2.png",
+				"images/card_bg3.png",
+				"images/refresh4.png",
+				"images/index/bg.jpg",
+				"images/rl.png",
+				"images/card_bg2.png",
+				"images/faces/ee_30.png",
+				"js/aes.js",
+				"images/demo.jpg",
+				"images/wxlogin.png",
+				"images/wx.png",
+				"images/back.png",
+				"images/faces/ee_3.png",
+				"images/m_bg.png",
+				"js/Im.js",
+				"images/faces/ee_10.png",
+				"images/share.jpg",
+				"images/faces/ee_29.png",
+				"images/faces/ee_13.png",
+				"images/faces/ee_18.png",
+				"images/faces/ee_11.png",
+				"images/levelicon2.png",
+				"images/sptx.png"
+			]
+		}
+	},
     "fullscreen" : false
 }

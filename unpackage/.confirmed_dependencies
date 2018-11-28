@@ -76,7 +76,8 @@
 			"html/technician/technician.html",
 			"html/login.html",
 			"html/production/productOrder.html",
-			"html/cashPay.html"
+			"html/cashPay.html",
+			"html/production/proComment.html"
 		]
 	},
 	"html/information/chat.html": {
