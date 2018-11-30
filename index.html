@@ -242,6 +242,25 @@
 				width: 14px!important;
 				height: 14px!important;
 			}
+			
+			.backTop{
+				width: 40px;
+				height: 40px;
+				/*border-radius: 50%;*/
+				position: fixed;
+				bottom: 80px;
+				right: 20px;
+				
+			}
+			.backTop>img{
+				border-radius: 50%;
+				box-shadow: 0 0 4px #ccaa42;
+				animation:rot 4s infinite;
+			}
+			@keyframes rot{
+				from{ transform: rotate(0);}
+				to{transform: rotate(360deg);}
+			}
 		</style>
 	</head>
 
@@ -462,7 +481,14 @@
 					<!--<div class="versionRefresh" @tap="_reconnect">重新连接</div>-->
 				</div>
 			</div>
-
+			<!--返回上一级-->
+			<div class="backTop" @tap = "_backToTop">
+				<img src="images/share.jpg" class="contain"/>
+				<div class="t_c">
+					<i class="iconfont icon-shouqi cor_y"></i>
+				</div>
+			</div>
+			
 		</div>
 
 		<script src="./js/mui.min.js"></script>
@@ -508,7 +534,12 @@
 						activityPics: [] /*活动轮播图图片*/ ,
 						prevPic: '',
 						nextPic: '',
-
+						
+//						最近上新的分页
+						index:1,
+						noRest:false,
+						total:0,
+						
 						blockData: [], //豆腐块设计
 						noNet: false, //网络状态		
 						menusBackgroundPic: '', //menu整块的背景图片
@@ -516,14 +547,12 @@
 					},
 					created: function created() {
 						app.initHeader();
-
 						//						/*页面首次加载,将登陆默认为0*/
 						plus.storage.setItem('isLogin', '0');
 					},
 					mounted: function mounted() {
 						/*初始化主页面的高度*/
 						this.appHeight = plus.display.resolutionHeight;
-
 						//						检查是否有网路
 						if(!onNet()) {
 							//							无网络则跳提示	
@@ -566,6 +595,9 @@
 						//新版本检测
 					},
 					methods: {
+						_backToTop:function(){
+							this.scroll.scrollTo(0, 0, 300);
+						},
 						//						重新连接网络
 						_reconnect: function _reconnect() {
 							//							alert(1)
@@ -822,6 +854,9 @@
 										pullDownRefresh: {
 											threshold: 80,
 											stop: 0
+										},
+										pullUpLoad: {
+											threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
 										}
 									});
 								} else {
@@ -849,10 +884,17 @@
 											plus.nativeUI.closeWaiting();
 											_this.scroll.finishPullDown();
 										});
-//										_this._initNew(function() {
-//											plus.nativeUI.closeWaiting();
-//											_this.scroll.finishPullDown();
-//										});
+									});
+								});
+								/*上拉加载*/
+								_this.scroll.on('pullingUp', function(e) {
+									_this._initNew(function(b){
+//										alert(0)
+										if(b){
+//											没有数据了												
+										}else{
+											_this.scroll.finishPullUp();
+										}
 									});
 								});
 							});
@@ -869,8 +911,8 @@
 								data: {
 									ORDER_TYPE: 5,
 									distance: 5000,
-									pageIndex: 1,
-									pageSize: 8,
+									pageIndex: _this.index,
+									pageSize: 6,
 									lon: _this.co.longitude,
 									lat: _this.co.latitude
 								},
@@ -878,13 +920,24 @@
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
 								success: function success(result) {
-									/*登陆成功*/
+									/*登陆成功*/								
 									if(result.Success) {
-										_this.newst = result.Data.ListInfo;
-										if(callback) callback();
+//										_this.newst = result.Data.ListInfo;
+										_this.total = result.Data.Total;
+										var l = _this.newst.length;										
+										if(l == _this.total){
+											_this.noRest = true;
+//											没有更多数据
+											if(callback) callback(true);
+										}else{
+											
+											_this.index += 1;
+											_this.newst = _this.newst.concat(result.Data.ListInfo);
+											_this.scroll.refresh();
+											if(callback) callback(false);
+										}								
 									} else {
 										/*验证失败*/
-
 									}
 								},
 								error: function error(xhr, type, errorThrown) {

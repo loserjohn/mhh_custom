@@ -539,7 +539,8 @@
 				"resources": [],
 				"refer": [
 					"html/technician/technician.html",
-					"html/production/productBuy.html"
+					"html/production/productBuy.html",
+					"html/production/timePicker.html"
 				],
 				"priority": 0
 			},

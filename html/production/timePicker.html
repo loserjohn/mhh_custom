@@ -196,7 +196,8 @@
 			}
 			
 			.dataTxt.active {
-				/*border: 1px solid #eee;*/
+				/*border: 1px solid #101010;*/
+				background: #d9d9d9;
 				color: #212121;
 			}
 			
@@ -286,7 +287,7 @@
 									</div>
 									<ul class=" flex dataList">
 										<li v-for="item in curMount" class="dateItem t_c ">
-											<p class="dataTxt" :class="{active:_enbleData(item.date)}" @tap.self="_chooseDate(item.date)">
+											<p class="dataTxt " :class="{active:_enbleData(item.date)}" @tap.self="_chooseDate(item.date)">
 												{{ item.text? item.text:''}}
 											</p>
 										</li>
@@ -329,7 +330,7 @@
 		  
 
 			mui.init({
-				swipeBack: true
+				swipeBack: false
 			});
 			mui.plusReady(function() {
 				app.WXinit(CryptoJS);
@@ -597,7 +598,7 @@
 							this.loading = true;
 							var _this = this;
 							this.curIndex = index;
-
+							
 							var t = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 							this.chooseDate = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
 							this.chooseTime = ''; //置为空
@@ -634,7 +635,11 @@
 
 						/*日历中选择呢一天*/
 						_chooseDate: function _chooseDate(date) {
-							//							alert(new Date(date));
+//							alert(text)
+							var a = this._enbleData(date)	
+							if(!a){
+								return false
+							} ;
 							var o = new Date(date);
 							var t = new Date();
 							var d = o.getFullYear() + '/' + (o.getMonth() + 1) + '/' + o.getDate();
