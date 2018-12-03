@@ -88,6 +88,8 @@
 				bottom: 0;
 				overflow: hidden;
 				width: 100%;
+
+				/*background: red;*/
 			}
 			
 			.cm_search_input {
@@ -187,42 +189,64 @@
 			.list {
 				background: #fff;
 			}
+			
+			.tabBtns {
+				/*margin: 2px auto;*/
+				width: 100%;
+				height: 36px;
+				line-height: 36px;
+				box-sizing: border-box;
+				overflow: hidden;
+				background: #ccaa42;
+				color: #fef6ae;
+			}
+			
+			.tabItem {
+				text-align: center;
+			}
+			
+			.tabItem.active {
+				background: #fff;
+				color: #ccaa42;
+				border-radius: 4px 4px 0 0;
+				/*border-radius: 20px;*/
+			}
+
 		</style>
 	</head>
 
 	<body>
-		<div id="app">
-
-			<!--等待页面-->
-			<div class="loader" style="top:0" v-show="loader">
-				<ul>
-					<li id='a'></li>
-					<li id='b'></li>
-					<li id='c'></li>
-					<li id='d'></li>
-					<li id='e'></li>
-					<li id='f'></li>
-					<li id='g'></li>
-					<li id='h'></li>
-					<li id='i'></li>
-				</ul>
-			</div>
-			<header class="   header flex" id="header">
-				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_y"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
+		<!--等待页面-->
+		<div class="loader" style="top:0" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app" style="background: #fff;">
+			<header class=" header flex" id="header" style="background: #ccaa42;">
+				<button class="mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cor_w"><span class="mui-icon mui-icon-left-nav "></span>返回</button>
 				<div class="cm_search f1 flex">
 					<i class="iconfont icon-search cor_g"></i>
 					<div class="f1 cm_search_input cor_g" @tap="_toSearch">马嘿嘿带你搜点啥？</div>
 				</div>
 			</header>
+			<div class="flex tabBtns" >
+				<div class="f1 tabItem " :class="{active:listType==0}" @tap="_toggleListType(0)">
+					项目
+				</div>
+				<div class="f1 tabItem" :class="{active:listType==1}" @tap="_toggleListType(1)">
+					美匠人
+				</div>
+			</div>
 			<div class="loactionBox container" @tap="_navigateTo('../address/where.html','where')">
-				<!--<div class="flex">
-							<div class="f1 lh30">
-								服务地址
-							</div>
-							<div class="f1 lh30 t_r" @tap="_NWnavigateTo('../address/where.html','where')">
-								重新选择
-							</div>
-						</div>-->
 				<p class="currPosMark ellipsis"><span class="mui-icon mui-icon-location cor_y"></span>{{currPosMark}}</p>
 			</div>
 
@@ -244,15 +268,38 @@
 			</div>
 
 			<!--项目列表-->
-			<div class="proLists  " ref="scroll" :style="{top:scrollTop}">
+			<div class="proLists" ref="scroll" :style="{top:scrollTop}">
 				<div class="scrollContent ">
-					<ul class="reset scrollWrap" :class="{scrollWrap2:!viewType}">
+					<!--项目-->
+					<ul class="reset scrollWrap" :class="{scrollWrap2:!viewType}" v-show="listType==0">
+						<!--样式0-->
+						<li class="list" :class="viewType?'cm_proItems':'cm_proItems2'" @tap="_NWnavigateTo('./productBuy.html','productBuy',{'proKey':item.PROJECT_CODE})" v-for="item in proList">
+							<article class="flex relative">
+								<div class="cm_itemPic ">
+									<img :src="item.PROJECT_IMG1?item.PROJECT_IMG1:'../../images/default_avatar.jpg'" @error="_default" class="cover" />
+								</div>
+								<div class="f1 cm_txt">
+									<h4 class="txt">{{item.PROJECT_NAME}}</h4>
+									<p class="fs12"> {{item.PROJECT_LOVE}}人喜欢</p>
+									<div class=" flex ">
+										<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in parseInt(item.SHOP_STAR) " />
+									</div>
+									<!--<p class="lh28">{{item.SHOP_BUSINESS_TYPE}}</p>-->
+									<aside class="cor_g " style="margin-top: 10px;">
+										<div class=" flex">
+											<i class="mui-icon mui-icon-navigate cor_r fs16" style="margin-right: 10px;"></i>
+											<p class=" f1 fs12 txt">距离：{{item.DISTANCE}}km</p>
+										</div>
+									</aside>
+								</div>
+							</article>
+						</li>
+					</ul>
+					<!--美匠人-->
+					<ul class="reset scrollWrap" :class="{scrollWrap2:!viewType}" v-show="listType==1">
 						<!--样式1-->
 						<li class="list" :class="viewType?'cm_proItems':'cm_proItems2'" @tap="_NWnavigateTo('../technician/technician.html','technician',{'shopCode':item.SHOP_CODE})" v-for="item in result">
 							<article class="flex relative">
-								<!--<ul class="cm_label_tool">
-									<li v-for="item2 in _getArr(item.SHOP_BUSINESS_TYPE)">{{item2}}</li>
-								</ul>-->
 								<div class="cm_itemPic ">
 									<img :src="item.SHOP_LOGO?item.SHOP_LOGO:'../../images/default_avatar.jpg'" @error="_default" class="cover" />
 								</div>
@@ -262,7 +309,6 @@
 									<div class=" flex ">
 										<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in parseInt(item.SHOP_STAR) " />
 									</div>
-
 									<p class="lh28">{{item.SHOP_BUSINESS_TYPE}}</p>
 									<aside class="cor_g ">
 										<div class=" flex">
@@ -274,21 +320,18 @@
 											<p class=" f1 fs12 txt">距离：{{item.DISTANCE}}km</p>
 										</div>
 									</aside>
-
 								</div>
 							</article>
-
 						</li>
 					</ul>
-					<p class="lh44 t_c">{{node}}</p>
 
+					<p class="lh44 t_c">{{node}}</p>
 				</div>
 			</div>
 
 			<!--模态框-->
-			<div class="cm_mask " v-show="modalShow" @tap.self="_modelToggle">
+			<!--<div class="cm_mask " v-show="modalShow" @tap.self="_modelToggle">
 				<div class="cm_modal  animated slideInRight">
-
 					<aside class="starsBox container ">
 						<div class="cm_name">星级选择</div>
 						<ul class="stars flex">
@@ -299,22 +342,13 @@
 							<li @tap="_chooseStars(4)" :class="{active:level==4}">等级4</li>
 							<li @tap="_chooseStars(5)" :class="{active:level==5}">等级5</li>
 						</ul>
-
 					</aside>
-					<!--价格区间筛选-->
-					<!--<article class="prizeBox container">
-						<div class="cm_name">价格区间</div>
-						<div class="flex prizes">
-							<input type="number" class="f1 prizeInput" v-model="min" /> ~
-							<input type="number" class="f1 prizeInput" v-model="max" />
-						</div>
-					</article>-->
-					<!--确认-->
+			
 					<div class="container ">
 						<div class="cm_btn" @tap="_submit">确认</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 
 			<!--排序及分类模态框-->
 			<div class="cm_mask_bot " v-show="classShow" :style="{top:scrollTop}" @tap.self="_switchView(4)">
@@ -347,8 +381,6 @@
 		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
 
 		<script type="text/javascript">
-		  
-
 			mui.init({
 				swipeBack: true
 			});
@@ -378,13 +410,17 @@
 						result: [],
 						node: '查看加载更多',
 						/*提示语*/
-
+						
+						proIndex: 1,
+						proList: [],
 						/*筛选内容*/
 						min: '',
 						max: '',
 						level: 0,
 						/*星级筛选*/
-						currPosMark: ''
+						currPosMark: '',
+
+						listType: 0 //0显示的项目， 1显示的是美匠人
 					},
 					created: function created() {
 						app.initHeader();
@@ -421,11 +457,12 @@
 
 						var scroll = this.$refs.scroll;
 						//							初始化scroll的屏幕位置
-						this.scrollTop = document.getElementById('header').offsetHeight + 88 + 'px';
+						this.scrollTop = document.getElementById('header').offsetHeight+88+36 + 'px';
+
 
 						/*初始化数据*/
 						this._getData();
-
+						this._getPro();
 						/*初始化scroll*/
 						this.$nextTick(function() {
 							//							初始化scrool
@@ -447,56 +484,114 @@
 								_this.scroll.refresh();
 							};
 							_this.scroll.on('pullingUp', function() {
-								_this._getData(function(b) {
-									if(b) {} else {
-										_this.scroll.finishPullUp();
-									}
-								});
+								var t = _this.listType
+//								console.log(t)
+								switch(t) {
+									case 0:
+										//									刷新的是项目
+										_this._getPro(function(b) {
+											if(b) {} else {
+												_this.scroll.finishPullUp();
+											}
+										});
+										break;
+									default:
+										//									刷新的是美匠人
+										_this._getData(function(b) {
+											if(b) {} else {
+												_this.scroll.finishPullUp();
+											}
+										});
+										break;
+								}
 							});
 							/*下拉刷新*/
 							_this.scroll.on('pullingDown', function(e) {
 								plus.nativeUI.showWaiting();
-								_this.index = 1;
-								_this.node = '查看加载更多';
-								_this.result = [];
-								_this._getData(function(b) {
-									plus.nativeUI.closeWaiting();
-									if(b) {} else {
-										_this.scroll.finishPullUp();
-									}
-									_this.scroll.finishPullDown();
-									plus.nativeUI.closeWaiting();
-								});
+								var t = this.listType
+								switch(t) {
+									case 0:
+										//									刷新的是项目
+										_this.proIndex = 1;
+										_this.node = '查看加载更多';
+										_this.proList = [];
+										_this._getPro(function(b) {
+											plus.nativeUI.closeWaiting();
+											if(b) {} else {
+												_this.scroll.finishPullUp();
+											}
+											_this.scroll.finishPullDown();
+											plus.nativeUI.closeWaiting();
+										});
+										break;
+									default:
+										//									刷新的是美匠人
+										_this.index = 1;
+										_this.node = '查看加载更多';
+										_this.result = [];
+										_this._getData(function(b) {
+											plus.nativeUI.closeWaiting();
+											if(b) {} else {
+												_this.scroll.finishPullUp();
+											}
+											_this.scroll.finishPullDown();
+											plus.nativeUI.closeWaiting();
+										});
+										break;
+								}
+
 							});
 						});
 					},
 					methods: {
+						//						切换美匠人  和 项目
+						_toggleListType: function(key) {
+							this.listType = key
+						},
 						//						默认头像
 						_default: function _default(e) {
 							var dom = e.target;
 							//							console.log(dom)
 							dom.src = "../../images/default_avatar.jpg";
 						},
-						_getArr: function _getArr(str) {
-							var arr = str.split(',');
-							var res = [];
-							arr.forEach(function(item) {
-								res.push(item);
-							});
-							return res;
-						},
-						_chooseStars: function _chooseStars(k) {
-							this.level = k;
-							//							alert(this.level)
-						},
+
+						//						_getArr: function _getArr(str) {
+						//							var arr = str.split(',');
+						//							var res = [];
+						//							arr.forEach(function(item) {
+						//								res.push(item);
+						//							});
+						//							return res;
+						//						},
+						//						_chooseStars: function _chooseStars(k) {
+						//							this.level = k;
+						//						},
 
 						/*选择排序*/
 						_chooseSort: function _chooseSort(k) {
 							this.sort = k;
-							this.index = 1;
+							
 							this.node = '查看加载更多';
-							this.result = [];
-							this._getData();
+							
+							var t = this.listType
+							switch(t) {
+								case 0:
+									//									刷新的是项目
+									this.proList = [];
+									this.proIndex = 1;
+									this._getPro(function(b) {
+										
+									});
+									break;
+								default:
+									//									刷新的是美匠人
+									this.result = [];
+									this.index = 1;
+									this._getData(function(b) {
+			
+									});
+									break;
+							}
 							this.classShow = false;
 						},
 
@@ -505,8 +600,26 @@
 							this.proType = t;
 							this.index = 1;
 							this.node = '查看加载更多';
-							this.result = [];
-							this._getData();
+							
+							var t = this.listType
+							switch(t) {
+								case 0:
+									//									刷新的是项目
+									this.proList = [];
+									this.proIndex = 1;
+									this._getPro(function(b) {
+										
+									});
+									break;
+								default:
+									//									刷新的是美匠人
+									this.result = [];
+									this.index = 1;
+									this._getData(function(b) {
+										
+									});
+									break;
+							}
 							this.classShow = false;
 							this.scroll.finishPullUp();
 						},
@@ -570,9 +683,9 @@
 							});
 						},
 
-						/*获取数据*/
+						/*获取匠人数据*/
 						_getData: function _getData(callback) {
-
+//								alert(2)
 							var _this = this;
 							var pos = plus.storage.getItem('pos');
 							if(!pos) {
@@ -588,7 +701,7 @@
 
 							var data = {
 								pageIndex: this.index,
-								pageSize: 6,
+								pageSize: 5,
 								lon: pos.longitude.toFixed(6),
 								lat: pos.latitude.toFixed(6),
 								SHOP_BUSINESS_TYPE: this.proType,
@@ -608,7 +721,8 @@
 									'Content-Type': 'application/x-www-form-urlencoded'
 								},
 								success: function success(result) {
-									_this.loader = false;
+									//									_this.loader = false;
+									document.getElementById('loader').style.display = 'none'
 									if(result.Success) {
 
 										if(_this.result.length == result.Data.Total) {
@@ -632,13 +746,79 @@
 								},
 								error: function error(xhr, type, errorThrown) {
 									//异常处理；
-									_this.loader = false;
+									//									_this.loader = false;
+									document.getElementById('loader').style.display = 'none'
 									app.catchErr(type);
 								}
 							});
 							_this.modalShow = false;
 						},
+						/*获取项目数据*/
+						_getPro: function _getPro(callback) {
+//			alert(1)
+							var _this = this;
+							var pos = plus.storage.getItem('pos');
+							if(!pos) {
+								plus.nativeUI.closeWaiting();
+								plus.nativeUI.toast('无法获取您的定位，请你刷新');
+								plus.webview.currentWebview().close();
+								return;
+							}
 
+							pos = JSON.parse(pos);
+
+							this.currPosMark = pos.address;
+
+							var data = {
+								pageIndex: this.proIndex,
+								pageSize: 5,
+								lon: pos.longitude.toFixed(6),
+								lat: pos.latitude.toFixed(6),
+								PROJECT_TYPE: this.proType,
+								ORDER_TYPE: this.sort
+								//								distance: 5000
+							};
+							
+							mui.ajax(app.baseUrl + '/api/Project/GetProjects', {
+								data: data,
+								type: 'get', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function(result) {
+									//									_this.loader = false;
+									document.getElementById('loader').style.display = 'none'
+									if(result.Success) {
+										//										console.log(JSON.stringify(result.Data.ListInfo[0]))
+										if(_this.proList.length == result.Data.Total) {
+											_this.scroll.refresh();
+											_this.node = '没有数据了';
+											if(callback) callback(true);
+											return;
+										} else {
+											_this.proList = _this.proList.concat(result.Data.ListInfo);
+											_this.proIndex += 1;
+											mui.later(function() {
+												_this.scroll.refresh();
+												if(callback) callback(false);
+											}, 500);
+										}
+									} else {
+										if(callback) callback();
+										plus.nativeUI.toast(result.Msg);
+										mui.back();
+									}
+								},
+								error: function error(xhr, type, errorThrown) {
+									//异常处理；	
+									//									_this.loader = false;
+									document.getElementById('loader').style.display = 'none'
+									app.catchErr(type);
+								}
+							});
+							_this.modalShow = false;
+						},
 						/*刷新*/
 						_refreshData: function _refreshData() {},
 
