@@ -313,8 +313,13 @@
 							}
 							var _this = this;
 							var pos = plus.storage.getItem('pos');
+							if(!pos){
+								alert('未获取到位置，请手动获取')
+								return
+							}
 							pos = JSON.parse(pos);
-
+							
+							
 							var data = {
 								pageIndex: this.index,
 								pageSize: 5,

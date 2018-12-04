@@ -19,6 +19,10 @@
 			.sysItem {
 				background: #fff;
 			}
+			
+			#noRest {
+				display: none;
+			}
 		</style>
 	</head>
 
@@ -50,7 +54,7 @@
 		<!--聊天内容页面-->
 		<div id="block_chat" class="animated slideInRight">
 			<!--内容-->
-			<div class="result " id="chatContainer">
+			<div class="result " id="chatContainer"> 
 				<div class="reset" style="min-height: 101%">
 					<ul class="chatContent " id="chatContent">
 
@@ -120,7 +124,7 @@
 				<div class="mui-slider-right ">
 					<a class="mui-btn mui-btn-red delect" style="transform: translate(-180px, 0px);" data-userid={{value.targetId}}>删除</a>
 				</div>
-				<div class="mui-slider-handle listItem" id={{ 'fdBox'+value.targetId}} style="transform: translate(0px, 0px);" data-userid={{value.targetId}} data-avatar={{value.avatar}} data-nickName={{value.nickName}} data-key={{i}}>
+				<div class="mui-slider-handle listItem" id={{ 'fdBox'+value.targetId}} style="transform: translate(0px, 0px);" data-userid={{value.targetId}} data-avatar={{value.avatar}} data-nickname={{value.nickName}} data-key={{i}}>
 					<div class="mui-media-object mui-pull-left listPic ">
 						<img src={{value.avatar}} id={{ 'fdAvatar'+value.targetId}}>
 						<span class="newsTip" id={{ 'fdRed'+value.targetId}}>0</span>
@@ -158,7 +162,7 @@
 					</div>
 
 					<% } else if(item.messageType=="VoiceMessage" ) { %>
-					<div class="voiceMsg voiBox contentBox <%= (item.content.extra.isNew?'newVoice':'') %>" voiceData="<%= item.content.content %>" voiceKey="<%= item.messageUId %>">
+					<div class="voiceMsg voiBox contentBox <%= (item.content.extra.isNew?'newVoice':'') %>" data-voicedata="<%= item.content.content %>" data-voicekey="<%= item.messageUId %>">
 						<span class="mui-icon mui-icon-mic" style="font-size: 18px;font-weight: bold;"></span>
 						<span class="play-state">点击播放</span>
 					</div>
@@ -181,8 +185,6 @@
 		<script src="../../js/db.js"></script>
 
 		<script type="text/javascript">
-		  
-
 			mui.init({
 				swipeBack: true,
 				gestureConfig: {
@@ -221,9 +223,10 @@
 				emojiBox: document.getElementById('emojiBox'),
 				// 菜单按钮
 				menuBtn: document.getElementById('menuBtn'),
-				menusBox: document.getElementById('menusBox')
+				menusBox: document.getElementById('menusBox'),
 
-				//			var pageSize = 10 //当前页条数					
+				//				无数据提示
+				noRest: document.getElementById('noRest')
 			};
 			var pageIndex = 1; //当前页码	
 			var friends; //最近聊天列表
@@ -252,11 +255,8 @@
 			var plaingVoice = null; //正在播放的声音（取消播放样式用的）
 			var isLoading = false; //正在加载一次数据中
 
-			var allHisRecords = []; //全部的历史聊天记录
 			var realHisRecords = []; //真实渲染的记录
 
-			var pageIndex = 1;
-			var pageSize = 15;
 			var isHome = true; //判断是否在前台
 
 			var linking; //判断链接状态
@@ -271,7 +271,9 @@
 			var connecting = false;
 
 			mui.plusReady(function() {
-
+//				plus.storage.setItem('members','{}')
+				
+				
 				IMtoken = plus.storage.getItem('IMtoken');
 
 				//初始化IM
@@ -280,14 +282,6 @@
 				initScroll();
 
 				var wv = plus.webview.currentWebview();
-				//				wv.setStyle({
-				//					titleNView: {
-				//						titleText: '消息通知',
-				//						backgroundColor: '#151515',
-				//						titleColor: '#fff',
-				//						autoBackButton: true
-				//					}
-				//				});
 
 				var toChat = function toChat() {};
 
@@ -295,7 +289,8 @@
 				mui('#listInfoBox').on('tap', '.listItem', function() {
 					TargetChat.userid = this.dataset.userid;
 					TargetChat.avatar = this.dataset.avatar;
-					TargetChat.nickName = this.dataset.nickName;
+					TargetChat.nickName = this.dataset.nickname;
+//					alert(this.dataset.nickname)
 					//					去掉红点
 					var m = document.getElementById('fdRed' + TargetChat.userid);
 					m.style.display = 'none';
@@ -346,12 +341,14 @@
 				});
 				//				//				点击删除
 				mui('#listInfoBox').on('tap', '.delect', function() {
-					var fdId = this.getAttribute('userid');
+//					var fdId = this.getAttribute('userid');
+					var fdId = this.dataset.userid;
+					
 					//					删除操作	
 					var li = this.parentNode.parentNode;
 					mui.swipeoutClose(li);
 					li.parentNode.removeChild(li);
-					DB.delectDataByIndex(fdId);
+					DB.delectData(fdId);
 				});
 				//				返回判断
 				var old_back = mui.back;
@@ -381,18 +378,8 @@
 				});
 
 				scroll.on('pullingDown', function(pos) {
-					plus.nativeUI.showWaiting();
-					pageIndex += 1;
-					paging(function(b) {
-						mui.later(function() {
-							plus.nativeUI.closeWaiting();
-							if(b) {
-								plus.nativeUI.toast('没有更多数据了');
-							} else {
-								scroll.finishPullDown();
-							}
-						}, 500);
-					});
+					//					plus.nativeUI.showWaiting();
+					getHisContent()
 				});
 			}
 			//			聊天页面返回到列表页
@@ -403,53 +390,74 @@
 				onChatPage = false;
 				ui.blockChat.style.display = 'none';
 			}
-
 			//			初始化聊天内容记录
 			function initChatContent() {
-				pageIndex = 1;
-				allHisRecords = [];
-				scroll.finishPullDown();
-
-				DB.getDataByIndex(TargetChat.userid + '', function(list) {
-
-					allHisRecords = list;
-					paging(function() {
-						resultFresh(false, true);
-					});
-					onChatPage = true;
+				realHisRecords = [];
+				getHisContent(true)
+			}
+			//			获取某对象的历史信息
+			function getHisContent(b) {
+				//b  若是新的聊天对象则清空 realHisRecords
+				var timestrap = null; // 默认传 null，若从头开始获取历史消息，请赋值为 0 ,timestrap = 0;
+				if(b === true) {
+					//					重头开始获取					
+					timestrap = 0
+				}
+				//				console.log(TargetChat.userid )
+				var conversationType = RongIMLib.ConversationType.PRIVATE; //单聊,其他会话选择相应的消息类型即可。
+				var targetId = TargetChat.userid; // 想获取自己和谁的历史消息，targetId 赋值为对方的 Id。			
+				var count = 10; // 每次获取的历史消息条数，范围 0-20 条，可以多次获取。
+				RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
+					onSuccess: function(list, hasMsg) {
+						//				  	console.log(hasMsg)
+						if(!hasMsg) {
+							//						没有数据了
+							mui.toast('没有数据了')
+						}
+						realHisRecords = list.concat(realHisRecords);
+						render(function() {
+							scroll.finishPullDown();
+						})
+					},
+					onError: function(error) {
+						console.log("GetHistoryMessages,errorcode:" + error);
+					}
 				});
 			}
+
 			//			直接进入聊天页面
 			function initHis(id, name, avatar) {
 				TargetChat.userid = id;
 				TargetChat.avatar = avatar;
 				TargetChat.nickName = name;
+//				alert(name)
+				var data = {
+					targetId:id,
+					avatar:avatar,
+					nickName:name,					
+				}
 
-				initChatList(function() {
-					initChatContent();
-					ui.blockChat.style.display = 'block';
-					onChatPage = true;
-					//					resultFresh(false, true)
-				});
+//					initChatList(function() {
+						initChatContent();
+						ui.blockChat.style.display = 'block';
+						onChatPage = true;
+//					});
+//				
 			}
 			//	刷新最近聊天的对象列表
 			function initChatList(callback) {
-				var time = setInterval(function() {
-					if(!DB.db) {} else {
-						DB.getCount(function(res) {
-							//							alert('聊天对象的数量是  ' + res.length)
-							//							console.log(JSON.stringify(res[0]))
-							friends = {
-								list: res,
-								time: function time(str) {
-									return new Date(str).Format('MM-dd hh:mm:ss');
-								}
-							};
-							renderChatList(callback);
-						});
-						clearInterval(time);
-					}
-				}, 200);
+//				console.log('刷新列表')
+//				获取聊天对象接口
+				DB.getMemberList(function(res) {
+//					console.log(res.length)
+					friends = {
+						list: res,
+						time: function time(str) {
+							return new Date(str).Format('MM-dd hh:mm:ss');
+						}
+					};
+					renderChatList(callback);
+				});
 			}
 			//			渲染聊天对象
 			function renderChatList(callback) {
@@ -467,7 +475,7 @@
 
 				self = plus.webview.currentWebview();
 				//				测试token
-				RongIMLib.RongIMClient.init("n19jmcy5n8ke9");
+				RongIMLib.RongIMClient.init("bmdehs6pbrcis");
 				//	服务器链接监听
 				RongIMClient.setConnectionStatusListener({
 					onChanged: function onChanged(status) {
@@ -629,7 +637,7 @@
 					onTokenIncorrect: function onTokenIncorrect() {
 						//						console.log('token无效');
 						plus.nativeUI.closeWaiting();
-						plus.nativeUI.toast('token无效');
+						plus.nativeUI.toast('token无效,请联系平台客服');
 					},
 					onError: function onError(errorCode) {
 						var info = '';
@@ -809,28 +817,14 @@
 				//				点击语音播放
 				mui('#chatContent').on('tap', '.voiceMsg', function() {
 					if(p) p.stop();
-					//					if(plaingVoice) plaingVoice.classList.remove('playing')
-					//					plaingVoice = this
 					this.classList.add('playing');
 
 					this.classList.remove('newVoice');
-					//					var voice = this.dataset.voiceData;
-					//					var key = this.dataset.voiceKey;
-					var voice = this.getAttribute('voiceData');
-					var key = this.getAttribute('voiceKey');
+					var voice = this.dataset.voicedata;
+					var key = this.dataset.voicekey;
 
-					//					alert(voice)
-					DB.getData(key, function(message) {
-						//						console.log('666' + JSON.stringify(message))
-						message.content.extra.isNew = false;
-						DB.updatedData(key, message);
+					playAudio(voice, function() {})
 
-						playAudio(voice, function() {
-							//							plaingVoice.classList.remove('playing')
-						});
-					});
-					//					
-					//					修改未读数据
 				});
 
 				//            点击图片预览
@@ -885,7 +879,7 @@
 					mui.toast('请输入内容！');
 					return;
 				}
-
+//				alert('!!!'+TargetChat.nickName)
 				var msg = new RongIMLib.TextMessage({
 					content: ui.textArea.value,
 					extra: {
@@ -1281,8 +1275,6 @@
 								info = x;
 								break;
 						}
-						//						console.log('发送失败:' + info);
-						//						ImInit()
 					}
 				});
 			}
@@ -1295,35 +1287,20 @@
 
 					scroll.scrollToElement(document.getElementById('resultEnd'), 300, 0, 0, 'ease-in');
 				}
-
-				//				ismine = ismine || false;
-				//				if(ismine) {
-				//					ui.sayBox.classList.remove('showMenu')
-				//				}
 			}
 			//	历史记录本地储存
 			function createHistory(message) {
 				//				var targetId = message.targetId;
 				message.belong = myId;
-				//				console.log(JSON.stringify(message)) 
-				DB.addData(message);
+					DB.addMember(message)
 			}
 			//	删除本地记录
-			function resetHis(key) {
-				DB.delectData(key);
-			}
-			//			计算分页
-			function paging(callback) {
-				var rCount = pageIndex * pageSize;
-
-				realHisRecords = allHisRecords.slice(-rCount);
-
-				render(callback);
-			}
+//			function resetHis(key) {
+//				DB.delectData(key);
+//			}
 			//  渲染条目
 			function render(callback) {
-				var rCount = pageIndex * pageSize;
-				ui.chatContent.innerHTML = '';
+
 				var l = {};
 
 				l.targetAvatar = TargetChat.avatar;
@@ -1333,14 +1310,8 @@
 
 				var html = template('chatList', l);
 				document.getElementById('chatContent').innerHTML = html;
-
-				if(allHisRecords.length <= realHisRecords.length) {
-					if(callback) callback(true);
-				} else {
-					if(callback) callback(false);
-				}
-
 				scroll.refresh();
+				if(callback) callback()
 			}
 
 			//	接受信息,所处反应
@@ -1368,12 +1339,10 @@
 							break;
 					}
 				}
-
 				//				判断是语音信息是否是已读
 				if(message.messageType == 'VoiceMessage') {
 					message.content.extra.isNew = true;
 				}
-
 				//				服务器备份
 				backups(message);
 				//				创建本地记录	
@@ -1385,8 +1354,6 @@
 					hintNewMsg(message);
 					return false;
 				}
-
-				allHisRecords.push(message);
 				realHisRecords.push(message);
 				render();
 			}
@@ -1413,7 +1380,6 @@
 			}
 			//			添加信息
 			function addHisType(message) {
-				allHisRecords.push(message);
 				realHisRecords.push(message);
 				render();
 			}
@@ -1422,7 +1388,6 @@
 				myAvatar = plus.storage.getItem('pic_head');
 				myNickName = plus.storage.getItem('userNickName');
 				myId = plus.storage.getItem('myId');
-
 				ImInit();
 			}
 

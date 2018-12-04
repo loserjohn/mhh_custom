@@ -335,13 +335,25 @@
 							plus.nativeUI.confirm("退出当前用户？", function(e) {
 								if(e.index == 0) {
 									//										alert(1)
-									plus.storage.clear();
+									plus.storage.removeItem('token');
+									plus.storage.removeItem('IMtoken');
+									plus.storage.removeItem('myId');
+									plus.storage.removeItem('userName');
+									plus.storage.removeItem('userNickName');
+									plus.storage.removeItem('userPass');
+									plus.storage.removeItem('pic_head');
+									plus.storage.removeItem('realIdCard');
+									plus.storage.removeItem('realName');
+									plus.storage.removeItem('realStatus');
+									
+									plus.storage.setItem('isLogin', '0');
+									
 									plus.nativeUI.toast('退出登录');
 									plus.storage.setItem('isLogin', '0');
 
-									plus.webview.getWebviewById('orders').evalJS('refresh()');
+									plus.webview.getWebviewById('orders').evalJS('refreshOrder()');
 									plus.webview.getWebviewById('mine').evalJS('refresh()');
-									plus.webview.getWebviewById('mine').evalJS('noNew()');
+//									plus.webview.getWebviewById('mine').evalJS('noNew()');
 
 									if(plus.webview.getWebviewById('information')) {
 										plus.webview.getWebviewById('information').close();

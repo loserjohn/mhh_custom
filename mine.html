@@ -700,6 +700,8 @@
 			});
 			/*获取用户身份之后刷新页面*/
 			function refresh(type) {
+//				alert(type)
+//				alert(plus.storage.getItem('isLogin') )
 				//				if(mainPage){mainPage.evalJS('getList()')}
 				APP._initUser();
 				//				alert(type)
@@ -707,15 +709,16 @@
 				if(type && plus.storage.getItem('isLogin') == '1') {
 					//					若是登陆,就刷新融云链接
 					initIM();
+				}else{
+					noNew()
 				}
 			}
 			//			重新链接im
 			function initIM() {
-//alert(666)
 				mainPage = plus.webview.getWebviewById('information');
 
 				if(!mainPage) {
-										
+//						alert('n')				
 					mainPage = mui.preload({
 						"id": 'information',
 						"url": './html/information/information.html',
@@ -729,7 +732,7 @@
 						}
 					});
 				} else {
-					//					alert(111)
+//					alert('y')		
 					mainPage.evalJS('connectIM()');
 				}
 			}

@@ -479,19 +479,27 @@
 				//				alert(error)
 			}
 		});
+//		alert(0).
 		//预加载页面,之前需要通过后台获取token
 		app.ajax(app.baseUrl + '/api/MemberInfo/Ry_Token', {
 			type: 'post', //HTTP请求类型
 			success: function(result) {
 				if(result.Success) {
+//					alert(result.Msg)
 					plus.storage.setItem('IMtoken', result.Msg);
 					plus.storage.setItem('myId', result.Data)
-
-					plus.webview.getWebviewById('orders').evalJS('refresh()')
+//
+					plus.webview.getWebviewById('orders').evalJS('refreshOrder()')
 					plus.webview.getWebviewById('mine').evalJS('refresh(true)')
+//					
+//					plus.webview.getWebviewById('orders').reload()
+//					plus.webview.getWebviewById('mine').reload()
 				} else {
 //					alert(result.Msg)
 				}
+			},
+			error:function(){
+//				alert(-1)
 			}
 		});
 

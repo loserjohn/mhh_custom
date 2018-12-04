@@ -811,10 +811,10 @@
 									plus.webview.getWebviewById('community').evalJS('refresh()');
 								} else if(clientX > parseInt(pageW * 0.5) && clientX <= parseInt(pageW * 0.75)) {
 									currIndex = 2;
-									plus.webview.getWebviewById('orders').evalJS('refresh()');
+									plus.webview.getWebviewById('orders').evalJS('refreshOrder()');
 								} else {
 									currIndex = 3;
-									plus.webview.getWebviewById('orders').evalJS('refresh(true)');
+									plus.webview.getWebviewById('mine').evalJS('refresh()');
 								}
 								// 匹配对应tab窗口	
 								if(currIndex > 0) {
