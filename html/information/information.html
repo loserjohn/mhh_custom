@@ -23,6 +23,17 @@
 			#noRest {
 				display: none;
 			}
+			.timeTip{
+				/*width: 120px;*/
+				padding: 0 15px;
+				line-height: 30px;
+				background: #e3e3e3;
+				/*border: 1px solid #d3d3d3;*/
+				box-sizing:  0 0 2px #d3d3d3;
+				border-radius: 4px;
+				margin: 10px auto ;
+				color: #fff
+			}
 		</style>
 	</head>
 
@@ -127,7 +138,7 @@
 				<div class="mui-slider-handle listItem" id={{ 'fdBox'+value.targetId}} style="transform: translate(0px, 0px);" data-userid={{value.targetId}} data-avatar={{value.avatar}} data-nickname={{value.nickName}} data-key={{i}}>
 					<div class="mui-media-object mui-pull-left listPic ">
 						<img src={{value.avatar}} id={{ 'fdAvatar'+value.targetId}}>
-						<span class="newsTip" id={{ 'fdRed'+value.targetId}}>0</span>
+						<span class="newsTip" id={{ 'fdRed'+value.targetId}}></span>
 					</div>
 					<div class="mui-media-body listtxt">
 						<div>
@@ -142,7 +153,15 @@
 		</script>
 		<!--聊天内容模板-->
 		<script id="chatList" type="text/template">
+			
 			<% for(var i in ListInfo){ var item=ListInfo[i];  %>
+			<% if(i%10 === 0 ) { %>
+				<li class="t_c flex"   >
+					<div class="timeTip">
+						<%= getLocalTime(item.sentTime) %>
+					</div>
+				</li>
+			<% } %>
 			<li class="msgList flex <%= (item.messageDirection==1?'me':'') %>">
 				<aside class="msgAvatar">
 					<%  if(item.messageDirection == 1){%>
@@ -175,9 +194,10 @@
 					</div>
 					<% } %>
 				</article>
-
+				
 			</li>
 			<% } %>
+			<!--<li class="timeTip t_c"><%= ListInfo[ListInfo.length -1 ].sentTime %></li>-->			
 		</script>
 
 		<script src="../../js/bscroll.min.js"></script>
@@ -1291,6 +1311,7 @@
 			//	历史记录本地储存
 			function createHistory(message) {
 				//				var targetId = message.targetId;
+//				console.log(JSON.stringify(message))
 				message.belong = myId;
 					DB.addMember(message)
 			}
@@ -1307,7 +1328,8 @@
 				l.myAvatar = myAvatar ? myAvatar : '../../images/default_avatar.jpg';
 				l.ListInfo = realHisRecords;
 				l.emoji = RongIMLib.RongIMEmoji;
-
+				l.getLocalTime = getLocalTime
+				
 				var html = template('chatList', l);
 				document.getElementById('chatContent').innerHTML = html;
 				scroll.refresh();
@@ -1346,7 +1368,7 @@
 				//				服务器备份
 				backups(message);
 				//				创建本地记录	
-				createHistory(message);
+//				createHistory(message);
 
 				//				判断不是当前对象的聊天信息,则会产生红点新消息
 				if(!onChatPage || message.senderUserId != TargetChat.userid) {
@@ -1407,13 +1429,30 @@
 				}
 				return fmt;
 			};
-
+			
+			
+			function getLocalTime(timestamp) {     
+			    var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+		        var Y = date.getFullYear() + '-';
+		        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		        var D = date.getDate() + ' ';
+		        var h = date.getHours() + ':';
+		        var m = date.getMinutes() + ':';
+		        var s = date.getSeconds();
+		        
+		        
+		        return Y+M+D+h+m+s;     
+			} 
 			//	接收到对方消息,列表页消息提示变化红点提示
 			function hintNewMsg(data) {
 				var getor = data.senderUserId;
 				var time;
 				var text;
 				var box = document.getElementById('fdBox' + getor);
+				
+				//				首页显示红点
+				plus.webview.getWebviewById('mine').evalJS('hasNew()')
+				
 				if(box) {
 					//					已经存在的聊天对象
 					time = document.getElementById('fdTime' + getor);
@@ -1431,30 +1470,38 @@
 						text.innerText = '图片';
 					}
 					var m = document.getElementById('fdRed' + getor);
+					if(!m.innerText){
+						m.innerText = 1;
+					}else{
+						m.innerText = parseInt(m.innerText) + 1;
+					}
+					
 					m.style.display = 'block';
-					m.innerText = parseInt(m.innerText) + 1;
+				
 				} else {
 					//					表示是新的聊天天对象
-					renderChatList(function() {
-						var m = document.getElementById('fdRed' + getor);
-						if(!m) return;
-						m.innerText = 1;
-						time = document.getElementById('fdTime' + getor);
-						text = document.getElementById('fdTxt' + getor);
-
-						time.innerText = new Date().Format("yyyy-MM-dd hh:mm:ss");
-
-						if(data.messageType == 'TextMessage') {
-							text.innerText = data.content.content;
-						} else if(data.messageType == 'LocationMessage') {
-							text.innerText = '向您发送了位置';
-						} else if(data.messageType == 'VoiceMessage') {
-							text.innerText = '语音信息';
-						} else {
-							text.innerText = '图片';
-						}
-						m.style.display = 'block';
-					});
+					createHistory(data);
+//					renderChatList(function() {
+//						
+//						var m = document.getElementById('fdRed' + getor);
+//						if(!m) return;
+//						m.innerText = 1;
+//						time = document.getElementById('fdTime' + getor);
+//						text = document.getElementById('fdTxt' + getor);
+//
+//						time.innerText = new Date().Format("yyyy-MM-dd hh:mm:ss");
+//
+//						if(data.messageType == 'TextMessage') {
+//							text.innerText = data.content.content;
+//						} else if(data.messageType == 'LocationMessage') {
+//							text.innerText = '向您发送了位置';
+//						} else if(data.messageType == 'VoiceMessage') {
+//							text.innerText = '语音信息';
+//						} else {
+//							text.innerText = '图片';
+//						}
+//						m.style.display = 'block';
+//					});
 				}
 			}
 			//			系统新消息产生红点提示
