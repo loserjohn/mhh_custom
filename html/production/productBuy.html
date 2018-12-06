@@ -900,6 +900,7 @@
 
 										if(result.Success) {
 											_this.product = result.Data.dataFormart;
+											_this._img(_this.product.DETAILS_IMGS)
 											_this.enabledTime = result.Data.enabledTime;
 											_this.imgprev = result.Data.dataFormart.PROJECT_IMGS[result.Data.dataFormart.PROJECT_IMGS.length - 1];
 											_this.imgnext = result.Data.dataFormart.PROJECT_IMGS[0];
@@ -926,7 +927,23 @@
 								}
 							});
 						},
-
+//						图片加载完毕刷新
+						_img:function(arr){
+							var l = arr.length;
+								var count = 0
+								var _this = this 
+								arr.map(function(item,index){
+//									console.log(index)
+									var img = new Image;
+									img.src = item;
+									img.onload = function(){
+										count++;
+										if(count>=l){
+											_this.scroll.refresh();
+										}
+									}
+								})
+						},
 						/*初始化下拉滑块*/
 						_initScroll: function _initScroll() {
 							var _this = this;
