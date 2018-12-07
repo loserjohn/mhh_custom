@@ -752,6 +752,13 @@
 								interval: 3000 //自动播放周期
 							});
 						});
+						
+						mui('#app').on('click','.commontPic',function(){
+							var url = this.getAttribute('src');
+//							url = url.replace('_mini', '_small');
+							//					console.log(url)
+							plus.nativeUI.previewImage(url, {});
+						})
 					},
 					methods: {
 						//						默认头像

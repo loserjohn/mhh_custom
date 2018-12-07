@@ -1128,13 +1128,13 @@
 				//获取当前网络类型
 
 				var nt = plus.networkinfo.getCurrentType();
+//				alert(nt)
+				
 				switch(nt) {
 					case plus.networkinfo.CONNECTION_ETHERNET:
 						APP._reconnect();
 						break;
 					case plus.networkinfo.CONNECTION_WIFI:
-						//					alert(0)
-
 						APP._reconnect();
 						break;
 					case plus.networkinfo.CONNECTION_CELL2G:
@@ -1146,17 +1146,20 @@
 					case plus.networkinfo.CONNECTION_CELL4G:
 						APP._reconnect();
 						break;
+					case plus.networkinfo.CONNECTION_UNKNOW:
+						APP._reconnect();
+						break;	
 					default:
 						//						mui.toast("当前没有网络");　　
-
 						plus.nativeUI.alert("网络异常，请检查");
 						APP.noNet = true;
 						break;
 				}
 			}
 
-			function onNet(urlstr) {
+			function onNet() {
 				var nt = plus.networkinfo.getCurrentType();
+//				alert(nt)
 				if(nt == plus.networkinfo.CONNECTION_NONE) {
 					return false;
 				} else {

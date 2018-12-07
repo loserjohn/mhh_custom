@@ -1,3 +1,4 @@
+
 (function(owner) {
 
 	var holdTime; /* 免登时长 （ms）  一周*/ //判断忆否已经存在openid，没有则不自动登陆
@@ -1207,4 +1208,5 @@
  
     com.cache = cache; 
 }(window.common={})) 
+
 

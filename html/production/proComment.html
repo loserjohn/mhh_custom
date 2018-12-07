@@ -408,6 +408,13 @@
 								_this2.scroll.finishPullUp();
 							}
 						});
+						
+						mui('#app').on('click','.commontPic',function(){
+							var url = this.getAttribute('src');
+//							url = url.replace('_mini', '_small');
+							//					console.log(url)
+							plus.nativeUI.previewImage(url, {});
+						})
 					},
 					methods: {
 						//							tab切换
