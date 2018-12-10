@@ -560,9 +560,10 @@
 							this.noNet = true;
 							return;
 						}
-
+						this._initMenus(); /*初始化导航栏*/
 						this._initIndex();
-
+						this._initScroll(); //初始化下拉
+						
 						systemOS.versionInit(function(t) {
 							if(t) {
 								var isFirst = plus.storage.getItem('isFirst');
@@ -613,11 +614,10 @@
 								_this2._initNew();
 								if(cb)cb()
 							});
-							this._initScroll(); //初始化下拉
-							this._initCarousel();
+														
 							this._initBlock(); //初始化豆腐块
-
-							this._initMenus(); /*初始化导航栏*/
+//							this._initCarousel();
+							
 							
 						},
 
@@ -631,13 +631,21 @@
 						//						初始化豆腐块
 						_initBlock: function _initBlock() {
 							var _this = this;
+							
+							var header = {
+								'Content-Type': 'application/x-www-form-urlencoded',
+							}
+							
+//							若有登录状态则发送token;
+							var tk = plus.storage.getItem('token')
+							if(tk){
+								header.Authorization = app.mark + plus.storage.getItem('token')
+							}
+		
 							mui.ajax(app.baseUrl + '/api/Carousel/GetPannelList', {
 								type: 'get', //HTTP请求类型
 								timeout: 5000, //超时时间设置为10秒；
-								headers: {
-									'Content-Type': 'application/x-www-form-urlencoded',
-									"Cache-Control": "max-age=1000000"
-								},
+								headers: header,
 								success: function success(result) {
 
 									/*登陆成功*/
@@ -665,6 +673,8 @@
 												status += 1;
 												if(status == result.Data.ListInfo.length) {
 //													Lazyimg.lazyLoad();
+													console.log('显示')
+													plus.navigator.closeSplashscreen() 
 													mui(slider).slider({
 														interval: 3000 //自动播放周期
 													});
@@ -742,32 +752,6 @@
 									break;
 							}
 						},
-
-						/*初始化轮播图*/
-						_initCarousel: function _initCarousel() {
-							//							var _this = this;
-							//							_this.activityPics = [{
-							//									LINK_IMAGE: './images/index/banner1.png',
-							//									LINK_URL: '-1||'
-							//								},
-							//								{
-							//									LINK_IMAGE: './images/index/banner2.png',
-							//									LINK_URL: '-1||'
-							//								},
-							//								{
-							//									LINK_IMAGE: './images/index/banner3.png',
-							//									LINK_URL: '-1||'
-							//								}
-							//							]
-							//							_this.prevPic = _this.activityPics[_this.activityPics.length - 1]
-							//							_this.nextPic = _this.activityPics[0];
-							//							var slider = _this.$refs.slider;
-							//
-							//							mui(slider).slider({
-							//								interval: 3000 //自动播放周期
-							//							});
-						},
-
 						/*初始化导航栏*/
 						_initMenus: function _initMenus() {
 							/*返回键监听*/
@@ -878,13 +862,21 @@
 								/*下拉刷新数据*/
 								_this.scroll.on('pullingDown', function(e) {
 									plus.nativeUI.showWaiting();
-									_this._initPos(function() {
+//									_this._initPos(function() {
 										/*位置信息获取之后初始化最新上架*/
+										_this.index = 1;
+										_this.newst = []
+										_this.noRest = false
+										
 										_this._initIndex(function(){
-											plus.nativeUI.closeWaiting();
-											_this.scroll.finishPullDown();
+											mui.later(function(){
+												plus.nativeUI.closeWaiting();
+												_this.scroll.finishPullDown();
+												_this.scroll.finishPullUp();
+											},1000)
+											
 										});
-									});
+//									});
 								});
 								/*上拉加载*/
 								_this.scroll.on('pullingUp', function(e) {
@@ -902,39 +894,50 @@
 
 						/*最近上新*/
 						_initNew: function _initNew(callback) {
+//							alert(0)
+//console.log('执行了')
 							var _this = this;
-							//							console.log(JSON.stringify(this.co))
+							var header = {
+								'Content-Type': 'application/x-www-form-urlencoded',
+							}
+							
+//							若有登录状态则发送token;
+							var tk = plus.storage.getItem('token')
+							if(tk){
+								header.Authorization = app.mark + plus.storage.getItem('token')
+							}
 							/*获取最新上架列表*/
 							mui.ajax(app.baseUrl + '/api/Project/GetProjects', {
 								type: 'get', //HTTP请求类型
 								timeout: 5000, //超时时间设置为10秒；
 								data: {
 									ORDER_TYPE: 5,
-									distance: 5000,
 									pageIndex: _this.index,
 									pageSize: 6,
 									lon: _this.co.longitude,
 									lat: _this.co.latitude
 								},
-								headers: {
-									'Content-Type': 'application/x-www-form-urlencoded'
-								},
+								headers: header,
 								success: function success(result) {
 									/*登陆成功*/								
 									if(result.Success) {
 //										_this.newst = result.Data.ListInfo;
 										_this.total = result.Data.Total;
+//										console.log(_this.newst.length)
 										var l = _this.newst.length;										
 										if(l == _this.total){
 											_this.noRest = true;
 //											没有更多数据
 											if(callback) callback(true);
-										}else{
+										}else{										
 											
-											_this.index += 1;
 											_this.newst = _this.newst.concat(result.Data.ListInfo);
+//											console.log(_this.index,_this.total,_this.newst.length)
+											_this.index += 1;
 											_this.scroll.refresh();
+
 											if(callback) callback(false);
+											
 										}								
 									} else {
 										/*验证失败*/

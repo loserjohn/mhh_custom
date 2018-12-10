@@ -209,6 +209,7 @@
 											<div class="f1 btns"  @tap="_NWnavigateTo('./html/technician/technician.html','technician',{'shopCode':item.SHOP_CODE})">查看手艺人</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS == 4" @tap="_NTnavigateTo('./html/production/editComment.html','editComment',{product:item})">去评价</div>
 											<div class="f1 btns" v-if="item.ORDER_STATUS_TYPE==8" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">发起退款</div>
+											<div class="f1 btns" v-if="item.ORDER_STATUS==8" @tap="_NTnavigateTo('./html/order/refund.html','refund',{orderCode:item.ORDER_CODE})">发起退款</div>
 										</div>
 									</li>
 									<li class="t_c cor_g" style="margin-bottom: 10px;line-height: 40px;">{{orderList[0].norest?'没有数据咯':''}}</li>

@@ -735,9 +735,9 @@
 					success: function(result) {
 						//					console.log(result.Data)
 						if(callback) callback(result.Data);
-						mui.later(function() {
-							plus.nativeUI.closeWaiting();
-						}, 2500)
+//						mui.later(function() {
+//							plus.nativeUI.closeWaiting();
+//						}, 2500)
 					},
 					error: function(xhr, type, errorThrown) {
 						plus.nativeUI.closeWaiting();
@@ -758,10 +758,10 @@
 			quality: 100,
 			format: 'jpg'
 		}, function(zip) {
-			plus.nativeUI.closeWaiting();
+//			plus.nativeUI.closeWaiting();
 			if(callback)(callback(zip.target))
 		}, function() {
-			plus.nativeUI.closeWaiting();
+//			plus.nativeUI.closeWaiting();
 			mui.toast('压缩失败！');
 		})
 	}
