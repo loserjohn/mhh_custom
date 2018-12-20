@@ -283,14 +283,17 @@
 									<p class="fs12"> {{item.PROJECT_LOVE}}人喜欢</p>
 									<div class=" flex ">
 										<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item2 in parseInt(item.SHOP_STAR) " />
-									</div>
-									<!--<p class="lh28">{{item.SHOP_BUSINESS_TYPE}}</p>-->
+									</div>								
 									<aside class="cor_g " style="margin-top: 10px;">
 										<div class=" flex">
 											<i class="mui-icon mui-icon-navigate cor_r fs16" style="margin-right: 10px;"></i>
 											<p class=" f1 fs12 txt">距离：{{item.DISTANCE}}km</p>
 										</div>
 									</aside>
+									<article class="flex">
+											<p class="prize  cor_r fs18 lh28" style="margin-right: 10px;">￥{{item.IS_ACTIVITY==1?item.ACTIVITY_PRICE:item.PROJECT_DISCOUNT}}</p>
+											<p class="delec_prize cor_g f1  lh28">￥{{item.PROJECT_PRICE}}</p>
+										</article>
 								</div>
 							</article>
 						</li>

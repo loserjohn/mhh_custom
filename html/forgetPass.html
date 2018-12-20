@@ -72,7 +72,7 @@
 						修改密码
 					</div>
 				</div>
-				<img src="../images/logo2.png" alt="" class="logo_bg" />
+				<img src="../images/logo2.png" alt="" class="logo_bg" v-show="androidShow" />
 
 			</div>
 		</div>
@@ -117,7 +117,8 @@
 						repassword: '',
 						toggleType: true,
 						enables: false,
-						time: 90
+						time: 90,
+						androidShow:true
 					},
 					computed: {
 						ctime: function ctime() {
@@ -134,6 +135,7 @@
 						plus.nativeUI.closeWaiting();
 						mui.currentWebview.show('pop-in', 300, function() {}, {});
 
+						var _this = this
 						if(mui.os.android) {
 							var originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
 
@@ -144,10 +146,13 @@
 
 								if(resizeHeight * 1 < originalHeight * 1) {
 									//resizeHeight<originalHeight证明窗口被挤压了
-
-									plus.webview.currentWebview().setStyle({
-										height: originalHeight
-									});
+									
+//									plus.webview.currentWebview().setStyle({
+//										height: originalHeight
+//									});
+									_this.androidShow = false
+								}else{
+									_this.androidShow = true
 								}
 							};
 						}

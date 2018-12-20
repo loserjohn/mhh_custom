@@ -192,7 +192,7 @@
 								<img :src="order.PROJECT_IMG1" alt="" class="cover" />
 							</div>
 							<div class="f1">
-								<div class="fs16">{{order.PROJECT_NAME}} <span class="cor_r fr">￥0.01</span> </div>
+								<div class="fs16">{{order.PROJECT_NAME}} <span class="cor_r fr">￥1</span> </div>
 								<p>美匠人：{{order.SHOP_NAME}} </p>
 								<p class="flex">嘿皮值:
 									<img src="../../images/levelicon.png" alt="" class="cm_level" v-for="item in  levels " />
@@ -301,17 +301,17 @@
 								this.count = 0;
 								this.countNum = 0;
 							} else {
-								this.totalAmount = (this.count * 0.01).toFixed(2);
+								this.totalAmount = (this.count * 1).toFixed(2);
 							}
 						},
 						_sub: function _sub() {
 							if(this.count == 0) return;
 							this.count--;
-							this.totalAmount = (this.count * 0.01).toFixed(2);
+							this.totalAmount = (this.count * 1).toFixed(2);
 						},
 						_add: function _add() {
 							this.count++;
-							this.totalAmount = (this.count * 0.01).toFixed(2);
+							this.totalAmount = (this.count * 1).toFixed(2);
 						},
 
 						/*获取数据*/
@@ -354,9 +354,10 @@
 							}
 
 							plus.nativeUI.showWaiting();
+//							alert(_this.count)
 							var data = {
 								ORDER_CODE: _this.orderCode,
-								count: _this.count
+								count: _this.count*100
 								//							console.log(_this.orderCode)
 								//														console.log(JSON.stringify(data))
 							};

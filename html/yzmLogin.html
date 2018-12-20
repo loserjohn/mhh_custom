@@ -58,7 +58,7 @@
 						登陆
 					</div>
 				</div>
-				<img src="../images/logo2.png" alt="" class="logo_bg" />
+				<img src="../images/logo2.png" alt="" class="logo_bg"  v-show="androidShow"/>
 
 			</div>
 		</div>
@@ -74,23 +74,6 @@
 				swipeBack: true
 			});
 			mui.plusReady(function() {
-				//				var wv = plus.webview.currentWebview();
-				//						wv.setStyle({
-				//							titleNView: {
-				//								autoBackButton: true, // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
-				//								titleColor: "#fff", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
-				//								titleSize: "14px", // 字体大小,默认17px
-				//								backgroundColor: "#151515", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
-				//								progress: { // 标题栏控件的进度条样式
-				//									color: "#ccaa42", // 进度条颜色,默认值为"#00FF00"  
-				//									height: "2px" // 进度条高度,默认值为"2px"         
-				//								},
-				//								splitLine: { // 标题栏控件的底部分割线，类似borderBottom
-				//									color: "#404040", // 分割线颜色,默认值为"#CCCCCC"  
-				//									height: "1px" // 分割线高度,默认值为"2px"
-				//								}
-				//							}
-				//						});
 				var APP = new Vue({
 					el: '#app',
 					data: {
@@ -99,7 +82,8 @@
 						validate: '',
 						/* 验证码 */
 						enables: false,
-						time: 90
+						time: 90,
+						androidShow:true
 					},
 					computed: {
 						ctime: function ctime() {
@@ -110,11 +94,33 @@
 						//							app.initHeader();
 					},
 					mounted: function mounted() {
+						
 						this.opId = plus.storage.getItem('opId');
 						this.pic_head = plus.storage.getItem('pic_head');
 						this.petname = plus.storage.getItem('petname');
 						plus.nativeUI.closeWaiting();
 						mui.currentWebview.show('pop-in', 300, function() {}, {});
+						var _this = this
+						if(mui.os.android) {
+							var originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+							window.onresize = function() {
+
+								//软键盘弹起与隐藏  都会引起窗口的高度发生变化
+								var resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+								if(resizeHeight * 1 < originalHeight * 1) {
+									//resizeHeight<originalHeight证明窗口被挤压了
+									
+//									plus.webview.currentWebview().setStyle({
+//										height: originalHeight
+//									});
+									_this.androidShow = false
+								}else{
+									_this.androidShow = true
+								}
+							};
+						}
 					},
 
 					methods: {
