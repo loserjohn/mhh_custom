@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>礼品兑换</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+			<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			.content {
+				width: 300px;
+				height: 200px;
+				/*background: pink;*/
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -150px;
+				margin-top: -50px
+			}
+			
+			.bgBox {
+				width: 100vw;
+				height: 100vh;
+				background: url(../../images/mines/bg.jpg) 0 0 /cover no-repeat;
+				position: relative;
+			}
+			
+			.addressBtn {
+				margin-top: 20px;
+				padding: 0 20px;
+				width: 100%!important;   
+				min-height: 50px!important;   
+				line-height: 50px!important;   
+				border-radius: 5px;
+				background: #fff;
+				margin-left: auto;
+				margin-right: auto;
+				border: 1px solid #ffba38;
+				font-size: 14px;
+			}
+			
+			.btns {
+				width: 150px!important; 
+				height: 60px;
+				line-height: 60px;
+				display: block;
+				line-height: 60px;
+				margin: 20px auto;
+				border-radius: 10px;
+				/*background: #ffaa40;*/
+				padding: 0!important;
+				color: #862710;
+				font-size: 18px;
+				border: 1px solid #bb4e1b;
+				background: -webkit-linear-gradient(top, #ca9025, #fbea90);
+				/* Safari 5.1 - 6.0 */
+				background: linear-gradient(top, #ca9025, #fbea90);
+			}
+			.addresBox{
+				width: 100%;
+				height: 300px;
+				/*background: pink;*/
+				overflow: hidden;
+			}
+			.addresBox_title{
+				background: #ccaa42;
+				color: #fff;
+				text-align: center;
+				line-height: 3;
+				
+			}
+			.sBox{
+				width: 100%;
+				height: 100%;
+				box-sizing: border-box;
+				padding: 10px;
+				/*background: red;*/
+			}
+			.sBox .addressItem{
+				border-bottom: 1px solid #eee;
+				line-height: 1.5;
+				padding: 10px 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--等待页面-->
+		<div class="loader" style="top:0;" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app">
+			<div class="bgBox">
+				<div class="content">
+					<div class="t_c cor_w fs16">请输入兑换码</div>
+					<input type="text" class="addressBtn" placeholder="请输入8位有效兑换码" />
+					<div class="addressBtn" @tap.self="_toggle()">{{address?address:'请选择地址'}}</div>
+					<button class="btns">兑  换</button>
+				</div>
+
+			</div>
+			<!--模态框显示优惠券信息信息-->
+			<div class="cm_mask_bot" v-show="show" @tap.self="_toggle()">
+				<div class="cm_modal_bot  animated slideInUp">
+					<div class="addresBox_title ">地址选择</div>
+					<div class="addresBox">
+						<div ref='scroll' class="sBox" >
+							<ul class="clearfix scrollContent" style="min-height: 101%;">	
+								<li v-for="(item,index) in addressList"  class="addressItem" @tap.self = "_chooseAddress(item.REMARK)">{{item.REMARK}}</li>
+								<li v-show="addressList.length==0" class="t_c cor_g">
+									您当前还没有地址，请前往  "地址管理" 页面进行添加
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+
+			var APP;
+			mui.plusReady(function() {
+				var wv = plus.webview.currentWebview();
+				wv.setStyle({
+					titleNView: {
+						buttons: [{
+							text: '已兑礼品',
+							fontSize: '14px',
+							onclick: toGifts
+						}]
+					}
+				});
+
+				app.WXinit(CryptoJS);
+				APP = new Vue({
+					el: '#app',
+					data: {
+						address:'',
+						addressList:[],
+						show:false,
+						scroll:''
+					},
+					filters: {
+						getStatus: function getStatus(k) {
+							switch(k) {
+								case '0':
+									return '未启用';
+									break;
+								case '1':
+									return '启用中';
+									break;
+								case '2':
+									return '审核中';
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					created: function created() {
+						
+
+					},
+					mounted: function mounted() {
+						
+						var _this = this;
+						
+						this._getAddress();
+						
+
+					},
+					methods: {
+//						初始化滑块
+						_iniScroll(){
+							var scroll = this.$refs.scroll; 
+							this.$nextTick(function() {
+								if(!this.scroll) {
+									//							初始化标题栏
+									this.scroll = new BScroll(scroll, {
+										click: true,
+										probeType: 3,
+										bounceTime: 200,
+									});
+								} else {
+									this.scroll.refresh();
+								};
+							});
+						}
+						,
+//						切换显示
+						_toggle(){						
+							this.show = !this.show;
+							if(this.show){
+								this._iniScroll()
+							}
+						},
+//						初始化使用人地址
+						_getAddress(){
+							var _this =  this
+							app.ajax(app.baseUrl + '/api/Address/GetListAddress', {
+								type: 'get', //HTTP请求类型
+								success: function success(result) {				
+									if(result.Success) {
+										document.getElementById('loader').style.display = "none";
+										_this.addressList = result.Data.ListInfo;
+									} else {
+										/*验证失败*/
+										plus.nativeUI.toast(result.Msg);
+									}
+								}
+							});
+						},
+//						选择地址
+						_chooseAddress(text){
+							alert(text)
+							this.show = false,
+							this.address = text
+						}
+					}
+				});
+			});
+			function toGifts(){
+				var desturl = './gifts.html';
+				var destid = 'gifts';
+				var exa = {};
+				var option = {
+					showTitle: true,
+//					createNew: true
+				};
+				app.navigater(desturl, destid, exa, option);
+			}
+		</script>
+	</body>
+
+</html>

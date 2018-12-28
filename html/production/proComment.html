@@ -115,9 +115,13 @@
 				margin: 10px 0;
 			}
 			
-			.commontPic {
+			.cPic {
 				width: 32%;
 				height: 80px;
+				overflow: hidden;
+				box-sizing: border-box;
+				padding: 4px;
+				
 			}
 		</style>
 	</head>
@@ -197,9 +201,15 @@
 											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
 
 											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
-												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
-												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
-												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG1" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG2" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG3" />
+												</div>
 											</div>
 											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
 											<div class="reply cor_g" v-html="item.REPLY_CONTENT"></div>
@@ -218,9 +228,15 @@
 											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
 
 											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
-												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
-												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
-												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG1" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG2" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG3" />
+												</div>
 											</div>
 											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
 										</div>
@@ -239,9 +255,15 @@
 											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
 
 											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
-												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
-												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
-												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG1" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG2" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG3" />
+												</div>
 											</div>
 											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
 										</div>
@@ -259,9 +281,15 @@
 											<span class="cm_commont_label cor_y">{{item.REVIEW_TYPE | commentTxt}}</span>
 
 											<div class="flex commontPicBox" v-show="item.HAS_PICTURE=='1'?true:false">
-												<img :src="item.REPLY_IMG1" alt="" class="commontPic" v-show="item.REPLY_IMG1" />
-												<img :src="item.REPLY_IMG2" alt="" class="commontPic" v-show="item.REPLY_IMG2" />
-												<img :src="item.REPLY_IMG3" alt="" class="commontPic" v-show="item.REPLY_IMG3" />
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG1" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG2" />
+												</div>
+												<div class="cPic">
+													<img :src="item.REPLY_IMG1" alt="" class="contain commontPic" v-show="item.REPLY_IMG3" />
+												</div>
 											</div>
 											<div class="commonTxt" v-html="item.REVIEW_CONTENT"></div>
 										</div>

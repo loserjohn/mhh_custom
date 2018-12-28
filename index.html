@@ -111,13 +111,13 @@
 			/*特惠*/
 			
 			.block2 {
-				margin-top: 6px;
+				/*margin-top: 6px;*/
 				background: #fff
 			}
 			/*活动*/
 			
 			.block3 {
-				margin-top: 6px;
+				/*margin-top: 6px;*/
 			}
 			
 			.block3>img {
@@ -242,7 +242,9 @@
 				width: 14px!important;
 				height: 14px!important;
 			}
-			
+			.panel{
+				margin: 0;
+			}
 			.backTop{
 				width: 40px;
 				height: 40px;
@@ -355,6 +357,7 @@
 									<!--<img src="images/block.png" class=" contain lazy" :data-src="item.listData[0].img">-->
 								</div>
 							</div>
+							
 							<div class=" flex " v-else-if="item.type==2">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
 									<img :src="item.listData[0].img" alt="" class="contain " />
@@ -379,7 +382,7 @@
 										<img :src="item.listData[1].img" alt="" class="contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
 									</div>
-									<div class=" t_c" @tap="_jump(item.listData[2].keyCode)">
+									<div class=" t_c reset" @tap="_jump(item.listData[2].keyCode)" style="margin-top: -5px;">
 										<img :src="item.listData[2].img" alt="" class="contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">-->
 									</div>
@@ -696,6 +699,10 @@
 												});
 											});
 										}, 500);
+										
+//										location
+										var a  = document.getElementsByTagName('img')
+//										alert(a.length) 
 									} else {
 										/*验证失败*/
 									}

@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>礼品兑换</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			.content {
+				width: 300px;
+				height: 200px;
+				/*background: pink;*/
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -150px;
+				margin-top: -50px
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--等待页面-->
+		<div class="loader" style="top:0;" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app">
+			<div ref='scroll' class="sBox">
+				<ul class="clearfix scrollContent" style="min-height: 101%;">
+					
+					<li >
+						
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/bscroll.min.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+
+			var APP;
+			mui.plusReady(function() {
+
+				app.WXinit(CryptoJS);
+				APP = new Vue({
+					el: '#app',
+					data: {
+						address: '',
+						addressList: [],
+						show: false,
+						scroll: ''
+					},
+					filters: {
+						getStatus: function getStatus(k) {
+							switch(k) {
+								case '0':
+									return '未启用';
+									break;
+								case '1':
+									return '启用中';
+									break;
+								case '2':
+									return '审核中';
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					created: function created() {
+
+					},
+					mounted: function mounted() {
+
+						var _this = this;
+
+						this._getGifts();
+
+					},
+					methods: {
+						_getGifts() {
+							document.getElementById('loader').style.display = "none";
+						},
+						//						初始化滑块
+						_iniScroll() {
+							var scroll = this.$refs.scroll;
+							this.$nextTick(function() {
+								if(!this.scroll) {
+									//							初始化标题栏
+									this.scroll = new BScroll(scroll, {
+										click: true,
+										probeType: 3,
+										bounceTime: 200,
+									});
+								} else {
+									this.scroll.refresh();
+								};
+							});
+						}
+
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

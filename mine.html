@@ -217,7 +217,7 @@
 									</div>
 
 									<p style="width: 100%;">{{'小草值：'+userMsg.MEMBER_INTEGRAL}}</p>
-									<div class="cor_w t_r" @tap="_navigateTo('./html/scores.html','scores')">分享积分 <span class="mui-icon mui-icon-arrowright fs16"></span></div>
+									<!--<div class="cor_w t_r" >分享积分 <span class="mui-icon mui-icon-arrowright fs16"></span></div>-->
 								</div>
 
 								<div v-else @tap="_toLoginPage()">
@@ -309,6 +309,18 @@
 								<p>消息</p>
 								<!--</a>-->
 							</li>
+							<li class="menusItem" @tap="_navigateTo('./html/scores.html','scores')" >
+								<!--<a href="">-->
+								<i class="iconfont icon-rfq  cor_w"></i> 
+								<p>分享积分</p>
+								<!--</a>-->
+							</li>
+							<li class="menusItem" @tap="_navigateTo('./html/gift/convert.html','convert')">
+								<!--<a href="">-->
+								<i class="iconfont icon-jinnang  cor_w"></i>
+								<p>礼品兑换</p>
+								<!--</a>-->
+							</li> 
 							<!--<li class="menusItem">
 								<i class="iconfont icon-more "></i>
 								<p>正在努力中</p>
