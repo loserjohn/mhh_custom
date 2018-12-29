@@ -1045,11 +1045,12 @@
 									if(result.Success) {
 										/*列表*/
 										//										_this.shopMsg = result.Data.Shop	
-										_this.allProduct = _this.allProduct.concat(result.Data.ListInfo);
-										if(_this.allProduct.length == result.Data.Total && _this.index != 1) {
+										
+										if(_this.allProduct.length >= result.Data.Total && _this.index != 1) {
 											plus.nativeUI.toast('没有更多数据');
 											return;
 										}
+										_this.allProduct = _this.allProduct.concat(result.Data.ListInfo);
 										_this.index += 1;
 										//										if(callback) callback()
 									} else {

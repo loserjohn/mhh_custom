@@ -315,17 +315,17 @@
 								<div class="mui-slider-group mui-slider-loop" style="min-height: 150px;">
 									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(prevPic.LINK_URL)">
-										<img :src="prevPic.LINK_IMAGE" >
+										<img :src="prevPic.LINK_IMAGE?prevPic.LINK_IMAGE:'images/index/banner1.png'" >
 										<!--<img src="images/index/banner2.png" class="lazy" :data-src="prevPic.LINK_IMAGE">-->
 									</div>
 									<!-- 第一张 -->
 									<div class="mui-slider-item" v-for="item in activityPics" @tap="_jump(item.LINK_URL)">
-										<img :src="item.LINK_IMAGE" class="lazy" >
+										<img :src="item.LINK_IMAGE?item.LINK_IMAGE:'images/index/banner2.png'" class="lazy" >
 										<!--<img src="images/index/banner2.png" class="lazy" :data-src="item.LINK_IMAGE">-->
 									</div>
 									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(nextPic.LINK_URL)">
-										<img :src="nextPic.LINK_IMAGE">
+										<img :src="nextPic.LINK_IMAGE?nextPic.LINK_IMAGE:'images/index/banner3.png'">
 										<!--<img src="images/index/banner2.png" class="lazy" :data-src="nextPic.LINK_IMAGE">-->
 									</div>
 								</div>
@@ -382,7 +382,7 @@
 										<img :src="item.listData[1].img" alt="" class="contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
 									</div>
-									<div class=" t_c reset" @tap="_jump(item.listData[2].keyCode)" style="margin-top: -5px;">
+									<div class=" t_c reset" @tap="_jump(item.listData[2].keyCode)" :style="{marginTop:platform=='ios'?'-5px':'-7px'} ">
 										<img :src="item.listData[2].img" alt="" class="contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">-->
 									</div>
@@ -546,15 +546,22 @@
 						blockData: [], //豆腐块设计
 						noNet: false, //网络状态		
 						menusBackgroundPic: '', //menu整块的背景图片
-						menusList: [] //分类按钮
+						menusList: [], //分类按钮
+						platform:'ios'
 					},
 					created: function created() {
 						app.initHeader();
 						//						/*页面首次加载,将登陆默认为0*/
 						plus.storage.setItem('isLogin', '0');
+						if(plus.os.name == "iOS") {
+							this.platform ='ios'
+						} else {
+							this.platform ='android'
+						}
 					},
 					mounted: function mounted() {
 						/*初始化主页面的高度*/
+						var _this =this
 						this.appHeight = plus.display.resolutionHeight;
 						//						检查是否有网路
 						if(!onNet()) {
@@ -564,8 +571,10 @@
 							return;
 						}
 						this._initMenus(); /*初始化导航栏*/
-						this._initIndex();
-						this._initScroll(); //初始化下拉
+//						mui.later(function(){
+							
+//						},500)
+						
 						
 						systemOS.versionInit(function(t) {
 							if(t) {
@@ -592,8 +601,11 @@
 								//没有更新版本
 								mui.later(function() {
 									plus.webview.getWebviewById('mine').evalJS('autoLogin()');
-									plus.navigator.closeSplashscreen();
+//									plus.navigator.closeSplashscreen();
 								}, 500);
+								
+								_this._initIndex();
+								_this._initScroll(); //初始化下拉
 							}
 						});
 						//新版本检测
@@ -676,8 +688,8 @@
 												status += 1;
 												if(status == result.Data.ListInfo.length) {
 //													Lazyimg.lazyLoad();
-													console.log('显示')
-													plus.navigator.closeSplashscreen() 
+//													console.log('显示')
+													
 													mui(slider).slider({
 														interval: 3000 //自动播放周期
 													});
@@ -689,6 +701,7 @@
 
 										/*推荐项目横向滑动*/
 										mui.later(function() {
+											var l = _this.recommend.length
 											_this.recommend.forEach(function(item, index) {
 												mui('#wrapper' + index).scroll({
 													scrollY: false, //是否竖向滚动
@@ -697,6 +710,10 @@
 													bounce: true, //是否启用回弹
 													indicators: false
 												});
+												if(index == l-1){
+//													alert(1)
+													plus.navigator.closeSplashscreen(); 
+												}
 											});
 										}, 500);
 										

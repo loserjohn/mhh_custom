@@ -416,7 +416,8 @@
 					"html/production/productBuy.html",
 					"html/coupons/coupons.html",
 					"html/share.html",
-					"html/scores.html"
+					"html/scores.html",
+					"html/gift/convert.html"
 				],
 				"priority": 0
 			},
@@ -592,6 +593,13 @@
 				"refer": [
 					"html/technician/technician.html",
 					"html/production/productBuy.html"
+				],
+				"priority": 0
+			},
+			"html/gift/convert.html": {
+				"resources": [],
+				"refer": [
+					"html/gift/gifts.html"
 				],
 				"priority": 0
 			}

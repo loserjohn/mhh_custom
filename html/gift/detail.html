@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>礼券详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
+		<link rel="stylesheet" href="../../css/animate.css" />
+		<style>
+			.itemList {
+				box-sizing: border-box;
+				padding: 10px;
+			}
+			
+			.itemList .preBox {
+				width: 100px;
+				height: 100px;
+				overflow: hidden;
+				margin-right: 10px;
+				position: relative
+			}
+			
+			.itemList .preBox .usedBox {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background: rgba(255, 255, 255, 0.8);
+				left: 0;
+				top: 0;
+			}
+			.itemList  .cm_title{
+				text-align: left;
+			}
+			.itemList  .mobile{
+				/*border: 1px solid #ddd;*/
+				line-height: 2;
+				border-radius: 3px;
+				padding: 0 10px;
+				margin: 4px 0 ;
+				color: #fff;
+				background: #dcc97e;
+			}
+			.itemList 	.num{
+				line-height: 2;
+				border-radius: 3px;
+				padding: 0 10px;
+				margin: 4px 0 ;
+				color: #fff;
+				background: #dcc97e;
+				font-weight: 600;
+				text-align: center;
+				font-size: 20px;	
+				letter-spacing:10px 
+			}
+			.itemList  .content{
+				border-top: 1px dotted #7E7E7E;
+				margin-top: 20px;
+				padding: 10px;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--等待页面-->
+		<div class="loader" style="top:0;" id="loader">
+			<ul>
+				<li id='a'></li>
+				<li id='b'></li>
+				<li id='c'></li>
+				<li id='d'></li>
+				<li id='e'></li>
+				<li id='f'></li>
+				<li id='g'></li>
+				<li id='h'></li>
+				<li id='i'></li>
+			</ul>
+		</div>
+		<div id="app">
+			<div class=" itemList">
+				<div class="flex">
+					<!--/0未使用 1已使用 2冻结 /-->
+					<div class="preBox">
+						<img :src="detail.business_logo?detail.business_logo:'../../images/mines/no.png'" class="contain" />
+						<div class="usedBox" v-show="detail.coupon_item_status == 1">
+							<img src="../../images/mines/used.png" alt="" class="contain" />
+						</div>
+						<div class="usedBox" v-show="detail.coupon_item_status == 2">
+							<img src="../../images/mines/forbid.png" alt="" class="contain" />
+						</div>
+					</div>
+					<div class="f1">
+						<div class="cm_title t_l">{{detail.coupon_name}}</div>
+						<p class="fs12">有效期: <span class="fr">{{detail.start_time}}</span></p>
+						<p class="fs12">截止至: <span class="fr">{{detail.end_time}}</span></p>
+						<!--<p class="mobile">咨询电话: <span class="cor_g">{{detail.business_mobile}}</span></p>-->
+						<p  class="fs12">咨询电话: <span class="cor_g">{{detail.business_mobile}}</span></p>
+									<div class="num">
+										{{detail.coupon_item_code}}
+									</div>
+						<p v-if="detail.coupon_item_status == 1">{{detail.use_time}}</p>
+					</div>
+				</div>
+				<!--<div>
+					
+				</div>-->
+				<div class="content">
+					<div>详情：</div> 
+					<p class="lh26" v-html="detail.detail_content"></p>					
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/aes.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true
+			});
+
+			var APP;
+			mui.plusReady(function() {
+				app.WXinit(CryptoJS);
+				APP = new Vue({
+					el: '#app',
+					data: {
+						detail: ''
+					},
+					filters: {
+						getStatus: function getStatus(k) {
+							switch(k) {
+								case '0':
+									return '未启用';
+									break;
+								case '1':
+									return '启用中';
+									break;
+								case '2':
+									return '审核中';
+									break;
+								default:
+									break;
+							}
+						}
+					},
+					created: function created() {
+
+					},
+					mounted: function mounted() {
+
+						var _this = this;
+						var self = plus.webview.currentWebview();
+						this.detail = self.gift;
+//						console.log(JSON.stringify(self.gift))
+						document.getElementById('loader').style.display = "none";
+					},
+					methods: {
+
+					}
+				});
+			});
+
+			function toGifts() {
+				var desturl = './gifts.html';
+				var destid = 'gifts';
+				var exa = {};
+				var option = {
+					showTitle: true,
+					//					createNew: true
+				};
+				app.navigater(desturl, destid, exa, option);
+			}
+		</script>
+	</body>
+
+</html>

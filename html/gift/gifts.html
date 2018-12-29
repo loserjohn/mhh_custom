@@ -3,30 +3,66 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>礼品兑换</title>
+		<title>已兑换礼券 </title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../css/iconfont.css" />
-		<link rel="stylesheet" href="../../css/loading.css" />
 		<link rel="stylesheet" href="../../css/animate.css" />
+		<link rel="stylesheet" href="../../css/loading.css" />
 		<style>
-			.content {
-				width: 300px;
-				height: 200px;
-				/*background: pink;*/
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				margin-left: -150px;
-				margin-top: -50px
+			.itemList {
+				box-sizing: border-box;
+				padding: 10px;
+				border-bottom: 1px dashed #d3d3d3;
 			}
+			
+			.itemList .preBox {
+				width: 100px;
+				height: 100px;
+				overflow: hidden;
+				margin-right: 10px;
+				position: relative
+			}
+			
+			.itemList .preBox .usedBox {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background: rgba(255, 255, 255, 0.8);
+				left: 0;
+				top: 0;
+			}
+			.itemList  .cm_title{
+				text-align: left;
+			}
+			.itemList  .mobile{
+				/*border: 1px solid #ddd;*/
+				line-height: 2;
+				border-radius: 3px;
+				padding: 0 10px;
+				margin: 4px 0 ;
+				color: #fff;
+				background: #dcc97e;
+			}
+			.itemList 	.num{
+				line-height: 2;
+				border-radius: 3px;
+				padding: 0 10px;
+				margin: 4px 0 ;
+				color: #fff;
+				background: #dcc97e;
+				font-weight: 600;
+				text-align: center;
+				font-size: 20px;	
+				letter-spacing:10px
+		}
 		</style>
 	</head>
 
 	<body>
 		<!--等待页面-->
-		<div class="loader" style="top:0;" id="loader">
+		<div class="loader" style="top:0" id="loader">
 			<ul>
 				<li id='a'></li>
 				<li id='b'></li>
@@ -40,13 +76,73 @@
 			</ul>
 		</div>
 		<div id="app">
-			<div ref='scroll' class="sBox">
-				<ul class="clearfix scrollContent" style="min-height: 101%;">
-					
-					<li >
-						
-					</li>
-				</ul>
+
+			<!--卡片-->
+			<div class="cards scrollBox " :style="{top:scrollTop,bottom:0}" id="scroll" ref="scroll">
+				<div class="reset" style="min-height: 101%;">
+					<!--刷新提示框-->
+					<div class="refresh flex">
+						<div class="flex " style="bottom:95px ;">
+							<p class="f1 t_r "></p>
+							<i class="iconfont icon-hua cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:65px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-dianzan1 cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+						<div class="flex " style="bottom:35px ;">
+							<p class="f1 t_r"></p>
+							<i class="iconfont icon-zuanshi cor_y"></i>
+							<p class="f1 t_l">有种你放开我</p>
+						</div>
+						<div class="flex " style="bottom:5px ;">
+							<p class="f1 t_r">有种你放开我</p>
+							<i class="iconfont icon-jiangbei cor_y"></i>
+							<p class="f1 t_l"></p>
+						</div>
+					</div>
+					<ul class="reset cm_ul ">
+						<li class=" itemList" v-for="item in giftLists" @tap="_toDetail(item)">
+							<div class="flex">
+									<!--/0未使用 1已使用 2冻结 /-->
+								<div class="preBox">
+									<img :src="item.business_logo?item.business_logo:'../../images/mines/no.png'" class="contain" />
+									<div class="usedBox" v-show="item.coupon_item_status == 1">
+										<img src="../../images/mines/used.png" alt="" class="contain" />
+									</div>
+									<div class="usedBox" v-show="item.coupon_item_status == 2">
+										<img src="../../images/mines/forbid.png" alt="" class="contain" />
+									</div>
+								</div>
+								<div class="f1">
+									<!--{{item.business_logo}}-->
+									<div class="cm_title t_l">{{item.coupon_name}}</div>
+									<p class="fs12">有效期: <span class="fr">{{item.start_time}}</span></p>
+									<p  class="fs12">截止至: <span class="fr">{{item.end_time}}</span></p>
+									<p  class="fs12">咨询电话: <span class="cor_g">{{item.business_mobile}}</span></p>
+									<div class="num">
+										{{item.coupon_item_code}}
+									</div>
+									<!--<p class="mobile">咨询电话: <span class="cor_g">{{item.business_mobile}}</span></p>-->
+									<p v-if="item.coupon_item_status == 1">使用时间: {{item.use_time}}</p>
+								
+								</div>								
+							</div>
+						</li>
+						<li class="t_c lh44" v-if="giftLists.length!=0">{{nomore?'没有数据了':'加载更多'}}</li>
+					</ul>
+					<!--无数据提示-->
+					<div v-if="giftLists.length==0" class="t_c cm_noItem">
+						<div class="cm_noItem_box flex">
+							<img src="../../images/no3.png" alt="" />
+							<div class="t_c ">您还没有已兑换的礼券</div>
+						</div>
+					</div>
+				</div>
+				
+			
 			</div>
 		</div>
 		<script src="../../js/mui.min.js"></script>
@@ -59,21 +155,80 @@
 			mui.init({
 				swipeBack: true
 			});
-
 			var APP;
 			mui.plusReady(function() {
-
 				app.WXinit(CryptoJS);
 				APP = new Vue({
 					el: '#app',
 					data: {
-						address: '',
-						addressList: [],
-						show: false,
-						scroll: ''
+						scrollTop: '',
+						scroll: '',
+						giftLists: [],
+						index: 1,
+						nomore: false
+					},
+					created: function created() {},
+					mounted: function mounted() {
+
+						var _this = this;
+						var scroll = this.$refs.scroll;
+						this.scrollTop = 0 + 'px';
+						var self = plus.webview.currentWebview();
+
+						this._getGifts(function() {
+							document.getElementById('loader').style.display = 'none';
+						});
+
+						/*首次加载数据*/
+
+						this.$nextTick(function() {
+							//							初始化scrool
+							if(!_this.scroll) {
+								//							初始化标题栏
+								_this.scroll = new BScroll(scroll, {
+									click: true,
+									probeType: 3,
+									bounceTime: 200,
+									pullDownRefresh: {
+										threshold: 50,
+										stop: 0
+									},
+									pullUpLoad: {
+										threshold: -20 // 当上拉距离超过30px时触发 pullingUp 事件
+									}
+								});
+							} else {
+								_this.scroll.refresh();
+							};
+
+							/*下拉刷新*/
+							_this.scroll.on('pullingDown', function(e) {
+								//								plus.nativeUI.showWaiting()
+								_this.index = 1;
+								_this.giftLists = [];
+								_this.nomore = false;
+								_this._getGifts(function(b) {
+									//									plus.nativeUI.closeWaiting()
+									if(b) {} else {
+										_this.scroll.finishPullUp();
+									}
+									_this.scroll.finishPullDown();
+									plus.nativeUI.closeWaiting();
+								});
+							});
+							/*上拉加载*/
+							_this.scroll.on('pullingUp', function(e) {
+								_this._getGifts(function(b) {
+									if(b) {} else {
+										_this.scroll.finishPullUp();
+									}
+								});
+							});
+						});
 					},
 					filters: {
 						getStatus: function getStatus(k) {
+							//							优惠券状态0-未启用，1-启用中,2-审核中
 							switch(k) {
 								case '0':
 									return '未启用';
@@ -82,47 +237,69 @@
 									return '启用中';
 									break;
 								case '2':
-									return '审核中';
+									return '审核中...';
 									break;
 								default:
 									break;
 							}
 						}
 					},
-					created: function created() {
-
-					},
-					mounted: function mounted() {
-
-						var _this = this;
-
-						this._getGifts();
-
-					},
 					methods: {
-						_getGifts() {
-							document.getElementById('loader').style.display = "none";
-						},
-						//						初始化滑块
-						_iniScroll() {
-							var scroll = this.$refs.scroll;
-							this.$nextTick(function() {
-								if(!this.scroll) {
-									//							初始化标题栏
-									this.scroll = new BScroll(scroll, {
-										click: true,
-										probeType: 3,
-										bounceTime: 200,
-									});
-								} else {
-									this.scroll.refresh();
-								};
+						//						获取礼券
+						_getGifts(callback) {
+							var _this = this
+							app.ajax(app.baseUrl + '/api/Gift/ViewCouponItem', {
+								type: 'post', //HTTP请求类型
+								data: {
+									pageIndex: _this.index,
+									pageSize: 10
+								},
+								success: function success(result) {
+									document.getElementById('loader').style.display = "none";
+									if(result.Success) {
+										var l = _this.giftLists.length;
+										if(l >= result.Data.Total) {
+											_this.scroll.refresh();
+											_this.nomore = true;
+											if(callback) callback(true);
+											return;
+										}
+										_this.giftLists = _this.giftLists.concat(result.Data.ListInfo);
+//										console.log(_this.giftLists.length)
+										_this.index += 1;
+										_this.scroll.refresh();
+										if(callback) callback(false);
+
+									} else {
+										/*验证失败*/
+										_this.loader = false;
+										_this.scroll.refresh();
+									}
+								}
 							});
+						},
+						_toDetail(item){
+							var desturl = './detail.html';
+							var destid = 'detail';
+							var exa = {
+								gift:item
+							};
+							var option = {
+								showTitle: true,
+								//					createNew: true
+							};
+							app.navigater(desturl, destid, exa, option);
+							
 						}
 
 					}
 				});
 			});
+
+			function refresh() {
+				//				alert(1)
+				APP._getData();
+			}
 		</script>
 	</body>
 
