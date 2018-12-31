@@ -315,17 +315,17 @@
 								<div class="mui-slider-group mui-slider-loop" style="min-height: 150px;">
 									<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(prevPic.LINK_URL)">
-										<img :src="prevPic.LINK_IMAGE?prevPic.LINK_IMAGE:'images/index/banner1.png'" >
+										<img class="lazyImg" :src="prevPic.LINK_IMAGE?prevPic.LINK_IMAGE:'images/index/banner1.png'" >
 										<!--<img src="images/index/banner2.png" class="lazy" :data-src="prevPic.LINK_IMAGE">-->
 									</div>
 									<!-- 第一张 -->
 									<div class="mui-slider-item" v-for="item in activityPics" @tap="_jump(item.LINK_URL)">
-										<img :src="item.LINK_IMAGE?item.LINK_IMAGE:'images/index/banner2.png'" class="lazy" >
+										<img class="lazyImg"  :src="item.LINK_IMAGE?item.LINK_IMAGE:'images/index/banner2.png'" class="lazy" >
 										<!--<img src="images/index/banner2.png" class="lazy" :data-src="item.LINK_IMAGE">-->
 									</div>
 									<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 									<div class="mui-slider-item mui-slider-item-duplicate" @tap="_jump(nextPic.LINK_URL)">
-										<img :src="nextPic.LINK_IMAGE?nextPic.LINK_IMAGE:'images/index/banner3.png'">
+										<img class="lazyImg"  :src="nextPic.LINK_IMAGE?nextPic.LINK_IMAGE:'images/index/banner3.png'">
 										<!--<img src="images/index/banner2.png" class="lazy" :data-src="nextPic.LINK_IMAGE">-->
 									</div>
 								</div>
@@ -340,7 +340,7 @@
 							<ul class="flex">
 								<li class="menusItem" v-for="(item,index) in menusList" @tap="_menuTo(item.type,item.text)">
 									<a href="####">
-										<img :src="item.backgroundPic"  width="50" />
+										<img class="lazyImg"  :src="item.backgroundPic"  width="50" />
 										<!--<img :src="'images/index/ic'+index+'.png'" class="lazy" :data-src="item.backgroundPic" width="50">-->
 										<p>{{item.text}}</p>
 									</a>
@@ -353,37 +353,37 @@
 						<div v-for="item in blockData" class="block2">
 							<div class=" flex " v-if="item.type==1">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-									<img :src="item.listData[0].img" alt="" class="contain " />
+									<img  :src="item.listData[0].img" alt="" class="lazyImg contain " />
 									<!--<img src="images/block.png" class=" contain lazy" :data-src="item.listData[0].img">-->
 								</div>
 							</div>
 							
 							<div class=" flex " v-else-if="item.type==2">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-									<img :src="item.listData[0].img" alt="" class="contain " />
+									<img   :src="item.listData[0].img" alt="" class="lazyImg contain " />
 									<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">-->
 								</div>
 								<div class="f1 t_c" @tap="_jump(item.listData[1].keyCode)">
 									<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
-									<img :src="item.listData[1].img" alt="" class="contain" />
+									<img   :src="item.listData[1].img" alt="" class="lazyImg contain" />
 								</div>
 							</div>
 
 							<div class="flex " v-else-if="item.type==3">
 								<div class=" f2">
 									<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
-										<img :src="item.listData[0].img" alt="" class="contain" />
+										<img   :src="item.listData[0].img" alt="" class="lazyImg contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">-->
 									</div>
 
 								</div>
 								<div class="f3 ">
 									<div class=" t_c" @tap="_jump(item.listData[1].keyCode)">
-										<img :src="item.listData[1].img" alt="" class="contain" />
+										<img  :src="item.listData[1].img" alt="" class="lazyImg contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
 									</div>
 									<div class=" t_c reset" @tap="_jump(item.listData[2].keyCode)" :style="{marginTop:platform=='ios'?'-5px':'-7px'} ">
-										<img :src="item.listData[2].img" alt="" class="contain" />
+										<img :src="item.listData[2].img" alt="" class="lazyImg contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">-->
 									</div>
 								</div>
@@ -391,21 +391,21 @@
 							<div class=" flex " v-else-if="item.type==4">
 								<div class="f1 t_c" @tap="_jump(item.listData[0].keyCode)">
 									<!--<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />-->
-									<img :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="contain " />
+									<img  :src="item.listData[0].img?item.listData[0].img:'./images/index/refresh1.png'" alt="" class="lazyImg contain " />
 									<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[0].img">-->
 								</div>
 								<div class="f1 t_c">
 									<div class="" @tap="_jump(item.listData[1].keyCode)">
-										<img :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="contain" />
+										<img   :src="item.listData[1].img?item.listData[1].img:'./images/index/index1.png'" alt="" class="lazyImg contain" />
 										<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[1].img">-->
 									</div>
 									<div class="flex">
 										<div class="f1 t_c" @tap="_jump(item.listData[2].keyCode)">
-											<img :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="contain " />
+											<img   :src="item.listData[2].img?item.listData[2].img:'./images/index/index1.png'" alt="" class="lazyImg contain " />
 											<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[2].img">-->
 										</div>
 										<div class="f1 t_c" @tap="_jump(item.listData[3].keyCode)">
-											<img :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="contain" />
+											<img  :src="item.listData[3].img?item.listData[3].img:'./images/index/index1.png'" alt="" class="lazyImg contain" />
 											<!--<img src="images/block.png" class="contain lazy" :data-src="item.listData[3].img">-->
 										</div>
 									</div>
@@ -416,7 +416,7 @@
 
 						<!--推荐活动-->
 						<div class="block3  panel" v-for="(item,index) in  recommend" v-show="item.Items.length>1">
-							<img :src="item.TYPE_IMAGE?item.TYPE_IMAGE:'./images/index/index3.png'" alt="" class="contain" />
+							<img class="lazyImg"  :src="item.TYPE_IMAGE?item.TYPE_IMAGE:'./images/index/index3.png'" alt="" class="contain" />
 							<!--<img src="images/index/banner3.png" class="contain lazy" :data-src="item.TYPE_IMAGE">-->
 							<div class="mui-scroll-wrapper activityBox " :id="'wrapper'+index">
 								<ul class="reset flex mui-scroll " :style="{width:100*(item.Items.length+1)+'px'}">
@@ -501,7 +501,7 @@
 		<script src="./js/aes.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./js/bscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/system.js"></script>
-		<!--<script src="js/async.js"></script>-->
+		<script src="js/loadImg.js"></script>
 
 		<script type="text/javascript">
 		  
@@ -604,11 +604,23 @@
 //									plus.navigator.closeSplashscreen();
 								}, 500);
 								
-								_this._initIndex();
-								_this._initScroll(); //初始化下拉
+								_this._initIndex(
+									function(){
+										_this._initScroll(); //初始化下拉
+									}
+								);
+								
 							}
 						});
 						//新版本检测
+						
+						this.$nextTick(function () {  
+							var a = document.getElementsByClassName('lazyImg');
+////								var a = mui('.lazyImg');
+//								console.log(a[1].getAttribute('src'))
+//								alert(a.length)
+						})
+						
 					},
 					methods: {
 						_backToTop:function(){
@@ -667,14 +679,54 @@
 									plus.nativeUI.closeWaiting();
 									if(result.Success) {
 										//										初始化豆腐块
-										_this.blockData = result.Data.ListInfo;
+//										_this.blockData = result.Data.ListInfo;
+//										豆腐块图片的缓存
+										var blockData = result.Data.ListInfo;
+										blockData.forEach(function(list,index){
+											list.listData.forEach(function(item,idx){												
+//												console.log(LocalImg.imgCache(item.img))
+												LocalImg.imgCache(item.img,function(res){
+//													console.log('src',res)
+													item.img = res
+												})
+											})											
+										})
+//										console.log(0,blockData[0].listData[0].img)
+										_this.blockData = blockData;
 
-										_this.menusBackgroundPic = 'url(' + result.Data.homeFast.menusBackgroundPic + ')';
+
 										//										初始化菜单
+										LocalImg.imgCache(result.Data.homeFast.menusBackgroundPic,function(res){
+//											item.LINK_IMAGE = res
+											_this.menusBackgroundPic = 'url(' + res + ')';
+										})		
+										
+										
+//										菜单图片的缓存
+										var menusList = result.Data.homeFast.menusList;
+										menusList.forEach(function(item,index){
+											LocalImg.imgCache(item.backgroundPic,function(res){
+//													console.log('src',res)
+													item.backgroundPic = res
+												})										
+										})								
 										_this.menusList = result.Data.homeFast.menusList;
 
 										//										初始化轮播图
-										_this.activityPics = result.Data.bannerData;
+										
+//										轮播图缓存
+										var activityPics = result.Data.bannerData;
+										activityPics.forEach(function(item,index){
+											LocalImg.imgCache(item.LINK_IMAGE,function(res){
+//													console.log('src',res)
+													item.LINK_IMAGE = res
+												})										
+										})		
+										
+										
+										
+										_this.activityPics = activityPics
+										
 										if(result.Data.bannerData.length >= 1) {
 											_this.prevPic = _this.activityPics[_this.activityPics.length - 1];
 											_this.nextPic = _this.activityPics[0];
@@ -687,9 +739,8 @@
 											img.onload = function() {
 												status += 1;
 												if(status == result.Data.ListInfo.length) {
-//													Lazyimg.lazyLoad();
 //													console.log('显示')
-													
+													plus.navigator.closeSplashscreen(); 
 													mui(slider).slider({
 														interval: 3000 //自动播放周期
 													});
@@ -712,14 +763,12 @@
 												});
 												if(index == l-1){
 //													alert(1)
-													plus.navigator.closeSplashscreen(); 
+													
 												}
 											});
 										}, 500);
 										
-//										location
-										var a  = document.getElementsByTagName('img')
-//										alert(a.length) 
+
 									} else {
 										/*验证失败*/
 									}
@@ -847,7 +896,7 @@
 						_initScroll: function _initScroll() {
 							var _this = this;
 							/*初始化下拉scroll*/
-							this.$nextTick(function() {
+//							this.$nextTick(function() {
 								var scroll = this.$refs.scroll;
 								//								var wrapper = this.$refs.wrapper1
 
@@ -869,6 +918,7 @@
 									});
 								} else {
 									_this.scroll.refresh();
+//									return 
 								};
 								_this.scroll.on('scroll', function(e) {
 									var y = e.y;
@@ -913,7 +963,12 @@
 										}
 									});
 								});
-							});
+								
+							
+//							});
+							
+								
+							
 						},
 
 						/*最近上新*/
