@@ -4,7 +4,7 @@
 			// http://...jpg -> md5
 			// 缓存目录 _downloads/image/(md5).jpg
 			var image_url = src;
-//			let image_md5 = md5(image_url);
+//			var image_md5 = md5(image_url);
 			// 缓存本地图片url
 			var  arr = src.split('/');
 			var  LocalName= arr[arr.length-1].split('.')[0];				
@@ -20,7 +20,7 @@
 			plus.io.resolveLocalFileSystemURL(local_image_url, function(entry) {
 //				alert(1)
 				if(entry) {
-					console.log('存在',plus.io.convertLocalFileSystemURL(local_image_url));
+//					console.log('存在',plus.io.convertLocalFileSystemURL(local_image_url));
 //					return( plus.io.convertLocalFileSystemURL(local_image_url))
 					if(callback)callback(plus.io.convertLocalFileSystemURL(local_image_url))
 				} else {
@@ -33,7 +33,7 @@
 
 			function download_img() {
 				// filename:下载任务在本地保存的文件路径
-				let download_task = plus.downloader.createDownload(image_url, {
+				var download_task = plus.downloader.createDownload(image_url, {
 					filename: local_image_url
 				}, function(download, status) {
 					// 下载失败,删除本地临时文件
